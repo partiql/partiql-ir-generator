@@ -20,7 +20,7 @@ import com.amazon.ionelement.api.emptyMetaContainer
 
 
 /**
- * Base class for all Nodgen data types, including primitives and products, records and sums.
+ * Base class for all PIG data types, including primitives and products, records and sums.
  */
 sealed class DataType(val metas: MetaContainer) {
     /**

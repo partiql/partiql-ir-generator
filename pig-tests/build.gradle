@@ -54,7 +54,7 @@ task generateTestDomains(type: Exec) {
 }
 
 // Always make sure the code generator is built and "installed" before generating code!
-// Note that this test harness should *not* be take a dependency on the generator directly,
+// Note that this test harness should *not* take a dependency on the generator directly,
 // but we still need it to be built before we invoke it to generate the test domains that
 // we exercise during these tests.
 // The installDist task below installs the pig distribution at ../pig/build/install/pig

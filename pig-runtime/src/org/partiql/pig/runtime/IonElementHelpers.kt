@@ -21,21 +21,21 @@ import com.amazon.ionelement.api.ionSymbol
 
 
 /**
- * This seemingly dumb function reduces complexity of the Kotlin template by providing a consistent way to
+ * This seemingly useless function reduces complexity of the Kotlin template by providing a consistent way to
  * convert (or not) a variable to an [IonElement].  This has the same signature as the other `.toIonElement()`
  * extensions in package.
  */
 fun IonElement.toIonElement() = this
 
 /**
- * This seemingly dumb function reduces complexity of the Kotlin template by providing a consistent way to
+ * This seemingly useless function reduces complexity of the Kotlin template by providing a consistent way to
  * convert (or not) a variable to an [IonElement].  This has the same signature as the other `.toIonElement()`
  * extensions in package.
  */
 fun String?.toIonElement() = ionSymbol(this)
 
 /**
- * This seemingly dumb function reduces complexity of the Kotlin template by providing a consistent way to
+ * This seemingly useless function reduces complexity of the Kotlin template by providing a consistent way to
  * convert (or not) a variable to an [IonElement].  This has the same signature as the other `.toIonElement()`
  * extensions in package.
  */

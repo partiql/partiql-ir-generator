@@ -37,8 +37,8 @@ the `ExprNode` model or `V0` AST have downstream impacts that are difficult to p
 We will soon need additional domain models other than `ExprNode` and the `V0` AST and each new domain model only 
 multiplies these problems.
 
-Nodgen aims to improve developer productivity and reduce risk associated with evolving these domain models by 
-automating the creation of all 5 of the above components for all of the domain models required by PartiQL
+PIG aims to improve developer productivity and reduce risk associated with evolving these domain models by 
+automating the creation of all of the above components for all of the domain models required by PartiQL
 and the PartiQL rewriter.
 
 ## Code generation with PIG
@@ -354,9 +354,10 @@ allowed.
 
 The public API of the Kotlin code generated for records is similar to that of their non-named counterparts except that
 the names of the elements are used as their identifiers instead of a synthetic name.  Additionally, record constructors 
-do not accept `vararg` arguments which means that **TODO: chose one of the following**: 1) the constructors of record 
-types must validate the minimum arity of variadic elements at runtime or 2) the minimum arity of variadic 
-elements is always zero (and PIG fails the build otherwise). 
+do not accept `vararg` arguments which means that **TODO: chose one of the following**: 
+
+1. the constructors of record types must validate the minimum arity of variadic elements at runtime
+1. the minimum arity of variadic elements is always zero (and PIG fails the build otherwise). 
    
 An example of a sum variant with named fields is included below:    
 
