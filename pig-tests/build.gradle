@@ -1,0 +1,71 @@
+/*
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ *  permissions and limitations under the License.
+ */
+
+// Documentation for using Gradle with Kotlin is here: https://kotlinlang.org/docs/reference/using-gradle.html
+
+plugins {
+    // https://docs.gradle.org/current/userguide/java_library_plugin.html#header
+    id 'java-library'
+    // https://docs.gradle.org/5.0/userguide/publishing_maven.html#header
+    id 'org.jetbrains.kotlin.jvm'
+    id 'signing'
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    // compile-time dependencies
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation project(':pig-runtime')
+
+    // test-time dependencies
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+}
+
+task generateTestDomains(type: Exec) {
+    workingDir projectDir
+    //commandLine "/bin/sh -c \"echo $projectDir\""
+
+    final universeFile = './type-domains/sample-universe.ion'
+    final namespace = 'org.partiql.pig.tests.generated'
+    final outputFile = './src/org/partiql/pig/tests/generated/sample-universe.kt'
+    def pathToPig = new File(projectDir, '../pig/build/install/pig/bin/pig').getCanonicalPath().toString()
+    commandLine pathToPig, '-u', universeFile, '-t', 'kotlin', '-n', namespace, '-o', outputFile
+
+}
+
+// Always make sure the code generator is built and "installed" before generating code!
+// Note that this test harness should *not* take a dependency on the generator directly,
+// but we still need it to be built before we invoke it to generate the test domains that
+// we exercise during these tests.
+// The installDist task below installs the pig distribution at ../pig/build/install/pig
+generateTestDomains.dependsOn project(':pig').tasks.installDist
+
+// Also ensure that generateTestDomains is invoked before the build of this project
+build.dependsOn generateTestDomains
+
+
+
+test {
+    useJUnitPlatform()
+}
+
