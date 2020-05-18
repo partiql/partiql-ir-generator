@@ -56,7 +56,10 @@
         (product optional_1 (? int))
         (product optional_2 (? int) (? int))
 
-        // TODO:  top-level records are not currently supported--only sum variants can be records.
+        (record domain_level_record
+            (some_field int)
+            (another_field symbol)
+            (optional_field (? int)))
 
         (sum entity
             // Slugs are not uniquely identified.

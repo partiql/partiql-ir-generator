@@ -16,6 +16,8 @@
 package org.partiql.pig.domain.model
 
 import com.amazon.ionelement.api.MetaContainer
+import com.amazon.ionelement.api.ionSexpOf
+import com.amazon.ionelement.api.ionSymbol
 
 /**
  * An element of a product or record.
@@ -24,23 +26,15 @@ import com.amazon.ionelement.api.MetaContainer
  * instantiator.
  */
 class NamedElement(val name: String, val typeReference: TypeRef, val metas: MetaContainer) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is NamedElement) return false
 
-        if (name != other.name) return false
-        if (typeReference != other.typeReference) return false
-        // Note [metas] intentionally not included here!
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + typeReference.hashCode()
-        // Note [metas] intentionally not included here!
-
-        return result
-    }
-
+    /**
+     * Generates an s-expression representation of this [NamedElement].
+     *
+     * This primarily aids in unit testing and is not intended to have an identical structure to PIG-s type universe
+     * syntax.
+     */
+    fun toIonElement() =
+        ionSexpOf(
+            ionSymbol(name),
+            typeReference.toIonElement())
 }

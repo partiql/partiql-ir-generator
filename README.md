@@ -32,7 +32,7 @@ structure of the s-expression representation.
 
 These components took a long time to create and come with very non-trivial maintenance overhead.  Changes to either 
 the `ExprNode` model or `V0` AST have downstream impacts that are difficult to predict and often require performing 
-"shotgun" surgery at an indeterminate number of locations in the (de)serialization code and rewrite rules.
+"shotgun surgery" at an indeterminate number of locations in the (de)serialization code and rewrite rules.
 
 We will soon need additional domain models other than `ExprNode` and the `V0` AST and each new domain model only 
 multiplies these problems.
@@ -235,29 +235,28 @@ assertEquals(onePlusOne, anotherOnePlusOne)
 ### Type Universe Grammar
 
 ```
+// Top level
 type_universe ::= '(' 'define' symbol <domain_definition> ')'...
 
+// Domain
 domain_definition ::= <domain> | <permute_domain>
-
 domain ::= '(' 'domain' <type_definition>... ')'
+type_definition ::= <product_definition> | <sum_definition> | <record_definition>
 
-type_definition ::= <product_definition> | <sum_definition>
-
+// Product
 product_definition ::= '(' 'product' <product_body>')'
+product_body ::= symbol <element_definition>...
 
-product_body ::= symbol <element_definition>...  
+// Record
+record_definition ::= '(' 'record' <record_body> ')'
+record_body ::= symbol ('(' symbol <field_definition> ')')
+field_definition ::= '(' symbol <type_ref> ')'
 
-sum_definition ::= '(' 'sum' symbol ( '(' <product_body> ')' )... ')'
+// Sum
+sum_definition ::= '(' 'sum' symbol <variant_definition>...')'
+variant_definition ::= '(' symbol (<product_body> | <record_body>) ')'
 
-element_definition ::= <type_ref> | (symbol <type_ref>)
-
-type_ref ::= ion_type
-           | symbol                     
-           | '(' '?' symbol ')'
-           | '(' '*' symbol int ')'
-    
-ion_type ::= 'int' | 'symbol' | 'bool' | 'ion'     
-
+// Domain permutation
 permute_domain ::=
     '(' 
         'permute_domain' symbol 
@@ -275,6 +274,15 @@ with ::=
             | '(' 'include' ( '(' <product_body> ')' )... ')' 
         )...
     ')'
+
+// Type references
+type_ref ::= ion_type
+           | symbol                     
+           | '(' '?' symbol ')'
+           | '(' '*' symbol int ')'
+    
+ion_type ::= 'int' | 'symbol' | 'bool' | 'ion'     
+
 ```
 
 #### PIG Phases
@@ -336,17 +344,16 @@ These constraints exist to reduce the complexity of the generated code and its u
 
 ##### Named Elements
 
-The elements of products and sum variants may be given names. All elements of a product or variant must be given names 
-or no elements must be given names.  When a product or variant's elements have names it is known as a record.
+There are two types of records.  Record data types and record sum variants.  Records are similar to products however
+their fields are explicitly named and their s-expression representation is different. 
 
 Records are most useful when more than ~4 elements are needed and when some number of them are optional (as 
 is the case with the PartiQL AST's `select` node).
 
-The generated transformer for a record allows the named elements of a record to appear in any order, but will always 
-renders them in the same order as specified in the product or variant definition.  
-
-Furthermore, instead of using Ion `null` values to indicate that an element has not been specified, unspecified 
-elements are simply not rendered in the `IonElement` representation. 
+The generated `IonElement` transformer for a record allows the named elements of a record to appear in any order, but 
+will always renders them in the same order as specified in the product or variant definition. Furthermore, instead of 
+using Ion `null` values to indicate that an element has not been specified, unspecified elements are simply not 
+rendered in the `IonElement` representation. 
 
 The rules described under the "Arity Ordering" section above do not apply to records.  As a result, `required`, 
 `optional` and `variadic` elements may appear in any order.  Additionally, any number of `variadic` elements are 
@@ -358,23 +365,38 @@ do not accept `vararg` arguments which means that **TODO: chose one of the follo
 
 1. the constructors of record types must validate the minimum arity of variadic elements at runtime
 1. the minimum arity of variadic elements is always zero (and PIG fails the build otherwise). 
-   
-An example of a sum variant with named fields is included below:    
+
+An example of a domain-level record:
 
 ```
-(define partiql
-    ...
-    (sum expr
+(define demo_domauin 
+    (domain
         ...
-        (select
-            (project projection)
-            (from from_source)
-            (where (? expr))
-            (group_by (? group_specificaiton))
-            (having (? expr))
-            (limit (? expr)))
-        ...)
-    ...))
+        (record programmer
+            (first_name symbol)
+            (last_name symbol)
+            (age int)
+            (lines_of_code_written int)
+        ...)))
+```
+
+An example of a sum variant record:    
+
+```
+(define partiql 
+    (domain
+        ...
+        (sum expr
+            ...
+            (select
+                (project projection)
+                (from from_source)
+                (where (? expr))
+                (group_by (? group_specificaiton))
+                (having (? expr))
+                (limit (? expr)))
+            ...)
+        ...)))
 ```
 
 #### Using PIG In Your Project

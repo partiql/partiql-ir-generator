@@ -55,12 +55,10 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
             }
 
             when (dataType) {
-                is DataType.Tuple -> {
+                is DataType.Tuple -> { /* no validation needed */
                     when (dataType.tupleType) {
                         TupleType.PRODUCT -> { /* ok, we allow this */}
-                        // Currently, no facility exists to parse records outside of as sum type variants.
-                        // This may need to change in the future.
-                        TupleType.RECORD -> TODO("Add support for records at the domain-level.")
+                        TupleType.RECORD -> collectRecordNames(dataType)
                     }
                 }
                 is DataType.Sum -> {
@@ -72,16 +70,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
 
                         when(variant.tupleType) {
                             TupleType.PRODUCT -> { /* products to not define additional names */ }
-                            TupleType.RECORD ->  {
-                                val elementNames = mutableSetOf<String>()
-                                variant.namedElements.forEach {
-                                    // Check that the element name hasn't already been used.
-                                    when {
-                                        !elementNames.contains(it.name) -> elementNames.add(it.name)
-                                        else -> semanticError(it.metas, SemanticErrorContext.DuplicateRecordElementName(it.name))
-                                    }
-                                }
-                            }
+                            TupleType.RECORD ->  collectRecordNames(variant)
                         }
                     }
                 }
@@ -90,6 +79,17 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
                 DataType.Symbol -> {
                     /* do nothing, these are always valid */
                 }
+            }
+        }
+    }
+
+    private fun collectRecordNames(variant: DataType.Tuple) {
+        val elementNames = mutableSetOf<String>()
+        variant.namedElements.forEach {
+            // Check that the element name hasn't already been used.
+            when {
+                !elementNames.contains(it.name) -> elementNames.add(it.name)
+                else -> semanticError(it.metas, SemanticErrorContext.DuplicateRecordElementName(it.name))
             }
         }
     }

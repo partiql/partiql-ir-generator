@@ -15,6 +15,9 @@
 
 package org.partiql.pig.domain.model
 
+import com.amazon.ionelement.api.IonElement
+import com.amazon.ionelement.api.ionSexpOf
+import com.amazon.ionelement.api.ionSymbol
 import org.partiql.pig.domain.PigException
 
 data class TypeUniverse(val statements: List<Statement>) {
@@ -49,5 +52,16 @@ data class TypeUniverse(val statements: List<Statement>) {
 
         return domains.values.toList()
     }
+
+    /**
+     * Generates an s-expression representation of this [TypeUniverse].
+     *
+     * This primarily aids in unit testing and is not intended to have an identical structure to PIG-s type universe
+     * syntax.
+     */
+    fun toIonElement(): IonElement =
+        ionSexpOf(
+            ionSymbol("universe"),
+            *statements.map { it.toIonElement() }.toTypedArray())
 }
 

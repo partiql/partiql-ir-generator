@@ -15,8 +15,11 @@
 
 package org.partiql.pig.domain.model
 
+import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.emptyMetaContainer
+import com.amazon.ionelement.api.ionSexpOf
+import com.amazon.ionelement.api.ionSymbol
 
 
 /**
@@ -56,18 +59,13 @@ sealed class DataType(val metas: MetaContainer) {
      */
     abstract val tag: String
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is DataType) return false
-
-        if (tag != other.tag) return false
-
-        return true
-    }
-
-    override fun hashCode(): kotlin.Int {
-        return tag.hashCode()
-    }
+    /**
+     * Generates an s-expression representation of this [DataType].
+     *
+     * This primarily aids in unit testing and is not intended to have an identical structure to PIG-s type universe
+     * syntax.
+     */
+    abstract fun toIonElement(): IonElement
 
     /**
      * Represents an instance of the Ion DOM in the target language.
@@ -76,6 +74,7 @@ sealed class DataType(val metas: MetaContainer) {
         override val isPrimitive: Boolean get() = false
         override val isBuiltin: Boolean get() = true
         override val tag: String get() = "ion"
+        override fun toIonElement(): IonElement = ionSymbol("ion")
     }
 
     /**
@@ -86,6 +85,7 @@ sealed class DataType(val metas: MetaContainer) {
         override val isPrimitive: Boolean get() = true
         override val isBuiltin: Boolean get() = true
         override val tag: String get() = "int"
+        override fun toIonElement(): IonElement = ionSymbol("int")
     }
 
     /** Represents the equivalent of an Ion `symbol` in the target language. */
@@ -93,6 +93,8 @@ sealed class DataType(val metas: MetaContainer) {
         override val isPrimitive: Boolean get() = true
         override val isBuiltin: Boolean get() = true
         override val tag: String get() = "symbol"
+        override fun toIonElement(): IonElement = ionSymbol("symbol")
+
     }
 
     /**
@@ -107,6 +109,7 @@ sealed class DataType(val metas: MetaContainer) {
         val namedElements: List<NamedElement>,
         metas: MetaContainer
     ) : DataType(metas) {
+
         fun computeArity(): IntRange {
             // Calculate the arity range for this product... Due to type domain error checking,
             // we can make the following assumptions:
@@ -121,27 +124,12 @@ sealed class DataType(val metas: MetaContainer) {
             }
         }
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (javaClass != other?.javaClass) return false
-            if (!super.equals(other)) return false
-
-            other as Tuple
-
-            if (tag != other.tag) return false
-            if (tupleType != other.tupleType) return false
-            if (namedElements != other.namedElements) return false
-
-            return true
-        }
-
-        override fun hashCode(): kotlin.Int {
-            var result = super.hashCode()
-            result = 31 * result + tag.hashCode()
-            result = 31 * result + tupleType.hashCode()
-            result = 31 * result + namedElements.hashCode()
-            return result
-        }
+        override fun toIonElement(): IonElement =
+            ionSexpOf(
+                ionSymbol(tupleType.toString().toLowerCase()),
+                ionSymbol(tag),
+                *namedElements.map { it.toIonElement() }.toTypedArray()
+            )
     }
 
     /** A sum type consisting of a [tag] and one or more [variants]. */
@@ -151,22 +139,12 @@ sealed class DataType(val metas: MetaContainer) {
         metas: MetaContainer
     ) : DataType(metas) {
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is Sum) return false
-            if (!super.equals(other)) return false
 
-            if (tag != other.tag) return false
-            if (variants != other.variants) return false
+        override fun toIonElement(): IonElement =
+            ionSexpOf(
+                ionSymbol("sum"),
+                ionSymbol(tag),
+                *variants.map { it.toIonElement() }.toTypedArray())
 
-            return true
-        }
-
-        override fun hashCode(): kotlin.Int {
-            var result = super.hashCode()
-            result = 31 * result + tag.hashCode()
-            result = 31 * result + variants.hashCode()
-            return result
-        }
     }
 }

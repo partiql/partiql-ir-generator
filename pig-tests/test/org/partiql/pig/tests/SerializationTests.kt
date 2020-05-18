@@ -160,6 +160,14 @@ class SerializationTests {
             TestCase(
                 test_domain.build { recursive_pair(123, recursive_pair(456)) },
                 "(recursive_pair 123 (recursive_pair 456 null))"
+            ),
+            TestCase(
+                test_domain.build { domain_level_record(42, "fourty-three") },
+                "(domain_level_record (some_field 42) (another_field 'fourty-three'))"
+            ),
+            TestCase(
+                test_domain.build { domain_level_record(42, "fourty-three", 44) },
+                "(domain_level_record (some_field 42) (another_field 'fourty-three') (optional_field 44))"
             )
         )
     }

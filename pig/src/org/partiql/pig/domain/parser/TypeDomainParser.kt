@@ -82,7 +82,8 @@ private fun parseTypeDomain(domainName: String, sexp: IonElementContainer): Type
 
 private fun parseDomainLevelStatement(tlvs: IonElementContainer): DataType {
     return when (tlvs.tag) {
-        "product" -> parseDomainProduct(tlvs)
+        "product" -> parseProductBody(tlvs.tail, tlvs.metas)
+        "record" -> parseRecordBody(tlvs.tail, tlvs.metas)
         "sum" -> parseSum(tlvs)
         else -> parseError(tlvs.head, ParserErrorContext.InvalidDomainLevelTag(tlvs.tag))
     }
@@ -91,17 +92,11 @@ private fun parseDomainLevelStatement(tlvs: IonElementContainer): DataType {
 private fun parseTypeRefs(values: List<IonElement>): List<TypeRef> =
     values.map { parseSingleTypeRef(it) }
 
-private fun parseDomainProduct(sexp: IonElementContainer): DataType.Tuple {
-    val args = sexp.tail // Skip tag
-
-    return parseTupleBody(args, sexp.metas)
-}
-
-private fun parseTupleBody(
+// Parses a sum-variant product or record (depending on the syntax used)
+private fun parseVariant(
     bodyArguments: List<IonElement>,
     metas: MetaContainer
 ): DataType.Tuple {
-    val typeName = bodyArguments.head.symbolValue
     val elements = bodyArguments.tail
 
     // If there are no elements, definitely not a record.
@@ -123,19 +118,29 @@ private fun parseTupleBody(
 
     return when {
         isRecord -> {
-            val namedElements = parseNamedElements(bodyArguments.tail)
-            DataType.Tuple(typeName, TupleType.RECORD, namedElements, metas)
+            parseRecordBody(bodyArguments, metas)
         } else -> {
-            val types = parseTypeRefs(bodyArguments.tail)
-
-            // Synthesize names for the un-named elements here...
-            val namedElements = types.mapIndexed { i, t ->
-                NamedElement("${t.typeName}$i", t, t.metas)
-            }
-
-            DataType.Tuple(typeName, TupleType.PRODUCT, namedElements, metas)
+            parseProductBody(bodyArguments, metas)
         }
     }
+}
+
+private fun parseProductBody(bodyArguments: List<IonElement>, metas: MetaContainer): DataType.Tuple {
+    val typeName = bodyArguments.head.symbolValue
+    val types = parseTypeRefs(bodyArguments.tail)
+
+    // Synthesize names for the un-named elements here...
+    val namedElements = types.mapIndexed { i, t ->
+        NamedElement("${t.typeName}$i", t, t.metas)
+    }
+
+    return DataType.Tuple(typeName, TupleType.PRODUCT, namedElements, metas)
+}
+
+private fun parseRecordBody(bodyArguments: List<IonElement>, metas: MetaContainer): DataType.Tuple {
+    val typeName = bodyArguments.head.symbolValue
+    val namedElements = parseNamedElements(bodyArguments.tail)
+    return DataType.Tuple(typeName, TupleType.RECORD, namedElements, metas)
 }
 
 fun parseNamedElements(elementSexps: List<IonElement>): List<NamedElement> =
@@ -151,8 +156,6 @@ fun parseNamedElements(elementSexps: List<IonElement>): List<NamedElement> =
         }
         .toList()
 
-
-
 private fun parseSum(sexp: IonElementContainer): DataType.Sum {
     val args = sexp.tail // Skip tag
     val typeName = args.head.symbolValue
@@ -165,7 +168,7 @@ private fun parseSum(sexp: IonElementContainer): DataType.Sum {
 }
 
 private fun parseSumVariant(sexp: IonElementContainer): DataType.Tuple {
-    return parseTupleBody(sexp, sexp.metas)
+    return parseVariant(sexp, sexp.metas)
 }
 
 private fun parseSingleTypeRef(typeRefValue: IonElement): TypeRef {
