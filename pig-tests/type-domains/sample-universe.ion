@@ -61,6 +61,10 @@
             (another_field symbol)
             (optional_field (? int)))
 
+        (product product_with_record int domain_level_record)
+        (sum sum_with_record
+            (variant_with_record int domain_level_record))
+
         (sum entity
             // Slugs are not uniquely identified.
             (slug)

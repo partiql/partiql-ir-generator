@@ -473,6 +473,27 @@ class test_domain private constructor() {
                 metas = metas)
         
         
+        fun product_with_record(
+            int0: Long,
+            domain_level_record1: domain_level_record,
+            metas: MetaContainer = emptyMetaContainer()
+        ): product_with_record =
+            test_domain.product_with_record(
+                int0 = int0.asPrimitive(),
+                domain_level_record1 = domain_level_record1,
+                metas = metas)
+        
+        fun product_with_record_(
+            int0: LongPrimitive,
+            domain_level_record1: domain_level_record,
+            metas: MetaContainer = emptyMetaContainer()
+        ): product_with_record =
+            test_domain.product_with_record(
+                int0 = int0,
+                domain_level_record1 = domain_level_record1,
+                metas = metas)
+        
+        
         fun entity_pair(
             entity0: entity,
             entity1: entity,
@@ -496,6 +517,28 @@ class test_domain private constructor() {
             metas: MetaContainer = emptyMetaContainer()
         ): answer =
             answer.yes(
+                metas = metas)
+        
+        
+        // Variants for Sum: sum_with_record 
+        fun variant_with_record(
+            int0: Long,
+            domain_level_record1: domain_level_record,
+            metas: MetaContainer = emptyMetaContainer()
+        ): sum_with_record =
+            sum_with_record.variant_with_record(
+                int0 = int0.asPrimitive(),
+                domain_level_record1 = domain_level_record1,
+                metas = metas)
+        
+        fun variant_with_record_(
+            int0: LongPrimitive,
+            domain_level_record1: domain_level_record,
+            metas: MetaContainer = emptyMetaContainer()
+        ): sum_with_record =
+            sum_with_record.variant_with_record(
+                int0 = int0,
+                domain_level_record1 = domain_level_record1,
                 metas = metas)
         
         
@@ -1457,6 +1500,47 @@ class test_domain private constructor() {
         override fun hashCode(): Int = myHashCode
     }
     
+    class product_with_record(
+        val int0: LongPrimitive,
+        val domain_level_record1: domain_level_record,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): test_domain_node() {
+    
+        override fun withMeta(key: String, value: Any): product_with_record =
+            product_with_record(
+                int0 = int0,
+                domain_level_record1 = domain_level_record1,
+                metas = metas + metaContainerOf(key to value))
+    
+        override fun toIonElement(): IonElement {
+            val elements = ionSexpOf(
+                ionSymbol("product_with_record"),
+                int0.toIonElement(),
+                domain_level_record1.toIonElement(),
+                metas = metas)
+            return elements
+        }
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != product_with_record::class.java) return false
+    
+            other as product_with_record
+            if (int0 != other.int0) return false
+            if (domain_level_record1 != other.domain_level_record1) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            var hc = int0.hashCode()
+            hc = 31 * hc + domain_level_record1.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
     class entity_pair(
         val entity0: entity,
         val entity1: entity,
@@ -1559,6 +1643,51 @@ class test_domain private constructor() {
     
     }
     
+    sealed class sum_with_record : test_domain_node() {
+    
+        class variant_with_record(
+            val int0: LongPrimitive,
+            val domain_level_record1: domain_level_record,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): sum_with_record() {
+        
+            override fun withMeta(key: String, value: Any): variant_with_record =
+                variant_with_record(
+                    int0 = int0,
+                    domain_level_record1 = domain_level_record1,
+                    metas = metas + metaContainerOf(key to value))
+        
+            override fun toIonElement(): IonElement {
+                val elements = ionSexpOf(
+                    ionSymbol("variant_with_record"),
+                    int0.toIonElement(),
+                    domain_level_record1.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != variant_with_record::class.java) return false
+        
+                other as variant_with_record
+                if (int0 != other.int0) return false
+                if (domain_level_record1 != other.domain_level_record1) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = int0.hashCode()
+                hc = 31 * hc + domain_level_record1.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+    }
+    
     sealed class entity : test_domain_node() {
     
         class slug(
@@ -1584,7 +1713,7 @@ class test_domain private constructor() {
                 return true
             }
         
-            override fun hashCode(): Int = 2000
+            override fun hashCode(): Int = 3000
         }
     
         class android(
@@ -1885,6 +2014,15 @@ class test_domain private constructor() {
             
                     domain_level_record(some_field, another_field, optional_field, metas = sexp.metas)
                 }
+                "product_with_record" -> {
+                    sexp.requireArityOrMalformed(IntRange(2, 2))
+                    val int0 = sexp.getRequired(0).toLongPrimitive()
+                    val domain_level_record1 = sexp.getRequired(1).transformExpect<domain_level_record>()
+                    product_with_record(
+                        int0,
+                        domain_level_record1,
+                        metas = sexp.metas)
+                }
                 "entity_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
                     val entity0 = sexp.getRequired(0).transformExpect<entity>()
@@ -1905,6 +2043,18 @@ class test_domain private constructor() {
                 "yes" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
                     answer.yes(
+                        metas = sexp.metas)
+                }
+                //////////////////////////////////////
+                // Variants for Sum Type 'sum_with_record'
+                //////////////////////////////////////
+                "variant_with_record" -> {
+                    sexp.requireArityOrMalformed(IntRange(2, 2))
+                    val int0 = sexp.getRequired(0).toLongPrimitive()
+                    val domain_level_record1 = sexp.getRequired(1).transformExpect<domain_level_record>()
+                    sum_with_record.variant_with_record(
+                        int0,
+                        domain_level_record1,
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
