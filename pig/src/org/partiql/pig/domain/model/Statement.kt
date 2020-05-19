@@ -15,7 +15,6 @@
 
 package org.partiql.pig.domain.model
 
-import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.emptyMetaContainer
 import com.amazon.ionelement.api.ionSexpOf
@@ -25,17 +24,7 @@ import com.amazon.ionelement.api.locationToString
 
 
 /** Base class for top level statements of a type universe definition. */ 
-sealed class Statement(
-    val metas: MetaContainer
-) {
-    /**
-     * Generates an s-expression representation of this [Statement].
-     *
-     * This primarily aids in unit testing and is not intended to have an identical structure to PIG-s type universe
-     * syntax.
-     */
-    abstract fun toIonElement(): IonElement
-}
+sealed class Statement(val metas: MetaContainer)
 
 /** Represents a fully defined type domain. */
 class TypeDomain(
@@ -45,12 +34,6 @@ class TypeDomain(
     val userTypes: List<DataType>,
     metas: MetaContainer = emptyMetaContainer()
 ): Statement(metas) {
-
-    override fun toIonElement() =
-        ionSexpOf(
-            ionSymbol("domain"),
-            ionSymbol(name),
-            *userTypes.map { it.toIonElement() }.toTypedArray())
 
     /** All data types. (User types + primitives). */
     val types: List<DataType> = listOf(DataType.Int, DataType.Symbol, DataType.Ion) + userTypes
@@ -78,20 +61,6 @@ class PermutedDomain(
     val permutedSums: List<PermutedSum>,
     metas: MetaContainer
 ) : Statement(metas) {
-
-    override fun toIonElement(): IonElement =
-        ionSexpOf(
-            ionSymbol("permute_domain"),
-            ionSymbol(permutesDomain),
-            ionSexpOf(
-                ionSymbol("exclude"),
-                *excludedTypes.map { ionSymbol(it) }.toTypedArray()),
-            ionSexpOf(
-                ionSymbol("include"),
-                *includedTypes.map { it.toIonElement() }.toTypedArray()),
-            ionSexpOf(
-                ionSymbol("with"),
-                *permutedSums.map { it.toIonElement() }.toTypedArray()))
 
     /**
      * Given a map of concrete type domains keyed by name, generates a new concrete type domain with the deltas
@@ -167,30 +136,11 @@ class PermutedDomain(
     }
 }
 
+
 /** Represents differences to a sum in the domain being permuted. */
 class PermutedSum(
     val tag: String,
     val removedVariants: List<String>,
     val addedVariants: List<DataType.Tuple>,
     val metas: MetaContainer
-) {
-
-    /**
-     * Generates an s-expression representation of this [PermutedSum].
-     *
-     * This primarily aids in unit testing and is not intended to have an identical structure to PIG-s type universe
-     * syntax.
-     */
-    fun toIonElement() =
-        ionSexpOf(
-            ionSymbol("permuted_sum"),
-            ionSymbol(tag),
-            ionSexpOf(
-                ionSymbol("remove"),
-                *removedVariants.map { ionSymbol(it) }.toTypedArray()),
-            ionSexpOf(
-                ionSymbol("include"),
-                *addedVariants.map { it.toIonElement() }.toTypedArray()))
-}
-
-
+)

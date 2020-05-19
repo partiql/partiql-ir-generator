@@ -15,11 +15,8 @@
 
 package org.partiql.pig.domain.model
 
-import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.emptyMetaContainer
-import com.amazon.ionelement.api.ionSexpOf
-import com.amazon.ionelement.api.ionSymbol
 
 
 /**
@@ -60,21 +57,12 @@ sealed class DataType(val metas: MetaContainer) {
     abstract val tag: String
 
     /**
-     * Generates an s-expression representation of this [DataType].
-     *
-     * This primarily aids in unit testing and is not intended to have an identical structure to PIG-s type universe
-     * syntax.
-     */
-    abstract fun toIonElement(): IonElement
-
-    /**
      * Represents an instance of the Ion DOM in the target language.
      */
     object Ion : DataType(emptyMetaContainer()) {
         override val isPrimitive: Boolean get() = false
         override val isBuiltin: Boolean get() = true
         override val tag: String get() = "ion"
-        override fun toIonElement(): IonElement = ionSymbol("ion")
     }
 
     /**
@@ -85,7 +73,6 @@ sealed class DataType(val metas: MetaContainer) {
         override val isPrimitive: Boolean get() = true
         override val isBuiltin: Boolean get() = true
         override val tag: String get() = "int"
-        override fun toIonElement(): IonElement = ionSymbol("int")
     }
 
     /** Represents the equivalent of an Ion `symbol` in the target language. */
@@ -93,8 +80,6 @@ sealed class DataType(val metas: MetaContainer) {
         override val isPrimitive: Boolean get() = true
         override val isBuiltin: Boolean get() = true
         override val tag: String get() = "symbol"
-        override fun toIonElement(): IonElement = ionSymbol("symbol")
-
     }
 
     /**
@@ -123,13 +108,6 @@ sealed class DataType(val metas: MetaContainer) {
                 }
             }
         }
-
-        override fun toIonElement(): IonElement =
-            ionSexpOf(
-                ionSymbol(tupleType.toString().toLowerCase()),
-                ionSymbol(tag),
-                *namedElements.map { it.toIonElement() }.toTypedArray()
-            )
     }
 
     /** A sum type consisting of a [tag] and one or more [variants]. */
@@ -137,14 +115,6 @@ sealed class DataType(val metas: MetaContainer) {
         override val tag: String,
         val variants: List<Tuple>,
         metas: MetaContainer
-    ) : DataType(metas) {
+    ) : DataType(metas)
 
-
-        override fun toIonElement(): IonElement =
-            ionSexpOf(
-                ionSymbol("sum"),
-                ionSymbol(tag),
-                *variants.map { it.toIonElement() }.toTypedArray())
-
-    }
 }

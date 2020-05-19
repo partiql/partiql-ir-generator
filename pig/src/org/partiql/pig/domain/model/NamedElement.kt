@@ -30,7 +30,7 @@ class NamedElement(val name: String, val typeReference: TypeRef, val metas: Meta
     /**
      * Generates an s-expression representation of this [NamedElement].
      *
-     * This primarily aids in unit testing and is not intended to have an identical structure to PIG-s type universe
+     * This primarily aids in unit testing and is not intended to have an identical structure to PIG's type universe
      * syntax.
      */
     fun toIonElement() =

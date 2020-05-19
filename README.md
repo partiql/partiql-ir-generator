@@ -249,7 +249,7 @@ product_body ::= symbol <element_definition>...
 
 // Record
 record_definition ::= '(' 'record' <record_body> ')'
-record_body ::= symbol ('(' symbol <field_definition> ')')
+record_body ::= symbol ('(' symbol <field_definition>... ')')
 field_definition ::= '(' symbol <type_ref> ')'
 
 // Sum
@@ -345,13 +345,13 @@ These constraints exist to reduce the complexity of the generated code and its u
 ##### Named Elements
 
 There are two types of records.  Record data types and record sum variants.  Records are similar to products however
-their fields are explicitly named and their s-expression representation is different. 
+their fields are explicitly and uniquely named and they have a different s-expression representation. 
 
 Records are most useful when more than ~4 elements are needed and when some number of them are optional (as 
 is the case with the PartiQL AST's `select` node).
 
 The generated `IonElement` transformer for a record allows the named elements of a record to appear in any order, but 
-will always renders them in the same order as specified in the product or variant definition. Furthermore, instead of 
+will always render them in the same order as specified in the product or variant definition. Furthermore, instead of 
 using Ion `null` values to indicate that an element has not been specified, unspecified elements are simply not 
 rendered in the `IonElement` representation. 
 
@@ -369,15 +369,22 @@ do not accept `vararg` arguments which means that **TODO: chose one of the follo
 An example of a domain-level record:
 
 ```
-(define demo_domauin 
+(define demo_domain 
     (domain
         ...
-        (record programmer
+        (record mathematician
             (first_name symbol)
             (last_name symbol)
             (age int)
-            (lines_of_code_written int)
+            (games_of_life_conceived int)
         ...)))
+
+// Example s-expression representation:
+(programmer
+    (first_name John)
+    (last_name Conway)
+    (age 82)
+    (games_of_life_conceived 1))
 ```
 
 An example of a sum variant record:    
