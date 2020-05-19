@@ -139,6 +139,9 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
     }
 
     private fun checkRecordForErrors(r: DataType.Tuple) {
+        if(r.namedElements.none()) {
+            semanticError(r.metas, SemanticErrorContext.EmptyRecord)
+        }
         r.namedElements.forEach {
             checkTypeRef(it.typeReference)
         }

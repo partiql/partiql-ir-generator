@@ -26,7 +26,7 @@ import org.partiql.pig.domain.parser.ParserErrorContext
 import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.errors.PigError
 
-class ParserErrorsTest {
+class TypeDomainParserErrorsTest {
 
     // TODO: aren't there more permute_domain related errors?
 
