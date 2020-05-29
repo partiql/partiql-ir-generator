@@ -15,26 +15,23 @@
 
 package org.partiql.pig.domain.model
 
+import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
+import com.amazon.ionelement.api.ionInt
+import com.amazon.ionelement.api.ionSexpOf
+import com.amazon.ionelement.api.ionSymbol
 
 class TypeRef(val typeName: String, val arity: Arity, val metas: MetaContainer) {
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is TypeRef) return false
-
-        if (typeName != other.typeName) return false
-        if (arity != other.arity) return false
-        // Note [metas] intentionally not included here!
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = typeName.hashCode()
-        result = 31 * result + arity.hashCode()
-        // Note [metas] intentionally not included here!
-
-        return result
-    }
+    /**
+     * Generates an s-expression representation of this [TypeRef].
+     *
+     * This primarily aids in unit testing and is not intended to have an identical structure to PIG's type universe
+     * syntax.
+     */
+    fun toIonElement(): IonElement =
+        when(arity) {
+            Arity.Required -> ionSymbol(typeName)
+            Arity.Optional -> ionSexpOf(ionSymbol("?"), ionSymbol(typeName))
+            is Arity.Variadic -> ionSexpOf(ionSymbol("*"), ionSymbol(typeName), ionInt(arity.minimumArity.toLong()))
+        }
 }

@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domainhence
+package org.partiql.pig.domain
 
 import com.amazon.ion.system.IonReaderBuilder
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -24,7 +24,7 @@ import org.partiql.pig.domain.model.DataType
 import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.domain.parser.parseTypeUniverse
 
-class StatementTests {
+class PermuteDomainTests {
 
     /**
      * Runs a simple type universe that uses through all processing steps and verifies the result.

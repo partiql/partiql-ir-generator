@@ -26,7 +26,7 @@ import org.junit.jupiter.api.assertThrows
 
 class  IonElementTransformerBaseTests {
 
-    abstract class DummyDomainNode() : DomainNode
+    abstract class DummyDomainNode : DomainNode
 
     data class CorrectDomainNode(val someString: String, override val metas: MetaContainer = emptyMetaContainer()): DummyDomainNode() {
         override fun withMeta(key: String, value: Any): DomainNode {

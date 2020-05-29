@@ -59,6 +59,9 @@ sealed class SemanticErrorContext(val msgFormatter: () -> String): ErrorContext 
     object OptionalIonTypeElement
         : SemanticErrorContext({ "A product may not have optional Ion type field" })
 
+    object EmptyRecord
+        : SemanticErrorContext({ "Records must have at least one field" })
+
     data class CannotRemoveBuiltinType(val typeName: String)
         : SemanticErrorContext({ "Cannot remove built-in type '$typeName'" })
 

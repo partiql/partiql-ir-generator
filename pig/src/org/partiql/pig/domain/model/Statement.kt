@@ -17,14 +17,14 @@ package org.partiql.pig.domain.model
 
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.emptyMetaContainer
+import com.amazon.ionelement.api.ionSexpOf
+import com.amazon.ionelement.api.ionSymbol
 import com.amazon.ionelement.api.location
 import com.amazon.ionelement.api.locationToString
 
 
 /** Base class for top level statements of a type universe definition. */ 
-sealed class Statement(
-    val metas: MetaContainer
-)
+sealed class Statement(val metas: MetaContainer)
 
 /** Represents a fully defined type domain. */
 class TypeDomain(
@@ -34,24 +34,6 @@ class TypeDomain(
     val userTypes: List<DataType>,
     metas: MetaContainer = emptyMetaContainer()
 ): Statement(metas) {
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is TypeDomain) return false
-
-        if (userTypes != other.userTypes) return false
-        if (types != other.types) return false
-        // Note [metas] intentionally not included here!
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + userTypes.hashCode()
-        result = 31 * result + types.hashCode()
-        return result
-    }
 
     /** All data types. (User types + primitives). */
     val types: List<DataType> = listOf(DataType.Int, DataType.Symbol, DataType.Ion) + userTypes
@@ -79,28 +61,6 @@ class PermutedDomain(
     val permutedSums: List<PermutedSum>,
     metas: MetaContainer
 ) : Statement(metas) {
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is PermutedDomain) return false
-
-        if (permutesDomain != other.permutesDomain) return false
-        if (excludedTypes != other.excludedTypes) return false
-        if (includedTypes != other.includedTypes) return false
-        if (permutedSums != other.permutedSums) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + permutesDomain.hashCode()
-        result = 31 * result + excludedTypes.hashCode()
-        result = 31 * result + includedTypes.hashCode()
-        result = 31 * result + permutedSums.hashCode()
-        // Note [metas] intentionally not included here!
-        return result
-    }
 
     /**
      * Given a map of concrete type domains keyed by name, generates a new concrete type domain with the deltas
@@ -176,33 +136,11 @@ class PermutedDomain(
     }
 }
 
+
 /** Represents differences to a sum in the domain being permuted. */
 class PermutedSum(
     val tag: String,
     val removedVariants: List<String>,
     val addedVariants: List<DataType.Tuple>,
     val metas: MetaContainer
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is PermutedSum) return false
-
-        if (tag != other.tag) return false
-        if (removedVariants != other.removedVariants) return false
-        if (addedVariants != other.addedVariants) return false
-        // Note [metas] intentionally not included here!
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = tag.hashCode()
-        result = 31 * result + removedVariants.hashCode()
-        result = 31 * result + addedVariants.hashCode()
-        // Note [metas] intentionally not included here!
-
-        return result
-    }
-}
-
-
+)

@@ -26,14 +26,17 @@ import org.partiql.pig.domain.parser.ParserErrorContext
 import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.errors.PigError
 
-class ParserErrorsTest {
+class TypeDomainParserErrorsTest {
 
     // TODO: aren't there more permute_domain related errors?
 
     @ParameterizedTest
     @MethodSource("parametersForErrorsTest")
     fun errorsTest(tc: TestCase) {
-        val ex = assertThrows<PigException> { parseTypeUniverse(tc.typeUniverseText) }
+        val ex = assertThrows<PigException> {
+            val oops = parseTypeUniverse(tc.typeUniverseText)
+            println("this was erroneously parsed: ${oops.toIonElement()}")
+        }
         assertEquals(tc.expectedError, ex.error)
 
         // This is mainly to improve code coverage but also ensures the
@@ -88,12 +91,12 @@ class ParserErrorsTest {
                 makeErr(1, 34, ParserErrorContext.InvalidArityForTag(IntRange(1, 1), "?", 2))),
 
             TestCase(
-                "(define huh (domain (product foo (name_field_with_too_few_elements))))",
-                makeErr(1, 34, ParserErrorContext.InvalidArity(2, 1))),
+                "(define huh (domain (record foo (name_field_with_too_few_elements))))",
+                makeErr(1, 33, ParserErrorContext.InvalidArity(2, 1))),
 
             TestCase(
-                "(define huh (domain (product foo (name_field_with_too many elements))))",
-                makeErr(1, 34, ParserErrorContext.InvalidArity(2, 3))),
+                "(define huh (domain (record foo (name_field_with_too many elements))))",
+                makeErr(1, 33, ParserErrorContext.InvalidArity(2, 3))),
 
             TestCase( // Covers first place in parser this can be thrown
                 "(define huh (domain (product huh 42)))",

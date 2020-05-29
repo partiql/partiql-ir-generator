@@ -23,7 +23,7 @@ import org.partiql.pig.domain.model.SemanticErrorContext
 import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.errors.PigError
 
-class SemanticErrorTests {
+class TypeDomainSemanticCheckerTests {
 
     @ParameterizedTest
     @MethodSource("parametersForMiscErrorsTest")
@@ -159,8 +159,16 @@ class SemanticErrorTests {
             TestCase("(define some_domain (domain (product some_product) (sum some_sum (some_product))))",
                      makeErr(1, 66, SemanticErrorContext.NameAlreadyUsed("some_product", "some_domain"))),
 
-            // Duplicate record element name within same record
+            // Duplicate record element name within same sum variant record
             TestCase("(define some_domain (domain (sum some_sum (a_variant (some_field int) (some_field int)))))",
-                     makeErr(1, 71, SemanticErrorContext.DuplicateRecordElementName("some_field"))))
+                     makeErr(1, 71, SemanticErrorContext.DuplicateRecordElementName("some_field"))),
+
+            // Duplicate record element name within same record type
+            TestCase("(define some_domain (domain (record some_record (some_field int) (some_field int))))",
+                     makeErr(1, 66, SemanticErrorContext.DuplicateRecordElementName("some_field"))),
+
+            // Record with no fields
+            TestCase("(define some_domain (domain (record some_record)))",
+                     makeErr(1, 29, SemanticErrorContext.EmptyRecord)))
     }
 }
