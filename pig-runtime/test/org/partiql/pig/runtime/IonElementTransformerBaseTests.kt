@@ -18,7 +18,9 @@ package org.partiql.pig.runtime
 import com.amazon.ionelement.api.IonElectrolyteException
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
+import com.amazon.ionelement.api.SexpElement
 import com.amazon.ionelement.api.emptyMetaContainer
+import com.amazon.ionelement.api.ionSexpOf
 import com.amazon.ionelement.api.ionString
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -50,21 +52,21 @@ class  IonElementTransformerBaseTests {
     }
 
     class DummyIonElementTransformer : IonElementTransformerBase<DummyDomainNode>() {
-        override fun innerTransform(maybeSexp: IonElement): DummyDomainNode {
+        override fun innerTransform(sexp: SexpElement): DummyDomainNode {
             return CorrectDomainNode("foo")
         }
 
-        fun expectedDomainNode(): DomainNode = ionString("doesntmatter").transformExpect<CorrectDomainNode>()
+        fun expectedDomainNode(): DomainNode = ionString("doesntmatter").asAnyElement().transformExpect<CorrectDomainNode>()
 
         fun unexpectedDomainNode() {
             // Throws MalformedDomainDataException because [innerTransform] returns an instance of
             // [IncorrectDomainType].
-            ionString("doesntmatter").transformExpect<IncorrectDomainNode>()
+            ionString("doesntmatter").asAnyElement().transformExpect<IncorrectDomainNode>()
         }
     }
 
     class DummyIonElementTransformerThrowing : IonElementTransformerBase<DummyDomainNode>() {
-        override fun innerTransform(maybeSexp: IonElement): DummyDomainNode {
+        override fun innerTransform(sexp: SexpElement): DummyDomainNode {
             throw IonElectrolyteException(null, "oh_my_an_error")
         }
     }
@@ -85,7 +87,7 @@ class  IonElementTransformerBaseTests {
     @Test
     fun handlesIonElectrolyteException() {
         val xformer = DummyIonElementTransformerThrowing()
-        val ex = assertThrows<MalformedDomainDataException> { xformer.transform(ionString("doesntmatter")) }
+        val ex = assertThrows<MalformedDomainDataException> { xformer.transform(ionSexpOf()) }
 
         assertTrue(ex.cause is IonElectrolyteException)
         assertTrue(ex.message!!.contains("oh_my_an_error"))

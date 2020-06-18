@@ -16,7 +16,7 @@
 package org.partiql.pig.domain
 
 import com.amazon.ionelement.api.IonElectrolyteException
-import com.amazon.ion.IonType
+import com.amazon.ionelement.api.ElementType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.assertThrows
@@ -100,11 +100,11 @@ class TypeDomainParserErrorsTest {
 
             TestCase( // Covers first place in parser this can be thrown
                 "(define huh (domain (product huh 42)))",
-                makeErr(1, 34, ParserErrorContext.ExpectedSymbolOrSexp(IonType.INT))),
+                makeErr(1, 34, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT))),
 
             TestCase( // Covers second place in parser this can be thrown
                 "(define huh (domain (product huh int 42)))",
-                makeErr(1, 38, ParserErrorContext.ExpectedSymbolOrSexp(IonType.INT)))
+                makeErr(1, 38, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT)))
         )
     }
 }

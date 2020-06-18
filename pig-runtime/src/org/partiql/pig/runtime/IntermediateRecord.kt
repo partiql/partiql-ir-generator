@@ -15,10 +15,14 @@
 
 package org.partiql.pig.runtime
 
+import com.amazon.ionelement.api.AnyElement
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.IonLocation
+import com.amazon.ionelement.api.SexpElement
 import com.amazon.ionelement.api.location
 import com.amazon.ionelement.api.head
+import com.amazon.ionelement.api.tail
+
 /**
  * Contains an "intermediate" representation of a Pig record.
  *
@@ -33,7 +37,7 @@ class IntermediateRecord(
     /** The location of the record within the data being transformer. */
     private val location: IonLocation?,
     /** The fields and their values. */
-    fields: Map<String, IonElement>
+    fields: Map<String, AnyElement>
 ) {
     private val fieldMap = fields.toMutableMap()
 
@@ -41,14 +45,14 @@ class IntermediateRecord(
      * If a field of named [fieldName] exists in [fieldMap], removes it from [fieldMap] and passes its value to
      * [deserFunc] to perform deserialization.  Returns `null` if the field does not exist in [fieldMap].
      */
-    fun <T> processOptionalField(fieldName: String, deserFunc: (IonElement) -> T): T? =
+    fun <T> processOptionalField(fieldName: String, deserFunc: (AnyElement) -> T): T? =
         fieldMap.remove(fieldName)?.let { deserFunc(it) }
 
     /**
      * Same as [processOptionalField] but throws [MalformedDomainDataException] if the field does not exist
      * in [fieldMap].]
      */
-    fun <T> processRequiredField(fieldName: String, deserFunc: (IonElement) -> T): T =
+    fun <T> processRequiredField(fieldName: String, deserFunc: (AnyElement) -> T): T =
         processOptionalField(fieldName, deserFunc)
             ?: errMalformed(location, "Required field '${fieldName}' was not found within '$recordTagName' record")
 
@@ -67,7 +71,7 @@ class IntermediateRecord(
 /**
  * Does part of the work of deserializing records.
  *
- * Converts the receiver [IonElement], which must be an expression in the form of:
+ * Converts the receiver [AnyElement], which must be an expression in the form of:
  *
  * ```
  * '(' <recordTagName> [ '(' <fieldName> <fieldValue> ')' ]... ')'
@@ -75,12 +79,12 @@ class IntermediateRecord(
  *
  * To an instance of [IntermediateRecord].
  */
-fun IonElement.transformToIntermediateRecord(): IntermediateRecord {
-    val recordTagName = this.sexpValue.head.symbolValue
-    val recordFields = this.sexpValue.tail
+fun SexpElement.transformToIntermediateRecord(): IntermediateRecord {
+    val recordTagName = this.head.symbolValue
+    val recordFields = this.tail
 
-    val fieldMap = recordFields.map { field ->
-        val fieldSexp = field.sexpValue
+    val fieldMap = recordFields.map { field: AnyElement ->
+        val fieldSexp = field.asSexp()
         fieldSexp.requireArityOrMalformed(1)
         fieldSexp.head.symbolValue to fieldSexp.tail.head
     }.toMap()

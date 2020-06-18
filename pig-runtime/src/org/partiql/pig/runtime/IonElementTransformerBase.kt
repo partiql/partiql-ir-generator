@@ -15,24 +15,25 @@
 
 package org.partiql.pig.runtime
 
+import com.amazon.ionelement.api.AnyElement
 import com.amazon.ionelement.api.IonElectrolyteException
-import com.amazon.ionelement.api.IonElement
+import com.amazon.ionelement.api.SexpElement
 import com.amazon.ionelement.api.location
 
 abstract class IonElementTransformerBase<T: DomainNode> {
-    fun transform(maybeSexp: IonElement): T =
+    fun transform(maybeSexp: SexpElement): T =
         try {
             innerTransform(maybeSexp)
         } catch(ex: IonElectrolyteException) {
             throw MalformedDomainDataException(ex.location, ex.description, ex)
         }
 
-    protected inline fun <reified R: T> IonElement.transformExpect(): R {
-        val domainObject = innerTransform(this)
+    protected inline fun <reified R: T> AnyElement.transformExpect(): R {
+        val domainObject = innerTransform(this.asSexp())
         return (domainObject as? R) ?: errMalformed(
             this.metas.location,
             "Expected '${R::class.java}' but found '${domainObject.javaClass}'")
     }
 
-    protected abstract fun innerTransform(maybeSexp: IonElement): T
+    protected abstract fun innerTransform(sexp: SexpElement): T
 }

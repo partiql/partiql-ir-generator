@@ -19,7 +19,10 @@ class test_domain private constructor() {
         fun <T: test_domain_node> build(block: builder.() -> T) =
             builder.block()
     
-        fun transform(element: IonElement): test_domain_node =
+        fun transform(element: AnyElement): test_domain_node =
+            transform(element.asSexp())
+    
+        fun transform(element: SexpElement): test_domain_node =
             Transformer().transform(element)
     }
     
@@ -600,6 +603,7 @@ class test_domain private constructor() {
     abstract class test_domain_node : DomainNode {
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(key: String, value: Any): test_domain_node
+        abstract override fun toIonElement(): SexpElement
     }
     
     
@@ -618,7 +622,7 @@ class test_domain private constructor() {
                 int1 = int1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("int_pair"),
                 int0.toIonElement(),
@@ -659,7 +663,7 @@ class test_domain private constructor() {
                 symbol1 = symbol1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("symbol_pair"),
                 symbol0.toIonElement(),
@@ -700,7 +704,7 @@ class test_domain private constructor() {
                 ion1 = ion1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("ion_pair"),
                 ion0.toIonElement(),
@@ -741,7 +745,7 @@ class test_domain private constructor() {
                 symbol1 = symbol1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("int_symbol_pair"),
                 int0.toIonElement(),
@@ -782,7 +786,7 @@ class test_domain private constructor() {
                 int1 = int1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("symbol_int_pair"),
                 symbol0.toIonElement(),
@@ -823,7 +827,7 @@ class test_domain private constructor() {
                 int1 = int1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("ion_int_pair"),
                 ion0.toIonElement(),
@@ -864,7 +868,7 @@ class test_domain private constructor() {
                 ion1 = ion1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("ion_symbol_pair"),
                 ion0.toIonElement(),
@@ -905,7 +909,7 @@ class test_domain private constructor() {
                 int_pair1 = int_pair1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("int_pair_pair"),
                 int_pair0.toIonElement(),
@@ -946,7 +950,7 @@ class test_domain private constructor() {
                 symbol_pair1 = symbol_pair1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("symbol_pair_pair"),
                 symbol_pair0.toIonElement(),
@@ -987,7 +991,7 @@ class test_domain private constructor() {
                 ion_pair1 = ion_pair1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("ion_pair_pair"),
                 ion_pair0.toIonElement(),
@@ -1028,7 +1032,7 @@ class test_domain private constructor() {
                 recursive_pair1 = recursive_pair1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("recursive_pair"),
                 int0.toIonElement(),
@@ -1069,7 +1073,7 @@ class test_domain private constructor() {
                 answer1 = answer1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("answer_pair"),
                 answer0.toIonElement(),
@@ -1110,7 +1114,7 @@ class test_domain private constructor() {
                 int1 = int1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("answer_int_pair"),
                 answer0.toIonElement(),
@@ -1151,7 +1155,7 @@ class test_domain private constructor() {
                 answer1 = answer1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("int_answer_pair"),
                 int0.toIonElement(),
@@ -1192,7 +1196,7 @@ class test_domain private constructor() {
                 answer1 = answer1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("symbol_answer_pair"),
                 symbol0.toIonElement(),
@@ -1233,7 +1237,7 @@ class test_domain private constructor() {
                 symbol1 = symbol1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("answer_symbol_pair"),
                 answer0.toIonElement(),
@@ -1272,7 +1276,7 @@ class test_domain private constructor() {
                 int0 = int0,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("variadic_min_0"),
                 *int0.map { it.toIonElement() }.toTypedArray(),
@@ -1308,7 +1312,7 @@ class test_domain private constructor() {
                 int0 = int0,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("variadic_min_1"),
                 *int0.map { it.toIonElement() }.toTypedArray(),
@@ -1346,7 +1350,7 @@ class test_domain private constructor() {
                 int1 = int1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("element_variadic"),
                 symbol0.toIonElement(),
@@ -1385,7 +1389,7 @@ class test_domain private constructor() {
                 int0 = int0,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("optional_1"),
                 int0?.toIonElement() ?: ionNull(),
@@ -1423,7 +1427,7 @@ class test_domain private constructor() {
                 int1 = int1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("optional_2"),
                 int0?.toIonElement() ?: ionNull(),
@@ -1466,7 +1470,7 @@ class test_domain private constructor() {
                 optional_field = optional_field,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
     
             val elements = listOfNotNull(
                 ionSymbol("domain_level_record"),
@@ -1512,7 +1516,7 @@ class test_domain private constructor() {
                 domain_level_record1 = domain_level_record1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("product_with_record"),
                 int0.toIonElement(),
@@ -1553,7 +1557,7 @@ class test_domain private constructor() {
                 entity1 = entity1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("entity_pair"),
                 entity0.toIonElement(),
@@ -1597,7 +1601,7 @@ class test_domain private constructor() {
                 no(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("no"),
                     metas = metas)
@@ -1623,7 +1627,7 @@ class test_domain private constructor() {
                 yes(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("yes"),
                     metas = metas)
@@ -1657,7 +1661,7 @@ class test_domain private constructor() {
                     domain_level_record1 = domain_level_record1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("variant_with_record"),
                     int0.toIonElement(),
@@ -1698,7 +1702,7 @@ class test_domain private constructor() {
                 slug(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("slug"),
                     metas = metas)
@@ -1726,7 +1730,7 @@ class test_domain private constructor() {
                     int0 = int0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("android"),
                     int0.toIonElement(),
@@ -1768,7 +1772,7 @@ class test_domain private constructor() {
                     parent = parent,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
         
                 val elements = listOfNotNull(
                     ionSymbol("human"),
@@ -1814,8 +1818,7 @@ class test_domain private constructor() {
     
     private class Transformer : IonElementTransformerBase<test_domain_node>() {
     
-        override fun innerTransform(maybeSexp: IonElement): test_domain_node {
-            val sexp = maybeSexp.sexpValue
+        override fun innerTransform(sexp: SexpElement): test_domain_node {
             return when(sexp.tag) {
                 //////////////////////////////////////
                 // Tuple Types
@@ -1966,14 +1969,14 @@ class test_domain private constructor() {
                 }
                 "variadic_min_0" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val int0 = sexp.drop(1).map { it.toLongPrimitive() }
+                    val int0 = sexp.values.drop(1).map { it.toLongPrimitive() }
                     variadic_min_0(
                         int0,
                         metas = sexp.metas)
                 }
                 "variadic_min_1" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val int0 = sexp.drop(1).map { it.toLongPrimitive() }
+                    val int0 = sexp.values.drop(1).map { it.toLongPrimitive() }
                     variadic_min_1(
                         int0,
                         metas = sexp.metas)
@@ -1981,7 +1984,7 @@ class test_domain private constructor() {
                 "element_variadic" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
                     val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val int1 = sexp.drop(2).map { it.toLongPrimitive() }
+                    val int1 = sexp.values.drop(2).map { it.toLongPrimitive() }
                     element_variadic(
                         symbol0,
                         int1,
@@ -2098,7 +2101,10 @@ class toy_lang private constructor() {
         fun <T: toy_lang_node> build(block: builder.() -> T) =
             builder.block()
     
-        fun transform(element: IonElement): toy_lang_node =
+        fun transform(element: AnyElement): toy_lang_node =
+            transform(element.asSexp())
+    
+        fun transform(element: SexpElement): toy_lang_node =
             Transformer().transform(element)
     }
     
@@ -2305,6 +2311,7 @@ class toy_lang private constructor() {
     abstract class toy_lang_node : DomainNode {
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(key: String, value: Any): toy_lang_node
+        abstract override fun toIonElement(): SexpElement
     }
     
     
@@ -2325,7 +2332,7 @@ class toy_lang private constructor() {
                     ion0 = ion0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("lit"),
                     ion0.toIonElement(),
@@ -2361,7 +2368,7 @@ class toy_lang private constructor() {
                     symbol0 = symbol0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("variable"),
                     symbol0.toIonElement(),
@@ -2397,7 +2404,7 @@ class toy_lang private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("not"),
                     expr0.toIonElement(),
@@ -2433,7 +2440,7 @@ class toy_lang private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("plus"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -2469,7 +2476,7 @@ class toy_lang private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("minus"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -2505,7 +2512,7 @@ class toy_lang private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("times"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -2541,7 +2548,7 @@ class toy_lang private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("divide"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -2577,7 +2584,7 @@ class toy_lang private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("modulo"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -2615,7 +2622,7 @@ class toy_lang private constructor() {
                     expr1 = expr1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("call"),
                     symbol0.toIonElement(),
@@ -2658,7 +2665,7 @@ class toy_lang private constructor() {
                     expr2 = expr2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("let"),
                     symbol0.toIonElement(),
@@ -2702,7 +2709,7 @@ class toy_lang private constructor() {
                     expr1 = expr1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("function"),
                     symbol0.toIonElement(),
@@ -2740,8 +2747,7 @@ class toy_lang private constructor() {
     
     private class Transformer : IonElementTransformerBase<toy_lang_node>() {
     
-        override fun innerTransform(maybeSexp: IonElement): toy_lang_node {
-            val sexp = maybeSexp.sexpValue
+        override fun innerTransform(sexp: SexpElement): toy_lang_node {
             return when(sexp.tag) {
                 //////////////////////////////////////
                 // Variants for Sum Type 'expr'
@@ -2769,35 +2775,35 @@ class toy_lang private constructor() {
                 }
                 "plus" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.plus(
                         expr0,
                         metas = sexp.metas)
                 }
                 "minus" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.minus(
                         expr0,
                         metas = sexp.metas)
                 }
                 "times" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.times(
                         expr0,
                         metas = sexp.metas)
                 }
                 "divide" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.divide(
                         expr0,
                         metas = sexp.metas)
                 }
                 "modulo" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.modulo(
                         expr0,
                         metas = sexp.metas)
@@ -2845,7 +2851,10 @@ class toy_lang_nameless private constructor() {
         fun <T: toy_lang_nameless_node> build(block: builder.() -> T) =
             builder.block()
     
-        fun transform(element: IonElement): toy_lang_nameless_node =
+        fun transform(element: AnyElement): toy_lang_nameless_node =
+            transform(element.asSexp())
+    
+        fun transform(element: SexpElement): toy_lang_nameless_node =
             Transformer().transform(element)
     }
     
@@ -3052,6 +3061,7 @@ class toy_lang_nameless private constructor() {
     abstract class toy_lang_nameless_node : DomainNode {
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(key: String, value: Any): toy_lang_nameless_node
+        abstract override fun toIonElement(): SexpElement
     }
     
     
@@ -3072,7 +3082,7 @@ class toy_lang_nameless private constructor() {
                     ion0 = ion0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("lit"),
                     ion0.toIonElement(),
@@ -3108,7 +3118,7 @@ class toy_lang_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("not"),
                     expr0.toIonElement(),
@@ -3144,7 +3154,7 @@ class toy_lang_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("plus"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -3180,7 +3190,7 @@ class toy_lang_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("minus"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -3216,7 +3226,7 @@ class toy_lang_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("times"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -3252,7 +3262,7 @@ class toy_lang_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("divide"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -3288,7 +3298,7 @@ class toy_lang_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("modulo"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -3326,7 +3336,7 @@ class toy_lang_nameless private constructor() {
                     expr1 = expr1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("call"),
                     symbol0.toIonElement(),
@@ -3367,7 +3377,7 @@ class toy_lang_nameless private constructor() {
                     expr1 = expr1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("function"),
                     symbol0.toIonElement(),
@@ -3406,7 +3416,7 @@ class toy_lang_nameless private constructor() {
                     int0 = int0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("variable"),
                     int0.toIonElement(),
@@ -3446,7 +3456,7 @@ class toy_lang_nameless private constructor() {
                     expr2 = expr2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("let"),
                     int0.toIonElement(),
@@ -3487,8 +3497,7 @@ class toy_lang_nameless private constructor() {
     
     private class Transformer : IonElementTransformerBase<toy_lang_nameless_node>() {
     
-        override fun innerTransform(maybeSexp: IonElement): toy_lang_nameless_node {
-            val sexp = maybeSexp.sexpValue
+        override fun innerTransform(sexp: SexpElement): toy_lang_nameless_node {
             return when(sexp.tag) {
                 //////////////////////////////////////
                 // Variants for Sum Type 'expr'
@@ -3509,35 +3518,35 @@ class toy_lang_nameless private constructor() {
                 }
                 "plus" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.plus(
                         expr0,
                         metas = sexp.metas)
                 }
                 "minus" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.minus(
                         expr0,
                         metas = sexp.metas)
                 }
                 "times" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.times(
                         expr0,
                         metas = sexp.metas)
                 }
                 "divide" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.divide(
                         expr0,
                         metas = sexp.metas)
                 }
                 "modulo" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.modulo(
                         expr0,
                         metas = sexp.metas)
@@ -3592,7 +3601,10 @@ class partiql_basic private constructor() {
         fun <T: partiql_basic_node> build(block: builder.() -> T) =
             builder.block()
     
-        fun transform(element: IonElement): partiql_basic_node =
+        fun transform(element: AnyElement): partiql_basic_node =
+            transform(element.asSexp())
+    
+        fun transform(element: SexpElement): partiql_basic_node =
             Transformer().transform(element)
     }
     
@@ -4276,6 +4288,7 @@ class partiql_basic private constructor() {
     abstract class partiql_basic_node : DomainNode {
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(key: String, value: Any): partiql_basic_node
+        abstract override fun toIonElement(): SexpElement
     }
     
     
@@ -4294,7 +4307,7 @@ class partiql_basic private constructor() {
                 expr1 = expr1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("expr_pair"),
                 expr0.toIonElement(),
@@ -4335,7 +4348,7 @@ class partiql_basic private constructor() {
                 symbol1 = symbol1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("group_by_item"),
                 expr0.toIonElement(),
@@ -4374,7 +4387,7 @@ class partiql_basic private constructor() {
                 group_by_item0 = group_by_item0,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("group_by_list"),
                 *group_by_item0.map { it.toIonElement() }.toTypedArray(),
@@ -4412,7 +4425,7 @@ class partiql_basic private constructor() {
                 symbol1 = symbol1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("group_by"),
                 group_by_list0.toIonElement(),
@@ -4458,7 +4471,7 @@ class partiql_basic private constructor() {
                     project_item0 = project_item0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("project_list"),
                     *project_item0.map { it.toIonElement() }.toTypedArray(),
@@ -4494,7 +4507,7 @@ class partiql_basic private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("project_value"),
                     expr0.toIonElement(),
@@ -4532,7 +4545,7 @@ class partiql_basic private constructor() {
                 project_all(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("project_all"),
                     metas = metas)
@@ -4562,7 +4575,7 @@ class partiql_basic private constructor() {
                     symbol1 = symbol1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("project_expr"),
                     expr0.toIonElement(),
@@ -4603,7 +4616,7 @@ class partiql_basic private constructor() {
                 inner(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("inner"),
                     metas = metas)
@@ -4629,7 +4642,7 @@ class partiql_basic private constructor() {
                 left(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("left"),
                     metas = metas)
@@ -4655,7 +4668,7 @@ class partiql_basic private constructor() {
                 right(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("right"),
                     metas = metas)
@@ -4681,7 +4694,7 @@ class partiql_basic private constructor() {
                 outer(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("outer"),
                     metas = metas)
@@ -4719,7 +4732,7 @@ class partiql_basic private constructor() {
                     symbol3 = symbol3,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("scan"),
                     expr0.toIonElement(),
@@ -4770,7 +4783,7 @@ class partiql_basic private constructor() {
                     expr3 = expr3,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("join"),
                     join_type0.toIonElement(),
@@ -4817,7 +4830,7 @@ class partiql_basic private constructor() {
                 case_sensitive(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("case_sensitive"),
                     metas = metas)
@@ -4843,7 +4856,7 @@ class partiql_basic private constructor() {
                 case_insensitive(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("case_insensitive"),
                     metas = metas)
@@ -4873,7 +4886,7 @@ class partiql_basic private constructor() {
                 unqualified(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("unqualified"),
                     metas = metas)
@@ -4899,7 +4912,7 @@ class partiql_basic private constructor() {
                 qualified(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("qualified"),
                     metas = metas)
@@ -4929,7 +4942,7 @@ class partiql_basic private constructor() {
                 all(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("all"),
                     metas = metas)
@@ -4955,7 +4968,7 @@ class partiql_basic private constructor() {
                 distinct(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("distinct"),
                     metas = metas)
@@ -4987,7 +5000,7 @@ class partiql_basic private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path_expr"),
                     expr0.toIonElement(),
@@ -5021,7 +5034,7 @@ class partiql_basic private constructor() {
                 path_wildcard(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path_wildcard"),
                     metas = metas)
@@ -5047,7 +5060,7 @@ class partiql_basic private constructor() {
                 path_unpivot(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path_unpivot"),
                     metas = metas)
@@ -5079,7 +5092,7 @@ class partiql_basic private constructor() {
                     ion0 = ion0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("lit"),
                     ion0.toIonElement(),
@@ -5119,7 +5132,7 @@ class partiql_basic private constructor() {
                     scope_qualifier2 = scope_qualifier2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("id"),
                     symbol0.toIonElement(),
@@ -5161,7 +5174,7 @@ class partiql_basic private constructor() {
                     int0 = int0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("parameter"),
                     int0.toIonElement(),
@@ -5197,7 +5210,7 @@ class partiql_basic private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("not"),
                     expr0.toIonElement(),
@@ -5233,7 +5246,7 @@ class partiql_basic private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("plus"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -5269,7 +5282,7 @@ class partiql_basic private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("minus"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -5305,7 +5318,7 @@ class partiql_basic private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("times"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -5341,7 +5354,7 @@ class partiql_basic private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("divide"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -5377,7 +5390,7 @@ class partiql_basic private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("modulo"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -5413,7 +5426,7 @@ class partiql_basic private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("concat"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -5453,7 +5466,7 @@ class partiql_basic private constructor() {
                     expr2 = expr2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("like"),
                     expr0.toIonElement(),
@@ -5499,7 +5512,7 @@ class partiql_basic private constructor() {
                     expr2 = expr2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("between"),
                     expr0.toIonElement(),
@@ -5543,7 +5556,7 @@ class partiql_basic private constructor() {
                     path_element1 = path_element1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path"),
                     expr0.toIonElement(),
@@ -5584,7 +5597,7 @@ class partiql_basic private constructor() {
                     expr1 = expr1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("call"),
                     symbol0.toIonElement(),
@@ -5627,7 +5640,7 @@ class partiql_basic private constructor() {
                     expr2 = expr2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("call_agg"),
                     symbol0.toIonElement(),
@@ -5671,7 +5684,7 @@ class partiql_basic private constructor() {
                     expr_pair1 = expr_pair1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("simple_case"),
                     expr0.toIonElement(),
@@ -5710,7 +5723,7 @@ class partiql_basic private constructor() {
                     expr_pair0 = expr_pair0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("searched_case"),
                     *expr_pair0.map { it.toIonElement() }.toTypedArray(),
@@ -5746,7 +5759,7 @@ class partiql_basic private constructor() {
                     expr_pair0 = expr_pair0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("struct"),
                     *expr_pair0.map { it.toIonElement() }.toTypedArray(),
@@ -5782,7 +5795,7 @@ class partiql_basic private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("bag"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -5818,7 +5831,7 @@ class partiql_basic private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("list"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -5866,7 +5879,7 @@ class partiql_basic private constructor() {
                     limit = limit,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
         
                 val elements = listOfNotNull(
                     ionSymbol("select"),
@@ -5921,8 +5934,7 @@ class partiql_basic private constructor() {
     
     private class Transformer : IonElementTransformerBase<partiql_basic_node>() {
     
-        override fun innerTransform(maybeSexp: IonElement): partiql_basic_node {
-            val sexp = maybeSexp.sexpValue
+        override fun innerTransform(sexp: SexpElement): partiql_basic_node {
             return when(sexp.tag) {
                 //////////////////////////////////////
                 // Tuple Types
@@ -5947,7 +5959,7 @@ class partiql_basic private constructor() {
                 }
                 "group_by_list" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val group_by_item0 = sexp.drop(1).map { it.transformExpect<group_by_item>() }
+                    val group_by_item0 = sexp.values.drop(1).map { it.transformExpect<group_by_item>() }
                     group_by_list(
                         group_by_item0,
                         metas = sexp.metas)
@@ -5966,7 +5978,7 @@ class partiql_basic private constructor() {
                 //////////////////////////////////////
                 "project_list" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val project_item0 = sexp.drop(1).map { it.transformExpect<project_item>() }
+                    val project_item0 = sexp.values.drop(1).map { it.transformExpect<project_item>() }
                     projection.project_list(
                         project_item0,
                         metas = sexp.metas)
@@ -6143,42 +6155,42 @@ class partiql_basic private constructor() {
                 }
                 "plus" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.plus(
                         expr0,
                         metas = sexp.metas)
                 }
                 "minus" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.minus(
                         expr0,
                         metas = sexp.metas)
                 }
                 "times" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.times(
                         expr0,
                         metas = sexp.metas)
                 }
                 "divide" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.divide(
                         expr0,
                         metas = sexp.metas)
                 }
                 "modulo" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.modulo(
                         expr0,
                         metas = sexp.metas)
                 }
                 "concat" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.concat(
                         expr0,
                         metas = sexp.metas)
@@ -6208,7 +6220,7 @@ class partiql_basic private constructor() {
                 "path" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
                     val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val path_element1 = sexp.drop(2).map { it.transformExpect<path_element>() }
+                    val path_element1 = sexp.values.drop(2).map { it.transformExpect<path_element>() }
                     expr.path(
                         expr0,
                         path_element1,
@@ -6217,7 +6229,7 @@ class partiql_basic private constructor() {
                 "call" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
                     val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val expr1 = sexp.drop(2).map { it.transformExpect<expr>() }
+                    val expr1 = sexp.values.drop(2).map { it.transformExpect<expr>() }
                     expr.call(
                         symbol0,
                         expr1,
@@ -6237,7 +6249,7 @@ class partiql_basic private constructor() {
                 "simple_case" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
                     val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr_pair1 = sexp.drop(2).map { it.transformExpect<expr_pair>() }
+                    val expr_pair1 = sexp.values.drop(2).map { it.transformExpect<expr_pair>() }
                     expr.simple_case(
                         expr0,
                         expr_pair1,
@@ -6245,28 +6257,28 @@ class partiql_basic private constructor() {
                 }
                 "searched_case" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr_pair0 = sexp.drop(1).map { it.transformExpect<expr_pair>() }
+                    val expr_pair0 = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
                     expr.searched_case(
                         expr_pair0,
                         metas = sexp.metas)
                 }
                 "struct" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr_pair0 = sexp.drop(1).map { it.transformExpect<expr_pair>() }
+                    val expr_pair0 = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
                     expr.struct(
                         expr_pair0,
                         metas = sexp.metas)
                 }
                 "bag" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.bag(
                         expr0,
                         metas = sexp.metas)
                 }
                 "list" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.list(
                         expr0,
                         metas = sexp.metas)
@@ -6300,7 +6312,10 @@ class partiql_algebra private constructor() {
         fun <T: partiql_algebra_node> build(block: builder.() -> T) =
             builder.block()
     
-        fun transform(element: IonElement): partiql_algebra_node =
+        fun transform(element: AnyElement): partiql_algebra_node =
+            transform(element.asSexp())
+    
+        fun transform(element: SexpElement): partiql_algebra_node =
             Transformer().transform(element)
     }
     
@@ -6965,6 +6980,7 @@ class partiql_algebra private constructor() {
     abstract class partiql_algebra_node : DomainNode {
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(key: String, value: Any): partiql_algebra_node
+        abstract override fun toIonElement(): SexpElement
     }
     
     
@@ -6983,7 +6999,7 @@ class partiql_algebra private constructor() {
                 expr1 = expr1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("expr_pair"),
                 expr0.toIonElement(),
@@ -7024,7 +7040,7 @@ class partiql_algebra private constructor() {
                 symbol1 = symbol1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("group_by_item"),
                 expr0.toIonElement(),
@@ -7063,7 +7079,7 @@ class partiql_algebra private constructor() {
                 group_by_item0 = group_by_item0,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("group_by_list"),
                 *group_by_item0.map { it.toIonElement() }.toTypedArray(),
@@ -7101,7 +7117,7 @@ class partiql_algebra private constructor() {
                 symbol1 = symbol1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("group_by"),
                 group_by_list0.toIonElement(),
@@ -7140,7 +7156,7 @@ class partiql_algebra private constructor() {
                 symbol0 = symbol0,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("tuple_field"),
                 symbol0.toIonElement(),
@@ -7181,7 +7197,7 @@ class partiql_algebra private constructor() {
                 inner(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("inner"),
                     metas = metas)
@@ -7207,7 +7223,7 @@ class partiql_algebra private constructor() {
                 left(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("left"),
                     metas = metas)
@@ -7233,7 +7249,7 @@ class partiql_algebra private constructor() {
                 right(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("right"),
                     metas = metas)
@@ -7259,7 +7275,7 @@ class partiql_algebra private constructor() {
                 outer(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("outer"),
                     metas = metas)
@@ -7297,7 +7313,7 @@ class partiql_algebra private constructor() {
                     symbol3 = symbol3,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("scan"),
                     expr0.toIonElement(),
@@ -7348,7 +7364,7 @@ class partiql_algebra private constructor() {
                     expr3 = expr3,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("join"),
                     join_type0.toIonElement(),
@@ -7395,7 +7411,7 @@ class partiql_algebra private constructor() {
                 case_sensitive(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("case_sensitive"),
                     metas = metas)
@@ -7421,7 +7437,7 @@ class partiql_algebra private constructor() {
                 case_insensitive(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("case_insensitive"),
                     metas = metas)
@@ -7451,7 +7467,7 @@ class partiql_algebra private constructor() {
                 unqualified(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("unqualified"),
                     metas = metas)
@@ -7477,7 +7493,7 @@ class partiql_algebra private constructor() {
                 qualified(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("qualified"),
                     metas = metas)
@@ -7507,7 +7523,7 @@ class partiql_algebra private constructor() {
                 all(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("all"),
                     metas = metas)
@@ -7533,7 +7549,7 @@ class partiql_algebra private constructor() {
                 distinct(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("distinct"),
                     metas = metas)
@@ -7565,7 +7581,7 @@ class partiql_algebra private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path_expr"),
                     expr0.toIonElement(),
@@ -7599,7 +7615,7 @@ class partiql_algebra private constructor() {
                 path_wildcard(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path_wildcard"),
                     metas = metas)
@@ -7625,7 +7641,7 @@ class partiql_algebra private constructor() {
                 path_unpivot(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path_unpivot"),
                     metas = metas)
@@ -7657,7 +7673,7 @@ class partiql_algebra private constructor() {
                     ion0 = ion0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("lit"),
                     ion0.toIonElement(),
@@ -7697,7 +7713,7 @@ class partiql_algebra private constructor() {
                     scope_qualifier2 = scope_qualifier2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("id"),
                     symbol0.toIonElement(),
@@ -7739,7 +7755,7 @@ class partiql_algebra private constructor() {
                     int0 = int0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("parameter"),
                     int0.toIonElement(),
@@ -7775,7 +7791,7 @@ class partiql_algebra private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("not"),
                     expr0.toIonElement(),
@@ -7811,7 +7827,7 @@ class partiql_algebra private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("plus"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -7847,7 +7863,7 @@ class partiql_algebra private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("minus"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -7883,7 +7899,7 @@ class partiql_algebra private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("times"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -7919,7 +7935,7 @@ class partiql_algebra private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("divide"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -7955,7 +7971,7 @@ class partiql_algebra private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("modulo"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -7991,7 +8007,7 @@ class partiql_algebra private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("concat"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -8031,7 +8047,7 @@ class partiql_algebra private constructor() {
                     expr2 = expr2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("like"),
                     expr0.toIonElement(),
@@ -8077,7 +8093,7 @@ class partiql_algebra private constructor() {
                     expr2 = expr2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("between"),
                     expr0.toIonElement(),
@@ -8121,7 +8137,7 @@ class partiql_algebra private constructor() {
                     path_element1 = path_element1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path"),
                     expr0.toIonElement(),
@@ -8162,7 +8178,7 @@ class partiql_algebra private constructor() {
                     expr1 = expr1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("call"),
                     symbol0.toIonElement(),
@@ -8205,7 +8221,7 @@ class partiql_algebra private constructor() {
                     expr2 = expr2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("call_agg"),
                     symbol0.toIonElement(),
@@ -8249,7 +8265,7 @@ class partiql_algebra private constructor() {
                     expr_pair1 = expr_pair1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("simple_case"),
                     expr0.toIonElement(),
@@ -8288,7 +8304,7 @@ class partiql_algebra private constructor() {
                     expr_pair0 = expr_pair0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("searched_case"),
                     *expr_pair0.map { it.toIonElement() }.toTypedArray(),
@@ -8324,7 +8340,7 @@ class partiql_algebra private constructor() {
                     expr_pair0 = expr_pair0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("struct"),
                     *expr_pair0.map { it.toIonElement() }.toTypedArray(),
@@ -8360,7 +8376,7 @@ class partiql_algebra private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("bag"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -8396,7 +8412,7 @@ class partiql_algebra private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("list"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -8434,7 +8450,7 @@ class partiql_algebra private constructor() {
                     expr1 = expr1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("filter"),
                     expr0.toIonElement(),
@@ -8473,7 +8489,7 @@ class partiql_algebra private constructor() {
                     from_source0 = from_source0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("construct_value"),
                     from_source0.toIonElement(),
@@ -8511,7 +8527,7 @@ class partiql_algebra private constructor() {
                     tuple_field1 = tuple_field1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("construct_tuple"),
                     from_source0.toIonElement(),
@@ -8549,8 +8565,7 @@ class partiql_algebra private constructor() {
     
     private class Transformer : IonElementTransformerBase<partiql_algebra_node>() {
     
-        override fun innerTransform(maybeSexp: IonElement): partiql_algebra_node {
-            val sexp = maybeSexp.sexpValue
+        override fun innerTransform(sexp: SexpElement): partiql_algebra_node {
             return when(sexp.tag) {
                 //////////////////////////////////////
                 // Tuple Types
@@ -8575,7 +8590,7 @@ class partiql_algebra private constructor() {
                 }
                 "group_by_list" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val group_by_item0 = sexp.drop(1).map { it.transformExpect<group_by_item>() }
+                    val group_by_item0 = sexp.values.drop(1).map { it.transformExpect<group_by_item>() }
                     group_by_list(
                         group_by_item0,
                         metas = sexp.metas)
@@ -8744,42 +8759,42 @@ class partiql_algebra private constructor() {
                 }
                 "plus" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.plus(
                         expr0,
                         metas = sexp.metas)
                 }
                 "minus" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.minus(
                         expr0,
                         metas = sexp.metas)
                 }
                 "times" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.times(
                         expr0,
                         metas = sexp.metas)
                 }
                 "divide" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.divide(
                         expr0,
                         metas = sexp.metas)
                 }
                 "modulo" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.modulo(
                         expr0,
                         metas = sexp.metas)
                 }
                 "concat" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.concat(
                         expr0,
                         metas = sexp.metas)
@@ -8809,7 +8824,7 @@ class partiql_algebra private constructor() {
                 "path" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
                     val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val path_element1 = sexp.drop(2).map { it.transformExpect<path_element>() }
+                    val path_element1 = sexp.values.drop(2).map { it.transformExpect<path_element>() }
                     expr.path(
                         expr0,
                         path_element1,
@@ -8818,7 +8833,7 @@ class partiql_algebra private constructor() {
                 "call" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
                     val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val expr1 = sexp.drop(2).map { it.transformExpect<expr>() }
+                    val expr1 = sexp.values.drop(2).map { it.transformExpect<expr>() }
                     expr.call(
                         symbol0,
                         expr1,
@@ -8838,7 +8853,7 @@ class partiql_algebra private constructor() {
                 "simple_case" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
                     val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr_pair1 = sexp.drop(2).map { it.transformExpect<expr_pair>() }
+                    val expr_pair1 = sexp.values.drop(2).map { it.transformExpect<expr_pair>() }
                     expr.simple_case(
                         expr0,
                         expr_pair1,
@@ -8846,28 +8861,28 @@ class partiql_algebra private constructor() {
                 }
                 "searched_case" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr_pair0 = sexp.drop(1).map { it.transformExpect<expr_pair>() }
+                    val expr_pair0 = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
                     expr.searched_case(
                         expr_pair0,
                         metas = sexp.metas)
                 }
                 "struct" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr_pair0 = sexp.drop(1).map { it.transformExpect<expr_pair>() }
+                    val expr_pair0 = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
                     expr.struct(
                         expr_pair0,
                         metas = sexp.metas)
                 }
                 "bag" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.bag(
                         expr0,
                         metas = sexp.metas)
                 }
                 "list" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.list(
                         expr0,
                         metas = sexp.metas)
@@ -8891,7 +8906,7 @@ class partiql_algebra private constructor() {
                 "construct_tuple" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
                     val from_source0 = sexp.getRequired(0).transformExpect<from_source>()
-                    val tuple_field1 = sexp.drop(2).map { it.transformExpect<tuple_field>() }
+                    val tuple_field1 = sexp.values.drop(2).map { it.transformExpect<tuple_field>() }
                     expr.construct_tuple(
                         from_source0,
                         tuple_field1,
@@ -8911,7 +8926,10 @@ class partiql_basic_nameless private constructor() {
         fun <T: partiql_basic_nameless_node> build(block: builder.() -> T) =
             builder.block()
     
-        fun transform(element: IonElement): partiql_basic_nameless_node =
+        fun transform(element: AnyElement): partiql_basic_nameless_node =
+            transform(element.asSexp())
+    
+        fun transform(element: SexpElement): partiql_basic_nameless_node =
             Transformer().transform(element)
     }
     
@@ -9568,6 +9586,7 @@ class partiql_basic_nameless private constructor() {
     abstract class partiql_basic_nameless_node : DomainNode {
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(key: String, value: Any): partiql_basic_nameless_node
+        abstract override fun toIonElement(): SexpElement
     }
     
     
@@ -9586,7 +9605,7 @@ class partiql_basic_nameless private constructor() {
                 expr1 = expr1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("expr_pair"),
                 expr0.toIonElement(),
@@ -9627,7 +9646,7 @@ class partiql_basic_nameless private constructor() {
                 symbol1 = symbol1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("group_by_item"),
                 expr0.toIonElement(),
@@ -9666,7 +9685,7 @@ class partiql_basic_nameless private constructor() {
                 group_by_item0 = group_by_item0,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("group_by_list"),
                 *group_by_item0.map { it.toIonElement() }.toTypedArray(),
@@ -9704,7 +9723,7 @@ class partiql_basic_nameless private constructor() {
                 symbol1 = symbol1,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("group_by"),
                 group_by_list0.toIonElement(),
@@ -9743,7 +9762,7 @@ class partiql_basic_nameless private constructor() {
                 symbol0 = symbol0,
                 metas = metas + metaContainerOf(key to value))
     
-        override fun toIonElement(): IonElement {
+        override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("tuple_field"),
                 symbol0.toIonElement(),
@@ -9784,7 +9803,7 @@ class partiql_basic_nameless private constructor() {
                 inner(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("inner"),
                     metas = metas)
@@ -9810,7 +9829,7 @@ class partiql_basic_nameless private constructor() {
                 left(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("left"),
                     metas = metas)
@@ -9836,7 +9855,7 @@ class partiql_basic_nameless private constructor() {
                 right(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("right"),
                     metas = metas)
@@ -9862,7 +9881,7 @@ class partiql_basic_nameless private constructor() {
                 outer(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("outer"),
                     metas = metas)
@@ -9900,7 +9919,7 @@ class partiql_basic_nameless private constructor() {
                     symbol3 = symbol3,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("scan"),
                     expr0.toIonElement(),
@@ -9951,7 +9970,7 @@ class partiql_basic_nameless private constructor() {
                     expr3 = expr3,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("join"),
                     join_type0.toIonElement(),
@@ -9998,7 +10017,7 @@ class partiql_basic_nameless private constructor() {
                 case_sensitive(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("case_sensitive"),
                     metas = metas)
@@ -10024,7 +10043,7 @@ class partiql_basic_nameless private constructor() {
                 case_insensitive(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("case_insensitive"),
                     metas = metas)
@@ -10054,7 +10073,7 @@ class partiql_basic_nameless private constructor() {
                 unqualified(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("unqualified"),
                     metas = metas)
@@ -10080,7 +10099,7 @@ class partiql_basic_nameless private constructor() {
                 qualified(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("qualified"),
                     metas = metas)
@@ -10110,7 +10129,7 @@ class partiql_basic_nameless private constructor() {
                 all(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("all"),
                     metas = metas)
@@ -10136,7 +10155,7 @@ class partiql_basic_nameless private constructor() {
                 distinct(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("distinct"),
                     metas = metas)
@@ -10168,7 +10187,7 @@ class partiql_basic_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path_expr"),
                     expr0.toIonElement(),
@@ -10202,7 +10221,7 @@ class partiql_basic_nameless private constructor() {
                 path_wildcard(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path_wildcard"),
                     metas = metas)
@@ -10228,7 +10247,7 @@ class partiql_basic_nameless private constructor() {
                 path_unpivot(
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path_unpivot"),
                     metas = metas)
@@ -10260,7 +10279,7 @@ class partiql_basic_nameless private constructor() {
                     ion0 = ion0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("lit"),
                     ion0.toIonElement(),
@@ -10296,7 +10315,7 @@ class partiql_basic_nameless private constructor() {
                     int0 = int0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("parameter"),
                     int0.toIonElement(),
@@ -10332,7 +10351,7 @@ class partiql_basic_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("not"),
                     expr0.toIonElement(),
@@ -10368,7 +10387,7 @@ class partiql_basic_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("plus"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -10404,7 +10423,7 @@ class partiql_basic_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("minus"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -10440,7 +10459,7 @@ class partiql_basic_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("times"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -10476,7 +10495,7 @@ class partiql_basic_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("divide"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -10512,7 +10531,7 @@ class partiql_basic_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("modulo"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -10548,7 +10567,7 @@ class partiql_basic_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("concat"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -10588,7 +10607,7 @@ class partiql_basic_nameless private constructor() {
                     expr2 = expr2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("like"),
                     expr0.toIonElement(),
@@ -10634,7 +10653,7 @@ class partiql_basic_nameless private constructor() {
                     expr2 = expr2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("between"),
                     expr0.toIonElement(),
@@ -10678,7 +10697,7 @@ class partiql_basic_nameless private constructor() {
                     path_element1 = path_element1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path"),
                     expr0.toIonElement(),
@@ -10719,7 +10738,7 @@ class partiql_basic_nameless private constructor() {
                     expr1 = expr1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("call"),
                     symbol0.toIonElement(),
@@ -10762,7 +10781,7 @@ class partiql_basic_nameless private constructor() {
                     expr2 = expr2,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("call_agg"),
                     symbol0.toIonElement(),
@@ -10806,7 +10825,7 @@ class partiql_basic_nameless private constructor() {
                     expr_pair1 = expr_pair1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("simple_case"),
                     expr0.toIonElement(),
@@ -10845,7 +10864,7 @@ class partiql_basic_nameless private constructor() {
                     expr_pair0 = expr_pair0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("searched_case"),
                     *expr_pair0.map { it.toIonElement() }.toTypedArray(),
@@ -10881,7 +10900,7 @@ class partiql_basic_nameless private constructor() {
                     expr_pair0 = expr_pair0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("struct"),
                     *expr_pair0.map { it.toIonElement() }.toTypedArray(),
@@ -10917,7 +10936,7 @@ class partiql_basic_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("bag"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -10953,7 +10972,7 @@ class partiql_basic_nameless private constructor() {
                     expr0 = expr0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("list"),
                     *expr0.map { it.toIonElement() }.toTypedArray(),
@@ -10991,7 +11010,7 @@ class partiql_basic_nameless private constructor() {
                     expr1 = expr1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("filter"),
                     expr0.toIonElement(),
@@ -11030,7 +11049,7 @@ class partiql_basic_nameless private constructor() {
                     from_source0 = from_source0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("construct_value"),
                     from_source0.toIonElement(),
@@ -11068,7 +11087,7 @@ class partiql_basic_nameless private constructor() {
                     tuple_field1 = tuple_field1,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("construct_tuple"),
                     from_source0.toIonElement(),
@@ -11107,7 +11126,7 @@ class partiql_basic_nameless private constructor() {
                     int0 = int0,
                     metas = metas + metaContainerOf(key to value))
         
-            override fun toIonElement(): IonElement {
+            override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("id"),
                     int0.toIonElement(),
@@ -11142,8 +11161,7 @@ class partiql_basic_nameless private constructor() {
     
     private class Transformer : IonElementTransformerBase<partiql_basic_nameless_node>() {
     
-        override fun innerTransform(maybeSexp: IonElement): partiql_basic_nameless_node {
-            val sexp = maybeSexp.sexpValue
+        override fun innerTransform(sexp: SexpElement): partiql_basic_nameless_node {
             return when(sexp.tag) {
                 //////////////////////////////////////
                 // Tuple Types
@@ -11168,7 +11186,7 @@ class partiql_basic_nameless private constructor() {
                 }
                 "group_by_list" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val group_by_item0 = sexp.drop(1).map { it.transformExpect<group_by_item>() }
+                    val group_by_item0 = sexp.values.drop(1).map { it.transformExpect<group_by_item>() }
                     group_by_list(
                         group_by_item0,
                         metas = sexp.metas)
@@ -11326,42 +11344,42 @@ class partiql_basic_nameless private constructor() {
                 }
                 "plus" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.plus(
                         expr0,
                         metas = sexp.metas)
                 }
                 "minus" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.minus(
                         expr0,
                         metas = sexp.metas)
                 }
                 "times" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.times(
                         expr0,
                         metas = sexp.metas)
                 }
                 "divide" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.divide(
                         expr0,
                         metas = sexp.metas)
                 }
                 "modulo" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.modulo(
                         expr0,
                         metas = sexp.metas)
                 }
                 "concat" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.concat(
                         expr0,
                         metas = sexp.metas)
@@ -11391,7 +11409,7 @@ class partiql_basic_nameless private constructor() {
                 "path" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
                     val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val path_element1 = sexp.drop(2).map { it.transformExpect<path_element>() }
+                    val path_element1 = sexp.values.drop(2).map { it.transformExpect<path_element>() }
                     expr.path(
                         expr0,
                         path_element1,
@@ -11400,7 +11418,7 @@ class partiql_basic_nameless private constructor() {
                 "call" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
                     val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val expr1 = sexp.drop(2).map { it.transformExpect<expr>() }
+                    val expr1 = sexp.values.drop(2).map { it.transformExpect<expr>() }
                     expr.call(
                         symbol0,
                         expr1,
@@ -11420,7 +11438,7 @@ class partiql_basic_nameless private constructor() {
                 "simple_case" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
                     val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr_pair1 = sexp.drop(2).map { it.transformExpect<expr_pair>() }
+                    val expr_pair1 = sexp.values.drop(2).map { it.transformExpect<expr_pair>() }
                     expr.simple_case(
                         expr0,
                         expr_pair1,
@@ -11428,28 +11446,28 @@ class partiql_basic_nameless private constructor() {
                 }
                 "searched_case" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr_pair0 = sexp.drop(1).map { it.transformExpect<expr_pair>() }
+                    val expr_pair0 = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
                     expr.searched_case(
                         expr_pair0,
                         metas = sexp.metas)
                 }
                 "struct" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr_pair0 = sexp.drop(1).map { it.transformExpect<expr_pair>() }
+                    val expr_pair0 = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
                     expr.struct(
                         expr_pair0,
                         metas = sexp.metas)
                 }
                 "bag" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.bag(
                         expr0,
                         metas = sexp.metas)
                 }
                 "list" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.drop(1).map { it.transformExpect<expr>() }
+                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
                     expr.list(
                         expr0,
                         metas = sexp.metas)
@@ -11473,7 +11491,7 @@ class partiql_basic_nameless private constructor() {
                 "construct_tuple" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
                     val from_source0 = sexp.getRequired(0).transformExpect<from_source>()
-                    val tuple_field1 = sexp.drop(2).map { it.transformExpect<tuple_field>() }
+                    val tuple_field1 = sexp.values.drop(2).map { it.transformExpect<tuple_field>() }
                     expr.construct_tuple(
                         from_source0,
                         tuple_field1,

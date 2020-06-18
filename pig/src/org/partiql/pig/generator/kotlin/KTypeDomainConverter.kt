@@ -271,7 +271,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                         }
                     }
                     is Arity.Optional -> "sexp.getOptional($ordinal)?$expectCast"
-                    is Arity.Variadic -> "sexp.drop(${ordinal + 1}).map { it$expectCast }"
+                    is Arity.Variadic -> "sexp.values.drop(${ordinal + 1}).map { it$expectCast }"
                 }
             }
         }
