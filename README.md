@@ -245,7 +245,7 @@ type_definition ::= <product_definition> | <sum_definition> | <record_definition
 
 // Product
 product_definition ::= '(' 'product' <product_body>')'
-product_body ::= symbol <element_definition>...
+product_body ::= symbol <type_ref>...
 
 // Record
 record_definition ::= '(' 'record' <record_body> ')'
