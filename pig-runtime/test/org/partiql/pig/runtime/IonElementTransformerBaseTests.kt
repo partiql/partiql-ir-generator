@@ -22,6 +22,7 @@ import com.amazon.ionelement.api.SexpElement
 import com.amazon.ionelement.api.emptyMetaContainer
 import com.amazon.ionelement.api.ionSexpOf
 import com.amazon.ionelement.api.ionString
+import com.amazon.ionelement.api.ionSymbol
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -56,12 +57,12 @@ class  IonElementTransformerBaseTests {
             return CorrectDomainNode("foo")
         }
 
-        fun expectedDomainNode(): DomainNode = ionString("doesntmatter").asAnyElement().transformExpect<CorrectDomainNode>()
+        fun expectedDomainNode(): DomainNode = ionSexpOf(ionSymbol("doesntmatter")).asAnyElement().transformExpect<CorrectDomainNode>()
 
         fun unexpectedDomainNode() {
             // Throws MalformedDomainDataException because [innerTransform] returns an instance of
             // [IncorrectDomainType].
-            ionString("doesntmatter").asAnyElement().transformExpect<IncorrectDomainNode>()
+            ionSexpOf(ionSymbol("doesntmatter")).asAnyElement().transformExpect<IncorrectDomainNode>()
         }
     }
 
