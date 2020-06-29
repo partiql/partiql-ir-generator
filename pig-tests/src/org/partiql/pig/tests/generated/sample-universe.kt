@@ -1479,7 +1479,7 @@ class test_domain private constructor() {
                 optional_field?.let { ionSexpOf(ionSymbol("optional_field"), it.toIonElement()) }
             )
     
-            return ionSexpOf(elements, metas)
+            return ionSexpOf(elements, metas = metas)
         }
     
         override fun equals(other: Any?): Boolean {
@@ -1782,7 +1782,7 @@ class test_domain private constructor() {
                     parent?.let { ionSexpOf(ionSymbol("parent"), it.toIonElement()) }
                 )
         
-                return ionSexpOf(elements, metas)
+                return ionSexpOf(elements, metas = metas)
             }
         
             override fun equals(other: Any?): Boolean {
@@ -5892,7 +5892,7 @@ class partiql_basic private constructor() {
                     limit?.let { ionSexpOf(ionSymbol("limit"), it.toIonElement()) }
                 )
         
-                return ionSexpOf(elements, metas)
+                return ionSexpOf(elements, metas = metas)
             }
         
             override fun equals(other: Any?): Boolean {

@@ -15,6 +15,7 @@
 
 package org.partiql.pig.tests
 
+import com.amazon.ionelement.api.IonElementLoaderOptions
 import com.amazon.ionelement.api.createIonElementLoader
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.assertThrows
@@ -29,7 +30,7 @@ class IonElementTransformerErrorTests {
     @ParameterizedTest
     @MethodSource("parametersForSerializationErrorTest")
     fun serializationErrorTest(tc: ErrorTestCase) {
-        val element = createIonElementLoader(true).loadSingleElement(tc.domainText)
+        val element = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true)).loadSingleElement(tc.domainText)
         val ex = assertThrows<MalformedDomainDataException> { partiql_basic.transform(element) }
         assertEquals(tc.message, ex.message, "Exception's message must match")
     }

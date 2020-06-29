@@ -46,7 +46,7 @@ class ${t.name}(
         [/#list]
         )
 
-        return ionSexpOf(elements, metas)
+        return ionSexpOf(elements, metas = metas)
     }
 [#else]
     override fun toIonElement(): SexpElement {

@@ -15,8 +15,8 @@
 
 package org.partiql.pig.domain
 
-import com.amazon.ionelement.api.IonElectrolyteException
 import com.amazon.ionelement.api.ElementType
+import com.amazon.ionelement.api.IonElementLoaderException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.assertThrows
@@ -52,7 +52,7 @@ class TypeDomainParserErrorsTest {
         fun parametersForErrorsTest() = listOf(
             TestCase(
                 "(", // note:  ParserErrorContext.IonElementError.equals doesn't check the exception
-                makeErr( ParserErrorContext.IonElementError(IonElectrolyteException(null, "")))),
+                makeErr( ParserErrorContext.IonElementError(IonElementLoaderException(null, "")))),
 
             TestCase(
                 "(bad_tag)",

@@ -17,6 +17,7 @@ package org.partiql.pig.runtime
 
 import com.amazon.ionelement.api.AnyElement
 import com.amazon.ionelement.api.IonElement
+import com.amazon.ionelement.api.IonElementLoaderOptions
 import com.amazon.ionelement.api.IonTextLocation
 import com.amazon.ionelement.api.createIonElementLoader
 import com.amazon.ionelement.api.ionInt
@@ -37,7 +38,8 @@ class IntermediateRecordTests {
                 (bat 3))
         """.trimIndent()
 
-        val ir = createIonElementLoader(true).loadSingleElement(someRecord).asSexp().transformToIntermediateRecord()
+        val ir = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
+            .loadSingleElement(someRecord).asSexp().transformToIntermediateRecord()
 
         val foundFields = mutableListOf<IonElement>()
 

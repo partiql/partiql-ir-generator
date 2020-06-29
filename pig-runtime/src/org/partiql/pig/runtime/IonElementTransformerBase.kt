@@ -16,7 +16,7 @@
 package org.partiql.pig.runtime
 
 import com.amazon.ionelement.api.AnyElement
-import com.amazon.ionelement.api.IonElectrolyteException
+import com.amazon.ionelement.api.IonElementException
 import com.amazon.ionelement.api.SexpElement
 import com.amazon.ionelement.api.location
 
@@ -24,7 +24,7 @@ abstract class IonElementTransformerBase<T: DomainNode> {
     fun transform(maybeSexp: SexpElement): T =
         try {
             innerTransform(maybeSexp)
-        } catch(ex: IonElectrolyteException) {
+        } catch(ex: IonElementException) {
             throw MalformedDomainDataException(ex.location, ex.description, ex)
         }
 

@@ -15,13 +15,12 @@
 
 package org.partiql.pig.runtime
 
-import com.amazon.ionelement.api.IonElectrolyteException
 import com.amazon.ionelement.api.IonElement
+import com.amazon.ionelement.api.IonElementConstraintException
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.SexpElement
 import com.amazon.ionelement.api.emptyMetaContainer
 import com.amazon.ionelement.api.ionSexpOf
-import com.amazon.ionelement.api.ionString
 import com.amazon.ionelement.api.ionSymbol
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -68,7 +67,7 @@ class  IonElementTransformerBaseTests {
 
     class DummyIonElementTransformerThrowing : IonElementTransformerBase<DummyDomainNode>() {
         override fun innerTransform(sexp: SexpElement): DummyDomainNode {
-            throw IonElectrolyteException(null, "oh_my_an_error")
+            throw IonElementConstraintException(null, "oh_my_an_error")
         }
     }
 
@@ -90,7 +89,7 @@ class  IonElementTransformerBaseTests {
         val xformer = DummyIonElementTransformerThrowing()
         val ex = assertThrows<MalformedDomainDataException> { xformer.transform(ionSexpOf()) }
 
-        assertTrue(ex.cause is IonElectrolyteException)
+        assertTrue(ex.cause is IonElementConstraintException)
         assertTrue(ex.message!!.contains("oh_my_an_error"))
     }
 

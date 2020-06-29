@@ -28,7 +28,7 @@ fun parseTypeUniverse(universeText: String) =
 
 /** Parses a type universe in the specified [IonReader]. */
 fun parseTypeUniverse(reader: IonReader): TypeUniverse {
-    val elementLoader = createIonElementLoader(includeLocations = true)
+    val elementLoader = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
 
     val domains = try {
         val idom = elementLoader.loadAllElements(reader)
@@ -42,7 +42,7 @@ fun parseTypeUniverse(reader: IonReader): TypeUniverse {
             }
         }
     }
-    catch(iee: IonElectrolyteException) {
+    catch(iee: IonElementException) {
         parseError(iee.location, ParserErrorContext.IonElementError(iee))
     }
 

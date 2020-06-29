@@ -34,7 +34,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 dependencies {
     // compile-time dependencies
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-    api 'com.amazon.ion:ion-element:[0.1.0,)'
+    api 'com.amazon.ion:ion-element:0.2.0-SNAPSHOT'
     //implementation ':runtime'
 
     // test-time dependencies

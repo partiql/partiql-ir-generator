@@ -17,6 +17,7 @@ package org.partiql.pig.domain
 
 import com.amazon.ionelement.api.emptyMetaContainer
 import com.amazon.ion.system.IonReaderBuilder
+import com.amazon.ionelement.api.IonElementLoaderOptions
 import com.amazon.ionelement.api.createIonElementLoader
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -25,7 +26,7 @@ import org.partiql.pig.domain.parser.parseTypeUniverse
 
 class TypeDomainParserTests {
     val em = emptyMetaContainer()
-    val loader = createIonElementLoader(true)
+    val loader = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
 
     @Test
     fun testProduct() = runTestCase(
