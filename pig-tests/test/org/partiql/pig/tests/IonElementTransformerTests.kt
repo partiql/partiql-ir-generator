@@ -15,8 +15,7 @@
 
 package org.partiql.pig.tests
 
-import com.amazon.ionelement.api.IonElementLoaderOptions
-import com.amazon.ionelement.api.createIonElementLoader
+import com.amazon.ionelement.api.loadSingleElement
 import com.amazon.ionelement.api.metaContainerOf
 import com.amazon.ionelement.api.withMetas
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -398,7 +397,7 @@ class IonElementTransformerTests {
         // Transform tc.expectedIonText first.  If this fails it's a problem with the test
         // case, not the (de)serialization code.
         val expectedIonElement = assertDoesNotThrow("Check #1: expectedIonText must parse") {
-            createIonElementLoader().loadSingleElement(tc.expectedIonText)
+            loadSingleElement(tc.expectedIonText)
         }
 
         // Deserialize and assert that the result is as expected.
