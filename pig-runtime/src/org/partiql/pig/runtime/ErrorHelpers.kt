@@ -33,7 +33,6 @@ fun SexpElement.requireArityOrMalformed(arity: Int) =
 
 fun SexpElement.requireArityOrMalformed(arityRange: IntRange) {
     // Note: arity does not include the tag!
-    // TODO:  values.size?
     val argCount = size - 1
     if(argCount !in arityRange) {
         errMalformed(
