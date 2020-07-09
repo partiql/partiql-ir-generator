@@ -17,9 +17,9 @@ package org.partiql.pig.domain.parser
 
 import com.amazon.ionelement.api.*
 import com.amazon.ion.IonReader
-import com.amazon.ion.IonType
 import com.amazon.ion.system.IonReaderBuilder
 import org.partiql.pig.domain.model.*
+
 /** Parses a type universe contained in [universeText]. */
 fun parseTypeUniverse(universeText: String) =
     IonReaderBuilder.standard().build(universeText).use {
@@ -28,12 +28,12 @@ fun parseTypeUniverse(universeText: String) =
 
 /** Parses a type universe in the specified [IonReader]. */
 fun parseTypeUniverse(reader: IonReader): TypeUniverse {
-    val elementLoader = createIonElementLoader(includeLocations = true)
+    val elementLoader = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
 
     val domains = try {
         val idom = elementLoader.loadAllElements(reader)
         idom.map { topLevelValue ->
-            val topLevelSexp = topLevelValue.sexpValue
+            val topLevelSexp = topLevelValue.asSexp()
             when (topLevelSexp.tag) {
                 "define" -> parseDefine(topLevelSexp)
                 else -> parseError(
@@ -42,18 +42,18 @@ fun parseTypeUniverse(reader: IonReader): TypeUniverse {
             }
         }
     }
-    catch(iee: IonElectrolyteException) {
+    catch(iee: IonElementException) {
         parseError(iee.location, ParserErrorContext.IonElementError(iee))
     }
 
     return TypeUniverse(domains)
 }
 
-private fun parseDefine(sexp: IonElementContainer): Statement {
+private fun parseDefine(sexp: SexpElement): Statement {
     requireArityForTag(sexp, 2)
     val args = sexp.tail // Skip tag
     val name = args.head.symbolValue
-    val valueSexp = args.tail.head.sexpValue
+    val valueSexp = args.tail.head.asSexp()
 
     return when (valueSexp.tag) {
         "domain" -> parseTypeDomain(name, valueSexp)
@@ -64,12 +64,12 @@ private fun parseDefine(sexp: IonElementContainer): Statement {
     }
 }
 
-private fun parseTypeDomain(domainName: String, sexp: IonElementContainer): TypeDomain {
+private fun parseTypeDomain(domainName: String, sexp: SexpElement): TypeDomain {
     val args = sexp.tail // Skip tag
     //val typesSexps = args.tail
 
     val userTypes = args.map { tlv ->
-        val tlvs = tlv.sexpValue
+        val tlvs = tlv.asSexp()
         parseDomainLevelStatement(tlvs)
     }.toList()
 
@@ -80,7 +80,7 @@ private fun parseTypeDomain(domainName: String, sexp: IonElementContainer): Type
 
 }
 
-private fun parseDomainLevelStatement(tlvs: IonElementContainer): DataType {
+private fun parseDomainLevelStatement(tlvs: SexpElement): DataType {
     return when (tlvs.tag) {
         "product" -> parseProductBody(tlvs.tail, tlvs.metas)
         "record" -> parseRecordBody(tlvs.tail, tlvs.metas)
@@ -94,7 +94,7 @@ private fun parseTypeRefs(values: List<IonElement>): List<TypeRef> =
 
 // Parses a sum-variant product or record (depending on the syntax used)
 private fun parseVariant(
-    bodyArguments: List<IonElement>,
+    bodyArguments: List<AnyElement>,
     metas: MetaContainer
 ): DataType.Tuple {
     val elements = bodyArguments.tail
@@ -104,14 +104,14 @@ private fun parseVariant(
         false
     } else {
         // if the head element is an s-exp that does not start with `?` or `*` then we're parsing a record
-        when (elements.head.type) {
-            IonType.SEXP -> {
-                when (elements.head.sexpValue.head.symbolValue) {
+        when (val headElem = elements.head) {
+            is SexpElement -> {
+                when (headElem.values.head.symbolValue) {
                     "?", "*" -> false
                     else -> true
                 }
             }
-            IonType.SYMBOL -> false
+            is SymbolElement -> false
             else -> parseError(elements.head, ParserErrorContext.ExpectedSymbolOrSexp(elements.head.type))
         }
     }
@@ -125,7 +125,7 @@ private fun parseVariant(
     }
 }
 
-private fun parseProductBody(bodyArguments: List<IonElement>, metas: MetaContainer): DataType.Tuple {
+private fun parseProductBody(bodyArguments: List<AnyElement>, metas: MetaContainer): DataType.Tuple {
     val typeName = bodyArguments.head.symbolValue
     val types = parseTypeRefs(bodyArguments.tail)
 
@@ -137,46 +137,45 @@ private fun parseProductBody(bodyArguments: List<IonElement>, metas: MetaContain
     return DataType.Tuple(typeName, TupleType.PRODUCT, namedElements, metas)
 }
 
-private fun parseRecordBody(bodyArguments: List<IonElement>, metas: MetaContainer): DataType.Tuple {
+private fun parseRecordBody(bodyArguments: List<AnyElement>, metas: MetaContainer): DataType.Tuple {
     val typeName = bodyArguments.head.symbolValue
     val namedElements = parseNamedElements(bodyArguments.tail)
     return DataType.Tuple(typeName, TupleType.RECORD, namedElements, metas)
 }
 
-fun parseNamedElements(elementSexps: List<IonElement>): List<NamedElement> =
+fun parseNamedElements(elementSexps: List<AnyElement>): List<NamedElement> =
     elementSexps.asSequence()
-        .map { it.sexpValue }
+        .map { it.asSexp() }
         .map { elementSexp ->
-            if(elementSexp.size != 2) {
+            if(elementSexp.values.size != 2) {
                 parseError(elementSexp, ParserErrorContext.InvalidArity(2, elementSexp.size))
             }
-            val elementName = elementSexp[0].symbolValue
-            val typeRef = parseSingleTypeRef(elementSexp[1])
+            val elementName = elementSexp.values[0].symbolValue
+            val typeRef = parseSingleTypeRef(elementSexp.values[1])
             NamedElement(elementName, typeRef, elementSexp.metas)
         }
         .toList()
 
-private fun parseSum(sexp: IonElementContainer): DataType.Sum {
+private fun parseSum(sexp: SexpElement): DataType.Sum {
     val args = sexp.tail // Skip tag
     val typeName = args.head.symbolValue
 
     val variants = args.tail.map {
-        parseSumVariant(it.sexpValue)
+        parseSumVariant(it.asSexp())
     }
 
     return DataType.Sum(typeName, variants.toList(), sexp.metas)
 }
 
-private fun parseSumVariant(sexp: IonElementContainer): DataType.Tuple {
-    return parseVariant(sexp, sexp.metas)
+private fun parseSumVariant(sexp: SexpElement): DataType.Tuple {
+    return parseVariant(sexp.values, sexp.metas)
 }
 
-private fun parseSingleTypeRef(typeRefValue: IonElement): TypeRef {
-    val metas = typeRefValue.metas
-    return when (typeRefValue.type) {
-        IonType.SYMBOL -> TypeRef(typeRefValue.symbolValue, Arity.Required, metas)
-        IonType.SEXP -> {
-            val typeRefExp = typeRefValue.sexpValue
+private fun parseSingleTypeRef(typeRefExp: IonElement): TypeRef {
+    val metas = typeRefExp.metas
+    return when (typeRefExp) {
+        is SymbolElement -> TypeRef(typeRefExp.textValue, Arity.Required, metas)
+        is SexpElement -> {
             when (typeRefExp.tag) {
                 "?" -> {
                     requireArityForTag(typeRefExp, 1)
@@ -193,11 +192,11 @@ private fun parseSingleTypeRef(typeRefValue: IonElement): TypeRef {
                 else -> parseError(typeRefExp.head, ParserErrorContext.ExpectedTypeReferenceArityTag(typeRefExp.tag))
             }
         }
-        else -> parseError(typeRefValue, ParserErrorContext.ExpectedSymbolOrSexp(typeRefValue.type))
+        else -> parseError(typeRefExp, ParserErrorContext.ExpectedSymbolOrSexp(typeRefExp.type))
     }
 }
 
-private fun parsePermuteDomain(domainName: String, sexp: IonElementContainer): PermutedDomain {
+private fun parsePermuteDomain(domainName: String, sexp: SexpElement): PermutedDomain {
     val args = sexp.tail // Skip tag
 
     val permutingDomain = args.head.symbolValue
@@ -206,11 +205,11 @@ private fun parsePermuteDomain(domainName: String, sexp: IonElementContainer): P
     val permutedSums = mutableListOf<PermutedSum>()
 
     val alterSexps = args.tail
-    alterSexps.map { it.sexpValue }.forEach { alterSexp ->
+    alterSexps.map { it.asSexp() }.forEach { alterSexp ->
         when(alterSexp.head.symbolValue) {
             "with" -> permutedSums.add(parseWithSum(alterSexp))
             "exclude" -> alterSexp.tail.mapTo(removedTypes) { it.symbolValue }
-            "include" -> alterSexp.tail.mapTo(newTypes) { parseDomainLevelStatement(it.sexpValue) }
+            "include" -> alterSexp.tail.mapTo(newTypes) { parseDomainLevelStatement(it.asSexp()) }
             else -> parseError(alterSexp, ParserErrorContext.InvalidPermutedDomainTag(alterSexp.head.symbolValue))
         }
     }
@@ -224,7 +223,7 @@ private fun parsePermuteDomain(domainName: String, sexp: IonElementContainer): P
         metas = sexp.metas)
 }
 
-private fun parseWithSum(sexp: IonElementContainer): PermutedSum {
+private fun parseWithSum(sexp: SexpElement): PermutedSum {
     val args = sexp.tail // Skip tag
 
     val nameOfAlteredSum = args.head.symbolValue
@@ -232,10 +231,10 @@ private fun parseWithSum(sexp: IonElementContainer): PermutedSum {
     val addedVariants = mutableListOf<DataType.Tuple>()
 
     args.tail.forEach { alterationValue ->
-        val alterationSexp = alterationValue.sexpValue
+        val alterationSexp = alterationValue.asSexp()
         when (val alterationTag = alterationSexp.tag) {
             "exclude" -> alterationSexp.tail.mapTo(removedVariants) { it.symbolValue }
-            "include" -> alterationSexp.tail.mapTo(addedVariants) { parseSumVariant(it.sexpValue) }
+            "include" -> alterationSexp.tail.mapTo(addedVariants) { parseSumVariant(it.asSexp()) }
             else -> parseError(alterationSexp, ParserErrorContext.InvalidWithSumTag(alterationTag))
         }
     }
@@ -243,17 +242,17 @@ private fun parseWithSum(sexp: IonElementContainer): PermutedSum {
     return PermutedSum(nameOfAlteredSum, removedVariants, addedVariants, sexp.metas)
 }
 
-private fun requireArityForTag(sexp: IonElementContainer, arity: Int) {
+private fun requireArityForTag(sexp: SexpElement, arity: Int) {
     // Note: arity does not include the tag!
-    val argCount = sexp.count() - 1
+    val argCount = sexp.values.size - 1
     if(argCount != arity) {
         parseError(sexp, ParserErrorContext.InvalidArityForTag(IntRange(arity, arity), sexp.head.symbolValue, argCount))
     }
 }
 
-private fun requireArityForTag(sexp: IonElementContainer, arityRange: IntRange) {
+private fun requireArityForTag(sexp: SexpElement, arityRange: IntRange) {
     // Note: arity does not include the tag!
-    val argCount = sexp.count() - 1
+    val argCount = sexp.values.size - 1
     if(argCount !in arityRange) {
         parseError(sexp, ParserErrorContext.InvalidArityForTag(arityRange, sexp.head.symbolValue, argCount))
     }

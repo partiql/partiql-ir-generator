@@ -15,13 +15,14 @@
 
 package org.partiql.pig.runtime
 
+import com.amazon.ionelement.api.AnyElement
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.emptyMetaContainer
 import com.amazon.ionelement.api.ionInt
 import com.amazon.ionelement.api.ionSymbol
 import com.amazon.ionelement.api.metaContainerOf
-import kotlin.coroutines.coroutineContext
+import com.amazon.ionelement.api.withMetas
 
 class LongPrimitive(val value: Long, override val metas: MetaContainer) : DomainNode {
     override fun withMeta(key: String, value: Any): LongPrimitive =
@@ -69,10 +70,10 @@ class SymbolPrimitive(val text: String, override val metas: MetaContainer) : Dom
     }
 }
 
-fun IonElement.toLongPrimitive() =
+fun AnyElement.toLongPrimitive() =
     LongPrimitive(this.longValue, this.metas)
 
-fun IonElement.toSymbolPrimitive() =
+fun AnyElement.toSymbolPrimitive() =
     SymbolPrimitive(this.symbolValue, this.metas)
 
 fun Long.asPrimitive(metas: MetaContainer = emptyMetaContainer()) =

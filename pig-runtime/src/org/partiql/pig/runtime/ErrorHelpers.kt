@@ -15,9 +15,11 @@
 
 package org.partiql.pig.runtime
 
-import com.amazon.ionelement.api.IonElementContainer
+import com.amazon.ionelement.api.AnyElement
+import com.amazon.ionelement.api.SexpElement
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.IonLocation
+import com.amazon.ionelement.api.head
 import com.amazon.ionelement.api.location
 
 fun errMalformed(location: IonLocation?, message: String): Nothing =
@@ -26,16 +28,16 @@ fun errMalformed(location: IonLocation?, message: String): Nothing =
 fun errUnexpectedField(location: IonLocation?, fieldName: String): Nothing =
     errMalformed(location, "Unexpected field '$fieldName' encountered")
 
-fun IonElementContainer.requireArityOrMalformed(arity: Int) =
+fun SexpElement.requireArityOrMalformed(arity: Int) =
     requireArityOrMalformed(IntRange(arity, arity))
 
-fun IonElementContainer.requireArityOrMalformed(arityRange: IntRange) {
+fun SexpElement.requireArityOrMalformed(arityRange: IntRange) {
     // Note: arity does not include the tag!
-    val argCount = count() - 1
+    val argCount = size - 1
     if(argCount !in arityRange) {
         errMalformed(
             metas.location,
-            "$arityRange argument(s) were required to `${this.head.toString()}`, but $argCount was/were supplied.")
+            "$arityRange argument(s) were required to `${this.head}`, but $argCount was/were supplied.")
     }
 }
 
@@ -48,9 +50,9 @@ fun IonElementContainer.requireArityOrMalformed(arityRange: IntRange) {
  * is thrown if IonNull is provided to a required argument. Only special case
  * in [getRequiredIon] below.
  */
-fun IonElementContainer.getRequired(i: Int): IonElement {
+fun SexpElement.getRequired(i: Int): AnyElement {
     argIndexInBoundOrMalformed(i)
-    val ionElement = this[i + 1]
+    val ionElement = this.values[i + 1]
     return when {
         ionElement.isNull -> errMalformed(this.metas.location, "A non-null value is required.")
         else -> ionElement
@@ -66,9 +68,9 @@ fun IonElementContainer.getRequired(i: Int): IonElement {
  * for required arguments. But when getting a required Ion-type argument, IonNull
  * is considered a valid value and returned as it is.
  */
-fun IonElementContainer.getRequiredIon(i: Int): IonElement {
+fun SexpElement.getRequiredIon(i: Int): IonElement {
     argIndexInBoundOrMalformed(i)
-    return this[i + 1]
+    return this.values[i + 1]
 }
 
 /**
@@ -79,16 +81,16 @@ fun IonElementContainer.getRequiredIon(i: Int): IonElement {
  * IonNull is used to indicate skipped optional argument. Return null if optional
  * argument is IonNull.
  */
-fun IonElementContainer.getOptional(i: Int): IonElement? {
+fun SexpElement.getOptional(i: Int): AnyElement? {
     argIndexInBoundOrMalformed(i)
-    val ionElement = this[i + 1]
+    val ionElement = this.values[i + 1]
     return when {
         ionElement.isNull -> null
         else -> ionElement
     }
 }
 
-private fun IonElementContainer.argIndexInBoundOrMalformed(i: Int) {
+private fun SexpElement.argIndexInBoundOrMalformed(i: Int) {
     if (i + 1 >= this.size)
         errMalformed(this.metas.location, "Argument index $i is out of bounds (max=${size - 2})")
 }

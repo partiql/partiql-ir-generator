@@ -35,7 +35,7 @@ dependencies {
     implementation 'org.freemarker:freemarker:2.3.30'
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
 
-    implementation 'com.amazon.ion:ion-element:[0.1.0,)'
+    implementation 'com.amazon.ion:ion-element:0.2.0'
     //implementation ':runtime'
 
     // test-time dependencies

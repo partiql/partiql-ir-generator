@@ -15,9 +15,9 @@
 
 package org.partiql.pig.tests
 
+import com.amazon.ionelement.api.ElementType
 import com.amazon.ionelement.api.ionInt
 import com.amazon.ionelement.api.ionNull
-import com.amazon.ion.IonType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.partiql.pig.tests.generated.partiql_basic
@@ -28,7 +28,7 @@ class SmokeTests {
     @Test
     fun toy_lang_test() {
         val node = toy_lang.build {
-            plus(variable("foo"), lit(ionInt(42)), lit(ionNull(IonType.STRING)))
+            plus(variable("foo"), lit(ionInt(42)), lit(ionNull(ElementType.STRING)))
         }
 
         val expectedIonElement = node.toIonElement()

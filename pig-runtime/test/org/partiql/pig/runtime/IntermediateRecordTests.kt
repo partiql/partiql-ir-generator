@@ -15,7 +15,9 @@
 
 package org.partiql.pig.runtime
 
+import com.amazon.ionelement.api.AnyElement
 import com.amazon.ionelement.api.IonElement
+import com.amazon.ionelement.api.IonElementLoaderOptions
 import com.amazon.ionelement.api.IonTextLocation
 import com.amazon.ionelement.api.createIonElementLoader
 import com.amazon.ionelement.api.ionInt
@@ -36,7 +38,8 @@ class IntermediateRecordTests {
                 (bat 3))
         """.trimIndent()
 
-        val ir = createIonElementLoader(true).loadSingleElement(someRecord).transformToIntermediateRecord()
+        val ir = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
+            .loadSingleElement(someRecord).asSexp().transformToIntermediateRecord()
 
         val foundFields = mutableListOf<IonElement>()
 
@@ -56,7 +59,7 @@ class IntermediateRecordTests {
 
     @Test
     fun requiredFieldMissing() {
-        val ir = createIntermediateRecord(mapOf("foo" to ionInt(1)))
+        val ir = createIntermediateRecord(mapOf("foo" to ionInt(1).asAnyElement()))
         val ex = assertThrows<MalformedDomainDataException> {
             ir.processRequiredField("bad_field") { error("should not be invoked") }
         }
@@ -66,7 +69,7 @@ class IntermediateRecordTests {
 
     @Test
     fun extraFields() {
-        val ir = createIntermediateRecord(mapOf("foo" to ionInt(1)))
+        val ir = createIntermediateRecord(mapOf("foo" to ionInt(1).asAnyElement()))
         val ex = assertThrows<MalformedDomainDataException>{ ir.malformedIfAnyUnprocessedFieldsRemain() }
 
         assertTrue(ex.message!!.contains("foo"))
@@ -74,7 +77,7 @@ class IntermediateRecordTests {
     }
 
 
-    private fun createIntermediateRecord(fields: Map<String, IonElement>): IntermediateRecord =
+    private fun createIntermediateRecord(fields: Map<String, AnyElement>): IntermediateRecord =
         IntermediateRecord(
             recordTagName = "some_tag",
             location = oneOne,

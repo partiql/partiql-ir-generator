@@ -15,11 +15,13 @@
 
 package org.partiql.pig.domain.parser
 
-import com.amazon.ionelement.api.IonElectrolyteException
+
+//import com.amazon.ionelement.api.Ion
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.location
-import com.amazon.ion.IonType
+import com.amazon.ionelement.api.ElementType
+import com.amazon.ionelement.api.IonElementException
 import org.partiql.pig.domain.PigException
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
@@ -34,7 +36,7 @@ sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
     override val message: String get() = msgFormatter()
 
     /** Indicates that an []IonElectrolyteException] was thrown during parsing of a type universe. */
-    data class IonElementError(val ex: IonElectrolyteException)
+    data class IonElementError(val ex: IonElementException)
         : ParserErrorContext({ ex.message!! }) {
         // This is for unit tests... we don't include IonElectrolyteException here since it doesn't implement
         // equals anyway
@@ -60,7 +62,7 @@ sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
     data class ExpectedTypeReferenceArityTag(val tag: String)
         : ParserErrorContext({ "Expected '*' or '?' but found '$tag'"})
 
-    data class ExpectedSymbolOrSexp(val foundType: IonType)
+    data class ExpectedSymbolOrSexp(val foundType: ElementType)
         : ParserErrorContext({ "Expected a symbol or s-exp but encountered a value of type $foundType"})
 
     data class InvalidArity(val expectedCount: Int, val actualCount: Int)

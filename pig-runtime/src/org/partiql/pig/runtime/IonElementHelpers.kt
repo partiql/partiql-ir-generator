@@ -17,6 +17,7 @@ package org.partiql.pig.runtime
 
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.ionInt
+import com.amazon.ionelement.api.ionNull
 import com.amazon.ionelement.api.ionSymbol
 
 
@@ -32,7 +33,7 @@ fun IonElement.toIonElement() = this
  * convert (or not) a variable to an [IonElement].  This has the same signature as the other `.toIonElement()`
  * extensions in package.
  */
-fun String?.toIonElement() = ionSymbol(this)
+fun String?.toIonElement() = this?.let { ionSymbol(this) } ?: ionNull()
 
 /**
  * This seemingly useless function reduces complexity of the Kotlin template by providing a consistent way to

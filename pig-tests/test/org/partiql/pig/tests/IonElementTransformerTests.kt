@@ -15,8 +15,9 @@
 
 package org.partiql.pig.tests
 
-import com.amazon.ionelement.api.createIonElementLoader
+import com.amazon.ionelement.api.loadSingleElement
 import com.amazon.ionelement.api.metaContainerOf
+import com.amazon.ionelement.api.withMetas
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -40,14 +41,14 @@ class IonElementTransformerTests {
                 2.asPrimitive().withMeta("so long", "thanks for all the fish"))
         }
 
-        val element = input.toIonElement().sexpValue
+        val element = input.toIonElement()
 
         // Note: we are asserting only that metas are preserved here.
         // (There are other tests to ensure that these domain types are serialized correctly.)
 
         // Assert that metas were added to the IonElements during serialization
-        assertEquals(42, element[1].metas["life"])
-        assertEquals("thanks for all the fish", element[2].metas["so long"])
+        assertEquals(42, element.values[1].metas["life"])
+        assertEquals("thanks for all the fish", element.values[2].metas["so long"])
 
         val output = test_domain.transform(element) as test_domain.int_pair
 
@@ -64,14 +65,14 @@ class IonElementTransformerTests {
                 "bar".asPrimitive(metaContainerOf("so long" to "thanks for all the fish")))
         }
 
-        val element = input.toIonElement().sexpValue
+        val element = input.toIonElement()
 
         // Note: we are asserting only that metas are preserved here.
         // (There are other tests to ensure that these domain types are serialized correctly.)
 
         // Assert that metas were added to the IonElements during serialization
-        assertEquals(42, element[1].metas["life"])
-        assertEquals("thanks for all the fish", element[2].metas["so long"])
+        assertEquals(42, element.values[1].metas["life"])
+        assertEquals("thanks for all the fish", element.values[2].metas["so long"])
 
         val output = test_domain.transform(element) as test_domain.symbol_pair
 
@@ -396,7 +397,7 @@ class IonElementTransformerTests {
         // Transform tc.expectedIonText first.  If this fails it's a problem with the test
         // case, not the (de)serialization code.
         val expectedIonElement = assertDoesNotThrow("Check #1: expectedIonText must parse") {
-            createIonElementLoader(false).loadSingleElement(tc.expectedIonText)
+            loadSingleElement(tc.expectedIonText)
         }
 
         // Deserialize and assert that the result is as expected.

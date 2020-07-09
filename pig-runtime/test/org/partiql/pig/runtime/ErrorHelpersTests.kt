@@ -19,7 +19,7 @@ import com.amazon.ionelement.api.ionInt
 import com.amazon.ionelement.api.ionNull
 import com.amazon.ionelement.api.ionSexpOf
 import com.amazon.ionelement.api.ionSymbol
-import com.amazon.ion.IonType
+import com.amazon.ionelement.api.ElementType
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -27,7 +27,7 @@ import org.junit.jupiter.api.assertThrows
 
 class ErrorHelpersTests {
     // Note that "arity" is the number of elements following the tag.
-    val someSexp = ionSexpOf(ionSymbol("some_tag"), ionInt(1), ionNull(IonType.STRING)) // <-- has an arity of 2.
+    val someSexp = ionSexpOf(ionSymbol("some_tag"), ionInt(1), ionNull(ElementType.STRING)) // <-- has an arity of 2.
 
 
     @Test
@@ -70,7 +70,7 @@ class ErrorHelpersTests {
     @Test
     fun getRequiredIon() {
         assertEquals(ionInt(1), someSexp.getRequiredIon(0))
-        assertEquals(ionNull(IonType.STRING), someSexp.getRequiredIon(1))
+        assertEquals(ionNull(ElementType.STRING), someSexp.getRequiredIon(1))
 
         assertThrows<MalformedDomainDataException> {
             someSexp.getRequiredIon(2)

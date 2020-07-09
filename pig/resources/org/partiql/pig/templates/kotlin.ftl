@@ -37,7 +37,7 @@ class ${t.name}(
             metas = metas + metaContainerOf(key to value))
 
 [#if t.record]
-    override fun toIonElement(): IonElement {
+    override fun toIonElement(): SexpElement {
 
         val elements = listOfNotNull(
             ionSymbol("${t.name}"),
@@ -46,10 +46,10 @@ class ${t.name}(
         [/#list]
         )
 
-        return ionSexpOf(elements, metas)
+        return ionSexpOf(elements, metas = metas)
     }
 [#else]
-    override fun toIonElement(): IonElement {
+    override fun toIonElement(): SexpElement {
         val elements = ionSexpOf(
             ionSymbol("${t.name}")[#rt]
 [#list t.properties as p],
@@ -141,7 +141,10 @@ companion object {
     fun <T: ${domain.name}_node> build(block: builder.() -> T) =
         builder.block()
 
-    fun transform(element: IonElement): ${domain.name}_node =
+    fun transform(element: AnyElement): ${domain.name}_node =
+        transform(element.asSexp())
+
+    fun transform(element: SexpElement): ${domain.name}_node =
         Transformer().transform(element)
 }
 
@@ -169,6 +172,7 @@ object builder {
 abstract class ${domain.name}_node : DomainNode {
     override fun toString() = toIonElement().toString()
     abstract override fun withMeta(key: String, value: Any): ${domain.name}_node
+    abstract override fun toIonElement(): SexpElement
 }
 
 
@@ -230,8 +234,7 @@ sealed class ${s.name} : ${s.superClass}() {
 
 private class Transformer : IonElementTransformerBase<${domain.name}_node>() {
 
-    override fun innerTransform(maybeSexp: IonElement): ${domain.name}_node {
-        val sexp = maybeSexp.sexpValue
+    override fun innerTransform(sexp: SexpElement): ${domain.name}_node {
         return when(sexp.tag) {
 [#if domain.tuples?size > 0]
             //////////////////////////////////////
