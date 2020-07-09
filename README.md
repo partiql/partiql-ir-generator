@@ -5,6 +5,10 @@
 The PariQL I.R. Generator (PIG) is a [nanopass](http://nanopass.org/) inspired type domain code generator currently 
 targeting Kotlin.
 
+## API Status
+
+PIG is usable now but its API and the API of the generated Kotlin code should be considered unstable.
+
 ## Definitions
 
 - `type universe`: A collection of type domains.
