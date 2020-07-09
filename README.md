@@ -1,4 +1,6 @@
-# The PartiQL I.R. Generator.
+[![Build Status](https://travis-ci.org/partiql/partiql-ir-generator.svg?branch=master)](https://travis-ci.org/partiql/partiql-ir-generator)
+
+# The PartiQL I.R. Generator
 
 The PariQL I.R. Generator (PIG) is a [nanopass](http://nanopass.org/) inspired type domain code generator currently 
 targeting Kotlin.
