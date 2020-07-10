@@ -7,7 +7,7 @@ targeting Kotlin.
 
 ## API Status
 
-PIG is usable now but its API and the API of the generated Kotlin code should be considered unstable.
+PIG is usable now but its API and the API of the generated Kotlin code is under development and might change.
 
 ## Definitions
 
