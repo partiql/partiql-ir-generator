@@ -37,7 +37,14 @@ class VariableResolver : demo_ast_.VisitorBase() {
         val parent: ScopeTracker?
     ) : demo_ast_.VisitorBase() {
 
-        /** Looks up the index of the variable and adds it as a meta to [node]'s meta collection. */
+        /**
+         * Looks up the index of the variable and adds it as a meta to [node]'s meta collection.
+         *
+         * note that this method is invoked to rewrite the metas of `demo_ast.expr.variable` and that this
+         * class isn't constructing new instances of `demo_ast.expr.variable` at all.  That's all being done
+         * by the base class.  Constructing new nodes was a significant overhead of working with the old
+         * `AstRewriterBase` class.
+         */
         override fun visit_expr_variable_metas(node: demo_ast.expr.variable): MetaContainer =
             node.metas + metaContainerOf(INDEX_META_KEY to findIndex(node.symbol0.text))
 
