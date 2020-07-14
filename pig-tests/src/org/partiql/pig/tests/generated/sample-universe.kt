@@ -11510,3 +11510,487 @@ class partiql_basic_nameless private constructor() {
     }
 }
 
+class demo_ast private constructor() {
+    /////////////////////////////////////////////////////////////////////////////
+    // Builder
+    /////////////////////////////////////////////////////////////////////////////
+    companion object {
+        fun <T: demo_ast_node> build(block: builder.() -> T) =
+            builder.block()
+    
+        fun transform(element: AnyElement): demo_ast_node =
+            transform(element.asSexp())
+    
+        fun transform(element: SexpElement): demo_ast_node =
+            Transformer().transform(element)
+    }
+    
+    object builder {
+        // Variants for Sum: operator 
+        fun plus(
+            metas: MetaContainer = emptyMetaContainer()
+        ): operator =
+            operator.plus(
+                metas = metas)
+        
+        
+        fun minus(
+            metas: MetaContainer = emptyMetaContainer()
+        ): operator =
+            operator.minus(
+                metas = metas)
+        
+        
+        fun mul(
+            metas: MetaContainer = emptyMetaContainer()
+        ): operator =
+            operator.mul(
+                metas = metas)
+        
+        
+        fun div(
+            metas: MetaContainer = emptyMetaContainer()
+        ): operator =
+            operator.div(
+                metas = metas)
+        
+        
+        // Variants for Sum: expr 
+        fun literal(
+            int0: Long,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            expr.literal(
+                int0 = int0.asPrimitive(),
+                metas = metas)
+        
+        fun literal_(
+            int0: LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            expr.literal(
+                int0 = int0,
+                metas = metas)
+        
+        
+        fun variable(
+            symbol0: String,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            expr.variable(
+                symbol0 = symbol0.asPrimitive(),
+                metas = metas)
+        
+        fun variable_(
+            symbol0: SymbolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            expr.variable(
+                symbol0 = symbol0,
+                metas = metas)
+        
+        
+        fun apply(
+            operator0: operator,
+            expr1: expr,
+            expr2: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            expr.apply(
+                operator0 = operator0,
+                expr1 = expr1,
+                expr2 = expr2,
+                metas = metas)
+        
+        
+        fun let(
+            symbol0: String,
+            expr1: expr,
+            expr2: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            expr.let(
+                symbol0 = symbol0.asPrimitive(),
+                expr1 = expr1,
+                expr2 = expr2,
+                metas = metas)
+        
+        fun let_(
+            symbol0: SymbolPrimitive,
+            expr1: expr,
+            expr2: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            expr.let(
+                symbol0 = symbol0,
+                expr1 = expr1,
+                expr2 = expr2,
+                metas = metas)
+    }
+    
+    /** Base class for all demo_ast types. */
+    abstract class demo_ast_node : DomainNode {
+        override fun toString() = toIonElement().toString()
+        abstract override fun withMeta(key: String, value: Any): demo_ast_node
+        abstract override fun toIonElement(): SexpElement
+    }
+    
+    
+    
+    /////////////////////////////////////////////////////////////////////////////
+    // Sum Types
+    /////////////////////////////////////////////////////////////////////////////
+    
+    sealed class operator : demo_ast_node() {
+    
+        class plus(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): operator() {
+        
+            override fun withMeta(key: String, value: Any): plus =
+                plus(
+                    metas = metas + metaContainerOf(key to value))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("plus"),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != plus::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1000
+        }
+    
+        class minus(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): operator() {
+        
+            override fun withMeta(key: String, value: Any): minus =
+                minus(
+                    metas = metas + metaContainerOf(key to value))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("minus"),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != minus::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1001
+        }
+    
+        class mul(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): operator() {
+        
+            override fun withMeta(key: String, value: Any): mul =
+                mul(
+                    metas = metas + metaContainerOf(key to value))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("mul"),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != mul::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1002
+        }
+    
+        class div(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): operator() {
+        
+            override fun withMeta(key: String, value: Any): div =
+                div(
+                    metas = metas + metaContainerOf(key to value))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("div"),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != div::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1003
+        }
+    
+    }
+    
+    sealed class expr : demo_ast_node() {
+    
+        class literal(
+            val int0: LongPrimitive,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(key: String, value: Any): literal =
+                literal(
+                    int0 = int0,
+                    metas = metas + metaContainerOf(key to value))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("literal"),
+                    int0.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != literal::class.java) return false
+        
+                other as literal
+                if (int0 != other.int0) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = int0.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class variable(
+            val symbol0: SymbolPrimitive,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(key: String, value: Any): variable =
+                variable(
+                    symbol0 = symbol0,
+                    metas = metas + metaContainerOf(key to value))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("variable"),
+                    symbol0.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != variable::class.java) return false
+        
+                other as variable
+                if (symbol0 != other.symbol0) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = symbol0.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class apply(
+            val operator0: operator,
+            val expr1: expr,
+            val expr2: expr,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(key: String, value: Any): apply =
+                apply(
+                    operator0 = operator0,
+                    expr1 = expr1,
+                    expr2 = expr2,
+                    metas = metas + metaContainerOf(key to value))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("apply"),
+                    operator0.toIonElement(),
+                    expr1.toIonElement(),
+                    expr2.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != apply::class.java) return false
+        
+                other as apply
+                if (operator0 != other.operator0) return false
+                if (expr1 != other.expr1) return false
+                if (expr2 != other.expr2) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = operator0.hashCode()
+                hc = 31 * hc + expr1.hashCode()
+                hc = 31 * hc + expr2.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class let(
+            val symbol0: SymbolPrimitive,
+            val expr1: expr,
+            val expr2: expr,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(key: String, value: Any): let =
+                let(
+                    symbol0 = symbol0,
+                    expr1 = expr1,
+                    expr2 = expr2,
+                    metas = metas + metaContainerOf(key to value))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("let"),
+                    symbol0.toIonElement(),
+                    expr1.toIonElement(),
+                    expr2.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != let::class.java) return false
+        
+                other as let
+                if (symbol0 != other.symbol0) return false
+                if (expr1 != other.expr1) return false
+                if (expr2 != other.expr2) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = symbol0.hashCode()
+                hc = 31 * hc + expr1.hashCode()
+                hc = 31 * hc + expr2.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////
+    // Transformer
+    /////////////////////////////////////////////////////////////////////////////
+    
+    
+    private class Transformer : IonElementTransformerBase<demo_ast_node>() {
+    
+        override fun innerTransform(sexp: SexpElement): demo_ast_node {
+            return when(sexp.tag) {
+                //////////////////////////////////////
+                // Variants for Sum Type 'operator'
+                //////////////////////////////////////
+                "plus" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    operator.plus(
+                        metas = sexp.metas)
+                }
+                "minus" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    operator.minus(
+                        metas = sexp.metas)
+                }
+                "mul" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    operator.mul(
+                        metas = sexp.metas)
+                }
+                "div" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    operator.div(
+                        metas = sexp.metas)
+                }
+                //////////////////////////////////////
+                // Variants for Sum Type 'expr'
+                //////////////////////////////////////
+                "literal" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 1))
+                    val int0 = sexp.getRequired(0).toLongPrimitive()
+                    expr.literal(
+                        int0,
+                        metas = sexp.metas)
+                }
+                "variable" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 1))
+                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
+                    expr.variable(
+                        symbol0,
+                        metas = sexp.metas)
+                }
+                "apply" -> {
+                    sexp.requireArityOrMalformed(IntRange(3, 3))
+                    val operator0 = sexp.getRequired(0).transformExpect<operator>()
+                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
+                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
+                    expr.apply(
+                        operator0,
+                        expr1,
+                        expr2,
+                        metas = sexp.metas)
+                }
+                "let" -> {
+                    sexp.requireArityOrMalformed(IntRange(3, 3))
+                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
+                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
+                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
+                    expr.let(
+                        symbol0,
+                        expr1,
+                        expr2,
+                        metas = sexp.metas)
+                }
+                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'demo_ast'")
+            }
+        }
+    }
+}
+

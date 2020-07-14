@@ -219,3 +219,13 @@
       (exclude id)
       (include (id int)))))
 
+
+(define demo_ast
+    (domain
+        (sum operator (plus) (minus) (mul) (div))
+        (sum expr
+            (literal int)
+            (variable symbol)
+            (apply operator expr expr)
+            (let symbol expr expr))))
+
