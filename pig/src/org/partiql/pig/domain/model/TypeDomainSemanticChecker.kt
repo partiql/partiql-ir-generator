@@ -55,11 +55,8 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
             }
 
             when (dataType) {
-                is DataType.Tuple -> { /* no validation needed */
-                    when (dataType.tupleType) {
-                        TupleType.PRODUCT -> { /* ok, we allow this */}
-                        TupleType.RECORD -> collectRecordNames(dataType)
-                    }
+                is DataType.Tuple -> {
+                    collectRecordNames(dataType)
                 }
                 is DataType.Sum -> {
                     dataType.variants.forEach { variant ->

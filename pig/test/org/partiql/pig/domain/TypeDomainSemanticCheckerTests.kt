@@ -163,9 +163,13 @@ class TypeDomainSemanticCheckerTests {
             TestCase("(define some_domain (domain (sum some_sum (record a_variant (some_field int) (some_field int)))))",
                      makeErr(1, 78, SemanticErrorContext.DuplicateRecordElementName("some_field"))),
 
-            // Duplicate record element name within same record type
+            // Duplicate record element name
             TestCase("(define some_domain (domain (record some_record (some_field int) (some_field int))))",
                      makeErr(1, 66, SemanticErrorContext.DuplicateRecordElementName("some_field"))),
+
+            // Duplicate product element name
+            TestCase("(define some_domain (domain (product some_product (some_field int) (some_field int))))",
+                     makeErr(1, 68, SemanticErrorContext.DuplicateRecordElementName("some_field"))),
 
             // Record with no fields
             TestCase("(define some_domain (domain (record some_record)))",
