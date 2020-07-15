@@ -98,9 +98,7 @@ transformation code.
 
 ### Generated Kotlin Domain Model Sample
 
-See the sample generated code [here](pig-tests/src/org/partiql/pig/tests/generated/sample-universe.kt)
-
-```
+See the sample generated code [here](pig-tests/src/org/partiql/pig/tests/generated/sample-universe.kt).
 
 ### Typical Use Of Generated Domain Models
 
