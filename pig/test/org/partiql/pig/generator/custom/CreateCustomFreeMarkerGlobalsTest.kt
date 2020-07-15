@@ -34,7 +34,7 @@ class CreateCustomFreeMarkerGlobalsTest {
             TypeUniverse(
                 listOf(
                     TypeDomain(
-                        name = "test_domain",
+                        tag = "test_domain",
                         userTypes = listOf(
                             DataType.Tuple(
                                 tag = "foo",

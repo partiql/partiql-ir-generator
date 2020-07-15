@@ -28,13 +28,19 @@ import org.partiql.pig.domain.model.TypeDomain
 data class KTypeUniverse(val domains: List<KTypeDomain>)
 
 data class KTypeDomain(
-    val name: String,
+    /** The name of the type domain in the generated Kotlin code. .*/
+    val kotlinName: String,
+    /** The name of the type domain as defined in the type universe. */
+    val tag: String,
     val tuples: List<KTuple>,
     val sums: List<KSum>
 )
 
 data class KProperty(
-    val name: String,
+    /** The name of the property in the generated Kotlin code. .*/
+    val kotlinName: String,
+    /** The name of the property s-exp representation and as defined in the type universe.. */
+    val tag: String,
     val type: String,
     val isVariadic: Boolean,
     val isNullable: Boolean,
@@ -42,26 +48,29 @@ data class KProperty(
 )
 
 data class KParameter(
-    val name: String,
+    val kotlinName: String,
     val type: String,
     val defaultValue: String?,
     val isVariadic: Boolean
 )
 
 data class KConstructorArgument(
-    val name: String,
+    val kotlinName: String,
     val value: String
 )
 
 
 data class KBuilderFunction(
-    val name: String,
+    val kotlinName: String,
     val parameters: List<KParameter>,
     val constructorArguments: List<KConstructorArgument>
 )
 
 data class KTuple(
-    val name: String,
+    /** The name of the tuple in the Kotlin code. */
+    val kotlinName: String,
+    /** The name of the tuple in the s-exp representation and as defined in the type universe. */
+    val tag: String,
     val constructorName: String,
     val superClass: String,
     val properties: List<KProperty>,
@@ -72,7 +81,7 @@ data class KTuple(
 )
 
 data class KSum(
-    val name: String,
+    val kotlinName: String,
     val superClass: String,
     val variants: List<KTuple>
 )

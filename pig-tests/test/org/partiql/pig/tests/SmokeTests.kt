@@ -20,20 +20,20 @@ import com.amazon.ionelement.api.ionInt
 import com.amazon.ionelement.api.ionNull
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.partiql.pig.tests.generated.partiql_basic
-import org.partiql.pig.tests.generated.toy_lang
+import org.partiql.pig.tests.generated.PartiqlBasic
+import org.partiql.pig.tests.generated.ToyLang
 
 class SmokeTests {
 
     @Test
     fun toy_lang_test() {
-        val node = toy_lang.build {
+        val node = ToyLang.build {
             plus(variable("foo"), lit(ionInt(42)), lit(ionNull(ElementType.STRING)))
         }
 
         val expectedIonElement = node.toIonElement()
 
-        val roundTrippedNode = toy_lang.transform(expectedIonElement)
+        val roundTrippedNode = ToyLang.transform(expectedIonElement)
 
         val roundTrippedElement = roundTrippedNode.toIonElement()
         assertEquals(expectedIonElement, roundTrippedElement)
@@ -41,17 +41,17 @@ class SmokeTests {
 
     @Test
     fun partiql_basic_test() {
-        val node = partiql_basic.build {
+        val node = PartiqlBasic.build {
             select(
                 all(),
-                project_list(
-                    project_expr(
+                projectList(
+                    projectExpr(
                         plus(
                             lit(ionInt(1)),
                             lit(ionInt(41))),
                         "select_alias")),
                 scan(
-                    id("foo", case_sensitive(), unqualified()),
+                    id("foo", caseSensitive(), unqualified()),
                     "as_foo",
                     "at_foo",
                     "by_foo"))
@@ -59,7 +59,7 @@ class SmokeTests {
 
         val expectedIiv = node.toIonElement()
 
-        val roundTrippedNode = partiql_basic.transform(expectedIiv)
+        val roundTrippedNode = PartiqlBasic.transform(expectedIiv)
 
         val roundTrippedIiv = roundTrippedNode.toIonElement()
 

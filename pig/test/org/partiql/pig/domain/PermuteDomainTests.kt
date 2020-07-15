@@ -65,7 +65,7 @@ class PermuteDomainTests {
         val concretes = td.computeTypeDomains()
 
         // Fist we perform some basic assertions on the concrete domain
-        val concreteDomain = concretes.single { it.name == "test_domain" }
+        val concreteDomain = concretes.single { it.tag == "test_domain" }
 
         // In the original domain, the `pair` type consists of two ions
         val ionPair = concreteDomain.types.single { it.tag == "pair" } as DataType.Tuple
@@ -80,7 +80,7 @@ class PermuteDomainTests {
         assertEquals(1, thing.variants.filter { it.tag == "c"}.size)
 
         // Then we verify the permuted domain
-        val permutedDomain = concretes.single { it.name == "permuted_domain" }
+        val permutedDomain = concretes.single { it.tag == "permuted_domain" }
         // Permute domain still has 3 types of test_domain + 1 more
         assertEquals(4, permutedDomain.userTypes.size)
         assertTrue(permutedDomain.types.map { it.tag }.containsAll(listOf("pair", "thing", "other_pair", "new_pair")))

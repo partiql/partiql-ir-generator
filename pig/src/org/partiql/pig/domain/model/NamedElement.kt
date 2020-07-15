@@ -22,10 +22,10 @@ import com.amazon.ionelement.api.ionSymbol
 /**
  * An element of a product or record.
  *
- * For products whose elements do not have names, the [name] field should be synthesized by the
+ * For products whose elements do not have names, the [tag] field should be synthesized by the
  * instantiator.
  */
-class NamedElement(val name: String, val typeReference: TypeRef, val metas: MetaContainer) {
+class NamedElement(val tag: String, val typeReference: TypeRef, val metas: MetaContainer) {
 
     /**
      * Generates an s-expression representation of this [NamedElement].
@@ -35,6 +35,6 @@ class NamedElement(val name: String, val typeReference: TypeRef, val metas: Meta
      */
     fun toIonElement() =
         ionSexpOf(
-            ionSymbol(name),
+            ionSymbol(tag),
             typeReference.toIonElement())
 }

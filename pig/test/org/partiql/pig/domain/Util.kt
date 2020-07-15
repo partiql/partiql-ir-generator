@@ -54,14 +54,14 @@ fun Statement.toIonElement(): IonElement =
             is TypeDomain ->
                 ionSexpOf(
                     ionSymbol("define"),
-                    ionSymbol(name),
+                    ionSymbol(tag),
                     ionSexpOf(
                         ionSymbol("domain"),
                         *userTypes.map { it.toIonElement() }.toTypedArray()))
             is PermutedDomain ->
                 ionSexpOf(
                         ionSymbol("define"),
-                        ionSymbol(name),
+                        ionSymbol(tag),
                         ionSexpOf(
                             listOf(
                                 ionSymbol("permute_domain"),

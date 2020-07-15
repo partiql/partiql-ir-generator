@@ -109,6 +109,35 @@
     ))
 
 
+// A domain where every identifier is contains multiple words to excercise
+// naming convention conversion code.  Mainly, this is to test to make sure
+// the resulting code compiles.  All the variations of required, optional and
+// variadic fields *should* make sure we get better branch coverage in
+// KTypeDomainConverter.
+(define multi_word_domain
+    (domain
+        (product aaa_aaa)
+        (product aaa_aab (d_field (? int)))
+        (product aaa_aac (d_field (? int)) (e_field (? symbol)))
+        (product aaa_aad (d_field (* int 0)))
+        (product aaa_aae (d_field (* int 2)))
+
+        (product aab_aaa (b_field int) (c_field symbol))
+        (product aab_aab (b_field int) (c_field symbol) (d_field (? int)))
+        (product aab_aac (b_field int) (c_field symbol) (d_field (? int)) (e_field (? symbol)))
+        (product aab_aad (b_field int) (c_field symbol) (d_field (* int 0)))
+        (product aab_aae (b_field int) (c_field symbol) (d_field (* int 2)))
+
+        (sum sss_ttt
+            (product lll (u_field int))
+            (product mmm (v_field symbol)))
+
+        (sum sss_ttu
+            (product nnn (u_field aaa_aaa))
+            (product ooo (v_field aaa_aab)))
+        ))
+
+
 // This is an incomplete AST definition for PartiQL to show what a more complex domain definition will look like.
 // Other than being incomplete, this differs from the V0 AST:  the names/tags are *unique* as outlined in Pig's
 // README.md

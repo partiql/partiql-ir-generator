@@ -17,7 +17,11 @@ package org.partiql.pig.generator
 
 import freemarker.template.Configuration
 import freemarker.template.TemplateExceptionHandler
+import freemarker.template.TemplateMethodModelEx
+import freemarker.template.TemplateModelException
 import org.partiql.pig.generator.kotlin.KotlinFreeMarkerGlobals
+import org.partiql.pig.util.snakeToCamelCase
+import org.partiql.pig.util.snakeToPascalCase
 
 
 /**
@@ -62,7 +66,30 @@ internal fun createDefaultFreeMarkerConfiguration(): Configuration {
 
     // Exposes the `indent` directive we use to make indenting parts of the result easier.
     cfg.setSharedVariable("indent", IndentDirective())
+    cfg.setSharedVariable("snakeToCamelCase", SnakeToCamelCaseTemplateMethod())
+    cfg.setSharedVariable("snakeToPascalCase", SnakeToPascalCaseTemplateMethod())
     return cfg
 }
 
+class SnakeToPascalCaseTemplateMethod : TemplateMethodModelEx {
+    override fun exec(arguments: MutableList<Any?>?): Any {
+        arguments!!
+        checkArguments(arguments)
+        return arguments[0].toString().snakeToPascalCase()
+    }
+}
 
+class SnakeToCamelCaseTemplateMethod : TemplateMethodModelEx {
+    override fun exec(arguments: MutableList<Any?>?): Any {
+        arguments!!
+        checkArguments(arguments)
+        return arguments[0].toString().snakeToCamelCase()
+    }
+
+}
+private fun checkArguments(arguments: MutableList<Any?>) {
+    if (arguments.size != 1) {
+        throw TemplateModelException(
+            "Incorrect number of arguments, expected 1 but was supplied with ${arguments.size}")
+    }
+}
