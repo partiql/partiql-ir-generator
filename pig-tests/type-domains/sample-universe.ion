@@ -1,4 +1,30 @@
 
+// This is an "AST" for a simple hypothetical language named "Toy".
+// Toy has literals, variables, basic arithmetic and functions that accept a single argument.
+(define toy_lang
+ (domain
+   (sum expr
+    (product lit (value ion))
+    (product variable (name symbol))
+    (product not (expr expr))
+    (product plus (operands (* expr 2)))
+    (product minus (operands (* expr 2)))
+    (product times (operands (* expr 2)))
+    (product divide (operands (* expr 2)))
+    (product modulo (operands (* expr 2)))
+    (product call (name symbol) (operands expr))
+    (product let (name symbol) (value expr) (body expr))
+    (product function (var_name symbol) (body expr)))))
+
+// Define another type domain which extends "toy_lang" by removing named variables and adding DeBruijn indices:
+
+(define toy_lang_nameless
+  (permute_domain toy_lang
+    (with expr
+      (exclude variable let)
+      (include
+        (product variable (index int))
+        (product let (index int) (value expr) (body expr))))))
 
 /*
     `test_domain` covers all of the following equivalence classes and is included to test the serializers and
@@ -26,89 +52,62 @@
 
  (define test_domain
     (domain
-        (product int_pair int int)
-        (product symbol_pair symbol symbol)
-        (product ion_pair ion ion)
+        (product int_pair (first int) (second int))
+        (product symbol_pair (first symbol) (second symbol))
+        (product ion_pair (first ion) (second ion))
 
-        (product int_symbol_pair int symbol)
-        (product symbol_int_pair symbol int)
-        (product ion_int_pair ion int)
-        (product ion_symbol_pair ion ion)
+        (product int_symbol_pair (first int) (second symbol))
+        (product symbol_int_pair (first symbol) (second int))
+        (product ion_int_pair (firs  ion) (second int))
+        (product ion_symbol_pair (firs  ion) (second ion))
 
-        (product int_pair_pair int_pair int_pair)
-        (product symbol_pair_pair symbol_pair symbol_pair)
-        (product ion_pair_pair ion_pair ion_pair)
+        (product int_pair_pair (first int_pair) (second int_pair))
+        (product symbol_pair_pair (first symbol_pair) (second symbol_pair))
+        (product ion_pair_pair (first ion_pair) (second ion_pair))
 
-        (product recursive_pair int (? recursive_pair))
+        (product recursive_pair (first int) (second (? recursive_pair)))
 
-        (sum answer (no) (yes))
+        (sum answer (product no) (product yes))
 
-        (product answer_pair answer answer)
-        (product answer_int_pair answer int)
-        (product int_answer_pair int answer)
-        (product symbol_answer_pair symbol answer)
-        (product answer_symbol_pair answer symbol)
+        (product answer_pair (first answer) (second answer))
+        (product answer_int_pair (first answer) (second int))
+        (product int_answer_pair (first int) (second answer))
+        (product symbol_answer_pair (first symbol) (second answer))
+        (product answer_symbol_pair (first answer) (second symbol))
 
-        (product variadic_min_0 (* int 0 ))
-        (product variadic_min_1 (* int 1 ))
-        (product element_variadic symbol (* int 0 ))
+        (product variadic_min_0 (ints (* int 0 )))
+        (product variadic_min_1 (ints (* int 1 )))
+        (product element_variadic (name symbol) (ints (* int 0 )))
 
-        (product optional_1 (? int))
-        (product optional_2 (? int) (? int))
+        (product optional_1 (value (? int)))
+        (product optional_2 (first (? int)) (second (? int)))
 
         (record domain_level_record
             (some_field int)
             (another_field symbol)
             (optional_field (? int)))
 
-        (product product_with_record int domain_level_record)
+        (product product_with_record (value int) (dlr domain_level_record))
         (sum sum_with_record
-            (variant_with_record int domain_level_record))
+            (product variant_with_record (value int) (dlr domain_level_record)))
 
         (sum entity
             // Slugs are not uniquely identified.
-            (slug)
+            (product slug)
             // Androids are identified by serial number.
-            (android int)
+            (product android (id int))
 
             // Uniquely identifying humans a bit more is complex and requires a record.
-            (human (first_name symbol)          // required
+            (record human (first_name symbol)          // required
                    //TODO: variadic record fields are not currently supported in records.
                    // (middle_names (* symbol 0))  // variadic
                    (last_name symbol)           // required
                    (title (? symbol))           // optional
                    (parent (? entity))))        // recursive
 
-        (product entity_pair entity entity)
+        (product entity_pair (first entity) (second entity))
     ))
 
-// This is an "AST" for a simple hypothetical language named "Toy".
-// Toy has literals, variables, basic arithmetic and functions that accept a single argument.
-
-(define toy_lang
- (domain
-   (sum expr
-    (lit ion)
-    (variable symbol)
-    (not expr)
-    (plus (* expr 2))
-    (minus (* expr 2))
-    (times (* expr 2))
-    (divide (* expr 2))
-    (modulo (* expr 2))
-    (call symbol expr)
-    (let symbol expr expr)
-    (function symbol expr))))
-
-// Define another type domain which extends "toy_lang" by removing named variables and adding DeBruijn indices:
-
-(define toy_lang_nameless
-  (permute_domain toy_lang
-    (with expr
-      (exclude variable let)
-      (include
-        (variable int)
-        (let int expr expr)))))
 
 // This is an incomplete AST definition for PartiQL to show what a more complex domain definition will look like.
 // Other than being incomplete, this differs from the V0 AST:  the names/tags are *unique* as outlined in Pig's
@@ -117,79 +116,80 @@
 (define partiql_basic
   (domain
     (sum projection
-      (project_list (* project_item 1))
-      (project_value expr))
+      (product project_list (items (* project_item 1)))
+      (product project_value (value expr)))
 
     (sum project_item
-      (project_all)
-      (project_expr expr (? symbol)))
+      (product project_all)
+      (product project_expr (value expr) (as_alias (? symbol))))
 
     (sum join_type
-      (inner)
-      (left)
-      (right)
-      (outer))
+      (product inner)
+      (product left)
+      (product right)
+      (product outer))
 
     (sum from_source
-      (scan expr (? symbol) (? symbol) (? symbol))
-      (join join_type from_source from_source (? expr)))
+      (product scan (expr expr) (as_alias (? symbol)) (at_alias (? symbol)) (by_alias (? symbol)))
+      (product join (type join_type) (left from_source) (right from_source) (predicate (? expr))))
 
-    (product expr_pair expr expr)
+    (product expr_pair (first expr) (second expr))
 
-    (product group_by_item expr (? symbol))
+    (product group_by_item (value expr) (as_alias (? symbol)))
 
     (product group_by_list
-      (* group_by_item 1))
+      (items (* group_by_item 1)))
 
     (product group_by
-      group_by_list
-      (? symbol))  // group as alias
+      (items group_by_list)
+      (group_as_alias (? symbol)))  // group as alias
 
     (sum case_sensitivity
-      (case_sensitive)
-      (case_insensitive))
+      (product case_sensitive)
+      (product case_insensitive))
 
     (sum scope_qualifier
-      (unqualified)
-      (qualified))
+      (product unqualified)
+      (product qualified))
 
     (sum set_quantifier
-      (all)
-      (distinct))
+      (product all)
+      (product distinct))
 
     (sum path_element
-      (path_expr expr)
-      (path_wildcard)
-      (path_unpivot))
+      (product path_expr (expr expr))
+      (product path_wildcard)
+      (product path_unpivot))
 
     (sum expr
       // Basic Expressions
-      (lit ion)
-      (id symbol case_sensitivity scope_qualifier)
-      (parameter int)
-      (not expr)
-      (plus (* expr 2))
-      (minus (* expr 2))
-      (times (* expr 2))
-      (divide (* expr 2))
-      (modulo (* expr 2))
-      (concat (* expr 2))
-      (like expr expr expr)
-      (between expr expr expr)
-      (path expr (* path_element 1))
-      (call symbol (* expr 1))
-      (call_agg symbol set_quantifier expr)
+      (product lit (value ion))
+      (product id (name symbol) (case case_sensitivity) (scope_qualifier scope_qualifier))
+      (product parameter (index int))
+      (product not (expr expr))
+      (product plus (operands (* expr 2)))
+      (product minus (operands (* expr 2)))
+      (product times (operands (* expr 2)))
+      (product divide (operands (* expr 2)))
+      (product modulo (operands (* expr 2)))
+      (product concat (operands (* expr 2)))
+
+      (product like (left expr) (right expr) (escape expr))
+      (product between (value expr) (from expr) (to expr))
+      (product path (root expr) (elements (* path_element 1)))
+      (product call (name symbol) (args (* expr 1)))
+      (product call_agg (name symbol) (set_quantifier arg::expr))
 
      // Case Statements
-      (simple_case expr (* expr_pair 1))
-      (searched_case (* expr_pair 1))
+      (product simple_case (value expr) (branches (* expr_pair 1)))
+      (product searched_case (branches (* expr_pair 1)))
 
      // Value Constructors
-      (struct (* expr_pair 0))
-      (bag (* expr 0))
-      (list (* expr 0))
+      (product struct (fields (* expr_pair 0)))
+      (product bag (values (* expr 0)))
+      (product list (values (* expr 0)))
 
-     (select
+     (record select
       (setq (? set_quantifier))
       (project projection)
       (from from_source)
@@ -200,22 +200,4 @@
     ) // end domain
  ) // end define
 
-(define partiql_algebra
-  (permute_domain partiql_basic
-    (exclude projection project_item)
-    (include
-      (product tuple_field symbol))
-    (with expr
-      (exclude select)
-      (include
-       (filter expr expr)
-       (construct_value from_source)
-       (construct_tuple from_source (* tuple_field 1))
-     ))))
-
-(define partiql_basic_nameless
-  (permute_domain partiql_algebra
-    (with expr
-      (exclude id)
-      (include (id int)))))
 

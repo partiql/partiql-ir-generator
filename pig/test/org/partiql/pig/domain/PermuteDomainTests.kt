@@ -40,24 +40,24 @@ class PermuteDomainTests {
         val typeUniverseWithExtensions = """        
         (define test_domain
             (domain 
-                (product pair ion ion)
-                (product other_pair symbol symbol)
+                (product pair (first ion) (second ion))
+                (product other_pair (a symbol) (b symbol))
                 (sum thing
-                    (a pair)
-                    (b symbol)
-                    (c int))))
+                    (product a (x pair))
+                    (product b (y symbol))
+                    (product c (z int)))))
 
         (define permuted_domain 
             (permute_domain test_domain
                 (exclude pair)
                 (include
-                    (product pair int int)
-                    (product new_pair symbol int))
+                    (product pair (x int) (y int))
+                    (product new_pair (z symbol) (n int)))
                 (with thing
                     (exclude a)
                     (include
-                        (d pair)
-                        (e symbol)))))
+                        (product d (foo pair))
+                        (product e (bar symbol))))))
         """
 
         val td: TypeUniverse = IonReaderBuilder.standard().build(typeUniverseWithExtensions).use { parseTypeUniverse(it) }

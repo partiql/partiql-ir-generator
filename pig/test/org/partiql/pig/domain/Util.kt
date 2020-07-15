@@ -49,33 +49,38 @@ fun TypeUniverse.toIonElement(): IonElement =
         *statements.map { it.toIonElement() }.toTypedArray())
 
 
-fun Statement.toIonElement(): IonElement = when(this) {
-    is TypeDomain ->
-        ionSexpOf(
-            ionSymbol("domain"),
-            ionSymbol(name),
-            *userTypes.map { it.toIonElement() }.toTypedArray())
-    is PermutedDomain ->
-        ionSexpOf(
-            ionSymbol("permute_domain"),
-            ionSymbol(permutesDomain),
-            ionSexpOf(
-                ionSymbol("exclude"),
-                *excludedTypes.map { ionSymbol(it) }.toTypedArray()),
-            ionSexpOf(
-                ionSymbol("include"),
-                *includedTypes.map { it.toIonElement() }.toTypedArray()),
-            ionSexpOf(
-                ionSymbol("with"),
-                *permutedSums.map { it.toIonElement() }.toTypedArray()))
-}
+fun Statement.toIonElement(): IonElement =
+        when(this) {
+            is TypeDomain ->
+                ionSexpOf(
+                    ionSymbol("define"),
+                    ionSymbol(name),
+                    ionSexpOf(
+                        ionSymbol("domain"),
+                        *userTypes.map { it.toIonElement() }.toTypedArray()))
+            is PermutedDomain ->
+                ionSexpOf(
+                        ionSymbol("define"),
+                        ionSymbol(name),
+                        ionSexpOf(
+                            listOf(
+                                ionSymbol("permute_domain"),
+                                ionSymbol(permutesDomain),
+                                ionSexpOf(
+                                    ionSymbol("exclude"),
+                                    *excludedTypes.map { ionSymbol(it) }.toTypedArray()),
+                                ionSexpOf(
+                                    ionSymbol("include"),
+                                    *includedTypes.map { it.toIonElement() }.toTypedArray())
+                        ) + permutedSums.map { it.toIonElement() }))
+        }
 
 fun PermutedSum.toIonElement(): IonElement =
     ionSexpOf(
-        ionSymbol("permuted_sum"),
+        ionSymbol("with"),
         ionSymbol(tag),
         ionSexpOf(
-            ionSymbol("remove"),
+            ionSymbol("exclude"),
             *removedVariants.map { ionSymbol(it) }.toTypedArray()),
         ionSexpOf(
             ionSymbol("include"),

@@ -11,6 +11,1506 @@ import javax.annotation.*
 import com.amazon.ionelement.api.*
 import org.partiql.pig.runtime.*
 
+class toy_lang private constructor() {
+    /////////////////////////////////////////////////////////////////////////////
+    // Builder
+    /////////////////////////////////////////////////////////////////////////////
+    companion object {
+        fun <T: toy_lang_node> build(block: builder.() -> T) =
+            builder.block()
+    
+        fun transform(element: AnyElement): toy_lang_node =
+            transform(element.asSexp())
+    
+        fun transform(element: SexpElement): toy_lang_node =
+            Transformer().transform(element)
+    }
+    
+    object builder {
+        // Variants for Sum: expr 
+        fun lit(
+            value: IonElement,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.lit(
+                value = value,
+                metas = metas)
+        
+        
+        fun variable(
+            name: String,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.variable(
+                name = name.asPrimitive(),
+                metas = metas)
+        
+        fun variable_(
+            name: SymbolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.variable(
+                name = name,
+                metas = metas)
+        
+        
+        fun not(
+            expr: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.not(
+                expr = expr,
+                metas = metas)
+        
+        
+        fun plus(
+            operands: List<expr>,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.plus(
+                operands = operands,
+                metas = metas)
+        
+        fun plus(
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.plus(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
+                metas = metas)
+        
+        
+        fun minus(
+            operands: List<expr>,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.minus(
+                operands = operands,
+                metas = metas)
+        
+        fun minus(
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.minus(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
+                metas = metas)
+        
+        
+        fun times(
+            operands: List<expr>,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.times(
+                operands = operands,
+                metas = metas)
+        
+        fun times(
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.times(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
+                metas = metas)
+        
+        
+        fun divide(
+            operands: List<expr>,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.divide(
+                operands = operands,
+                metas = metas)
+        
+        fun divide(
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.divide(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
+                metas = metas)
+        
+        
+        fun modulo(
+            operands: List<expr>,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.modulo(
+                operands = operands,
+                metas = metas)
+        
+        fun modulo(
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.modulo(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
+                metas = metas)
+        
+        
+        fun call(
+            name: String,
+            operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.call(
+                name = name.asPrimitive(),
+                operands = operands,
+                metas = metas)
+        
+        fun call_(
+            name: SymbolPrimitive,
+            operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.call(
+                name = name,
+                operands = operands,
+                metas = metas)
+        
+        
+        fun let(
+            name: String,
+            value: expr,
+            body: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.let(
+                name = name.asPrimitive(),
+                value = value,
+                body = body,
+                metas = metas)
+        
+        fun let_(
+            name: SymbolPrimitive,
+            value: expr,
+            body: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.let(
+                name = name,
+                value = value,
+                body = body,
+                metas = metas)
+        
+        
+        fun function(
+            var_name: String,
+            body: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.function(
+                var_name = var_name.asPrimitive(),
+                body = body,
+                metas = metas)
+        
+        fun function_(
+            var_name: SymbolPrimitive,
+            body: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang.expr.function(
+                var_name = var_name,
+                body = body,
+                metas = metas)
+    }
+    
+    /** Base class for all toy_lang types. */
+    abstract class toy_lang_node : DomainNode {
+        override fun toString() = toIonElement().toString()
+        abstract override fun withMeta(metaKey: String, metaValue: Any): toy_lang_node
+        abstract override fun toIonElement(): SexpElement
+    }
+    
+    
+    
+    /////////////////////////////////////////////////////////////////////////////
+    // Sum Types
+    /////////////////////////////////////////////////////////////////////////////
+    
+    sealed class expr : toy_lang_node() {
+    
+        class lit(
+            val value: IonElement,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): lit =
+                lit(
+                    value = value,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("lit"),
+                    value.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != lit::class.java) return false
+        
+                other as lit
+                if (value != other.value) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = value.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class variable(
+            val name: SymbolPrimitive,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): variable =
+                variable(
+                    name = name,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("variable"),
+                    name.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != variable::class.java) return false
+        
+                other as variable
+                if (name != other.name) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = name.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class not(
+            val expr: expr,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): not =
+                not(
+                    expr = expr,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("not"),
+                    expr.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != not::class.java) return false
+        
+                other as not
+                if (expr != other.expr) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = expr.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class plus(
+            val operands: List<expr>,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): plus =
+                plus(
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("plus"),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != plus::class.java) return false
+        
+                other as plus
+                if (operands != other.operands) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = operands.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class minus(
+            val operands: List<expr>,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): minus =
+                minus(
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("minus"),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != minus::class.java) return false
+        
+                other as minus
+                if (operands != other.operands) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = operands.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class times(
+            val operands: List<expr>,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): times =
+                times(
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("times"),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != times::class.java) return false
+        
+                other as times
+                if (operands != other.operands) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = operands.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class divide(
+            val operands: List<expr>,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): divide =
+                divide(
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("divide"),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != divide::class.java) return false
+        
+                other as divide
+                if (operands != other.operands) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = operands.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class modulo(
+            val operands: List<expr>,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): modulo =
+                modulo(
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("modulo"),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != modulo::class.java) return false
+        
+                other as modulo
+                if (operands != other.operands) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = operands.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class call(
+            val name: SymbolPrimitive,
+            val operands: expr,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): call =
+                call(
+                    name = name,
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("call"),
+                    name.toIonElement(),
+                    operands.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != call::class.java) return false
+        
+                other as call
+                if (name != other.name) return false
+                if (operands != other.operands) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = name.hashCode()
+                hc = 31 * hc + operands.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class let(
+            val name: SymbolPrimitive,
+            val value: expr,
+            val body: expr,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): let =
+                let(
+                    name = name,
+                    value = value,
+                    body = body,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("let"),
+                    name.toIonElement(),
+                    value.toIonElement(),
+                    body.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != let::class.java) return false
+        
+                other as let
+                if (name != other.name) return false
+                if (value != other.value) return false
+                if (body != other.body) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = name.hashCode()
+                hc = 31 * hc + value.hashCode()
+                hc = 31 * hc + body.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class function(
+            val var_name: SymbolPrimitive,
+            val body: expr,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): function =
+                function(
+                    var_name = var_name,
+                    body = body,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("function"),
+                    var_name.toIonElement(),
+                    body.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != function::class.java) return false
+        
+                other as function
+                if (var_name != other.var_name) return false
+                if (body != other.body) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = var_name.hashCode()
+                hc = 31 * hc + body.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////
+    // Transformer
+    /////////////////////////////////////////////////////////////////////////////
+    
+    
+    private class Transformer : IonElementTransformerBase<toy_lang_node>() {
+    
+        override fun innerTransform(sexp: SexpElement): toy_lang_node {
+            return when(sexp.tag) {
+                //////////////////////////////////////
+                // Variants for Sum Type 'expr'
+                //////////////////////////////////////
+                "lit" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 1))
+                    val value = sexp.getRequiredIon(0)
+                    toy_lang.expr.lit(
+                        value,
+                        metas = sexp.metas)
+                }
+                "variable" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 1))
+                    val name = sexp.getRequired(0).toSymbolPrimitive()
+                    toy_lang.expr.variable(
+                        name,
+                        metas = sexp.metas)
+                }
+                "not" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 1))
+                    val expr = sexp.getRequired(0).transformExpect<expr>()
+                    toy_lang.expr.not(
+                        expr,
+                        metas = sexp.metas)
+                }
+                "plus" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    toy_lang.expr.plus(
+                        operands,
+                        metas = sexp.metas)
+                }
+                "minus" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    toy_lang.expr.minus(
+                        operands,
+                        metas = sexp.metas)
+                }
+                "times" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    toy_lang.expr.times(
+                        operands,
+                        metas = sexp.metas)
+                }
+                "divide" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    toy_lang.expr.divide(
+                        operands,
+                        metas = sexp.metas)
+                }
+                "modulo" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    toy_lang.expr.modulo(
+                        operands,
+                        metas = sexp.metas)
+                }
+                "call" -> {
+                    sexp.requireArityOrMalformed(IntRange(2, 2))
+                    val name = sexp.getRequired(0).toSymbolPrimitive()
+                    val operands = sexp.getRequired(1).transformExpect<expr>()
+                    toy_lang.expr.call(
+                        name,
+                        operands,
+                        metas = sexp.metas)
+                }
+                "let" -> {
+                    sexp.requireArityOrMalformed(IntRange(3, 3))
+                    val name = sexp.getRequired(0).toSymbolPrimitive()
+                    val value = sexp.getRequired(1).transformExpect<expr>()
+                    val body = sexp.getRequired(2).transformExpect<expr>()
+                    toy_lang.expr.let(
+                        name,
+                        value,
+                        body,
+                        metas = sexp.metas)
+                }
+                "function" -> {
+                    sexp.requireArityOrMalformed(IntRange(2, 2))
+                    val var_name = sexp.getRequired(0).toSymbolPrimitive()
+                    val body = sexp.getRequired(1).transformExpect<expr>()
+                    toy_lang.expr.function(
+                        var_name,
+                        body,
+                        metas = sexp.metas)
+                }
+                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'toy_lang'")
+            }
+        }
+    }
+}
+
+class toy_lang_nameless private constructor() {
+    /////////////////////////////////////////////////////////////////////////////
+    // Builder
+    /////////////////////////////////////////////////////////////////////////////
+    companion object {
+        fun <T: toy_lang_nameless_node> build(block: builder.() -> T) =
+            builder.block()
+    
+        fun transform(element: AnyElement): toy_lang_nameless_node =
+            transform(element.asSexp())
+    
+        fun transform(element: SexpElement): toy_lang_nameless_node =
+            Transformer().transform(element)
+    }
+    
+    object builder {
+        // Variants for Sum: expr 
+        fun lit(
+            value: IonElement,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.lit(
+                value = value,
+                metas = metas)
+        
+        
+        fun not(
+            expr: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.not(
+                expr = expr,
+                metas = metas)
+        
+        
+        fun plus(
+            operands: List<expr>,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.plus(
+                operands = operands,
+                metas = metas)
+        
+        fun plus(
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.plus(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
+                metas = metas)
+        
+        
+        fun minus(
+            operands: List<expr>,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.minus(
+                operands = operands,
+                metas = metas)
+        
+        fun minus(
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.minus(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
+                metas = metas)
+        
+        
+        fun times(
+            operands: List<expr>,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.times(
+                operands = operands,
+                metas = metas)
+        
+        fun times(
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.times(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
+                metas = metas)
+        
+        
+        fun divide(
+            operands: List<expr>,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.divide(
+                operands = operands,
+                metas = metas)
+        
+        fun divide(
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.divide(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
+                metas = metas)
+        
+        
+        fun modulo(
+            operands: List<expr>,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.modulo(
+                operands = operands,
+                metas = metas)
+        
+        fun modulo(
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.modulo(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
+                metas = metas)
+        
+        
+        fun call(
+            name: String,
+            operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.call(
+                name = name.asPrimitive(),
+                operands = operands,
+                metas = metas)
+        
+        fun call_(
+            name: SymbolPrimitive,
+            operands: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.call(
+                name = name,
+                operands = operands,
+                metas = metas)
+        
+        
+        fun function(
+            var_name: String,
+            body: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.function(
+                var_name = var_name.asPrimitive(),
+                body = body,
+                metas = metas)
+        
+        fun function_(
+            var_name: SymbolPrimitive,
+            body: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.function(
+                var_name = var_name,
+                body = body,
+                metas = metas)
+        
+        
+        fun variable(
+            index: Long,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.variable(
+                index = index.asPrimitive(),
+                metas = metas)
+        
+        fun variable_(
+            index: LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.variable(
+                index = index,
+                metas = metas)
+        
+        
+        fun let(
+            index: Long,
+            value: expr,
+            body: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.let(
+                index = index.asPrimitive(),
+                value = value,
+                body = body,
+                metas = metas)
+        
+        fun let_(
+            index: LongPrimitive,
+            value: expr,
+            body: expr,
+            metas: MetaContainer = emptyMetaContainer()
+        ): expr =
+            toy_lang_nameless.expr.let(
+                index = index,
+                value = value,
+                body = body,
+                metas = metas)
+    }
+    
+    /** Base class for all toy_lang_nameless types. */
+    abstract class toy_lang_nameless_node : DomainNode {
+        override fun toString() = toIonElement().toString()
+        abstract override fun withMeta(metaKey: String, metaValue: Any): toy_lang_nameless_node
+        abstract override fun toIonElement(): SexpElement
+    }
+    
+    
+    
+    /////////////////////////////////////////////////////////////////////////////
+    // Sum Types
+    /////////////////////////////////////////////////////////////////////////////
+    
+    sealed class expr : toy_lang_nameless_node() {
+    
+        class lit(
+            val value: IonElement,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): lit =
+                lit(
+                    value = value,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("lit"),
+                    value.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != lit::class.java) return false
+        
+                other as lit
+                if (value != other.value) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = value.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class not(
+            val expr: expr,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): not =
+                not(
+                    expr = expr,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("not"),
+                    expr.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != not::class.java) return false
+        
+                other as not
+                if (expr != other.expr) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = expr.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class plus(
+            val operands: List<expr>,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): plus =
+                plus(
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("plus"),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != plus::class.java) return false
+        
+                other as plus
+                if (operands != other.operands) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = operands.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class minus(
+            val operands: List<expr>,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): minus =
+                minus(
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("minus"),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != minus::class.java) return false
+        
+                other as minus
+                if (operands != other.operands) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = operands.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class times(
+            val operands: List<expr>,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): times =
+                times(
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("times"),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != times::class.java) return false
+        
+                other as times
+                if (operands != other.operands) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = operands.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class divide(
+            val operands: List<expr>,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): divide =
+                divide(
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("divide"),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != divide::class.java) return false
+        
+                other as divide
+                if (operands != other.operands) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = operands.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class modulo(
+            val operands: List<expr>,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): modulo =
+                modulo(
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("modulo"),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != modulo::class.java) return false
+        
+                other as modulo
+                if (operands != other.operands) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = operands.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class call(
+            val name: SymbolPrimitive,
+            val operands: expr,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): call =
+                call(
+                    name = name,
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("call"),
+                    name.toIonElement(),
+                    operands.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != call::class.java) return false
+        
+                other as call
+                if (name != other.name) return false
+                if (operands != other.operands) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = name.hashCode()
+                hc = 31 * hc + operands.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class function(
+            val var_name: SymbolPrimitive,
+            val body: expr,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): function =
+                function(
+                    var_name = var_name,
+                    body = body,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("function"),
+                    var_name.toIonElement(),
+                    body.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != function::class.java) return false
+        
+                other as function
+                if (var_name != other.var_name) return false
+                if (body != other.body) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = var_name.hashCode()
+                hc = 31 * hc + body.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class variable(
+            val index: LongPrimitive,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): variable =
+                variable(
+                    index = index,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("variable"),
+                    index.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != variable::class.java) return false
+        
+                other as variable
+                if (index != other.index) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = index.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class let(
+            val index: LongPrimitive,
+            val value: expr,
+            val body: expr,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): expr() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): let =
+                let(
+                    index = index,
+                    value = value,
+                    body = body,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("let"),
+                    index.toIonElement(),
+                    value.toIonElement(),
+                    body.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != let::class.java) return false
+        
+                other as let
+                if (index != other.index) return false
+                if (value != other.value) return false
+                if (body != other.body) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = index.hashCode()
+                hc = 31 * hc + value.hashCode()
+                hc = 31 * hc + body.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////
+    // Transformer
+    /////////////////////////////////////////////////////////////////////////////
+    
+    
+    private class Transformer : IonElementTransformerBase<toy_lang_nameless_node>() {
+    
+        override fun innerTransform(sexp: SexpElement): toy_lang_nameless_node {
+            return when(sexp.tag) {
+                //////////////////////////////////////
+                // Variants for Sum Type 'expr'
+                //////////////////////////////////////
+                "lit" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 1))
+                    val value = sexp.getRequiredIon(0)
+                    toy_lang_nameless.expr.lit(
+                        value,
+                        metas = sexp.metas)
+                }
+                "not" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 1))
+                    val expr = sexp.getRequired(0).transformExpect<expr>()
+                    toy_lang_nameless.expr.not(
+                        expr,
+                        metas = sexp.metas)
+                }
+                "plus" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    toy_lang_nameless.expr.plus(
+                        operands,
+                        metas = sexp.metas)
+                }
+                "minus" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    toy_lang_nameless.expr.minus(
+                        operands,
+                        metas = sexp.metas)
+                }
+                "times" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    toy_lang_nameless.expr.times(
+                        operands,
+                        metas = sexp.metas)
+                }
+                "divide" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    toy_lang_nameless.expr.divide(
+                        operands,
+                        metas = sexp.metas)
+                }
+                "modulo" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    toy_lang_nameless.expr.modulo(
+                        operands,
+                        metas = sexp.metas)
+                }
+                "call" -> {
+                    sexp.requireArityOrMalformed(IntRange(2, 2))
+                    val name = sexp.getRequired(0).toSymbolPrimitive()
+                    val operands = sexp.getRequired(1).transformExpect<expr>()
+                    toy_lang_nameless.expr.call(
+                        name,
+                        operands,
+                        metas = sexp.metas)
+                }
+                "function" -> {
+                    sexp.requireArityOrMalformed(IntRange(2, 2))
+                    val var_name = sexp.getRequired(0).toSymbolPrimitive()
+                    val body = sexp.getRequired(1).transformExpect<expr>()
+                    toy_lang_nameless.expr.function(
+                        var_name,
+                        body,
+                        metas = sexp.metas)
+                }
+                "variable" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 1))
+                    val index = sexp.getRequired(0).toLongPrimitive()
+                    toy_lang_nameless.expr.variable(
+                        index,
+                        metas = sexp.metas)
+                }
+                "let" -> {
+                    sexp.requireArityOrMalformed(IntRange(3, 3))
+                    val index = sexp.getRequired(0).toLongPrimitive()
+                    val value = sexp.getRequired(1).transformExpect<expr>()
+                    val body = sexp.getRequired(2).transformExpect<expr>()
+                    toy_lang_nameless.expr.let(
+                        index,
+                        value,
+                        body,
+                        metas = sexp.metas)
+                }
+                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'toy_lang_nameless'")
+            }
+        }
+    }
+}
+
 class test_domain private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     // Builder
@@ -29,425 +1529,425 @@ class test_domain private constructor() {
     object builder {
                 // Tuples
         fun int_pair(
-            int0: Long,
-            int1: Long,
+            first: Long,
+            second: Long,
             metas: MetaContainer = emptyMetaContainer()
         ): int_pair =
             test_domain.int_pair(
-                int0 = int0.asPrimitive(),
-                int1 = int1.asPrimitive(),
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
                 metas = metas)
         
         fun int_pair_(
-            int0: LongPrimitive,
-            int1: LongPrimitive,
+            first: LongPrimitive,
+            second: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): int_pair =
             test_domain.int_pair(
-                int0 = int0,
-                int1 = int1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun symbol_pair(
-            symbol0: String,
-            symbol1: String,
+            first: String,
+            second: String,
             metas: MetaContainer = emptyMetaContainer()
         ): symbol_pair =
             test_domain.symbol_pair(
-                symbol0 = symbol0.asPrimitive(),
-                symbol1 = symbol1.asPrimitive(),
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
                 metas = metas)
         
         fun symbol_pair_(
-            symbol0: SymbolPrimitive,
-            symbol1: SymbolPrimitive,
+            first: SymbolPrimitive,
+            second: SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): symbol_pair =
             test_domain.symbol_pair(
-                symbol0 = symbol0,
-                symbol1 = symbol1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun ion_pair(
-            ion0: IonElement,
-            ion1: IonElement,
+            first: IonElement,
+            second: IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): ion_pair =
             test_domain.ion_pair(
-                ion0 = ion0,
-                ion1 = ion1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun int_symbol_pair(
-            int0: Long,
-            symbol1: String,
+            first: Long,
+            second: String,
             metas: MetaContainer = emptyMetaContainer()
         ): int_symbol_pair =
             test_domain.int_symbol_pair(
-                int0 = int0.asPrimitive(),
-                symbol1 = symbol1.asPrimitive(),
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
                 metas = metas)
         
         fun int_symbol_pair_(
-            int0: LongPrimitive,
-            symbol1: SymbolPrimitive,
+            first: LongPrimitive,
+            second: SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): int_symbol_pair =
             test_domain.int_symbol_pair(
-                int0 = int0,
-                symbol1 = symbol1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun symbol_int_pair(
-            symbol0: String,
-            int1: Long,
+            first: String,
+            second: Long,
             metas: MetaContainer = emptyMetaContainer()
         ): symbol_int_pair =
             test_domain.symbol_int_pair(
-                symbol0 = symbol0.asPrimitive(),
-                int1 = int1.asPrimitive(),
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
                 metas = metas)
         
         fun symbol_int_pair_(
-            symbol0: SymbolPrimitive,
-            int1: LongPrimitive,
+            first: SymbolPrimitive,
+            second: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): symbol_int_pair =
             test_domain.symbol_int_pair(
-                symbol0 = symbol0,
-                int1 = int1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun ion_int_pair(
-            ion0: IonElement,
-            int1: Long,
+            firs: IonElement,
+            second: Long,
             metas: MetaContainer = emptyMetaContainer()
         ): ion_int_pair =
             test_domain.ion_int_pair(
-                ion0 = ion0,
-                int1 = int1.asPrimitive(),
+                firs = firs,
+                second = second.asPrimitive(),
                 metas = metas)
         
         fun ion_int_pair_(
-            ion0: IonElement,
-            int1: LongPrimitive,
+            firs: IonElement,
+            second: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): ion_int_pair =
             test_domain.ion_int_pair(
-                ion0 = ion0,
-                int1 = int1,
+                firs = firs,
+                second = second,
                 metas = metas)
         
         
         fun ion_symbol_pair(
-            ion0: IonElement,
-            ion1: IonElement,
+            firs: IonElement,
+            second: IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): ion_symbol_pair =
             test_domain.ion_symbol_pair(
-                ion0 = ion0,
-                ion1 = ion1,
+                firs = firs,
+                second = second,
                 metas = metas)
         
         
         fun int_pair_pair(
-            int_pair0: int_pair,
-            int_pair1: int_pair,
+            first: int_pair,
+            second: int_pair,
             metas: MetaContainer = emptyMetaContainer()
         ): int_pair_pair =
             test_domain.int_pair_pair(
-                int_pair0 = int_pair0,
-                int_pair1 = int_pair1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun symbol_pair_pair(
-            symbol_pair0: symbol_pair,
-            symbol_pair1: symbol_pair,
+            first: symbol_pair,
+            second: symbol_pair,
             metas: MetaContainer = emptyMetaContainer()
         ): symbol_pair_pair =
             test_domain.symbol_pair_pair(
-                symbol_pair0 = symbol_pair0,
-                symbol_pair1 = symbol_pair1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun ion_pair_pair(
-            ion_pair0: ion_pair,
-            ion_pair1: ion_pair,
+            first: ion_pair,
+            second: ion_pair,
             metas: MetaContainer = emptyMetaContainer()
         ): ion_pair_pair =
             test_domain.ion_pair_pair(
-                ion_pair0 = ion_pair0,
-                ion_pair1 = ion_pair1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun recursive_pair(
-            int0: Long,
-            recursive_pair1: recursive_pair? = null,
+            first: Long,
+            second: recursive_pair? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): recursive_pair =
             test_domain.recursive_pair(
-                int0 = int0.asPrimitive(),
-                recursive_pair1 = recursive_pair1,
+                first = first.asPrimitive(),
+                second = second,
                 metas = metas)
         
         fun recursive_pair_(
-            int0: LongPrimitive,
-            recursive_pair1: recursive_pair? = null,
+            first: LongPrimitive,
+            second: recursive_pair? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): recursive_pair =
             test_domain.recursive_pair(
-                int0 = int0,
-                recursive_pair1 = recursive_pair1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun answer_pair(
-            answer0: answer,
-            answer1: answer,
+            first: answer,
+            second: answer,
             metas: MetaContainer = emptyMetaContainer()
         ): answer_pair =
             test_domain.answer_pair(
-                answer0 = answer0,
-                answer1 = answer1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun answer_int_pair(
-            answer0: answer,
-            int1: Long,
+            first: answer,
+            second: Long,
             metas: MetaContainer = emptyMetaContainer()
         ): answer_int_pair =
             test_domain.answer_int_pair(
-                answer0 = answer0,
-                int1 = int1.asPrimitive(),
+                first = first,
+                second = second.asPrimitive(),
                 metas = metas)
         
         fun answer_int_pair_(
-            answer0: answer,
-            int1: LongPrimitive,
+            first: answer,
+            second: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): answer_int_pair =
             test_domain.answer_int_pair(
-                answer0 = answer0,
-                int1 = int1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun int_answer_pair(
-            int0: Long,
-            answer1: answer,
+            first: Long,
+            second: answer,
             metas: MetaContainer = emptyMetaContainer()
         ): int_answer_pair =
             test_domain.int_answer_pair(
-                int0 = int0.asPrimitive(),
-                answer1 = answer1,
+                first = first.asPrimitive(),
+                second = second,
                 metas = metas)
         
         fun int_answer_pair_(
-            int0: LongPrimitive,
-            answer1: answer,
+            first: LongPrimitive,
+            second: answer,
             metas: MetaContainer = emptyMetaContainer()
         ): int_answer_pair =
             test_domain.int_answer_pair(
-                int0 = int0,
-                answer1 = answer1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun symbol_answer_pair(
-            symbol0: String,
-            answer1: answer,
+            first: String,
+            second: answer,
             metas: MetaContainer = emptyMetaContainer()
         ): symbol_answer_pair =
             test_domain.symbol_answer_pair(
-                symbol0 = symbol0.asPrimitive(),
-                answer1 = answer1,
+                first = first.asPrimitive(),
+                second = second,
                 metas = metas)
         
         fun symbol_answer_pair_(
-            symbol0: SymbolPrimitive,
-            answer1: answer,
+            first: SymbolPrimitive,
+            second: answer,
             metas: MetaContainer = emptyMetaContainer()
         ): symbol_answer_pair =
             test_domain.symbol_answer_pair(
-                symbol0 = symbol0,
-                answer1 = answer1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun answer_symbol_pair(
-            answer0: answer,
-            symbol1: String,
+            first: answer,
+            second: String,
             metas: MetaContainer = emptyMetaContainer()
         ): answer_symbol_pair =
             test_domain.answer_symbol_pair(
-                answer0 = answer0,
-                symbol1 = symbol1.asPrimitive(),
+                first = first,
+                second = second.asPrimitive(),
                 metas = metas)
         
         fun answer_symbol_pair_(
-            answer0: answer,
-            symbol1: SymbolPrimitive,
+            first: answer,
+            second: SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): answer_symbol_pair =
             test_domain.answer_symbol_pair(
-                answer0 = answer0,
-                symbol1 = symbol1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun variadic_min_0(
-            int0: List<Long>,
+            ints: List<Long>,
             metas: MetaContainer = emptyMetaContainer()
         ): variadic_min_0 =
             test_domain.variadic_min_0(
-                int0 = int0.map { it.asPrimitive() },
+                ints = ints.map { it.asPrimitive() },
                 metas = metas)
         
         fun variadic_min_0_(
-            int0: List<LongPrimitive>,
+            ints: List<LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
         ): variadic_min_0 =
             test_domain.variadic_min_0(
-                int0 = int0,
+                ints = ints,
                 metas = metas)
         
         fun variadic_min_0(
-            vararg int0: Long,
+            vararg ints: Long,
             metas: MetaContainer = emptyMetaContainer()
         ): variadic_min_0 =
             test_domain.variadic_min_0(
-                int0 = int0.map { it.asPrimitive() },
+                ints = ints.map { it.asPrimitive() },
                 metas = metas)
         
         fun variadic_min_0_(
-            vararg int0: LongPrimitive,
+            vararg ints: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): variadic_min_0 =
             test_domain.variadic_min_0(
-                int0 = int0.toList(),
+                ints = ints.toList(),
                 metas = metas)
         
         
         fun variadic_min_1(
-            int0: List<Long>,
+            ints: List<Long>,
             metas: MetaContainer = emptyMetaContainer()
         ): variadic_min_1 =
             test_domain.variadic_min_1(
-                int0 = int0.map { it.asPrimitive() },
+                ints = ints.map { it.asPrimitive() },
                 metas = metas)
         
         fun variadic_min_1_(
-            int0: List<LongPrimitive>,
+            ints: List<LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
         ): variadic_min_1 =
             test_domain.variadic_min_1(
-                int0 = int0,
+                ints = ints,
                 metas = metas)
         
         fun variadic_min_1(
-            int0_required_0: Long,
-            vararg int0: Long,
+            ints_required_0: Long,
+            vararg ints: Long,
             metas: MetaContainer = emptyMetaContainer()
         ): variadic_min_1 =
             test_domain.variadic_min_1(
-                int0 = listOfPrimitives(int0_required_0) + int0.map { it.asPrimitive() },
+                ints = listOfPrimitives(ints_required_0) + ints.map { it.asPrimitive() },
                 metas = metas)
         
         fun variadic_min_1_(
-            int0_required_0: LongPrimitive,
-            vararg int0: LongPrimitive,
+            ints_required_0: LongPrimitive,
+            vararg ints: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): variadic_min_1 =
             test_domain.variadic_min_1(
-                int0 = listOfPrimitives(int0_required_0) + int0.toList(),
+                ints = listOfPrimitives(ints_required_0) + ints.toList(),
                 metas = metas)
         
         
         fun element_variadic(
-            symbol0: String,
-            int1: List<Long>,
+            name: String,
+            ints: List<Long>,
             metas: MetaContainer = emptyMetaContainer()
         ): element_variadic =
             test_domain.element_variadic(
-                symbol0 = symbol0.asPrimitive(),
-                int1 = int1.map { it.asPrimitive() },
+                name = name.asPrimitive(),
+                ints = ints.map { it.asPrimitive() },
                 metas = metas)
         
         fun element_variadic_(
-            symbol0: SymbolPrimitive,
-            int1: List<LongPrimitive>,
+            name: SymbolPrimitive,
+            ints: List<LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
         ): element_variadic =
             test_domain.element_variadic(
-                symbol0 = symbol0,
-                int1 = int1,
+                name = name,
+                ints = ints,
                 metas = metas)
         
         fun element_variadic(
-            symbol0: String,
-            vararg int1: Long,
+            name: String,
+            vararg ints: Long,
             metas: MetaContainer = emptyMetaContainer()
         ): element_variadic =
             test_domain.element_variadic(
-                symbol0 = symbol0.asPrimitive(),
-                int1 = int1.map { it.asPrimitive() },
+                name = name.asPrimitive(),
+                ints = ints.map { it.asPrimitive() },
                 metas = metas)
         
         fun element_variadic_(
-            symbol0: SymbolPrimitive,
-            vararg int1: LongPrimitive,
+            name: SymbolPrimitive,
+            vararg ints: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): element_variadic =
             test_domain.element_variadic(
-                symbol0 = symbol0,
-                int1 = int1.toList(),
+                name = name,
+                ints = ints.toList(),
                 metas = metas)
         
         
         fun optional_1(
-            int0: Long? = null,
+            value: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): optional_1 =
             test_domain.optional_1(
-                int0 = int0?.asPrimitive(),
+                value = value?.asPrimitive(),
                 metas = metas)
         
         fun optional_1_(
-            int0: LongPrimitive? = null,
+            value: LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): optional_1 =
             test_domain.optional_1(
-                int0 = int0,
+                value = value,
                 metas = metas)
         
         
         fun optional_2(
-            int0: Long? = null,
-            int1: Long? = null,
+            first: Long? = null,
+            second: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): optional_2 =
             test_domain.optional_2(
-                int0 = int0?.asPrimitive(),
-                int1 = int1?.asPrimitive(),
+                first = first?.asPrimitive(),
+                second = second?.asPrimitive(),
                 metas = metas)
         
         fun optional_2_(
-            int0: LongPrimitive? = null,
-            int1: LongPrimitive? = null,
+            first: LongPrimitive? = null,
+            second: LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): optional_2 =
             test_domain.optional_2(
-                int0 = int0,
-                int1 = int1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
@@ -477,34 +1977,34 @@ class test_domain private constructor() {
         
         
         fun product_with_record(
-            int0: Long,
-            domain_level_record1: domain_level_record,
+            value: Long,
+            dlr: domain_level_record,
             metas: MetaContainer = emptyMetaContainer()
         ): product_with_record =
             test_domain.product_with_record(
-                int0 = int0.asPrimitive(),
-                domain_level_record1 = domain_level_record1,
+                value = value.asPrimitive(),
+                dlr = dlr,
                 metas = metas)
         
         fun product_with_record_(
-            int0: LongPrimitive,
-            domain_level_record1: domain_level_record,
+            value: LongPrimitive,
+            dlr: domain_level_record,
             metas: MetaContainer = emptyMetaContainer()
         ): product_with_record =
             test_domain.product_with_record(
-                int0 = int0,
-                domain_level_record1 = domain_level_record1,
+                value = value,
+                dlr = dlr,
                 metas = metas)
         
         
         fun entity_pair(
-            entity0: entity,
-            entity1: entity,
+            first: entity,
+            second: entity,
             metas: MetaContainer = emptyMetaContainer()
         ): entity_pair =
             test_domain.entity_pair(
-                entity0 = entity0,
-                entity1 = entity1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
@@ -512,36 +2012,36 @@ class test_domain private constructor() {
         fun no(
             metas: MetaContainer = emptyMetaContainer()
         ): answer =
-            answer.no(
+            test_domain.answer.no(
                 metas = metas)
         
         
         fun yes(
             metas: MetaContainer = emptyMetaContainer()
         ): answer =
-            answer.yes(
+            test_domain.answer.yes(
                 metas = metas)
         
         
         // Variants for Sum: sum_with_record 
         fun variant_with_record(
-            int0: Long,
-            domain_level_record1: domain_level_record,
+            value: Long,
+            dlr: domain_level_record,
             metas: MetaContainer = emptyMetaContainer()
         ): sum_with_record =
-            sum_with_record.variant_with_record(
-                int0 = int0.asPrimitive(),
-                domain_level_record1 = domain_level_record1,
+            test_domain.sum_with_record.variant_with_record(
+                value = value.asPrimitive(),
+                dlr = dlr,
                 metas = metas)
         
         fun variant_with_record_(
-            int0: LongPrimitive,
-            domain_level_record1: domain_level_record,
+            value: LongPrimitive,
+            dlr: domain_level_record,
             metas: MetaContainer = emptyMetaContainer()
         ): sum_with_record =
-            sum_with_record.variant_with_record(
-                int0 = int0,
-                domain_level_record1 = domain_level_record1,
+            test_domain.sum_with_record.variant_with_record(
+                value = value,
+                dlr = dlr,
                 metas = metas)
         
         
@@ -549,24 +2049,24 @@ class test_domain private constructor() {
         fun slug(
             metas: MetaContainer = emptyMetaContainer()
         ): entity =
-            entity.slug(
+            test_domain.entity.slug(
                 metas = metas)
         
         
         fun android(
-            int0: Long,
+            id: Long,
             metas: MetaContainer = emptyMetaContainer()
         ): entity =
-            entity.android(
-                int0 = int0.asPrimitive(),
+            test_domain.entity.android(
+                id = id.asPrimitive(),
                 metas = metas)
         
         fun android_(
-            int0: LongPrimitive,
+            id: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): entity =
-            entity.android(
-                int0 = int0,
+            test_domain.entity.android(
+                id = id,
                 metas = metas)
         
         
@@ -577,7 +2077,7 @@ class test_domain private constructor() {
             parent: entity? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): entity =
-            entity.human(
+            test_domain.entity.human(
                 first_name = first_name.asPrimitive(),
                 last_name = last_name.asPrimitive(),
                 title = title?.asPrimitive(),
@@ -591,7 +2091,7 @@ class test_domain private constructor() {
             parent: entity? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): entity =
-            entity.human(
+            test_domain.entity.human(
                 first_name = first_name,
                 last_name = last_name,
                 title = title,
@@ -602,7 +2102,7 @@ class test_domain private constructor() {
     /** Base class for all test_domain types. */
     abstract class test_domain_node : DomainNode {
         override fun toString() = toIonElement().toString()
-        abstract override fun withMeta(key: String, value: Any): test_domain_node
+        abstract override fun withMeta(metaKey: String, metaValue: Any): test_domain_node
         abstract override fun toIonElement(): SexpElement
     }
     
@@ -611,22 +2111,22 @@ class test_domain private constructor() {
     // Tuple Types
     /////////////////////////////////////////////////////////////////////////////
     class int_pair(
-        val int0: LongPrimitive,
-        val int1: LongPrimitive,
+        val first: LongPrimitive,
+        val second: LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): int_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): int_pair =
             int_pair(
-                int0 = int0,
-                int1 = int1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("int_pair"),
-                int0.toIonElement(),
-                int1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -637,14 +2137,14 @@ class test_domain private constructor() {
             if (other.javaClass != int_pair::class.java) return false
     
             other as int_pair
-            if (int0 != other.int0) return false
-            if (int1 != other.int1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = int0.hashCode()
-            hc = 31 * hc + int1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -652,22 +2152,22 @@ class test_domain private constructor() {
     }
     
     class symbol_pair(
-        val symbol0: SymbolPrimitive,
-        val symbol1: SymbolPrimitive,
+        val first: SymbolPrimitive,
+        val second: SymbolPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): symbol_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): symbol_pair =
             symbol_pair(
-                symbol0 = symbol0,
-                symbol1 = symbol1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("symbol_pair"),
-                symbol0.toIonElement(),
-                symbol1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -678,14 +2178,14 @@ class test_domain private constructor() {
             if (other.javaClass != symbol_pair::class.java) return false
     
             other as symbol_pair
-            if (symbol0 != other.symbol0) return false
-            if (symbol1 != other.symbol1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = symbol0.hashCode()
-            hc = 31 * hc + symbol1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -693,22 +2193,22 @@ class test_domain private constructor() {
     }
     
     class ion_pair(
-        val ion0: IonElement,
-        val ion1: IonElement,
+        val first: IonElement,
+        val second: IonElement,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): ion_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): ion_pair =
             ion_pair(
-                ion0 = ion0,
-                ion1 = ion1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("ion_pair"),
-                ion0.toIonElement(),
-                ion1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -719,14 +2219,14 @@ class test_domain private constructor() {
             if (other.javaClass != ion_pair::class.java) return false
     
             other as ion_pair
-            if (ion0 != other.ion0) return false
-            if (ion1 != other.ion1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = ion0.hashCode()
-            hc = 31 * hc + ion1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -734,22 +2234,22 @@ class test_domain private constructor() {
     }
     
     class int_symbol_pair(
-        val int0: LongPrimitive,
-        val symbol1: SymbolPrimitive,
+        val first: LongPrimitive,
+        val second: SymbolPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): int_symbol_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): int_symbol_pair =
             int_symbol_pair(
-                int0 = int0,
-                symbol1 = symbol1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("int_symbol_pair"),
-                int0.toIonElement(),
-                symbol1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -760,14 +2260,14 @@ class test_domain private constructor() {
             if (other.javaClass != int_symbol_pair::class.java) return false
     
             other as int_symbol_pair
-            if (int0 != other.int0) return false
-            if (symbol1 != other.symbol1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = int0.hashCode()
-            hc = 31 * hc + symbol1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -775,22 +2275,22 @@ class test_domain private constructor() {
     }
     
     class symbol_int_pair(
-        val symbol0: SymbolPrimitive,
-        val int1: LongPrimitive,
+        val first: SymbolPrimitive,
+        val second: LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): symbol_int_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): symbol_int_pair =
             symbol_int_pair(
-                symbol0 = symbol0,
-                int1 = int1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("symbol_int_pair"),
-                symbol0.toIonElement(),
-                int1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -801,14 +2301,14 @@ class test_domain private constructor() {
             if (other.javaClass != symbol_int_pair::class.java) return false
     
             other as symbol_int_pair
-            if (symbol0 != other.symbol0) return false
-            if (int1 != other.int1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = symbol0.hashCode()
-            hc = 31 * hc + int1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -816,22 +2316,22 @@ class test_domain private constructor() {
     }
     
     class ion_int_pair(
-        val ion0: IonElement,
-        val int1: LongPrimitive,
+        val firs: IonElement,
+        val second: LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): ion_int_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): ion_int_pair =
             ion_int_pair(
-                ion0 = ion0,
-                int1 = int1,
-                metas = metas + metaContainerOf(key to value))
+                firs = firs,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("ion_int_pair"),
-                ion0.toIonElement(),
-                int1.toIonElement(),
+                firs.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -842,14 +2342,14 @@ class test_domain private constructor() {
             if (other.javaClass != ion_int_pair::class.java) return false
     
             other as ion_int_pair
-            if (ion0 != other.ion0) return false
-            if (int1 != other.int1) return false
+            if (firs != other.firs) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = ion0.hashCode()
-            hc = 31 * hc + int1.hashCode()
+            var hc = firs.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -857,22 +2357,22 @@ class test_domain private constructor() {
     }
     
     class ion_symbol_pair(
-        val ion0: IonElement,
-        val ion1: IonElement,
+        val firs: IonElement,
+        val second: IonElement,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): ion_symbol_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): ion_symbol_pair =
             ion_symbol_pair(
-                ion0 = ion0,
-                ion1 = ion1,
-                metas = metas + metaContainerOf(key to value))
+                firs = firs,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("ion_symbol_pair"),
-                ion0.toIonElement(),
-                ion1.toIonElement(),
+                firs.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -883,14 +2383,14 @@ class test_domain private constructor() {
             if (other.javaClass != ion_symbol_pair::class.java) return false
     
             other as ion_symbol_pair
-            if (ion0 != other.ion0) return false
-            if (ion1 != other.ion1) return false
+            if (firs != other.firs) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = ion0.hashCode()
-            hc = 31 * hc + ion1.hashCode()
+            var hc = firs.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -898,22 +2398,22 @@ class test_domain private constructor() {
     }
     
     class int_pair_pair(
-        val int_pair0: int_pair,
-        val int_pair1: int_pair,
+        val first: int_pair,
+        val second: int_pair,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): int_pair_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): int_pair_pair =
             int_pair_pair(
-                int_pair0 = int_pair0,
-                int_pair1 = int_pair1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("int_pair_pair"),
-                int_pair0.toIonElement(),
-                int_pair1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -924,14 +2424,14 @@ class test_domain private constructor() {
             if (other.javaClass != int_pair_pair::class.java) return false
     
             other as int_pair_pair
-            if (int_pair0 != other.int_pair0) return false
-            if (int_pair1 != other.int_pair1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = int_pair0.hashCode()
-            hc = 31 * hc + int_pair1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -939,22 +2439,22 @@ class test_domain private constructor() {
     }
     
     class symbol_pair_pair(
-        val symbol_pair0: symbol_pair,
-        val symbol_pair1: symbol_pair,
+        val first: symbol_pair,
+        val second: symbol_pair,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): symbol_pair_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): symbol_pair_pair =
             symbol_pair_pair(
-                symbol_pair0 = symbol_pair0,
-                symbol_pair1 = symbol_pair1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("symbol_pair_pair"),
-                symbol_pair0.toIonElement(),
-                symbol_pair1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -965,14 +2465,14 @@ class test_domain private constructor() {
             if (other.javaClass != symbol_pair_pair::class.java) return false
     
             other as symbol_pair_pair
-            if (symbol_pair0 != other.symbol_pair0) return false
-            if (symbol_pair1 != other.symbol_pair1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = symbol_pair0.hashCode()
-            hc = 31 * hc + symbol_pair1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -980,22 +2480,22 @@ class test_domain private constructor() {
     }
     
     class ion_pair_pair(
-        val ion_pair0: ion_pair,
-        val ion_pair1: ion_pair,
+        val first: ion_pair,
+        val second: ion_pair,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): ion_pair_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): ion_pair_pair =
             ion_pair_pair(
-                ion_pair0 = ion_pair0,
-                ion_pair1 = ion_pair1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("ion_pair_pair"),
-                ion_pair0.toIonElement(),
-                ion_pair1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -1006,14 +2506,14 @@ class test_domain private constructor() {
             if (other.javaClass != ion_pair_pair::class.java) return false
     
             other as ion_pair_pair
-            if (ion_pair0 != other.ion_pair0) return false
-            if (ion_pair1 != other.ion_pair1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = ion_pair0.hashCode()
-            hc = 31 * hc + ion_pair1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -1021,22 +2521,22 @@ class test_domain private constructor() {
     }
     
     class recursive_pair(
-        val int0: LongPrimitive,
-        val recursive_pair1: recursive_pair?,
+        val first: LongPrimitive,
+        val second: recursive_pair?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): recursive_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): recursive_pair =
             recursive_pair(
-                int0 = int0,
-                recursive_pair1 = recursive_pair1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("recursive_pair"),
-                int0.toIonElement(),
-                recursive_pair1?.toIonElement() ?: ionNull(),
+                first.toIonElement(),
+                second?.toIonElement() ?: ionNull(),
                 metas = metas)
             return elements
         }
@@ -1047,14 +2547,14 @@ class test_domain private constructor() {
             if (other.javaClass != recursive_pair::class.java) return false
     
             other as recursive_pair
-            if (int0 != other.int0) return false
-            if (recursive_pair1 != other.recursive_pair1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = int0.hashCode()
-            hc = 31 * hc + recursive_pair1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -1062,22 +2562,22 @@ class test_domain private constructor() {
     }
     
     class answer_pair(
-        val answer0: answer,
-        val answer1: answer,
+        val first: answer,
+        val second: answer,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): answer_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): answer_pair =
             answer_pair(
-                answer0 = answer0,
-                answer1 = answer1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("answer_pair"),
-                answer0.toIonElement(),
-                answer1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -1088,14 +2588,14 @@ class test_domain private constructor() {
             if (other.javaClass != answer_pair::class.java) return false
     
             other as answer_pair
-            if (answer0 != other.answer0) return false
-            if (answer1 != other.answer1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = answer0.hashCode()
-            hc = 31 * hc + answer1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -1103,22 +2603,22 @@ class test_domain private constructor() {
     }
     
     class answer_int_pair(
-        val answer0: answer,
-        val int1: LongPrimitive,
+        val first: answer,
+        val second: LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): answer_int_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): answer_int_pair =
             answer_int_pair(
-                answer0 = answer0,
-                int1 = int1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("answer_int_pair"),
-                answer0.toIonElement(),
-                int1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -1129,14 +2629,14 @@ class test_domain private constructor() {
             if (other.javaClass != answer_int_pair::class.java) return false
     
             other as answer_int_pair
-            if (answer0 != other.answer0) return false
-            if (int1 != other.int1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = answer0.hashCode()
-            hc = 31 * hc + int1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -1144,22 +2644,22 @@ class test_domain private constructor() {
     }
     
     class int_answer_pair(
-        val int0: LongPrimitive,
-        val answer1: answer,
+        val first: LongPrimitive,
+        val second: answer,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): int_answer_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): int_answer_pair =
             int_answer_pair(
-                int0 = int0,
-                answer1 = answer1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("int_answer_pair"),
-                int0.toIonElement(),
-                answer1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -1170,14 +2670,14 @@ class test_domain private constructor() {
             if (other.javaClass != int_answer_pair::class.java) return false
     
             other as int_answer_pair
-            if (int0 != other.int0) return false
-            if (answer1 != other.answer1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = int0.hashCode()
-            hc = 31 * hc + answer1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -1185,22 +2685,22 @@ class test_domain private constructor() {
     }
     
     class symbol_answer_pair(
-        val symbol0: SymbolPrimitive,
-        val answer1: answer,
+        val first: SymbolPrimitive,
+        val second: answer,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): symbol_answer_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): symbol_answer_pair =
             symbol_answer_pair(
-                symbol0 = symbol0,
-                answer1 = answer1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("symbol_answer_pair"),
-                symbol0.toIonElement(),
-                answer1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -1211,14 +2711,14 @@ class test_domain private constructor() {
             if (other.javaClass != symbol_answer_pair::class.java) return false
     
             other as symbol_answer_pair
-            if (symbol0 != other.symbol0) return false
-            if (answer1 != other.answer1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = symbol0.hashCode()
-            hc = 31 * hc + answer1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -1226,22 +2726,22 @@ class test_domain private constructor() {
     }
     
     class answer_symbol_pair(
-        val answer0: answer,
-        val symbol1: SymbolPrimitive,
+        val first: answer,
+        val second: SymbolPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): answer_symbol_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): answer_symbol_pair =
             answer_symbol_pair(
-                answer0 = answer0,
-                symbol1 = symbol1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("answer_symbol_pair"),
-                answer0.toIonElement(),
-                symbol1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -1252,14 +2752,14 @@ class test_domain private constructor() {
             if (other.javaClass != answer_symbol_pair::class.java) return false
     
             other as answer_symbol_pair
-            if (answer0 != other.answer0) return false
-            if (symbol1 != other.symbol1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = answer0.hashCode()
-            hc = 31 * hc + symbol1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -1267,19 +2767,19 @@ class test_domain private constructor() {
     }
     
     class variadic_min_0(
-        val int0: List<LongPrimitive>,
+        val ints: List<LongPrimitive>,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): variadic_min_0 =
+        override fun withMeta(metaKey: String, metaValue: Any): variadic_min_0 =
             variadic_min_0(
-                int0 = int0,
-                metas = metas + metaContainerOf(key to value))
+                ints = ints,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("variadic_min_0"),
-                *int0.map { it.toIonElement() }.toTypedArray(),
+                *ints.map { it.toIonElement() }.toTypedArray(),
                 metas = metas)
             return elements
         }
@@ -1290,12 +2790,12 @@ class test_domain private constructor() {
             if (other.javaClass != variadic_min_0::class.java) return false
     
             other as variadic_min_0
-            if (int0 != other.int0) return false
+            if (ints != other.ints) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = int0.hashCode()
+            var hc = ints.hashCode()
             hc
         }
     
@@ -1303,19 +2803,19 @@ class test_domain private constructor() {
     }
     
     class variadic_min_1(
-        val int0: List<LongPrimitive>,
+        val ints: List<LongPrimitive>,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): variadic_min_1 =
+        override fun withMeta(metaKey: String, metaValue: Any): variadic_min_1 =
             variadic_min_1(
-                int0 = int0,
-                metas = metas + metaContainerOf(key to value))
+                ints = ints,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("variadic_min_1"),
-                *int0.map { it.toIonElement() }.toTypedArray(),
+                *ints.map { it.toIonElement() }.toTypedArray(),
                 metas = metas)
             return elements
         }
@@ -1326,12 +2826,12 @@ class test_domain private constructor() {
             if (other.javaClass != variadic_min_1::class.java) return false
     
             other as variadic_min_1
-            if (int0 != other.int0) return false
+            if (ints != other.ints) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = int0.hashCode()
+            var hc = ints.hashCode()
             hc
         }
     
@@ -1339,22 +2839,22 @@ class test_domain private constructor() {
     }
     
     class element_variadic(
-        val symbol0: SymbolPrimitive,
-        val int1: List<LongPrimitive>,
+        val name: SymbolPrimitive,
+        val ints: List<LongPrimitive>,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): element_variadic =
+        override fun withMeta(metaKey: String, metaValue: Any): element_variadic =
             element_variadic(
-                symbol0 = symbol0,
-                int1 = int1,
-                metas = metas + metaContainerOf(key to value))
+                name = name,
+                ints = ints,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("element_variadic"),
-                symbol0.toIonElement(),
-                *int1.map { it.toIonElement() }.toTypedArray(),
+                name.toIonElement(),
+                *ints.map { it.toIonElement() }.toTypedArray(),
                 metas = metas)
             return elements
         }
@@ -1365,14 +2865,14 @@ class test_domain private constructor() {
             if (other.javaClass != element_variadic::class.java) return false
     
             other as element_variadic
-            if (symbol0 != other.symbol0) return false
-            if (int1 != other.int1) return false
+            if (name != other.name) return false
+            if (ints != other.ints) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = symbol0.hashCode()
-            hc = 31 * hc + int1.hashCode()
+            var hc = name.hashCode()
+            hc = 31 * hc + ints.hashCode()
             hc
         }
     
@@ -1380,19 +2880,19 @@ class test_domain private constructor() {
     }
     
     class optional_1(
-        val int0: LongPrimitive?,
+        val value: LongPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): optional_1 =
+        override fun withMeta(metaKey: String, metaValue: Any): optional_1 =
             optional_1(
-                int0 = int0,
-                metas = metas + metaContainerOf(key to value))
+                value = value,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("optional_1"),
-                int0?.toIonElement() ?: ionNull(),
+                value?.toIonElement() ?: ionNull(),
                 metas = metas)
             return elements
         }
@@ -1403,12 +2903,12 @@ class test_domain private constructor() {
             if (other.javaClass != optional_1::class.java) return false
     
             other as optional_1
-            if (int0 != other.int0) return false
+            if (value != other.value) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = int0.hashCode()
+            var hc = value.hashCode()
             hc
         }
     
@@ -1416,22 +2916,22 @@ class test_domain private constructor() {
     }
     
     class optional_2(
-        val int0: LongPrimitive?,
-        val int1: LongPrimitive?,
+        val first: LongPrimitive?,
+        val second: LongPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): optional_2 =
+        override fun withMeta(metaKey: String, metaValue: Any): optional_2 =
             optional_2(
-                int0 = int0,
-                int1 = int1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("optional_2"),
-                int0?.toIonElement() ?: ionNull(),
-                int1?.toIonElement() ?: ionNull(),
+                first?.toIonElement() ?: ionNull(),
+                second?.toIonElement() ?: ionNull(),
                 metas = metas)
             return elements
         }
@@ -1442,14 +2942,14 @@ class test_domain private constructor() {
             if (other.javaClass != optional_2::class.java) return false
     
             other as optional_2
-            if (int0 != other.int0) return false
-            if (int1 != other.int1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = int0.hashCode()
-            hc = 31 * hc + int1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -1463,15 +2963,14 @@ class test_domain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): domain_level_record =
+        override fun withMeta(metaKey: String, metaValue: Any): domain_level_record =
             domain_level_record(
                 some_field = some_field,
                 another_field = another_field,
                 optional_field = optional_field,
-                metas = metas + metaContainerOf(key to value))
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
-    
             val elements = listOfNotNull(
                 ionSymbol("domain_level_record"),
                 some_field?.let { ionSexpOf(ionSymbol("some_field"), it.toIonElement()) },
@@ -1505,22 +3004,22 @@ class test_domain private constructor() {
     }
     
     class product_with_record(
-        val int0: LongPrimitive,
-        val domain_level_record1: domain_level_record,
+        val value: LongPrimitive,
+        val dlr: domain_level_record,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): product_with_record =
+        override fun withMeta(metaKey: String, metaValue: Any): product_with_record =
             product_with_record(
-                int0 = int0,
-                domain_level_record1 = domain_level_record1,
-                metas = metas + metaContainerOf(key to value))
+                value = value,
+                dlr = dlr,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("product_with_record"),
-                int0.toIonElement(),
-                domain_level_record1.toIonElement(),
+                value.toIonElement(),
+                dlr.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -1531,14 +3030,14 @@ class test_domain private constructor() {
             if (other.javaClass != product_with_record::class.java) return false
     
             other as product_with_record
-            if (int0 != other.int0) return false
-            if (domain_level_record1 != other.domain_level_record1) return false
+            if (value != other.value) return false
+            if (dlr != other.dlr) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = int0.hashCode()
-            hc = 31 * hc + domain_level_record1.hashCode()
+            var hc = value.hashCode()
+            hc = 31 * hc + dlr.hashCode()
             hc
         }
     
@@ -1546,22 +3045,22 @@ class test_domain private constructor() {
     }
     
     class entity_pair(
-        val entity0: entity,
-        val entity1: entity,
+        val first: entity,
+        val second: entity,
         override val metas: MetaContainer = emptyMetaContainer()
     ): test_domain_node() {
     
-        override fun withMeta(key: String, value: Any): entity_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): entity_pair =
             entity_pair(
-                entity0 = entity0,
-                entity1 = entity1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("entity_pair"),
-                entity0.toIonElement(),
-                entity1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -1572,14 +3071,14 @@ class test_domain private constructor() {
             if (other.javaClass != entity_pair::class.java) return false
     
             other as entity_pair
-            if (entity0 != other.entity0) return false
-            if (entity1 != other.entity1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = entity0.hashCode()
-            hc = 31 * hc + entity1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -1597,9 +3096,9 @@ class test_domain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): answer() {
         
-            override fun withMeta(key: String, value: Any): no =
+            override fun withMeta(metaKey: String, metaValue: Any): no =
                 no(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -1623,9 +3122,9 @@ class test_domain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): answer() {
         
-            override fun withMeta(key: String, value: Any): yes =
+            override fun withMeta(metaKey: String, metaValue: Any): yes =
                 yes(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -1650,22 +3149,22 @@ class test_domain private constructor() {
     sealed class sum_with_record : test_domain_node() {
     
         class variant_with_record(
-            val int0: LongPrimitive,
-            val domain_level_record1: domain_level_record,
+            val value: LongPrimitive,
+            val dlr: domain_level_record,
             override val metas: MetaContainer = emptyMetaContainer()
         ): sum_with_record() {
         
-            override fun withMeta(key: String, value: Any): variant_with_record =
+            override fun withMeta(metaKey: String, metaValue: Any): variant_with_record =
                 variant_with_record(
-                    int0 = int0,
-                    domain_level_record1 = domain_level_record1,
-                    metas = metas + metaContainerOf(key to value))
+                    value = value,
+                    dlr = dlr,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("variant_with_record"),
-                    int0.toIonElement(),
-                    domain_level_record1.toIonElement(),
+                    value.toIonElement(),
+                    dlr.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -1676,14 +3175,14 @@ class test_domain private constructor() {
                 if (other.javaClass != variant_with_record::class.java) return false
         
                 other as variant_with_record
-                if (int0 != other.int0) return false
-                if (domain_level_record1 != other.domain_level_record1) return false
+                if (value != other.value) return false
+                if (dlr != other.dlr) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = int0.hashCode()
-                hc = 31 * hc + domain_level_record1.hashCode()
+                var hc = value.hashCode()
+                hc = 31 * hc + dlr.hashCode()
                 hc
             }
         
@@ -1698,9 +3197,9 @@ class test_domain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): entity() {
         
-            override fun withMeta(key: String, value: Any): slug =
+            override fun withMeta(metaKey: String, metaValue: Any): slug =
                 slug(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -1721,19 +3220,19 @@ class test_domain private constructor() {
         }
     
         class android(
-            val int0: LongPrimitive,
+            val id: LongPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
         ): entity() {
         
-            override fun withMeta(key: String, value: Any): android =
+            override fun withMeta(metaKey: String, metaValue: Any): android =
                 android(
-                    int0 = int0,
-                    metas = metas + metaContainerOf(key to value))
+                    id = id,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("android"),
-                    int0.toIonElement(),
+                    id.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -1744,12 +3243,12 @@ class test_domain private constructor() {
                 if (other.javaClass != android::class.java) return false
         
                 other as android
-                if (int0 != other.int0) return false
+                if (id != other.id) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = int0.hashCode()
+                var hc = id.hashCode()
                 hc
             }
         
@@ -1764,16 +3263,15 @@ class test_domain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): entity() {
         
-            override fun withMeta(key: String, value: Any): human =
+            override fun withMeta(metaKey: String, metaValue: Any): human =
                 human(
                     first_name = first_name,
                     last_name = last_name,
                     title = title,
                     parent = parent,
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
-        
                 val elements = listOfNotNull(
                     ionSymbol("human"),
                     first_name?.let { ionSexpOf(ionSymbol("first_name"), it.toIonElement()) },
@@ -1825,185 +3323,185 @@ class test_domain private constructor() {
                 //////////////////////////////////////
                 "int_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    val int1 = sexp.getRequired(1).toLongPrimitive()
-                    int_pair(
-                        int0,
-                        int1,
+                    val first = sexp.getRequired(0).toLongPrimitive()
+                    val second = sexp.getRequired(1).toLongPrimitive()
+                    test_domain.int_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "symbol_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val symbol1 = sexp.getRequired(1).toSymbolPrimitive()
-                    symbol_pair(
-                        symbol0,
-                        symbol1,
+                    val first = sexp.getRequired(0).toSymbolPrimitive()
+                    val second = sexp.getRequired(1).toSymbolPrimitive()
+                    test_domain.symbol_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "ion_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val ion0 = sexp.getRequiredIon(0)
-                    val ion1 = sexp.getRequiredIon(1)
-                    ion_pair(
-                        ion0,
-                        ion1,
+                    val first = sexp.getRequiredIon(0)
+                    val second = sexp.getRequiredIon(1)
+                    test_domain.ion_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "int_symbol_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    val symbol1 = sexp.getRequired(1).toSymbolPrimitive()
-                    int_symbol_pair(
-                        int0,
-                        symbol1,
+                    val first = sexp.getRequired(0).toLongPrimitive()
+                    val second = sexp.getRequired(1).toSymbolPrimitive()
+                    test_domain.int_symbol_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "symbol_int_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val int1 = sexp.getRequired(1).toLongPrimitive()
-                    symbol_int_pair(
-                        symbol0,
-                        int1,
+                    val first = sexp.getRequired(0).toSymbolPrimitive()
+                    val second = sexp.getRequired(1).toLongPrimitive()
+                    test_domain.symbol_int_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "ion_int_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val ion0 = sexp.getRequiredIon(0)
-                    val int1 = sexp.getRequired(1).toLongPrimitive()
-                    ion_int_pair(
-                        ion0,
-                        int1,
+                    val firs = sexp.getRequiredIon(0)
+                    val second = sexp.getRequired(1).toLongPrimitive()
+                    test_domain.ion_int_pair(
+                        firs,
+                        second,
                         metas = sexp.metas)
                 }
                 "ion_symbol_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val ion0 = sexp.getRequiredIon(0)
-                    val ion1 = sexp.getRequiredIon(1)
-                    ion_symbol_pair(
-                        ion0,
-                        ion1,
+                    val firs = sexp.getRequiredIon(0)
+                    val second = sexp.getRequiredIon(1)
+                    test_domain.ion_symbol_pair(
+                        firs,
+                        second,
                         metas = sexp.metas)
                 }
                 "int_pair_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val int_pair0 = sexp.getRequired(0).transformExpect<int_pair>()
-                    val int_pair1 = sexp.getRequired(1).transformExpect<int_pair>()
-                    int_pair_pair(
-                        int_pair0,
-                        int_pair1,
+                    val first = sexp.getRequired(0).transformExpect<int_pair>()
+                    val second = sexp.getRequired(1).transformExpect<int_pair>()
+                    test_domain.int_pair_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "symbol_pair_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val symbol_pair0 = sexp.getRequired(0).transformExpect<symbol_pair>()
-                    val symbol_pair1 = sexp.getRequired(1).transformExpect<symbol_pair>()
-                    symbol_pair_pair(
-                        symbol_pair0,
-                        symbol_pair1,
+                    val first = sexp.getRequired(0).transformExpect<symbol_pair>()
+                    val second = sexp.getRequired(1).transformExpect<symbol_pair>()
+                    test_domain.symbol_pair_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "ion_pair_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val ion_pair0 = sexp.getRequired(0).transformExpect<ion_pair>()
-                    val ion_pair1 = sexp.getRequired(1).transformExpect<ion_pair>()
-                    ion_pair_pair(
-                        ion_pair0,
-                        ion_pair1,
+                    val first = sexp.getRequired(0).transformExpect<ion_pair>()
+                    val second = sexp.getRequired(1).transformExpect<ion_pair>()
+                    test_domain.ion_pair_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "recursive_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    val recursive_pair1 = sexp.getOptional(1)?.transformExpect<recursive_pair>()
-                    recursive_pair(
-                        int0,
-                        recursive_pair1,
+                    val first = sexp.getRequired(0).toLongPrimitive()
+                    val second = sexp.getOptional(1)?.transformExpect<recursive_pair>()
+                    test_domain.recursive_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "answer_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val answer0 = sexp.getRequired(0).transformExpect<answer>()
-                    val answer1 = sexp.getRequired(1).transformExpect<answer>()
-                    answer_pair(
-                        answer0,
-                        answer1,
+                    val first = sexp.getRequired(0).transformExpect<answer>()
+                    val second = sexp.getRequired(1).transformExpect<answer>()
+                    test_domain.answer_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "answer_int_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val answer0 = sexp.getRequired(0).transformExpect<answer>()
-                    val int1 = sexp.getRequired(1).toLongPrimitive()
-                    answer_int_pair(
-                        answer0,
-                        int1,
+                    val first = sexp.getRequired(0).transformExpect<answer>()
+                    val second = sexp.getRequired(1).toLongPrimitive()
+                    test_domain.answer_int_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "int_answer_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    val answer1 = sexp.getRequired(1).transformExpect<answer>()
-                    int_answer_pair(
-                        int0,
-                        answer1,
+                    val first = sexp.getRequired(0).toLongPrimitive()
+                    val second = sexp.getRequired(1).transformExpect<answer>()
+                    test_domain.int_answer_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "symbol_answer_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val answer1 = sexp.getRequired(1).transformExpect<answer>()
-                    symbol_answer_pair(
-                        symbol0,
-                        answer1,
+                    val first = sexp.getRequired(0).toSymbolPrimitive()
+                    val second = sexp.getRequired(1).transformExpect<answer>()
+                    test_domain.symbol_answer_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "answer_symbol_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val answer0 = sexp.getRequired(0).transformExpect<answer>()
-                    val symbol1 = sexp.getRequired(1).toSymbolPrimitive()
-                    answer_symbol_pair(
-                        answer0,
-                        symbol1,
+                    val first = sexp.getRequired(0).transformExpect<answer>()
+                    val second = sexp.getRequired(1).toSymbolPrimitive()
+                    test_domain.answer_symbol_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "variadic_min_0" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val int0 = sexp.values.drop(1).map { it.toLongPrimitive() }
-                    variadic_min_0(
-                        int0,
+                    val ints = sexp.values.drop(1).map { it.toLongPrimitive() }
+                    test_domain.variadic_min_0(
+                        ints,
                         metas = sexp.metas)
                 }
                 "variadic_min_1" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val int0 = sexp.values.drop(1).map { it.toLongPrimitive() }
-                    variadic_min_1(
-                        int0,
+                    val ints = sexp.values.drop(1).map { it.toLongPrimitive() }
+                    test_domain.variadic_min_1(
+                        ints,
                         metas = sexp.metas)
                 }
                 "element_variadic" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val int1 = sexp.values.drop(2).map { it.toLongPrimitive() }
-                    element_variadic(
-                        symbol0,
-                        int1,
+                    val name = sexp.getRequired(0).toSymbolPrimitive()
+                    val ints = sexp.values.drop(2).map { it.toLongPrimitive() }
+                    test_domain.element_variadic(
+                        name,
+                        ints,
                         metas = sexp.metas)
                 }
                 "optional_1" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 1))
-                    val int0 = sexp.getOptional(0)?.toLongPrimitive()
-                    optional_1(
-                        int0,
+                    val value = sexp.getOptional(0)?.toLongPrimitive()
+                    test_domain.optional_1(
+                        value,
                         metas = sexp.metas)
                 }
                 "optional_2" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2))
-                    val int0 = sexp.getOptional(0)?.toLongPrimitive()
-                    val int1 = sexp.getOptional(1)?.toLongPrimitive()
-                    optional_2(
-                        int0,
-                        int1,
+                    val first = sexp.getOptional(0)?.toLongPrimitive()
+                    val second = sexp.getOptional(1)?.toLongPrimitive()
+                    test_domain.optional_2(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "domain_level_record" -> {
@@ -2019,20 +3517,20 @@ class test_domain private constructor() {
                 }
                 "product_with_record" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    val domain_level_record1 = sexp.getRequired(1).transformExpect<domain_level_record>()
-                    product_with_record(
-                        int0,
-                        domain_level_record1,
+                    val value = sexp.getRequired(0).toLongPrimitive()
+                    val dlr = sexp.getRequired(1).transformExpect<domain_level_record>()
+                    test_domain.product_with_record(
+                        value,
+                        dlr,
                         metas = sexp.metas)
                 }
                 "entity_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val entity0 = sexp.getRequired(0).transformExpect<entity>()
-                    val entity1 = sexp.getRequired(1).transformExpect<entity>()
-                    entity_pair(
-                        entity0,
-                        entity1,
+                    val first = sexp.getRequired(0).transformExpect<entity>()
+                    val second = sexp.getRequired(1).transformExpect<entity>()
+                    test_domain.entity_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -2040,12 +3538,12 @@ class test_domain private constructor() {
                 //////////////////////////////////////
                 "no" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    answer.no(
+                    test_domain.answer.no(
                         metas = sexp.metas)
                 }
                 "yes" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    answer.yes(
+                    test_domain.answer.yes(
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -2053,11 +3551,11 @@ class test_domain private constructor() {
                 //////////////////////////////////////
                 "variant_with_record" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    val domain_level_record1 = sexp.getRequired(1).transformExpect<domain_level_record>()
-                    sum_with_record.variant_with_record(
-                        int0,
-                        domain_level_record1,
+                    val value = sexp.getRequired(0).toLongPrimitive()
+                    val dlr = sexp.getRequired(1).transformExpect<domain_level_record>()
+                    test_domain.sum_with_record.variant_with_record(
+                        value,
+                        dlr,
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -2065,14 +3563,14 @@ class test_domain private constructor() {
                 //////////////////////////////////////
                 "slug" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    entity.slug(
+                    test_domain.entity.slug(
                         metas = sexp.metas)
                 }
                 "android" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    entity.android(
-                        int0,
+                    val id = sexp.getRequired(0).toLongPrimitive()
+                    test_domain.entity.android(
+                        id,
                         metas = sexp.metas)
                 }
                 "human" -> {
@@ -2088,1506 +3586,6 @@ class test_domain private constructor() {
                     entity.human(first_name, last_name, title, parent, metas = sexp.metas)
                 }
                 else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'test_domain'")
-            }
-        }
-    }
-}
-
-class toy_lang private constructor() {
-    /////////////////////////////////////////////////////////////////////////////
-    // Builder
-    /////////////////////////////////////////////////////////////////////////////
-    companion object {
-        fun <T: toy_lang_node> build(block: builder.() -> T) =
-            builder.block()
-    
-        fun transform(element: AnyElement): toy_lang_node =
-            transform(element.asSexp())
-    
-        fun transform(element: SexpElement): toy_lang_node =
-            Transformer().transform(element)
-    }
-    
-    object builder {
-        // Variants for Sum: expr 
-        fun lit(
-            ion0: IonElement,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.lit(
-                ion0 = ion0,
-                metas = metas)
-        
-        
-        fun variable(
-            symbol0: String,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.variable(
-                symbol0 = symbol0.asPrimitive(),
-                metas = metas)
-        
-        fun variable_(
-            symbol0: SymbolPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.variable(
-                symbol0 = symbol0,
-                metas = metas)
-        
-        
-        fun not(
-            expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.not(
-                expr0 = expr0,
-                metas = metas)
-        
-        
-        fun plus(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.plus(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun plus(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.plus(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun minus(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.minus(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun minus(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.minus(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun times(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.times(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun times(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.times(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun divide(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.divide(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun divide(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.divide(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun modulo(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.modulo(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun modulo(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.modulo(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun call(
-            symbol0: String,
-            expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call(
-                symbol0 = symbol0.asPrimitive(),
-                expr1 = expr1,
-                metas = metas)
-        
-        fun call_(
-            symbol0: SymbolPrimitive,
-            expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call(
-                symbol0 = symbol0,
-                expr1 = expr1,
-                metas = metas)
-        
-        
-        fun let(
-            symbol0: String,
-            expr1: expr,
-            expr2: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.let(
-                symbol0 = symbol0.asPrimitive(),
-                expr1 = expr1,
-                expr2 = expr2,
-                metas = metas)
-        
-        fun let_(
-            symbol0: SymbolPrimitive,
-            expr1: expr,
-            expr2: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.let(
-                symbol0 = symbol0,
-                expr1 = expr1,
-                expr2 = expr2,
-                metas = metas)
-        
-        
-        fun function(
-            symbol0: String,
-            expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.function(
-                symbol0 = symbol0.asPrimitive(),
-                expr1 = expr1,
-                metas = metas)
-        
-        fun function_(
-            symbol0: SymbolPrimitive,
-            expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.function(
-                symbol0 = symbol0,
-                expr1 = expr1,
-                metas = metas)
-    }
-    
-    /** Base class for all toy_lang types. */
-    abstract class toy_lang_node : DomainNode {
-        override fun toString() = toIonElement().toString()
-        abstract override fun withMeta(key: String, value: Any): toy_lang_node
-        abstract override fun toIonElement(): SexpElement
-    }
-    
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Sum Types
-    /////////////////////////////////////////////////////////////////////////////
-    
-    sealed class expr : toy_lang_node() {
-    
-        class lit(
-            val ion0: IonElement,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): lit =
-                lit(
-                    ion0 = ion0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("lit"),
-                    ion0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != lit::class.java) return false
-        
-                other as lit
-                if (ion0 != other.ion0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = ion0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class variable(
-            val symbol0: SymbolPrimitive,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): variable =
-                variable(
-                    symbol0 = symbol0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("variable"),
-                    symbol0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != variable::class.java) return false
-        
-                other as variable
-                if (symbol0 != other.symbol0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class not(
-            val expr0: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): not =
-                not(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("not"),
-                    expr0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != not::class.java) return false
-        
-                other as not
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class plus(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): plus =
-                plus(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("plus"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != plus::class.java) return false
-        
-                other as plus
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class minus(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): minus =
-                minus(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("minus"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != minus::class.java) return false
-        
-                other as minus
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class times(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): times =
-                times(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("times"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != times::class.java) return false
-        
-                other as times
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class divide(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): divide =
-                divide(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("divide"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != divide::class.java) return false
-        
-                other as divide
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class modulo(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): modulo =
-                modulo(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("modulo"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != modulo::class.java) return false
-        
-                other as modulo
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class call(
-            val symbol0: SymbolPrimitive,
-            val expr1: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): call =
-                call(
-                    symbol0 = symbol0,
-                    expr1 = expr1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("call"),
-                    symbol0.toIonElement(),
-                    expr1.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != call::class.java) return false
-        
-                other as call
-                if (symbol0 != other.symbol0) return false
-                if (expr1 != other.expr1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class let(
-            val symbol0: SymbolPrimitive,
-            val expr1: expr,
-            val expr2: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): let =
-                let(
-                    symbol0 = symbol0,
-                    expr1 = expr1,
-                    expr2 = expr2,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("let"),
-                    symbol0.toIonElement(),
-                    expr1.toIonElement(),
-                    expr2.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != let::class.java) return false
-        
-                other as let
-                if (symbol0 != other.symbol0) return false
-                if (expr1 != other.expr1) return false
-                if (expr2 != other.expr2) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc = 31 * hc + expr2.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class function(
-            val symbol0: SymbolPrimitive,
-            val expr1: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): function =
-                function(
-                    symbol0 = symbol0,
-                    expr1 = expr1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("function"),
-                    symbol0.toIonElement(),
-                    expr1.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != function::class.java) return false
-        
-                other as function
-                if (symbol0 != other.symbol0) return false
-                if (expr1 != other.expr1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-    }
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Transformer
-    /////////////////////////////////////////////////////////////////////////////
-    
-    
-    private class Transformer : IonElementTransformerBase<toy_lang_node>() {
-    
-        override fun innerTransform(sexp: SexpElement): toy_lang_node {
-            return when(sexp.tag) {
-                //////////////////////////////////////
-                // Variants for Sum Type 'expr'
-                //////////////////////////////////////
-                "lit" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val ion0 = sexp.getRequiredIon(0)
-                    expr.lit(
-                        ion0,
-                        metas = sexp.metas)
-                }
-                "variable" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    expr.variable(
-                        symbol0,
-                        metas = sexp.metas)
-                }
-                "not" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    expr.not(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "plus" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.plus(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "minus" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.minus(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "times" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.times(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "divide" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.divide(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "modulo" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.modulo(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "call" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    expr.call(
-                        symbol0,
-                        expr1,
-                        metas = sexp.metas)
-                }
-                "let" -> {
-                    sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
-                    expr.let(
-                        symbol0,
-                        expr1,
-                        expr2,
-                        metas = sexp.metas)
-                }
-                "function" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    expr.function(
-                        symbol0,
-                        expr1,
-                        metas = sexp.metas)
-                }
-                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'toy_lang'")
-            }
-        }
-    }
-}
-
-class toy_lang_nameless private constructor() {
-    /////////////////////////////////////////////////////////////////////////////
-    // Builder
-    /////////////////////////////////////////////////////////////////////////////
-    companion object {
-        fun <T: toy_lang_nameless_node> build(block: builder.() -> T) =
-            builder.block()
-    
-        fun transform(element: AnyElement): toy_lang_nameless_node =
-            transform(element.asSexp())
-    
-        fun transform(element: SexpElement): toy_lang_nameless_node =
-            Transformer().transform(element)
-    }
-    
-    object builder {
-        // Variants for Sum: expr 
-        fun lit(
-            ion0: IonElement,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.lit(
-                ion0 = ion0,
-                metas = metas)
-        
-        
-        fun not(
-            expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.not(
-                expr0 = expr0,
-                metas = metas)
-        
-        
-        fun plus(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.plus(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun plus(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.plus(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun minus(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.minus(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun minus(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.minus(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun times(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.times(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun times(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.times(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun divide(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.divide(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun divide(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.divide(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun modulo(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.modulo(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun modulo(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.modulo(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun call(
-            symbol0: String,
-            expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call(
-                symbol0 = symbol0.asPrimitive(),
-                expr1 = expr1,
-                metas = metas)
-        
-        fun call_(
-            symbol0: SymbolPrimitive,
-            expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call(
-                symbol0 = symbol0,
-                expr1 = expr1,
-                metas = metas)
-        
-        
-        fun function(
-            symbol0: String,
-            expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.function(
-                symbol0 = symbol0.asPrimitive(),
-                expr1 = expr1,
-                metas = metas)
-        
-        fun function_(
-            symbol0: SymbolPrimitive,
-            expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.function(
-                symbol0 = symbol0,
-                expr1 = expr1,
-                metas = metas)
-        
-        
-        fun variable(
-            int0: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.variable(
-                int0 = int0.asPrimitive(),
-                metas = metas)
-        
-        fun variable_(
-            int0: LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.variable(
-                int0 = int0,
-                metas = metas)
-        
-        
-        fun let(
-            int0: Long,
-            expr1: expr,
-            expr2: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.let(
-                int0 = int0.asPrimitive(),
-                expr1 = expr1,
-                expr2 = expr2,
-                metas = metas)
-        
-        fun let_(
-            int0: LongPrimitive,
-            expr1: expr,
-            expr2: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.let(
-                int0 = int0,
-                expr1 = expr1,
-                expr2 = expr2,
-                metas = metas)
-    }
-    
-    /** Base class for all toy_lang_nameless types. */
-    abstract class toy_lang_nameless_node : DomainNode {
-        override fun toString() = toIonElement().toString()
-        abstract override fun withMeta(key: String, value: Any): toy_lang_nameless_node
-        abstract override fun toIonElement(): SexpElement
-    }
-    
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Sum Types
-    /////////////////////////////////////////////////////////////////////////////
-    
-    sealed class expr : toy_lang_nameless_node() {
-    
-        class lit(
-            val ion0: IonElement,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): lit =
-                lit(
-                    ion0 = ion0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("lit"),
-                    ion0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != lit::class.java) return false
-        
-                other as lit
-                if (ion0 != other.ion0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = ion0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class not(
-            val expr0: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): not =
-                not(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("not"),
-                    expr0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != not::class.java) return false
-        
-                other as not
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class plus(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): plus =
-                plus(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("plus"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != plus::class.java) return false
-        
-                other as plus
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class minus(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): minus =
-                minus(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("minus"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != minus::class.java) return false
-        
-                other as minus
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class times(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): times =
-                times(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("times"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != times::class.java) return false
-        
-                other as times
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class divide(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): divide =
-                divide(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("divide"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != divide::class.java) return false
-        
-                other as divide
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class modulo(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): modulo =
-                modulo(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("modulo"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != modulo::class.java) return false
-        
-                other as modulo
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class call(
-            val symbol0: SymbolPrimitive,
-            val expr1: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): call =
-                call(
-                    symbol0 = symbol0,
-                    expr1 = expr1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("call"),
-                    symbol0.toIonElement(),
-                    expr1.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != call::class.java) return false
-        
-                other as call
-                if (symbol0 != other.symbol0) return false
-                if (expr1 != other.expr1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class function(
-            val symbol0: SymbolPrimitive,
-            val expr1: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): function =
-                function(
-                    symbol0 = symbol0,
-                    expr1 = expr1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("function"),
-                    symbol0.toIonElement(),
-                    expr1.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != function::class.java) return false
-        
-                other as function
-                if (symbol0 != other.symbol0) return false
-                if (expr1 != other.expr1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class variable(
-            val int0: LongPrimitive,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): variable =
-                variable(
-                    int0 = int0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("variable"),
-                    int0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != variable::class.java) return false
-        
-                other as variable
-                if (int0 != other.int0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = int0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class let(
-            val int0: LongPrimitive,
-            val expr1: expr,
-            val expr2: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): let =
-                let(
-                    int0 = int0,
-                    expr1 = expr1,
-                    expr2 = expr2,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("let"),
-                    int0.toIonElement(),
-                    expr1.toIonElement(),
-                    expr2.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != let::class.java) return false
-        
-                other as let
-                if (int0 != other.int0) return false
-                if (expr1 != other.expr1) return false
-                if (expr2 != other.expr2) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = int0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc = 31 * hc + expr2.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-    }
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Transformer
-    /////////////////////////////////////////////////////////////////////////////
-    
-    
-    private class Transformer : IonElementTransformerBase<toy_lang_nameless_node>() {
-    
-        override fun innerTransform(sexp: SexpElement): toy_lang_nameless_node {
-            return when(sexp.tag) {
-                //////////////////////////////////////
-                // Variants for Sum Type 'expr'
-                //////////////////////////////////////
-                "lit" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val ion0 = sexp.getRequiredIon(0)
-                    expr.lit(
-                        ion0,
-                        metas = sexp.metas)
-                }
-                "not" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    expr.not(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "plus" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.plus(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "minus" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.minus(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "times" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.times(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "divide" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.divide(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "modulo" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.modulo(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "call" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    expr.call(
-                        symbol0,
-                        expr1,
-                        metas = sexp.metas)
-                }
-                "function" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    expr.function(
-                        symbol0,
-                        expr1,
-                        metas = sexp.metas)
-                }
-                "variable" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    expr.variable(
-                        int0,
-                        metas = sexp.metas)
-                }
-                "let" -> {
-                    sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
-                    expr.let(
-                        int0,
-                        expr1,
-                        expr2,
-                        metas = sexp.metas)
-                }
-                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'toy_lang_nameless'")
             }
         }
     }
@@ -3611,101 +3609,101 @@ class partiql_basic private constructor() {
     object builder {
                 // Tuples
         fun expr_pair(
-            expr0: expr,
-            expr1: expr,
+            first: expr,
+            second: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr_pair =
             partiql_basic.expr_pair(
-                expr0 = expr0,
-                expr1 = expr1,
+                first = first,
+                second = second,
                 metas = metas)
         
         
         fun group_by_item(
-            expr0: expr,
-            symbol1: String? = null,
+            value: expr,
+            as_alias: String? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): group_by_item =
             partiql_basic.group_by_item(
-                expr0 = expr0,
-                symbol1 = symbol1?.asPrimitive(),
+                value = value,
+                as_alias = as_alias?.asPrimitive(),
                 metas = metas)
         
         fun group_by_item_(
-            expr0: expr,
-            symbol1: SymbolPrimitive? = null,
+            value: expr,
+            as_alias: SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): group_by_item =
             partiql_basic.group_by_item(
-                expr0 = expr0,
-                symbol1 = symbol1,
+                value = value,
+                as_alias = as_alias,
                 metas = metas)
         
         
         fun group_by_list(
-            group_by_item0: List<group_by_item>,
+            items: List<group_by_item>,
             metas: MetaContainer = emptyMetaContainer()
         ): group_by_list =
             partiql_basic.group_by_list(
-                group_by_item0 = group_by_item0,
+                items = items,
                 metas = metas)
         
         fun group_by_list(
-            group_by_item0_required_0: group_by_item,
-            vararg group_by_item0: group_by_item,
+            items_required_0: group_by_item,
+            vararg items: group_by_item,
             metas: MetaContainer = emptyMetaContainer()
         ): group_by_list =
             partiql_basic.group_by_list(
-                group_by_item0 = listOf(group_by_item0_required_0) + group_by_item0.toList(),
+                items = listOf(items_required_0) + items.toList(),
                 metas = metas)
         
         
         fun group_by(
-            group_by_list0: group_by_list,
-            symbol1: String? = null,
+            items: group_by_list,
+            group_as_alias: String? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): group_by =
             partiql_basic.group_by(
-                group_by_list0 = group_by_list0,
-                symbol1 = symbol1?.asPrimitive(),
+                items = items,
+                group_as_alias = group_as_alias?.asPrimitive(),
                 metas = metas)
         
         fun group_by_(
-            group_by_list0: group_by_list,
-            symbol1: SymbolPrimitive? = null,
+            items: group_by_list,
+            group_as_alias: SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): group_by =
             partiql_basic.group_by(
-                group_by_list0 = group_by_list0,
-                symbol1 = symbol1,
+                items = items,
+                group_as_alias = group_as_alias,
                 metas = metas)
         
         
         // Variants for Sum: projection 
         fun project_list(
-            project_item0: List<project_item>,
+            items: List<project_item>,
             metas: MetaContainer = emptyMetaContainer()
         ): projection =
-            projection.project_list(
-                project_item0 = project_item0,
+            partiql_basic.projection.project_list(
+                items = items,
                 metas = metas)
         
         fun project_list(
-            project_item0_required_0: project_item,
-            vararg project_item0: project_item,
+            items_required_0: project_item,
+            vararg items: project_item,
             metas: MetaContainer = emptyMetaContainer()
         ): projection =
-            projection.project_list(
-                project_item0 = listOf(project_item0_required_0) + project_item0.toList(),
+            partiql_basic.projection.project_list(
+                items = listOf(items_required_0) + items.toList(),
                 metas = metas)
         
         
         fun project_value(
-            expr0: expr,
+            value: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): projection =
-            projection.project_value(
-                expr0 = expr0,
+            partiql_basic.projection.project_value(
+                value = value,
                 metas = metas)
         
         
@@ -3713,28 +3711,28 @@ class partiql_basic private constructor() {
         fun project_all(
             metas: MetaContainer = emptyMetaContainer()
         ): project_item =
-            project_item.project_all(
+            partiql_basic.project_item.project_all(
                 metas = metas)
         
         
         fun project_expr(
-            expr0: expr,
-            symbol1: String? = null,
+            value: expr,
+            as_alias: String? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): project_item =
-            project_item.project_expr(
-                expr0 = expr0,
-                symbol1 = symbol1?.asPrimitive(),
+            partiql_basic.project_item.project_expr(
+                value = value,
+                as_alias = as_alias?.asPrimitive(),
                 metas = metas)
         
         fun project_expr_(
-            expr0: expr,
-            symbol1: SymbolPrimitive? = null,
+            value: expr,
+            as_alias: SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): project_item =
-            project_item.project_expr(
-                expr0 = expr0,
-                symbol1 = symbol1,
+            partiql_basic.project_item.project_expr(
+                value = value,
+                as_alias = as_alias,
                 metas = metas)
         
         
@@ -3742,73 +3740,73 @@ class partiql_basic private constructor() {
         fun inner(
             metas: MetaContainer = emptyMetaContainer()
         ): join_type =
-            join_type.inner(
+            partiql_basic.join_type.inner(
                 metas = metas)
         
         
         fun left(
             metas: MetaContainer = emptyMetaContainer()
         ): join_type =
-            join_type.left(
+            partiql_basic.join_type.left(
                 metas = metas)
         
         
         fun right(
             metas: MetaContainer = emptyMetaContainer()
         ): join_type =
-            join_type.right(
+            partiql_basic.join_type.right(
                 metas = metas)
         
         
         fun outer(
             metas: MetaContainer = emptyMetaContainer()
         ): join_type =
-            join_type.outer(
+            partiql_basic.join_type.outer(
                 metas = metas)
         
         
         // Variants for Sum: from_source 
         fun scan(
-            expr0: expr,
-            symbol1: String? = null,
-            symbol2: String? = null,
-            symbol3: String? = null,
+            expr: expr,
+            as_alias: String? = null,
+            at_alias: String? = null,
+            by_alias: String? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): from_source =
-            from_source.scan(
-                expr0 = expr0,
-                symbol1 = symbol1?.asPrimitive(),
-                symbol2 = symbol2?.asPrimitive(),
-                symbol3 = symbol3?.asPrimitive(),
+            partiql_basic.from_source.scan(
+                expr = expr,
+                as_alias = as_alias?.asPrimitive(),
+                at_alias = at_alias?.asPrimitive(),
+                by_alias = by_alias?.asPrimitive(),
                 metas = metas)
         
         fun scan_(
-            expr0: expr,
-            symbol1: SymbolPrimitive? = null,
-            symbol2: SymbolPrimitive? = null,
-            symbol3: SymbolPrimitive? = null,
+            expr: expr,
+            as_alias: SymbolPrimitive? = null,
+            at_alias: SymbolPrimitive? = null,
+            by_alias: SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): from_source =
-            from_source.scan(
-                expr0 = expr0,
-                symbol1 = symbol1,
-                symbol2 = symbol2,
-                symbol3 = symbol3,
+            partiql_basic.from_source.scan(
+                expr = expr,
+                as_alias = as_alias,
+                at_alias = at_alias,
+                by_alias = by_alias,
                 metas = metas)
         
         
         fun join(
-            join_type0: join_type,
-            from_source1: from_source,
-            from_source2: from_source,
-            expr3: expr? = null,
+            type: join_type,
+            left: from_source,
+            right: from_source,
+            predicate: expr? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): from_source =
-            from_source.join(
-                join_type0 = join_type0,
-                from_source1 = from_source1,
-                from_source2 = from_source2,
-                expr3 = expr3,
+            partiql_basic.from_source.join(
+                type = type,
+                left = left,
+                right = right,
+                predicate = predicate,
                 metas = metas)
         
         
@@ -3816,14 +3814,14 @@ class partiql_basic private constructor() {
         fun case_sensitive(
             metas: MetaContainer = emptyMetaContainer()
         ): case_sensitivity =
-            case_sensitivity.case_sensitive(
+            partiql_basic.case_sensitivity.case_sensitive(
                 metas = metas)
         
         
         fun case_insensitive(
             metas: MetaContainer = emptyMetaContainer()
         ): case_sensitivity =
-            case_sensitivity.case_insensitive(
+            partiql_basic.case_sensitivity.case_insensitive(
                 metas = metas)
         
         
@@ -3831,14 +3829,14 @@ class partiql_basic private constructor() {
         fun unqualified(
             metas: MetaContainer = emptyMetaContainer()
         ): scope_qualifier =
-            scope_qualifier.unqualified(
+            partiql_basic.scope_qualifier.unqualified(
                 metas = metas)
         
         
         fun qualified(
             metas: MetaContainer = emptyMetaContainer()
         ): scope_qualifier =
-            scope_qualifier.qualified(
+            partiql_basic.scope_qualifier.qualified(
                 metas = metas)
         
         
@@ -3846,420 +3844,416 @@ class partiql_basic private constructor() {
         fun all(
             metas: MetaContainer = emptyMetaContainer()
         ): set_quantifier =
-            set_quantifier.all(
+            partiql_basic.set_quantifier.all(
                 metas = metas)
         
         
         fun distinct(
             metas: MetaContainer = emptyMetaContainer()
         ): set_quantifier =
-            set_quantifier.distinct(
+            partiql_basic.set_quantifier.distinct(
                 metas = metas)
         
         
         // Variants for Sum: path_element 
         fun path_expr(
-            expr0: expr,
+            expr: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): path_element =
-            path_element.path_expr(
-                expr0 = expr0,
+            partiql_basic.path_element.path_expr(
+                expr = expr,
                 metas = metas)
         
         
         fun path_wildcard(
             metas: MetaContainer = emptyMetaContainer()
         ): path_element =
-            path_element.path_wildcard(
+            partiql_basic.path_element.path_wildcard(
                 metas = metas)
         
         
         fun path_unpivot(
             metas: MetaContainer = emptyMetaContainer()
         ): path_element =
-            path_element.path_unpivot(
+            partiql_basic.path_element.path_unpivot(
                 metas = metas)
         
         
         // Variants for Sum: expr 
         fun lit(
-            ion0: IonElement,
+            value: IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.lit(
-                ion0 = ion0,
+            partiql_basic.expr.lit(
+                value = value,
                 metas = metas)
         
         
         fun id(
-            symbol0: String,
-            case_sensitivity1: case_sensitivity,
-            scope_qualifier2: scope_qualifier,
+            name: String,
+            case: case_sensitivity,
+            scope_qualifier: scope_qualifier,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.id(
-                symbol0 = symbol0.asPrimitive(),
-                case_sensitivity1 = case_sensitivity1,
-                scope_qualifier2 = scope_qualifier2,
+            partiql_basic.expr.id(
+                name = name.asPrimitive(),
+                case = case,
+                scope_qualifier = scope_qualifier,
                 metas = metas)
         
         fun id_(
-            symbol0: SymbolPrimitive,
-            case_sensitivity1: case_sensitivity,
-            scope_qualifier2: scope_qualifier,
+            name: SymbolPrimitive,
+            case: case_sensitivity,
+            scope_qualifier: scope_qualifier,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.id(
-                symbol0 = symbol0,
-                case_sensitivity1 = case_sensitivity1,
-                scope_qualifier2 = scope_qualifier2,
+            partiql_basic.expr.id(
+                name = name,
+                case = case,
+                scope_qualifier = scope_qualifier,
                 metas = metas)
         
         
         fun parameter(
-            int0: Long,
+            index: Long,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.parameter(
-                int0 = int0.asPrimitive(),
+            partiql_basic.expr.parameter(
+                index = index.asPrimitive(),
                 metas = metas)
         
         fun parameter_(
-            int0: LongPrimitive,
+            index: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.parameter(
-                int0 = int0,
+            partiql_basic.expr.parameter(
+                index = index,
                 metas = metas)
         
         
         fun not(
-            expr0: expr,
+            expr: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.not(
-                expr0 = expr0,
+            partiql_basic.expr.not(
+                expr = expr,
                 metas = metas)
         
         
         fun plus(
-            expr0: List<expr>,
+            operands: List<expr>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.plus(
-                expr0 = expr0,
+            partiql_basic.expr.plus(
+                operands = operands,
                 metas = metas)
         
         fun plus(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.plus(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
+            partiql_basic.expr.plus(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
                 metas = metas)
         
         
         fun minus(
-            expr0: List<expr>,
+            operands: List<expr>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.minus(
-                expr0 = expr0,
+            partiql_basic.expr.minus(
+                operands = operands,
                 metas = metas)
         
         fun minus(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.minus(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
+            partiql_basic.expr.minus(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
                 metas = metas)
         
         
         fun times(
-            expr0: List<expr>,
+            operands: List<expr>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.times(
-                expr0 = expr0,
+            partiql_basic.expr.times(
+                operands = operands,
                 metas = metas)
         
         fun times(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.times(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
+            partiql_basic.expr.times(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
                 metas = metas)
         
         
         fun divide(
-            expr0: List<expr>,
+            operands: List<expr>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.divide(
-                expr0 = expr0,
+            partiql_basic.expr.divide(
+                operands = operands,
                 metas = metas)
         
         fun divide(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.divide(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
+            partiql_basic.expr.divide(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
                 metas = metas)
         
         
         fun modulo(
-            expr0: List<expr>,
+            operands: List<expr>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.modulo(
-                expr0 = expr0,
+            partiql_basic.expr.modulo(
+                operands = operands,
                 metas = metas)
         
         fun modulo(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.modulo(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
+            partiql_basic.expr.modulo(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
                 metas = metas)
         
         
         fun concat(
-            expr0: List<expr>,
+            operands: List<expr>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.concat(
-                expr0 = expr0,
+            partiql_basic.expr.concat(
+                operands = operands,
                 metas = metas)
         
         fun concat(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
+            operands_required_0: expr,
+            operands_required_1: expr,
+            vararg operands: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.concat(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
+            partiql_basic.expr.concat(
+                operands = listOf(operands_required_0, operands_required_1) + operands.toList(),
                 metas = metas)
         
         
         fun like(
-            expr0: expr,
-            expr1: expr,
-            expr2: expr,
+            left: expr,
+            right: expr,
+            escape: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.like(
-                expr0 = expr0,
-                expr1 = expr1,
-                expr2 = expr2,
+            partiql_basic.expr.like(
+                left = left,
+                right = right,
+                escape = escape,
                 metas = metas)
         
         
         fun between(
-            expr0: expr,
-            expr1: expr,
-            expr2: expr,
+            value: expr,
+            from: expr,
+            to: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.between(
-                expr0 = expr0,
-                expr1 = expr1,
-                expr2 = expr2,
+            partiql_basic.expr.between(
+                value = value,
+                from = from,
+                to = to,
                 metas = metas)
         
         
         fun path(
-            expr0: expr,
-            path_element1: List<path_element>,
+            root: expr,
+            elements: List<path_element>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.path(
-                expr0 = expr0,
-                path_element1 = path_element1,
+            partiql_basic.expr.path(
+                root = root,
+                elements = elements,
                 metas = metas)
         
         fun path(
-            expr0: expr,
-            path_element1_required_0: path_element,
-            vararg path_element1: path_element,
+            root: expr,
+            elements_required_0: path_element,
+            vararg elements: path_element,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.path(
-                expr0 = expr0,
-                path_element1 = listOf(path_element1_required_0) + path_element1.toList(),
+            partiql_basic.expr.path(
+                root = root,
+                elements = listOf(elements_required_0) + elements.toList(),
                 metas = metas)
         
         
         fun call(
-            symbol0: String,
-            expr1: List<expr>,
+            name: String,
+            args: List<expr>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.call(
-                symbol0 = symbol0.asPrimitive(),
-                expr1 = expr1,
+            partiql_basic.expr.call(
+                name = name.asPrimitive(),
+                args = args,
                 metas = metas)
         
         fun call_(
-            symbol0: SymbolPrimitive,
-            expr1: List<expr>,
+            name: SymbolPrimitive,
+            args: List<expr>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.call(
-                symbol0 = symbol0,
-                expr1 = expr1,
+            partiql_basic.expr.call(
+                name = name,
+                args = args,
                 metas = metas)
         
         fun call(
-            symbol0: String,
-            expr1_required_0: expr,
-            vararg expr1: expr,
+            name: String,
+            args_required_0: expr,
+            vararg args: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.call(
-                symbol0 = symbol0.asPrimitive(),
-                expr1 = listOf(expr1_required_0) + expr1.toList(),
+            partiql_basic.expr.call(
+                name = name.asPrimitive(),
+                args = listOf(args_required_0) + args.toList(),
                 metas = metas)
         
         fun call_(
-            symbol0: SymbolPrimitive,
-            expr1_required_0: expr,
-            vararg expr1: expr,
+            name: SymbolPrimitive,
+            args_required_0: expr,
+            vararg args: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.call(
-                symbol0 = symbol0,
-                expr1 = listOf(expr1_required_0) + expr1.toList(),
+            partiql_basic.expr.call(
+                name = name,
+                args = listOf(args_required_0) + args.toList(),
                 metas = metas)
         
         
         fun call_agg(
-            symbol0: String,
-            set_quantifier1: set_quantifier,
-            expr2: expr,
+            name: String,
+            set_quantifier: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.call_agg(
-                symbol0 = symbol0.asPrimitive(),
-                set_quantifier1 = set_quantifier1,
-                expr2 = expr2,
+            partiql_basic.expr.call_agg(
+                name = name.asPrimitive(),
+                set_quantifier = set_quantifier,
                 metas = metas)
         
         fun call_agg_(
-            symbol0: SymbolPrimitive,
-            set_quantifier1: set_quantifier,
-            expr2: expr,
+            name: SymbolPrimitive,
+            set_quantifier: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.call_agg(
-                symbol0 = symbol0,
-                set_quantifier1 = set_quantifier1,
-                expr2 = expr2,
+            partiql_basic.expr.call_agg(
+                name = name,
+                set_quantifier = set_quantifier,
                 metas = metas)
         
         
         fun simple_case(
-            expr0: expr,
-            expr_pair1: List<expr_pair>,
+            value: expr,
+            branches: List<expr_pair>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.simple_case(
-                expr0 = expr0,
-                expr_pair1 = expr_pair1,
+            partiql_basic.expr.simple_case(
+                value = value,
+                branches = branches,
                 metas = metas)
         
         fun simple_case(
-            expr0: expr,
-            expr_pair1_required_0: expr_pair,
-            vararg expr_pair1: expr_pair,
+            value: expr,
+            branches_required_0: expr_pair,
+            vararg branches: expr_pair,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.simple_case(
-                expr0 = expr0,
-                expr_pair1 = listOf(expr_pair1_required_0) + expr_pair1.toList(),
+            partiql_basic.expr.simple_case(
+                value = value,
+                branches = listOf(branches_required_0) + branches.toList(),
                 metas = metas)
         
         
         fun searched_case(
-            expr_pair0: List<expr_pair>,
+            branches: List<expr_pair>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.searched_case(
-                expr_pair0 = expr_pair0,
+            partiql_basic.expr.searched_case(
+                branches = branches,
                 metas = metas)
         
         fun searched_case(
-            expr_pair0_required_0: expr_pair,
-            vararg expr_pair0: expr_pair,
+            branches_required_0: expr_pair,
+            vararg branches: expr_pair,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.searched_case(
-                expr_pair0 = listOf(expr_pair0_required_0) + expr_pair0.toList(),
+            partiql_basic.expr.searched_case(
+                branches = listOf(branches_required_0) + branches.toList(),
                 metas = metas)
         
         
         fun struct(
-            expr_pair0: List<expr_pair>,
+            fields: List<expr_pair>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.struct(
-                expr_pair0 = expr_pair0,
+            partiql_basic.expr.struct(
+                fields = fields,
                 metas = metas)
         
         fun struct(
-            vararg expr_pair0: expr_pair,
+            vararg fields: expr_pair,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.struct(
-                expr_pair0 = expr_pair0.toList(),
+            partiql_basic.expr.struct(
+                fields = fields.toList(),
                 metas = metas)
         
         
         fun bag(
-            expr0: List<expr>,
+            values: List<expr>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.bag(
-                expr0 = expr0,
+            partiql_basic.expr.bag(
+                values = values,
                 metas = metas)
         
         fun bag(
-            vararg expr0: expr,
+            vararg values: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.bag(
-                expr0 = expr0.toList(),
+            partiql_basic.expr.bag(
+                values = values.toList(),
                 metas = metas)
         
         
         fun list(
-            expr0: List<expr>,
+            values: List<expr>,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.list(
-                expr0 = expr0,
+            partiql_basic.expr.list(
+                values = values,
                 metas = metas)
         
         fun list(
-            vararg expr0: expr,
+            vararg values: expr,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.list(
-                expr0 = expr0.toList(),
+            partiql_basic.expr.list(
+                values = values.toList(),
                 metas = metas)
         
         
@@ -4273,7 +4267,7 @@ class partiql_basic private constructor() {
             limit: expr? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): expr =
-            expr.select(
+            partiql_basic.expr.select(
                 setq = setq,
                 project = project,
                 from = from,
@@ -4287,7 +4281,7 @@ class partiql_basic private constructor() {
     /** Base class for all partiql_basic types. */
     abstract class partiql_basic_node : DomainNode {
         override fun toString() = toIonElement().toString()
-        abstract override fun withMeta(key: String, value: Any): partiql_basic_node
+        abstract override fun withMeta(metaKey: String, metaValue: Any): partiql_basic_node
         abstract override fun toIonElement(): SexpElement
     }
     
@@ -4296,22 +4290,22 @@ class partiql_basic private constructor() {
     // Tuple Types
     /////////////////////////////////////////////////////////////////////////////
     class expr_pair(
-        val expr0: expr,
-        val expr1: expr,
+        val first: expr,
+        val second: expr,
         override val metas: MetaContainer = emptyMetaContainer()
     ): partiql_basic_node() {
     
-        override fun withMeta(key: String, value: Any): expr_pair =
+        override fun withMeta(metaKey: String, metaValue: Any): expr_pair =
             expr_pair(
-                expr0 = expr0,
-                expr1 = expr1,
-                metas = metas + metaContainerOf(key to value))
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("expr_pair"),
-                expr0.toIonElement(),
-                expr1.toIonElement(),
+                first.toIonElement(),
+                second.toIonElement(),
                 metas = metas)
             return elements
         }
@@ -4322,14 +4316,14 @@ class partiql_basic private constructor() {
             if (other.javaClass != expr_pair::class.java) return false
     
             other as expr_pair
-            if (expr0 != other.expr0) return false
-            if (expr1 != other.expr1) return false
+            if (first != other.first) return false
+            if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = expr0.hashCode()
-            hc = 31 * hc + expr1.hashCode()
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
             hc
         }
     
@@ -4337,22 +4331,22 @@ class partiql_basic private constructor() {
     }
     
     class group_by_item(
-        val expr0: expr,
-        val symbol1: SymbolPrimitive?,
+        val value: expr,
+        val as_alias: SymbolPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): partiql_basic_node() {
     
-        override fun withMeta(key: String, value: Any): group_by_item =
+        override fun withMeta(metaKey: String, metaValue: Any): group_by_item =
             group_by_item(
-                expr0 = expr0,
-                symbol1 = symbol1,
-                metas = metas + metaContainerOf(key to value))
+                value = value,
+                as_alias = as_alias,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("group_by_item"),
-                expr0.toIonElement(),
-                symbol1?.toIonElement() ?: ionNull(),
+                value.toIonElement(),
+                as_alias?.toIonElement() ?: ionNull(),
                 metas = metas)
             return elements
         }
@@ -4363,14 +4357,14 @@ class partiql_basic private constructor() {
             if (other.javaClass != group_by_item::class.java) return false
     
             other as group_by_item
-            if (expr0 != other.expr0) return false
-            if (symbol1 != other.symbol1) return false
+            if (value != other.value) return false
+            if (as_alias != other.as_alias) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = expr0.hashCode()
-            hc = 31 * hc + symbol1.hashCode()
+            var hc = value.hashCode()
+            hc = 31 * hc + as_alias.hashCode()
             hc
         }
     
@@ -4378,19 +4372,19 @@ class partiql_basic private constructor() {
     }
     
     class group_by_list(
-        val group_by_item0: List<group_by_item>,
+        val items: List<group_by_item>,
         override val metas: MetaContainer = emptyMetaContainer()
     ): partiql_basic_node() {
     
-        override fun withMeta(key: String, value: Any): group_by_list =
+        override fun withMeta(metaKey: String, metaValue: Any): group_by_list =
             group_by_list(
-                group_by_item0 = group_by_item0,
-                metas = metas + metaContainerOf(key to value))
+                items = items,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("group_by_list"),
-                *group_by_item0.map { it.toIonElement() }.toTypedArray(),
+                *items.map { it.toIonElement() }.toTypedArray(),
                 metas = metas)
             return elements
         }
@@ -4401,12 +4395,12 @@ class partiql_basic private constructor() {
             if (other.javaClass != group_by_list::class.java) return false
     
             other as group_by_list
-            if (group_by_item0 != other.group_by_item0) return false
+            if (items != other.items) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = group_by_item0.hashCode()
+            var hc = items.hashCode()
             hc
         }
     
@@ -4414,22 +4408,22 @@ class partiql_basic private constructor() {
     }
     
     class group_by(
-        val group_by_list0: group_by_list,
-        val symbol1: SymbolPrimitive?,
+        val items: group_by_list,
+        val group_as_alias: SymbolPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): partiql_basic_node() {
     
-        override fun withMeta(key: String, value: Any): group_by =
+        override fun withMeta(metaKey: String, metaValue: Any): group_by =
             group_by(
-                group_by_list0 = group_by_list0,
-                symbol1 = symbol1,
-                metas = metas + metaContainerOf(key to value))
+                items = items,
+                group_as_alias = group_as_alias,
+                metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("group_by"),
-                group_by_list0.toIonElement(),
-                symbol1?.toIonElement() ?: ionNull(),
+                items.toIonElement(),
+                group_as_alias?.toIonElement() ?: ionNull(),
                 metas = metas)
             return elements
         }
@@ -4440,14 +4434,14 @@ class partiql_basic private constructor() {
             if (other.javaClass != group_by::class.java) return false
     
             other as group_by
-            if (group_by_list0 != other.group_by_list0) return false
-            if (symbol1 != other.symbol1) return false
+            if (items != other.items) return false
+            if (group_as_alias != other.group_as_alias) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = group_by_list0.hashCode()
-            hc = 31 * hc + symbol1.hashCode()
+            var hc = items.hashCode()
+            hc = 31 * hc + group_as_alias.hashCode()
             hc
         }
     
@@ -4462,19 +4456,19 @@ class partiql_basic private constructor() {
     sealed class projection : partiql_basic_node() {
     
         class project_list(
-            val project_item0: List<project_item>,
+            val items: List<project_item>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): projection() {
         
-            override fun withMeta(key: String, value: Any): project_list =
+            override fun withMeta(metaKey: String, metaValue: Any): project_list =
                 project_list(
-                    project_item0 = project_item0,
-                    metas = metas + metaContainerOf(key to value))
+                    items = items,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("project_list"),
-                    *project_item0.map { it.toIonElement() }.toTypedArray(),
+                    *items.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -4485,12 +4479,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != project_list::class.java) return false
         
                 other as project_list
-                if (project_item0 != other.project_item0) return false
+                if (items != other.items) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = project_item0.hashCode()
+                var hc = items.hashCode()
                 hc
             }
         
@@ -4498,19 +4492,19 @@ class partiql_basic private constructor() {
         }
     
         class project_value(
-            val expr0: expr,
+            val value: expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): projection() {
         
-            override fun withMeta(key: String, value: Any): project_value =
+            override fun withMeta(metaKey: String, metaValue: Any): project_value =
                 project_value(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
+                    value = value,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("project_value"),
-                    expr0.toIonElement(),
+                    value.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -4521,12 +4515,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != project_value::class.java) return false
         
                 other as project_value
-                if (expr0 != other.expr0) return false
+                if (value != other.value) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
+                var hc = value.hashCode()
                 hc
             }
         
@@ -4541,9 +4535,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): project_item() {
         
-            override fun withMeta(key: String, value: Any): project_all =
+            override fun withMeta(metaKey: String, metaValue: Any): project_all =
                 project_all(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -4564,22 +4558,22 @@ class partiql_basic private constructor() {
         }
     
         class project_expr(
-            val expr0: expr,
-            val symbol1: SymbolPrimitive?,
+            val value: expr,
+            val as_alias: SymbolPrimitive?,
             override val metas: MetaContainer = emptyMetaContainer()
         ): project_item() {
         
-            override fun withMeta(key: String, value: Any): project_expr =
+            override fun withMeta(metaKey: String, metaValue: Any): project_expr =
                 project_expr(
-                    expr0 = expr0,
-                    symbol1 = symbol1,
-                    metas = metas + metaContainerOf(key to value))
+                    value = value,
+                    as_alias = as_alias,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("project_expr"),
-                    expr0.toIonElement(),
-                    symbol1?.toIonElement() ?: ionNull(),
+                    value.toIonElement(),
+                    as_alias?.toIonElement() ?: ionNull(),
                     metas = metas)
                 return elements
             }
@@ -4590,14 +4584,14 @@ class partiql_basic private constructor() {
                 if (other.javaClass != project_expr::class.java) return false
         
                 other as project_expr
-                if (expr0 != other.expr0) return false
-                if (symbol1 != other.symbol1) return false
+                if (value != other.value) return false
+                if (as_alias != other.as_alias) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + symbol1.hashCode()
+                var hc = value.hashCode()
+                hc = 31 * hc + as_alias.hashCode()
                 hc
             }
         
@@ -4612,9 +4606,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): join_type() {
         
-            override fun withMeta(key: String, value: Any): inner =
+            override fun withMeta(metaKey: String, metaValue: Any): inner =
                 inner(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -4638,9 +4632,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): join_type() {
         
-            override fun withMeta(key: String, value: Any): left =
+            override fun withMeta(metaKey: String, metaValue: Any): left =
                 left(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -4664,9 +4658,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): join_type() {
         
-            override fun withMeta(key: String, value: Any): right =
+            override fun withMeta(metaKey: String, metaValue: Any): right =
                 right(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -4690,9 +4684,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): join_type() {
         
-            override fun withMeta(key: String, value: Any): outer =
+            override fun withMeta(metaKey: String, metaValue: Any): outer =
                 outer(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -4717,28 +4711,28 @@ class partiql_basic private constructor() {
     sealed class from_source : partiql_basic_node() {
     
         class scan(
-            val expr0: expr,
-            val symbol1: SymbolPrimitive?,
-            val symbol2: SymbolPrimitive?,
-            val symbol3: SymbolPrimitive?,
+            val expr: expr,
+            val as_alias: SymbolPrimitive?,
+            val at_alias: SymbolPrimitive?,
+            val by_alias: SymbolPrimitive?,
             override val metas: MetaContainer = emptyMetaContainer()
         ): from_source() {
         
-            override fun withMeta(key: String, value: Any): scan =
+            override fun withMeta(metaKey: String, metaValue: Any): scan =
                 scan(
-                    expr0 = expr0,
-                    symbol1 = symbol1,
-                    symbol2 = symbol2,
-                    symbol3 = symbol3,
-                    metas = metas + metaContainerOf(key to value))
+                    expr = expr,
+                    as_alias = as_alias,
+                    at_alias = at_alias,
+                    by_alias = by_alias,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("scan"),
-                    expr0.toIonElement(),
-                    symbol1?.toIonElement() ?: ionNull(),
-                    symbol2?.toIonElement() ?: ionNull(),
-                    symbol3?.toIonElement() ?: ionNull(),
+                    expr.toIonElement(),
+                    as_alias?.toIonElement() ?: ionNull(),
+                    at_alias?.toIonElement() ?: ionNull(),
+                    by_alias?.toIonElement() ?: ionNull(),
                     metas = metas)
                 return elements
             }
@@ -4749,18 +4743,18 @@ class partiql_basic private constructor() {
                 if (other.javaClass != scan::class.java) return false
         
                 other as scan
-                if (expr0 != other.expr0) return false
-                if (symbol1 != other.symbol1) return false
-                if (symbol2 != other.symbol2) return false
-                if (symbol3 != other.symbol3) return false
+                if (expr != other.expr) return false
+                if (as_alias != other.as_alias) return false
+                if (at_alias != other.at_alias) return false
+                if (by_alias != other.by_alias) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + symbol1.hashCode()
-                hc = 31 * hc + symbol2.hashCode()
-                hc = 31 * hc + symbol3.hashCode()
+                var hc = expr.hashCode()
+                hc = 31 * hc + as_alias.hashCode()
+                hc = 31 * hc + at_alias.hashCode()
+                hc = 31 * hc + by_alias.hashCode()
                 hc
             }
         
@@ -4768,28 +4762,28 @@ class partiql_basic private constructor() {
         }
     
         class join(
-            val join_type0: join_type,
-            val from_source1: from_source,
-            val from_source2: from_source,
-            val expr3: expr?,
+            val type: join_type,
+            val left: from_source,
+            val right: from_source,
+            val predicate: expr?,
             override val metas: MetaContainer = emptyMetaContainer()
         ): from_source() {
         
-            override fun withMeta(key: String, value: Any): join =
+            override fun withMeta(metaKey: String, metaValue: Any): join =
                 join(
-                    join_type0 = join_type0,
-                    from_source1 = from_source1,
-                    from_source2 = from_source2,
-                    expr3 = expr3,
-                    metas = metas + metaContainerOf(key to value))
+                    type = type,
+                    left = left,
+                    right = right,
+                    predicate = predicate,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("join"),
-                    join_type0.toIonElement(),
-                    from_source1.toIonElement(),
-                    from_source2.toIonElement(),
-                    expr3?.toIonElement() ?: ionNull(),
+                    type.toIonElement(),
+                    left.toIonElement(),
+                    right.toIonElement(),
+                    predicate?.toIonElement() ?: ionNull(),
                     metas = metas)
                 return elements
             }
@@ -4800,18 +4794,18 @@ class partiql_basic private constructor() {
                 if (other.javaClass != join::class.java) return false
         
                 other as join
-                if (join_type0 != other.join_type0) return false
-                if (from_source1 != other.from_source1) return false
-                if (from_source2 != other.from_source2) return false
-                if (expr3 != other.expr3) return false
+                if (type != other.type) return false
+                if (left != other.left) return false
+                if (right != other.right) return false
+                if (predicate != other.predicate) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = join_type0.hashCode()
-                hc = 31 * hc + from_source1.hashCode()
-                hc = 31 * hc + from_source2.hashCode()
-                hc = 31 * hc + expr3.hashCode()
+                var hc = type.hashCode()
+                hc = 31 * hc + left.hashCode()
+                hc = 31 * hc + right.hashCode()
+                hc = 31 * hc + predicate.hashCode()
                 hc
             }
         
@@ -4826,9 +4820,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): case_sensitivity() {
         
-            override fun withMeta(key: String, value: Any): case_sensitive =
+            override fun withMeta(metaKey: String, metaValue: Any): case_sensitive =
                 case_sensitive(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -4852,9 +4846,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): case_sensitivity() {
         
-            override fun withMeta(key: String, value: Any): case_insensitive =
+            override fun withMeta(metaKey: String, metaValue: Any): case_insensitive =
                 case_insensitive(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -4882,9 +4876,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): scope_qualifier() {
         
-            override fun withMeta(key: String, value: Any): unqualified =
+            override fun withMeta(metaKey: String, metaValue: Any): unqualified =
                 unqualified(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -4908,9 +4902,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): scope_qualifier() {
         
-            override fun withMeta(key: String, value: Any): qualified =
+            override fun withMeta(metaKey: String, metaValue: Any): qualified =
                 qualified(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -4938,9 +4932,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): set_quantifier() {
         
-            override fun withMeta(key: String, value: Any): all =
+            override fun withMeta(metaKey: String, metaValue: Any): all =
                 all(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -4964,9 +4958,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): set_quantifier() {
         
-            override fun withMeta(key: String, value: Any): distinct =
+            override fun withMeta(metaKey: String, metaValue: Any): distinct =
                 distinct(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -4991,19 +4985,19 @@ class partiql_basic private constructor() {
     sealed class path_element : partiql_basic_node() {
     
         class path_expr(
-            val expr0: expr,
+            val expr: expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): path_element() {
         
-            override fun withMeta(key: String, value: Any): path_expr =
+            override fun withMeta(metaKey: String, metaValue: Any): path_expr =
                 path_expr(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
+                    expr = expr,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path_expr"),
-                    expr0.toIonElement(),
+                    expr.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -5014,12 +5008,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != path_expr::class.java) return false
         
                 other as path_expr
-                if (expr0 != other.expr0) return false
+                if (expr != other.expr) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
+                var hc = expr.hashCode()
                 hc
             }
         
@@ -5030,9 +5024,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): path_element() {
         
-            override fun withMeta(key: String, value: Any): path_wildcard =
+            override fun withMeta(metaKey: String, metaValue: Any): path_wildcard =
                 path_wildcard(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -5056,9 +5050,9 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): path_element() {
         
-            override fun withMeta(key: String, value: Any): path_unpivot =
+            override fun withMeta(metaKey: String, metaValue: Any): path_unpivot =
                 path_unpivot(
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
@@ -5083,19 +5077,19 @@ class partiql_basic private constructor() {
     sealed class expr : partiql_basic_node() {
     
         class lit(
-            val ion0: IonElement,
+            val value: IonElement,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): lit =
+            override fun withMeta(metaKey: String, metaValue: Any): lit =
                 lit(
-                    ion0 = ion0,
-                    metas = metas + metaContainerOf(key to value))
+                    value = value,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("lit"),
-                    ion0.toIonElement(),
+                    value.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -5106,12 +5100,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != lit::class.java) return false
         
                 other as lit
-                if (ion0 != other.ion0) return false
+                if (value != other.value) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = ion0.hashCode()
+                var hc = value.hashCode()
                 hc
             }
         
@@ -5119,25 +5113,25 @@ class partiql_basic private constructor() {
         }
     
         class id(
-            val symbol0: SymbolPrimitive,
-            val case_sensitivity1: case_sensitivity,
-            val scope_qualifier2: scope_qualifier,
+            val name: SymbolPrimitive,
+            val case: case_sensitivity,
+            val scope_qualifier: scope_qualifier,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): id =
+            override fun withMeta(metaKey: String, metaValue: Any): id =
                 id(
-                    symbol0 = symbol0,
-                    case_sensitivity1 = case_sensitivity1,
-                    scope_qualifier2 = scope_qualifier2,
-                    metas = metas + metaContainerOf(key to value))
+                    name = name,
+                    case = case,
+                    scope_qualifier = scope_qualifier,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("id"),
-                    symbol0.toIonElement(),
-                    case_sensitivity1.toIonElement(),
-                    scope_qualifier2.toIonElement(),
+                    name.toIonElement(),
+                    case.toIonElement(),
+                    scope_qualifier.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -5148,16 +5142,16 @@ class partiql_basic private constructor() {
                 if (other.javaClass != id::class.java) return false
         
                 other as id
-                if (symbol0 != other.symbol0) return false
-                if (case_sensitivity1 != other.case_sensitivity1) return false
-                if (scope_qualifier2 != other.scope_qualifier2) return false
+                if (name != other.name) return false
+                if (case != other.case) return false
+                if (scope_qualifier != other.scope_qualifier) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + case_sensitivity1.hashCode()
-                hc = 31 * hc + scope_qualifier2.hashCode()
+                var hc = name.hashCode()
+                hc = 31 * hc + case.hashCode()
+                hc = 31 * hc + scope_qualifier.hashCode()
                 hc
             }
         
@@ -5165,19 +5159,19 @@ class partiql_basic private constructor() {
         }
     
         class parameter(
-            val int0: LongPrimitive,
+            val index: LongPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): parameter =
+            override fun withMeta(metaKey: String, metaValue: Any): parameter =
                 parameter(
-                    int0 = int0,
-                    metas = metas + metaContainerOf(key to value))
+                    index = index,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("parameter"),
-                    int0.toIonElement(),
+                    index.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -5188,12 +5182,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != parameter::class.java) return false
         
                 other as parameter
-                if (int0 != other.int0) return false
+                if (index != other.index) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = int0.hashCode()
+                var hc = index.hashCode()
                 hc
             }
         
@@ -5201,19 +5195,19 @@ class partiql_basic private constructor() {
         }
     
         class not(
-            val expr0: expr,
+            val expr: expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): not =
+            override fun withMeta(metaKey: String, metaValue: Any): not =
                 not(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
+                    expr = expr,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("not"),
-                    expr0.toIonElement(),
+                    expr.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -5224,12 +5218,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != not::class.java) return false
         
                 other as not
-                if (expr0 != other.expr0) return false
+                if (expr != other.expr) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
+                var hc = expr.hashCode()
                 hc
             }
         
@@ -5237,19 +5231,19 @@ class partiql_basic private constructor() {
         }
     
         class plus(
-            val expr0: List<expr>,
+            val operands: List<expr>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): plus =
+            override fun withMeta(metaKey: String, metaValue: Any): plus =
                 plus(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("plus"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5260,12 +5254,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != plus::class.java) return false
         
                 other as plus
-                if (expr0 != other.expr0) return false
+                if (operands != other.operands) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
+                var hc = operands.hashCode()
                 hc
             }
         
@@ -5273,19 +5267,19 @@ class partiql_basic private constructor() {
         }
     
         class minus(
-            val expr0: List<expr>,
+            val operands: List<expr>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): minus =
+            override fun withMeta(metaKey: String, metaValue: Any): minus =
                 minus(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("minus"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5296,12 +5290,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != minus::class.java) return false
         
                 other as minus
-                if (expr0 != other.expr0) return false
+                if (operands != other.operands) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
+                var hc = operands.hashCode()
                 hc
             }
         
@@ -5309,19 +5303,19 @@ class partiql_basic private constructor() {
         }
     
         class times(
-            val expr0: List<expr>,
+            val operands: List<expr>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): times =
+            override fun withMeta(metaKey: String, metaValue: Any): times =
                 times(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("times"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5332,12 +5326,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != times::class.java) return false
         
                 other as times
-                if (expr0 != other.expr0) return false
+                if (operands != other.operands) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
+                var hc = operands.hashCode()
                 hc
             }
         
@@ -5345,19 +5339,19 @@ class partiql_basic private constructor() {
         }
     
         class divide(
-            val expr0: List<expr>,
+            val operands: List<expr>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): divide =
+            override fun withMeta(metaKey: String, metaValue: Any): divide =
                 divide(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("divide"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5368,12 +5362,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != divide::class.java) return false
         
                 other as divide
-                if (expr0 != other.expr0) return false
+                if (operands != other.operands) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
+                var hc = operands.hashCode()
                 hc
             }
         
@@ -5381,19 +5375,19 @@ class partiql_basic private constructor() {
         }
     
         class modulo(
-            val expr0: List<expr>,
+            val operands: List<expr>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): modulo =
+            override fun withMeta(metaKey: String, metaValue: Any): modulo =
                 modulo(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("modulo"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5404,12 +5398,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != modulo::class.java) return false
         
                 other as modulo
-                if (expr0 != other.expr0) return false
+                if (operands != other.operands) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
+                var hc = operands.hashCode()
                 hc
             }
         
@@ -5417,19 +5411,19 @@ class partiql_basic private constructor() {
         }
     
         class concat(
-            val expr0: List<expr>,
+            val operands: List<expr>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): concat =
+            override fun withMeta(metaKey: String, metaValue: Any): concat =
                 concat(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
+                    operands = operands,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("concat"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
+                    *operands.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5440,12 +5434,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != concat::class.java) return false
         
                 other as concat
-                if (expr0 != other.expr0) return false
+                if (operands != other.operands) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
+                var hc = operands.hashCode()
                 hc
             }
         
@@ -5453,25 +5447,25 @@ class partiql_basic private constructor() {
         }
     
         class like(
-            val expr0: expr,
-            val expr1: expr,
-            val expr2: expr,
+            val left: expr,
+            val right: expr,
+            val escape: expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): like =
+            override fun withMeta(metaKey: String, metaValue: Any): like =
                 like(
-                    expr0 = expr0,
-                    expr1 = expr1,
-                    expr2 = expr2,
-                    metas = metas + metaContainerOf(key to value))
+                    left = left,
+                    right = right,
+                    escape = escape,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("like"),
-                    expr0.toIonElement(),
-                    expr1.toIonElement(),
-                    expr2.toIonElement(),
+                    left.toIonElement(),
+                    right.toIonElement(),
+                    escape.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -5482,16 +5476,16 @@ class partiql_basic private constructor() {
                 if (other.javaClass != like::class.java) return false
         
                 other as like
-                if (expr0 != other.expr0) return false
-                if (expr1 != other.expr1) return false
-                if (expr2 != other.expr2) return false
+                if (left != other.left) return false
+                if (right != other.right) return false
+                if (escape != other.escape) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc = 31 * hc + expr2.hashCode()
+                var hc = left.hashCode()
+                hc = 31 * hc + right.hashCode()
+                hc = 31 * hc + escape.hashCode()
                 hc
             }
         
@@ -5499,25 +5493,25 @@ class partiql_basic private constructor() {
         }
     
         class between(
-            val expr0: expr,
-            val expr1: expr,
-            val expr2: expr,
+            val value: expr,
+            val from: expr,
+            val to: expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): between =
+            override fun withMeta(metaKey: String, metaValue: Any): between =
                 between(
-                    expr0 = expr0,
-                    expr1 = expr1,
-                    expr2 = expr2,
-                    metas = metas + metaContainerOf(key to value))
+                    value = value,
+                    from = from,
+                    to = to,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("between"),
-                    expr0.toIonElement(),
-                    expr1.toIonElement(),
-                    expr2.toIonElement(),
+                    value.toIonElement(),
+                    from.toIonElement(),
+                    to.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -5528,16 +5522,16 @@ class partiql_basic private constructor() {
                 if (other.javaClass != between::class.java) return false
         
                 other as between
-                if (expr0 != other.expr0) return false
-                if (expr1 != other.expr1) return false
-                if (expr2 != other.expr2) return false
+                if (value != other.value) return false
+                if (from != other.from) return false
+                if (to != other.to) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc = 31 * hc + expr2.hashCode()
+                var hc = value.hashCode()
+                hc = 31 * hc + from.hashCode()
+                hc = 31 * hc + to.hashCode()
                 hc
             }
         
@@ -5545,22 +5539,22 @@ class partiql_basic private constructor() {
         }
     
         class path(
-            val expr0: expr,
-            val path_element1: List<path_element>,
+            val root: expr,
+            val elements: List<path_element>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): path =
+            override fun withMeta(metaKey: String, metaValue: Any): path =
                 path(
-                    expr0 = expr0,
-                    path_element1 = path_element1,
-                    metas = metas + metaContainerOf(key to value))
+                    root = root,
+                    elements = elements,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("path"),
-                    expr0.toIonElement(),
-                    *path_element1.map { it.toIonElement() }.toTypedArray(),
+                    root.toIonElement(),
+                    *elements.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5571,14 +5565,14 @@ class partiql_basic private constructor() {
                 if (other.javaClass != path::class.java) return false
         
                 other as path
-                if (expr0 != other.expr0) return false
-                if (path_element1 != other.path_element1) return false
+                if (root != other.root) return false
+                if (elements != other.elements) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + path_element1.hashCode()
+                var hc = root.hashCode()
+                hc = 31 * hc + elements.hashCode()
                 hc
             }
         
@@ -5586,22 +5580,22 @@ class partiql_basic private constructor() {
         }
     
         class call(
-            val symbol0: SymbolPrimitive,
-            val expr1: List<expr>,
+            val name: SymbolPrimitive,
+            val args: List<expr>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): call =
+            override fun withMeta(metaKey: String, metaValue: Any): call =
                 call(
-                    symbol0 = symbol0,
-                    expr1 = expr1,
-                    metas = metas + metaContainerOf(key to value))
+                    name = name,
+                    args = args,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("call"),
-                    symbol0.toIonElement(),
-                    *expr1.map { it.toIonElement() }.toTypedArray(),
+                    name.toIonElement(),
+                    *args.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5612,14 +5606,14 @@ class partiql_basic private constructor() {
                 if (other.javaClass != call::class.java) return false
         
                 other as call
-                if (symbol0 != other.symbol0) return false
-                if (expr1 != other.expr1) return false
+                if (name != other.name) return false
+                if (args != other.args) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
+                var hc = name.hashCode()
+                hc = 31 * hc + args.hashCode()
                 hc
             }
         
@@ -5627,25 +5621,22 @@ class partiql_basic private constructor() {
         }
     
         class call_agg(
-            val symbol0: SymbolPrimitive,
-            val set_quantifier1: set_quantifier,
-            val expr2: expr,
+            val name: SymbolPrimitive,
+            val set_quantifier: expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): call_agg =
+            override fun withMeta(metaKey: String, metaValue: Any): call_agg =
                 call_agg(
-                    symbol0 = symbol0,
-                    set_quantifier1 = set_quantifier1,
-                    expr2 = expr2,
-                    metas = metas + metaContainerOf(key to value))
+                    name = name,
+                    set_quantifier = set_quantifier,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("call_agg"),
-                    symbol0.toIonElement(),
-                    set_quantifier1.toIonElement(),
-                    expr2.toIonElement(),
+                    name.toIonElement(),
+                    set_quantifier.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -5656,16 +5647,14 @@ class partiql_basic private constructor() {
                 if (other.javaClass != call_agg::class.java) return false
         
                 other as call_agg
-                if (symbol0 != other.symbol0) return false
-                if (set_quantifier1 != other.set_quantifier1) return false
-                if (expr2 != other.expr2) return false
+                if (name != other.name) return false
+                if (set_quantifier != other.set_quantifier) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + set_quantifier1.hashCode()
-                hc = 31 * hc + expr2.hashCode()
+                var hc = name.hashCode()
+                hc = 31 * hc + set_quantifier.hashCode()
                 hc
             }
         
@@ -5673,22 +5662,22 @@ class partiql_basic private constructor() {
         }
     
         class simple_case(
-            val expr0: expr,
-            val expr_pair1: List<expr_pair>,
+            val value: expr,
+            val branches: List<expr_pair>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): simple_case =
+            override fun withMeta(metaKey: String, metaValue: Any): simple_case =
                 simple_case(
-                    expr0 = expr0,
-                    expr_pair1 = expr_pair1,
-                    metas = metas + metaContainerOf(key to value))
+                    value = value,
+                    branches = branches,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("simple_case"),
-                    expr0.toIonElement(),
-                    *expr_pair1.map { it.toIonElement() }.toTypedArray(),
+                    value.toIonElement(),
+                    *branches.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5699,14 +5688,14 @@ class partiql_basic private constructor() {
                 if (other.javaClass != simple_case::class.java) return false
         
                 other as simple_case
-                if (expr0 != other.expr0) return false
-                if (expr_pair1 != other.expr_pair1) return false
+                if (value != other.value) return false
+                if (branches != other.branches) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + expr_pair1.hashCode()
+                var hc = value.hashCode()
+                hc = 31 * hc + branches.hashCode()
                 hc
             }
         
@@ -5714,19 +5703,19 @@ class partiql_basic private constructor() {
         }
     
         class searched_case(
-            val expr_pair0: List<expr_pair>,
+            val branches: List<expr_pair>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): searched_case =
+            override fun withMeta(metaKey: String, metaValue: Any): searched_case =
                 searched_case(
-                    expr_pair0 = expr_pair0,
-                    metas = metas + metaContainerOf(key to value))
+                    branches = branches,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("searched_case"),
-                    *expr_pair0.map { it.toIonElement() }.toTypedArray(),
+                    *branches.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5737,12 +5726,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != searched_case::class.java) return false
         
                 other as searched_case
-                if (expr_pair0 != other.expr_pair0) return false
+                if (branches != other.branches) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr_pair0.hashCode()
+                var hc = branches.hashCode()
                 hc
             }
         
@@ -5750,19 +5739,19 @@ class partiql_basic private constructor() {
         }
     
         class struct(
-            val expr_pair0: List<expr_pair>,
+            val fields: List<expr_pair>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): struct =
+            override fun withMeta(metaKey: String, metaValue: Any): struct =
                 struct(
-                    expr_pair0 = expr_pair0,
-                    metas = metas + metaContainerOf(key to value))
+                    fields = fields,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("struct"),
-                    *expr_pair0.map { it.toIonElement() }.toTypedArray(),
+                    *fields.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5773,12 +5762,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != struct::class.java) return false
         
                 other as struct
-                if (expr_pair0 != other.expr_pair0) return false
+                if (fields != other.fields) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr_pair0.hashCode()
+                var hc = fields.hashCode()
                 hc
             }
         
@@ -5786,19 +5775,19 @@ class partiql_basic private constructor() {
         }
     
         class bag(
-            val expr0: List<expr>,
+            val values: List<expr>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): bag =
+            override fun withMeta(metaKey: String, metaValue: Any): bag =
                 bag(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
+                    values = values,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("bag"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
+                    *values.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5809,12 +5798,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != bag::class.java) return false
         
                 other as bag
-                if (expr0 != other.expr0) return false
+                if (values != other.values) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
+                var hc = values.hashCode()
                 hc
             }
         
@@ -5822,19 +5811,19 @@ class partiql_basic private constructor() {
         }
     
         class list(
-            val expr0: List<expr>,
+            val values: List<expr>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): list =
+            override fun withMeta(metaKey: String, metaValue: Any): list =
                 list(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
+                    values = values,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("list"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
+                    *values.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
@@ -5845,12 +5834,12 @@ class partiql_basic private constructor() {
                 if (other.javaClass != list::class.java) return false
         
                 other as list
-                if (expr0 != other.expr0) return false
+                if (values != other.values) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
+                var hc = values.hashCode()
                 hc
             }
         
@@ -5868,7 +5857,7 @@ class partiql_basic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): expr() {
         
-            override fun withMeta(key: String, value: Any): select =
+            override fun withMeta(metaKey: String, metaValue: Any): select =
                 select(
                     setq = setq,
                     project = project,
@@ -5877,10 +5866,9 @@ class partiql_basic private constructor() {
                     group = group,
                     having = having,
                     limit = limit,
-                    metas = metas + metaContainerOf(key to value))
+                    metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
-        
                 val elements = listOfNotNull(
                     ionSymbol("select"),
                     setq?.let { ionSexpOf(ionSymbol("setq"), it.toIonElement()) },
@@ -5941,36 +5929,36 @@ class partiql_basic private constructor() {
                 //////////////////////////////////////
                 "expr_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    expr_pair(
-                        expr0,
-                        expr1,
+                    val first = sexp.getRequired(0).transformExpect<expr>()
+                    val second = sexp.getRequired(1).transformExpect<expr>()
+                    partiql_basic.expr_pair(
+                        first,
+                        second,
                         metas = sexp.metas)
                 }
                 "group_by_item" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val symbol1 = sexp.getOptional(1)?.toSymbolPrimitive()
-                    group_by_item(
-                        expr0,
-                        symbol1,
+                    val value = sexp.getRequired(0).transformExpect<expr>()
+                    val as_alias = sexp.getOptional(1)?.toSymbolPrimitive()
+                    partiql_basic.group_by_item(
+                        value,
+                        as_alias,
                         metas = sexp.metas)
                 }
                 "group_by_list" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val group_by_item0 = sexp.values.drop(1).map { it.transformExpect<group_by_item>() }
-                    group_by_list(
-                        group_by_item0,
+                    val items = sexp.values.drop(1).map { it.transformExpect<group_by_item>() }
+                    partiql_basic.group_by_list(
+                        items,
                         metas = sexp.metas)
                 }
                 "group_by" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2))
-                    val group_by_list0 = sexp.getRequired(0).transformExpect<group_by_list>()
-                    val symbol1 = sexp.getOptional(1)?.toSymbolPrimitive()
-                    group_by(
-                        group_by_list0,
-                        symbol1,
+                    val items = sexp.getRequired(0).transformExpect<group_by_list>()
+                    val group_as_alias = sexp.getOptional(1)?.toSymbolPrimitive()
+                    partiql_basic.group_by(
+                        items,
+                        group_as_alias,
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -5978,16 +5966,16 @@ class partiql_basic private constructor() {
                 //////////////////////////////////////
                 "project_list" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val project_item0 = sexp.values.drop(1).map { it.transformExpect<project_item>() }
-                    projection.project_list(
-                        project_item0,
+                    val items = sexp.values.drop(1).map { it.transformExpect<project_item>() }
+                    partiql_basic.projection.project_list(
+                        items,
                         metas = sexp.metas)
                 }
                 "project_value" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    projection.project_value(
-                        expr0,
+                    val value = sexp.getRequired(0).transformExpect<expr>()
+                    partiql_basic.projection.project_value(
+                        value,
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -5995,16 +5983,16 @@ class partiql_basic private constructor() {
                 //////////////////////////////////////
                 "project_all" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    project_item.project_all(
+                    partiql_basic.project_item.project_all(
                         metas = sexp.metas)
                 }
                 "project_expr" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val symbol1 = sexp.getOptional(1)?.toSymbolPrimitive()
-                    project_item.project_expr(
-                        expr0,
-                        symbol1,
+                    val value = sexp.getRequired(0).transformExpect<expr>()
+                    val as_alias = sexp.getOptional(1)?.toSymbolPrimitive()
+                    partiql_basic.project_item.project_expr(
+                        value,
+                        as_alias,
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -6012,22 +6000,22 @@ class partiql_basic private constructor() {
                 //////////////////////////////////////
                 "inner" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    join_type.inner(
+                    partiql_basic.join_type.inner(
                         metas = sexp.metas)
                 }
                 "left" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    join_type.left(
+                    partiql_basic.join_type.left(
                         metas = sexp.metas)
                 }
                 "right" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    join_type.right(
+                    partiql_basic.join_type.right(
                         metas = sexp.metas)
                 }
                 "outer" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    join_type.outer(
+                    partiql_basic.join_type.outer(
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -6035,28 +6023,28 @@ class partiql_basic private constructor() {
                 //////////////////////////////////////
                 "scan" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 4))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val symbol1 = sexp.getOptional(1)?.toSymbolPrimitive()
-                    val symbol2 = sexp.getOptional(2)?.toSymbolPrimitive()
-                    val symbol3 = sexp.getOptional(3)?.toSymbolPrimitive()
-                    from_source.scan(
-                        expr0,
-                        symbol1,
-                        symbol2,
-                        symbol3,
+                    val expr = sexp.getRequired(0).transformExpect<expr>()
+                    val as_alias = sexp.getOptional(1)?.toSymbolPrimitive()
+                    val at_alias = sexp.getOptional(2)?.toSymbolPrimitive()
+                    val by_alias = sexp.getOptional(3)?.toSymbolPrimitive()
+                    partiql_basic.from_source.scan(
+                        expr,
+                        as_alias,
+                        at_alias,
+                        by_alias,
                         metas = sexp.metas)
                 }
                 "join" -> {
                     sexp.requireArityOrMalformed(IntRange(3, 4))
-                    val join_type0 = sexp.getRequired(0).transformExpect<join_type>()
-                    val from_source1 = sexp.getRequired(1).transformExpect<from_source>()
-                    val from_source2 = sexp.getRequired(2).transformExpect<from_source>()
-                    val expr3 = sexp.getOptional(3)?.transformExpect<expr>()
-                    from_source.join(
-                        join_type0,
-                        from_source1,
-                        from_source2,
-                        expr3,
+                    val type = sexp.getRequired(0).transformExpect<join_type>()
+                    val left = sexp.getRequired(1).transformExpect<from_source>()
+                    val right = sexp.getRequired(2).transformExpect<from_source>()
+                    val predicate = sexp.getOptional(3)?.transformExpect<expr>()
+                    partiql_basic.from_source.join(
+                        type,
+                        left,
+                        right,
+                        predicate,
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -6064,12 +6052,12 @@ class partiql_basic private constructor() {
                 //////////////////////////////////////
                 "case_sensitive" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    case_sensitivity.case_sensitive(
+                    partiql_basic.case_sensitivity.case_sensitive(
                         metas = sexp.metas)
                 }
                 "case_insensitive" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    case_sensitivity.case_insensitive(
+                    partiql_basic.case_sensitivity.case_insensitive(
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -6077,12 +6065,12 @@ class partiql_basic private constructor() {
                 //////////////////////////////////////
                 "unqualified" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    scope_qualifier.unqualified(
+                    partiql_basic.scope_qualifier.unqualified(
                         metas = sexp.metas)
                 }
                 "qualified" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    scope_qualifier.qualified(
+                    partiql_basic.scope_qualifier.qualified(
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -6090,12 +6078,12 @@ class partiql_basic private constructor() {
                 //////////////////////////////////////
                 "all" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    set_quantifier.all(
+                    partiql_basic.set_quantifier.all(
                         metas = sexp.metas)
                 }
                 "distinct" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    set_quantifier.distinct(
+                    partiql_basic.set_quantifier.distinct(
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -6103,19 +6091,19 @@ class partiql_basic private constructor() {
                 //////////////////////////////////////
                 "path_expr" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    path_element.path_expr(
-                        expr0,
+                    val expr = sexp.getRequired(0).transformExpect<expr>()
+                    partiql_basic.path_element.path_expr(
+                        expr,
                         metas = sexp.metas)
                 }
                 "path_wildcard" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    path_element.path_wildcard(
+                    partiql_basic.path_element.path_wildcard(
                         metas = sexp.metas)
                 }
                 "path_unpivot" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    path_element.path_unpivot(
+                    partiql_basic.path_element.path_unpivot(
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -6123,164 +6111,162 @@ class partiql_basic private constructor() {
                 //////////////////////////////////////
                 "lit" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val ion0 = sexp.getRequiredIon(0)
-                    expr.lit(
-                        ion0,
+                    val value = sexp.getRequiredIon(0)
+                    partiql_basic.expr.lit(
+                        value,
                         metas = sexp.metas)
                 }
                 "id" -> {
                     sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val case_sensitivity1 = sexp.getRequired(1).transformExpect<case_sensitivity>()
-                    val scope_qualifier2 = sexp.getRequired(2).transformExpect<scope_qualifier>()
-                    expr.id(
-                        symbol0,
-                        case_sensitivity1,
-                        scope_qualifier2,
+                    val name = sexp.getRequired(0).toSymbolPrimitive()
+                    val case = sexp.getRequired(1).transformExpect<case_sensitivity>()
+                    val scope_qualifier = sexp.getRequired(2).transformExpect<scope_qualifier>()
+                    partiql_basic.expr.id(
+                        name,
+                        case,
+                        scope_qualifier,
                         metas = sexp.metas)
                 }
                 "parameter" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    expr.parameter(
-                        int0,
+                    val index = sexp.getRequired(0).toLongPrimitive()
+                    partiql_basic.expr.parameter(
+                        index,
                         metas = sexp.metas)
                 }
                 "not" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    expr.not(
-                        expr0,
+                    val expr = sexp.getRequired(0).transformExpect<expr>()
+                    partiql_basic.expr.not(
+                        expr,
                         metas = sexp.metas)
                 }
                 "plus" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.plus(
-                        expr0,
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    partiql_basic.expr.plus(
+                        operands,
                         metas = sexp.metas)
                 }
                 "minus" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.minus(
-                        expr0,
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    partiql_basic.expr.minus(
+                        operands,
                         metas = sexp.metas)
                 }
                 "times" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.times(
-                        expr0,
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    partiql_basic.expr.times(
+                        operands,
                         metas = sexp.metas)
                 }
                 "divide" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.divide(
-                        expr0,
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    partiql_basic.expr.divide(
+                        operands,
                         metas = sexp.metas)
                 }
                 "modulo" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.modulo(
-                        expr0,
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    partiql_basic.expr.modulo(
+                        operands,
                         metas = sexp.metas)
                 }
                 "concat" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.concat(
-                        expr0,
+                    val operands = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    partiql_basic.expr.concat(
+                        operands,
                         metas = sexp.metas)
                 }
                 "like" -> {
                     sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
-                    expr.like(
-                        expr0,
-                        expr1,
-                        expr2,
+                    val left = sexp.getRequired(0).transformExpect<expr>()
+                    val right = sexp.getRequired(1).transformExpect<expr>()
+                    val escape = sexp.getRequired(2).transformExpect<expr>()
+                    partiql_basic.expr.like(
+                        left,
+                        right,
+                        escape,
                         metas = sexp.metas)
                 }
                 "between" -> {
                     sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
-                    expr.between(
-                        expr0,
-                        expr1,
-                        expr2,
+                    val value = sexp.getRequired(0).transformExpect<expr>()
+                    val from = sexp.getRequired(1).transformExpect<expr>()
+                    val to = sexp.getRequired(2).transformExpect<expr>()
+                    partiql_basic.expr.between(
+                        value,
+                        from,
+                        to,
                         metas = sexp.metas)
                 }
                 "path" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val path_element1 = sexp.values.drop(2).map { it.transformExpect<path_element>() }
-                    expr.path(
-                        expr0,
-                        path_element1,
+                    val root = sexp.getRequired(0).transformExpect<expr>()
+                    val elements = sexp.values.drop(2).map { it.transformExpect<path_element>() }
+                    partiql_basic.expr.path(
+                        root,
+                        elements,
                         metas = sexp.metas)
                 }
                 "call" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val expr1 = sexp.values.drop(2).map { it.transformExpect<expr>() }
-                    expr.call(
-                        symbol0,
-                        expr1,
+                    val name = sexp.getRequired(0).toSymbolPrimitive()
+                    val args = sexp.values.drop(2).map { it.transformExpect<expr>() }
+                    partiql_basic.expr.call(
+                        name,
+                        args,
                         metas = sexp.metas)
                 }
                 "call_agg" -> {
-                    sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val set_quantifier1 = sexp.getRequired(1).transformExpect<set_quantifier>()
-                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
-                    expr.call_agg(
-                        symbol0,
-                        set_quantifier1,
-                        expr2,
+                    sexp.requireArityOrMalformed(IntRange(2, 2))
+                    val name = sexp.getRequired(0).toSymbolPrimitive()
+                    val set_quantifier = sexp.getRequired(1).transformExpect<expr>()
+                    partiql_basic.expr.call_agg(
+                        name,
+                        set_quantifier,
                         metas = sexp.metas)
                 }
                 "simple_case" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 2147483647))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr_pair1 = sexp.values.drop(2).map { it.transformExpect<expr_pair>() }
-                    expr.simple_case(
-                        expr0,
-                        expr_pair1,
+                    val value = sexp.getRequired(0).transformExpect<expr>()
+                    val branches = sexp.values.drop(2).map { it.transformExpect<expr_pair>() }
+                    partiql_basic.expr.simple_case(
+                        value,
+                        branches,
                         metas = sexp.metas)
                 }
                 "searched_case" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr_pair0 = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
-                    expr.searched_case(
-                        expr_pair0,
+                    val branches = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
+                    partiql_basic.expr.searched_case(
+                        branches,
                         metas = sexp.metas)
                 }
                 "struct" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr_pair0 = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
-                    expr.struct(
-                        expr_pair0,
+                    val fields = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
+                    partiql_basic.expr.struct(
+                        fields,
                         metas = sexp.metas)
                 }
                 "bag" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.bag(
-                        expr0,
+                    val values = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    partiql_basic.expr.bag(
+                        values,
                         metas = sexp.metas)
                 }
                 "list" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.list(
-                        expr0,
+                    val values = sexp.values.drop(1).map { it.transformExpect<expr>() }
+                    partiql_basic.expr.list(
+                        values,
                         metas = sexp.metas)
                 }
                 "select" -> {
@@ -6299,5212 +6285,6 @@ class partiql_basic private constructor() {
                     expr.select(setq, project, from, where, group, having, limit, metas = sexp.metas)
                 }
                 else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'partiql_basic'")
-            }
-        }
-    }
-}
-
-class partiql_algebra private constructor() {
-    /////////////////////////////////////////////////////////////////////////////
-    // Builder
-    /////////////////////////////////////////////////////////////////////////////
-    companion object {
-        fun <T: partiql_algebra_node> build(block: builder.() -> T) =
-            builder.block()
-    
-        fun transform(element: AnyElement): partiql_algebra_node =
-            transform(element.asSexp())
-    
-        fun transform(element: SexpElement): partiql_algebra_node =
-            Transformer().transform(element)
-    }
-    
-    object builder {
-                // Tuples
-        fun expr_pair(
-            expr0: expr,
-            expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr_pair =
-            partiql_algebra.expr_pair(
-                expr0 = expr0,
-                expr1 = expr1,
-                metas = metas)
-        
-        
-        fun group_by_item(
-            expr0: expr,
-            symbol1: String? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): group_by_item =
-            partiql_algebra.group_by_item(
-                expr0 = expr0,
-                symbol1 = symbol1?.asPrimitive(),
-                metas = metas)
-        
-        fun group_by_item_(
-            expr0: expr,
-            symbol1: SymbolPrimitive? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): group_by_item =
-            partiql_algebra.group_by_item(
-                expr0 = expr0,
-                symbol1 = symbol1,
-                metas = metas)
-        
-        
-        fun group_by_list(
-            group_by_item0: List<group_by_item>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): group_by_list =
-            partiql_algebra.group_by_list(
-                group_by_item0 = group_by_item0,
-                metas = metas)
-        
-        fun group_by_list(
-            group_by_item0_required_0: group_by_item,
-            vararg group_by_item0: group_by_item,
-            metas: MetaContainer = emptyMetaContainer()
-        ): group_by_list =
-            partiql_algebra.group_by_list(
-                group_by_item0 = listOf(group_by_item0_required_0) + group_by_item0.toList(),
-                metas = metas)
-        
-        
-        fun group_by(
-            group_by_list0: group_by_list,
-            symbol1: String? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): group_by =
-            partiql_algebra.group_by(
-                group_by_list0 = group_by_list0,
-                symbol1 = symbol1?.asPrimitive(),
-                metas = metas)
-        
-        fun group_by_(
-            group_by_list0: group_by_list,
-            symbol1: SymbolPrimitive? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): group_by =
-            partiql_algebra.group_by(
-                group_by_list0 = group_by_list0,
-                symbol1 = symbol1,
-                metas = metas)
-        
-        
-        fun tuple_field(
-            symbol0: String,
-            metas: MetaContainer = emptyMetaContainer()
-        ): tuple_field =
-            partiql_algebra.tuple_field(
-                symbol0 = symbol0.asPrimitive(),
-                metas = metas)
-        
-        fun tuple_field_(
-            symbol0: SymbolPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): tuple_field =
-            partiql_algebra.tuple_field(
-                symbol0 = symbol0,
-                metas = metas)
-        
-        
-        // Variants for Sum: join_type 
-        fun inner(
-            metas: MetaContainer = emptyMetaContainer()
-        ): join_type =
-            join_type.inner(
-                metas = metas)
-        
-        
-        fun left(
-            metas: MetaContainer = emptyMetaContainer()
-        ): join_type =
-            join_type.left(
-                metas = metas)
-        
-        
-        fun right(
-            metas: MetaContainer = emptyMetaContainer()
-        ): join_type =
-            join_type.right(
-                metas = metas)
-        
-        
-        fun outer(
-            metas: MetaContainer = emptyMetaContainer()
-        ): join_type =
-            join_type.outer(
-                metas = metas)
-        
-        
-        // Variants for Sum: from_source 
-        fun scan(
-            expr0: expr,
-            symbol1: String? = null,
-            symbol2: String? = null,
-            symbol3: String? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): from_source =
-            from_source.scan(
-                expr0 = expr0,
-                symbol1 = symbol1?.asPrimitive(),
-                symbol2 = symbol2?.asPrimitive(),
-                symbol3 = symbol3?.asPrimitive(),
-                metas = metas)
-        
-        fun scan_(
-            expr0: expr,
-            symbol1: SymbolPrimitive? = null,
-            symbol2: SymbolPrimitive? = null,
-            symbol3: SymbolPrimitive? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): from_source =
-            from_source.scan(
-                expr0 = expr0,
-                symbol1 = symbol1,
-                symbol2 = symbol2,
-                symbol3 = symbol3,
-                metas = metas)
-        
-        
-        fun join(
-            join_type0: join_type,
-            from_source1: from_source,
-            from_source2: from_source,
-            expr3: expr? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): from_source =
-            from_source.join(
-                join_type0 = join_type0,
-                from_source1 = from_source1,
-                from_source2 = from_source2,
-                expr3 = expr3,
-                metas = metas)
-        
-        
-        // Variants for Sum: case_sensitivity 
-        fun case_sensitive(
-            metas: MetaContainer = emptyMetaContainer()
-        ): case_sensitivity =
-            case_sensitivity.case_sensitive(
-                metas = metas)
-        
-        
-        fun case_insensitive(
-            metas: MetaContainer = emptyMetaContainer()
-        ): case_sensitivity =
-            case_sensitivity.case_insensitive(
-                metas = metas)
-        
-        
-        // Variants for Sum: scope_qualifier 
-        fun unqualified(
-            metas: MetaContainer = emptyMetaContainer()
-        ): scope_qualifier =
-            scope_qualifier.unqualified(
-                metas = metas)
-        
-        
-        fun qualified(
-            metas: MetaContainer = emptyMetaContainer()
-        ): scope_qualifier =
-            scope_qualifier.qualified(
-                metas = metas)
-        
-        
-        // Variants for Sum: set_quantifier 
-        fun all(
-            metas: MetaContainer = emptyMetaContainer()
-        ): set_quantifier =
-            set_quantifier.all(
-                metas = metas)
-        
-        
-        fun distinct(
-            metas: MetaContainer = emptyMetaContainer()
-        ): set_quantifier =
-            set_quantifier.distinct(
-                metas = metas)
-        
-        
-        // Variants for Sum: path_element 
-        fun path_expr(
-            expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): path_element =
-            path_element.path_expr(
-                expr0 = expr0,
-                metas = metas)
-        
-        
-        fun path_wildcard(
-            metas: MetaContainer = emptyMetaContainer()
-        ): path_element =
-            path_element.path_wildcard(
-                metas = metas)
-        
-        
-        fun path_unpivot(
-            metas: MetaContainer = emptyMetaContainer()
-        ): path_element =
-            path_element.path_unpivot(
-                metas = metas)
-        
-        
-        // Variants for Sum: expr 
-        fun lit(
-            ion0: IonElement,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.lit(
-                ion0 = ion0,
-                metas = metas)
-        
-        
-        fun id(
-            symbol0: String,
-            case_sensitivity1: case_sensitivity,
-            scope_qualifier2: scope_qualifier,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.id(
-                symbol0 = symbol0.asPrimitive(),
-                case_sensitivity1 = case_sensitivity1,
-                scope_qualifier2 = scope_qualifier2,
-                metas = metas)
-        
-        fun id_(
-            symbol0: SymbolPrimitive,
-            case_sensitivity1: case_sensitivity,
-            scope_qualifier2: scope_qualifier,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.id(
-                symbol0 = symbol0,
-                case_sensitivity1 = case_sensitivity1,
-                scope_qualifier2 = scope_qualifier2,
-                metas = metas)
-        
-        
-        fun parameter(
-            int0: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.parameter(
-                int0 = int0.asPrimitive(),
-                metas = metas)
-        
-        fun parameter_(
-            int0: LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.parameter(
-                int0 = int0,
-                metas = metas)
-        
-        
-        fun not(
-            expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.not(
-                expr0 = expr0,
-                metas = metas)
-        
-        
-        fun plus(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.plus(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun plus(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.plus(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun minus(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.minus(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun minus(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.minus(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun times(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.times(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun times(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.times(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun divide(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.divide(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun divide(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.divide(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun modulo(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.modulo(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun modulo(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.modulo(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun concat(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.concat(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun concat(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.concat(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun like(
-            expr0: expr,
-            expr1: expr,
-            expr2: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.like(
-                expr0 = expr0,
-                expr1 = expr1,
-                expr2 = expr2,
-                metas = metas)
-        
-        
-        fun between(
-            expr0: expr,
-            expr1: expr,
-            expr2: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.between(
-                expr0 = expr0,
-                expr1 = expr1,
-                expr2 = expr2,
-                metas = metas)
-        
-        
-        fun path(
-            expr0: expr,
-            path_element1: List<path_element>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.path(
-                expr0 = expr0,
-                path_element1 = path_element1,
-                metas = metas)
-        
-        fun path(
-            expr0: expr,
-            path_element1_required_0: path_element,
-            vararg path_element1: path_element,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.path(
-                expr0 = expr0,
-                path_element1 = listOf(path_element1_required_0) + path_element1.toList(),
-                metas = metas)
-        
-        
-        fun call(
-            symbol0: String,
-            expr1: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call(
-                symbol0 = symbol0.asPrimitive(),
-                expr1 = expr1,
-                metas = metas)
-        
-        fun call_(
-            symbol0: SymbolPrimitive,
-            expr1: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call(
-                symbol0 = symbol0,
-                expr1 = expr1,
-                metas = metas)
-        
-        fun call(
-            symbol0: String,
-            expr1_required_0: expr,
-            vararg expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call(
-                symbol0 = symbol0.asPrimitive(),
-                expr1 = listOf(expr1_required_0) + expr1.toList(),
-                metas = metas)
-        
-        fun call_(
-            symbol0: SymbolPrimitive,
-            expr1_required_0: expr,
-            vararg expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call(
-                symbol0 = symbol0,
-                expr1 = listOf(expr1_required_0) + expr1.toList(),
-                metas = metas)
-        
-        
-        fun call_agg(
-            symbol0: String,
-            set_quantifier1: set_quantifier,
-            expr2: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call_agg(
-                symbol0 = symbol0.asPrimitive(),
-                set_quantifier1 = set_quantifier1,
-                expr2 = expr2,
-                metas = metas)
-        
-        fun call_agg_(
-            symbol0: SymbolPrimitive,
-            set_quantifier1: set_quantifier,
-            expr2: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call_agg(
-                symbol0 = symbol0,
-                set_quantifier1 = set_quantifier1,
-                expr2 = expr2,
-                metas = metas)
-        
-        
-        fun simple_case(
-            expr0: expr,
-            expr_pair1: List<expr_pair>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.simple_case(
-                expr0 = expr0,
-                expr_pair1 = expr_pair1,
-                metas = metas)
-        
-        fun simple_case(
-            expr0: expr,
-            expr_pair1_required_0: expr_pair,
-            vararg expr_pair1: expr_pair,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.simple_case(
-                expr0 = expr0,
-                expr_pair1 = listOf(expr_pair1_required_0) + expr_pair1.toList(),
-                metas = metas)
-        
-        
-        fun searched_case(
-            expr_pair0: List<expr_pair>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.searched_case(
-                expr_pair0 = expr_pair0,
-                metas = metas)
-        
-        fun searched_case(
-            expr_pair0_required_0: expr_pair,
-            vararg expr_pair0: expr_pair,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.searched_case(
-                expr_pair0 = listOf(expr_pair0_required_0) + expr_pair0.toList(),
-                metas = metas)
-        
-        
-        fun struct(
-            expr_pair0: List<expr_pair>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.struct(
-                expr_pair0 = expr_pair0,
-                metas = metas)
-        
-        fun struct(
-            vararg expr_pair0: expr_pair,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.struct(
-                expr_pair0 = expr_pair0.toList(),
-                metas = metas)
-        
-        
-        fun bag(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.bag(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun bag(
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.bag(
-                expr0 = expr0.toList(),
-                metas = metas)
-        
-        
-        fun list(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.list(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun list(
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.list(
-                expr0 = expr0.toList(),
-                metas = metas)
-        
-        
-        fun filter(
-            expr0: expr,
-            expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.filter(
-                expr0 = expr0,
-                expr1 = expr1,
-                metas = metas)
-        
-        
-        fun construct_value(
-            from_source0: from_source,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.construct_value(
-                from_source0 = from_source0,
-                metas = metas)
-        
-        
-        fun construct_tuple(
-            from_source0: from_source,
-            tuple_field1: List<tuple_field>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.construct_tuple(
-                from_source0 = from_source0,
-                tuple_field1 = tuple_field1,
-                metas = metas)
-        
-        fun construct_tuple(
-            from_source0: from_source,
-            tuple_field1_required_0: tuple_field,
-            vararg tuple_field1: tuple_field,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.construct_tuple(
-                from_source0 = from_source0,
-                tuple_field1 = listOf(tuple_field1_required_0) + tuple_field1.toList(),
-                metas = metas)
-    }
-    
-    /** Base class for all partiql_algebra types. */
-    abstract class partiql_algebra_node : DomainNode {
-        override fun toString() = toIonElement().toString()
-        abstract override fun withMeta(key: String, value: Any): partiql_algebra_node
-        abstract override fun toIonElement(): SexpElement
-    }
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Tuple Types
-    /////////////////////////////////////////////////////////////////////////////
-    class expr_pair(
-        val expr0: expr,
-        val expr1: expr,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): partiql_algebra_node() {
-    
-        override fun withMeta(key: String, value: Any): expr_pair =
-            expr_pair(
-                expr0 = expr0,
-                expr1 = expr1,
-                metas = metas + metaContainerOf(key to value))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("expr_pair"),
-                expr0.toIonElement(),
-                expr1.toIonElement(),
-                metas = metas)
-            return elements
-        }
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != expr_pair::class.java) return false
-    
-            other as expr_pair
-            if (expr0 != other.expr0) return false
-            if (expr1 != other.expr1) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = expr0.hashCode()
-            hc = 31 * hc + expr1.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class group_by_item(
-        val expr0: expr,
-        val symbol1: SymbolPrimitive?,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): partiql_algebra_node() {
-    
-        override fun withMeta(key: String, value: Any): group_by_item =
-            group_by_item(
-                expr0 = expr0,
-                symbol1 = symbol1,
-                metas = metas + metaContainerOf(key to value))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("group_by_item"),
-                expr0.toIonElement(),
-                symbol1?.toIonElement() ?: ionNull(),
-                metas = metas)
-            return elements
-        }
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != group_by_item::class.java) return false
-    
-            other as group_by_item
-            if (expr0 != other.expr0) return false
-            if (symbol1 != other.symbol1) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = expr0.hashCode()
-            hc = 31 * hc + symbol1.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class group_by_list(
-        val group_by_item0: List<group_by_item>,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): partiql_algebra_node() {
-    
-        override fun withMeta(key: String, value: Any): group_by_list =
-            group_by_list(
-                group_by_item0 = group_by_item0,
-                metas = metas + metaContainerOf(key to value))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("group_by_list"),
-                *group_by_item0.map { it.toIonElement() }.toTypedArray(),
-                metas = metas)
-            return elements
-        }
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != group_by_list::class.java) return false
-    
-            other as group_by_list
-            if (group_by_item0 != other.group_by_item0) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = group_by_item0.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class group_by(
-        val group_by_list0: group_by_list,
-        val symbol1: SymbolPrimitive?,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): partiql_algebra_node() {
-    
-        override fun withMeta(key: String, value: Any): group_by =
-            group_by(
-                group_by_list0 = group_by_list0,
-                symbol1 = symbol1,
-                metas = metas + metaContainerOf(key to value))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("group_by"),
-                group_by_list0.toIonElement(),
-                symbol1?.toIonElement() ?: ionNull(),
-                metas = metas)
-            return elements
-        }
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != group_by::class.java) return false
-    
-            other as group_by
-            if (group_by_list0 != other.group_by_list0) return false
-            if (symbol1 != other.symbol1) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = group_by_list0.hashCode()
-            hc = 31 * hc + symbol1.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class tuple_field(
-        val symbol0: SymbolPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): partiql_algebra_node() {
-    
-        override fun withMeta(key: String, value: Any): tuple_field =
-            tuple_field(
-                symbol0 = symbol0,
-                metas = metas + metaContainerOf(key to value))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("tuple_field"),
-                symbol0.toIonElement(),
-                metas = metas)
-            return elements
-        }
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != tuple_field::class.java) return false
-    
-            other as tuple_field
-            if (symbol0 != other.symbol0) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = symbol0.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Sum Types
-    /////////////////////////////////////////////////////////////////////////////
-    
-    sealed class join_type : partiql_algebra_node() {
-    
-        class inner(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): join_type() {
-        
-            override fun withMeta(key: String, value: Any): inner =
-                inner(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("inner"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != inner::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 1000
-        }
-    
-        class left(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): join_type() {
-        
-            override fun withMeta(key: String, value: Any): left =
-                left(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("left"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != left::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 1001
-        }
-    
-        class right(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): join_type() {
-        
-            override fun withMeta(key: String, value: Any): right =
-                right(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("right"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != right::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 1002
-        }
-    
-        class outer(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): join_type() {
-        
-            override fun withMeta(key: String, value: Any): outer =
-                outer(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("outer"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != outer::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 1003
-        }
-    
-    }
-    
-    sealed class from_source : partiql_algebra_node() {
-    
-        class scan(
-            val expr0: expr,
-            val symbol1: SymbolPrimitive?,
-            val symbol2: SymbolPrimitive?,
-            val symbol3: SymbolPrimitive?,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): from_source() {
-        
-            override fun withMeta(key: String, value: Any): scan =
-                scan(
-                    expr0 = expr0,
-                    symbol1 = symbol1,
-                    symbol2 = symbol2,
-                    symbol3 = symbol3,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("scan"),
-                    expr0.toIonElement(),
-                    symbol1?.toIonElement() ?: ionNull(),
-                    symbol2?.toIonElement() ?: ionNull(),
-                    symbol3?.toIonElement() ?: ionNull(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != scan::class.java) return false
-        
-                other as scan
-                if (expr0 != other.expr0) return false
-                if (symbol1 != other.symbol1) return false
-                if (symbol2 != other.symbol2) return false
-                if (symbol3 != other.symbol3) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + symbol1.hashCode()
-                hc = 31 * hc + symbol2.hashCode()
-                hc = 31 * hc + symbol3.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class join(
-            val join_type0: join_type,
-            val from_source1: from_source,
-            val from_source2: from_source,
-            val expr3: expr?,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): from_source() {
-        
-            override fun withMeta(key: String, value: Any): join =
-                join(
-                    join_type0 = join_type0,
-                    from_source1 = from_source1,
-                    from_source2 = from_source2,
-                    expr3 = expr3,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("join"),
-                    join_type0.toIonElement(),
-                    from_source1.toIonElement(),
-                    from_source2.toIonElement(),
-                    expr3?.toIonElement() ?: ionNull(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != join::class.java) return false
-        
-                other as join
-                if (join_type0 != other.join_type0) return false
-                if (from_source1 != other.from_source1) return false
-                if (from_source2 != other.from_source2) return false
-                if (expr3 != other.expr3) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = join_type0.hashCode()
-                hc = 31 * hc + from_source1.hashCode()
-                hc = 31 * hc + from_source2.hashCode()
-                hc = 31 * hc + expr3.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-    }
-    
-    sealed class case_sensitivity : partiql_algebra_node() {
-    
-        class case_sensitive(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): case_sensitivity() {
-        
-            override fun withMeta(key: String, value: Any): case_sensitive =
-                case_sensitive(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("case_sensitive"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != case_sensitive::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 3000
-        }
-    
-        class case_insensitive(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): case_sensitivity() {
-        
-            override fun withMeta(key: String, value: Any): case_insensitive =
-                case_insensitive(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("case_insensitive"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != case_insensitive::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 3001
-        }
-    
-    }
-    
-    sealed class scope_qualifier : partiql_algebra_node() {
-    
-        class unqualified(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): scope_qualifier() {
-        
-            override fun withMeta(key: String, value: Any): unqualified =
-                unqualified(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("unqualified"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != unqualified::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 4000
-        }
-    
-        class qualified(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): scope_qualifier() {
-        
-            override fun withMeta(key: String, value: Any): qualified =
-                qualified(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("qualified"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != qualified::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 4001
-        }
-    
-    }
-    
-    sealed class set_quantifier : partiql_algebra_node() {
-    
-        class all(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): set_quantifier() {
-        
-            override fun withMeta(key: String, value: Any): all =
-                all(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("all"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != all::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 5000
-        }
-    
-        class distinct(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): set_quantifier() {
-        
-            override fun withMeta(key: String, value: Any): distinct =
-                distinct(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("distinct"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != distinct::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 5001
-        }
-    
-    }
-    
-    sealed class path_element : partiql_algebra_node() {
-    
-        class path_expr(
-            val expr0: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): path_element() {
-        
-            override fun withMeta(key: String, value: Any): path_expr =
-                path_expr(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("path_expr"),
-                    expr0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != path_expr::class.java) return false
-        
-                other as path_expr
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class path_wildcard(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): path_element() {
-        
-            override fun withMeta(key: String, value: Any): path_wildcard =
-                path_wildcard(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("path_wildcard"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != path_wildcard::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 6001
-        }
-    
-        class path_unpivot(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): path_element() {
-        
-            override fun withMeta(key: String, value: Any): path_unpivot =
-                path_unpivot(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("path_unpivot"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != path_unpivot::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 6002
-        }
-    
-    }
-    
-    sealed class expr : partiql_algebra_node() {
-    
-        class lit(
-            val ion0: IonElement,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): lit =
-                lit(
-                    ion0 = ion0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("lit"),
-                    ion0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != lit::class.java) return false
-        
-                other as lit
-                if (ion0 != other.ion0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = ion0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class id(
-            val symbol0: SymbolPrimitive,
-            val case_sensitivity1: case_sensitivity,
-            val scope_qualifier2: scope_qualifier,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): id =
-                id(
-                    symbol0 = symbol0,
-                    case_sensitivity1 = case_sensitivity1,
-                    scope_qualifier2 = scope_qualifier2,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("id"),
-                    symbol0.toIonElement(),
-                    case_sensitivity1.toIonElement(),
-                    scope_qualifier2.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != id::class.java) return false
-        
-                other as id
-                if (symbol0 != other.symbol0) return false
-                if (case_sensitivity1 != other.case_sensitivity1) return false
-                if (scope_qualifier2 != other.scope_qualifier2) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + case_sensitivity1.hashCode()
-                hc = 31 * hc + scope_qualifier2.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class parameter(
-            val int0: LongPrimitive,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): parameter =
-                parameter(
-                    int0 = int0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("parameter"),
-                    int0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != parameter::class.java) return false
-        
-                other as parameter
-                if (int0 != other.int0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = int0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class not(
-            val expr0: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): not =
-                not(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("not"),
-                    expr0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != not::class.java) return false
-        
-                other as not
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class plus(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): plus =
-                plus(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("plus"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != plus::class.java) return false
-        
-                other as plus
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class minus(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): minus =
-                minus(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("minus"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != minus::class.java) return false
-        
-                other as minus
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class times(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): times =
-                times(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("times"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != times::class.java) return false
-        
-                other as times
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class divide(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): divide =
-                divide(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("divide"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != divide::class.java) return false
-        
-                other as divide
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class modulo(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): modulo =
-                modulo(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("modulo"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != modulo::class.java) return false
-        
-                other as modulo
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class concat(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): concat =
-                concat(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("concat"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != concat::class.java) return false
-        
-                other as concat
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class like(
-            val expr0: expr,
-            val expr1: expr,
-            val expr2: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): like =
-                like(
-                    expr0 = expr0,
-                    expr1 = expr1,
-                    expr2 = expr2,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("like"),
-                    expr0.toIonElement(),
-                    expr1.toIonElement(),
-                    expr2.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != like::class.java) return false
-        
-                other as like
-                if (expr0 != other.expr0) return false
-                if (expr1 != other.expr1) return false
-                if (expr2 != other.expr2) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc = 31 * hc + expr2.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class between(
-            val expr0: expr,
-            val expr1: expr,
-            val expr2: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): between =
-                between(
-                    expr0 = expr0,
-                    expr1 = expr1,
-                    expr2 = expr2,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("between"),
-                    expr0.toIonElement(),
-                    expr1.toIonElement(),
-                    expr2.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != between::class.java) return false
-        
-                other as between
-                if (expr0 != other.expr0) return false
-                if (expr1 != other.expr1) return false
-                if (expr2 != other.expr2) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc = 31 * hc + expr2.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class path(
-            val expr0: expr,
-            val path_element1: List<path_element>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): path =
-                path(
-                    expr0 = expr0,
-                    path_element1 = path_element1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("path"),
-                    expr0.toIonElement(),
-                    *path_element1.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != path::class.java) return false
-        
-                other as path
-                if (expr0 != other.expr0) return false
-                if (path_element1 != other.path_element1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + path_element1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class call(
-            val symbol0: SymbolPrimitive,
-            val expr1: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): call =
-                call(
-                    symbol0 = symbol0,
-                    expr1 = expr1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("call"),
-                    symbol0.toIonElement(),
-                    *expr1.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != call::class.java) return false
-        
-                other as call
-                if (symbol0 != other.symbol0) return false
-                if (expr1 != other.expr1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class call_agg(
-            val symbol0: SymbolPrimitive,
-            val set_quantifier1: set_quantifier,
-            val expr2: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): call_agg =
-                call_agg(
-                    symbol0 = symbol0,
-                    set_quantifier1 = set_quantifier1,
-                    expr2 = expr2,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("call_agg"),
-                    symbol0.toIonElement(),
-                    set_quantifier1.toIonElement(),
-                    expr2.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != call_agg::class.java) return false
-        
-                other as call_agg
-                if (symbol0 != other.symbol0) return false
-                if (set_quantifier1 != other.set_quantifier1) return false
-                if (expr2 != other.expr2) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + set_quantifier1.hashCode()
-                hc = 31 * hc + expr2.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class simple_case(
-            val expr0: expr,
-            val expr_pair1: List<expr_pair>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): simple_case =
-                simple_case(
-                    expr0 = expr0,
-                    expr_pair1 = expr_pair1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("simple_case"),
-                    expr0.toIonElement(),
-                    *expr_pair1.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != simple_case::class.java) return false
-        
-                other as simple_case
-                if (expr0 != other.expr0) return false
-                if (expr_pair1 != other.expr_pair1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + expr_pair1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class searched_case(
-            val expr_pair0: List<expr_pair>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): searched_case =
-                searched_case(
-                    expr_pair0 = expr_pair0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("searched_case"),
-                    *expr_pair0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != searched_case::class.java) return false
-        
-                other as searched_case
-                if (expr_pair0 != other.expr_pair0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr_pair0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class struct(
-            val expr_pair0: List<expr_pair>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): struct =
-                struct(
-                    expr_pair0 = expr_pair0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("struct"),
-                    *expr_pair0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != struct::class.java) return false
-        
-                other as struct
-                if (expr_pair0 != other.expr_pair0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr_pair0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class bag(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): bag =
-                bag(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("bag"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != bag::class.java) return false
-        
-                other as bag
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class list(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): list =
-                list(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("list"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != list::class.java) return false
-        
-                other as list
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class filter(
-            val expr0: expr,
-            val expr1: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): filter =
-                filter(
-                    expr0 = expr0,
-                    expr1 = expr1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("filter"),
-                    expr0.toIonElement(),
-                    expr1.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != filter::class.java) return false
-        
-                other as filter
-                if (expr0 != other.expr0) return false
-                if (expr1 != other.expr1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class construct_value(
-            val from_source0: from_source,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): construct_value =
-                construct_value(
-                    from_source0 = from_source0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("construct_value"),
-                    from_source0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != construct_value::class.java) return false
-        
-                other as construct_value
-                if (from_source0 != other.from_source0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = from_source0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class construct_tuple(
-            val from_source0: from_source,
-            val tuple_field1: List<tuple_field>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): construct_tuple =
-                construct_tuple(
-                    from_source0 = from_source0,
-                    tuple_field1 = tuple_field1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("construct_tuple"),
-                    from_source0.toIonElement(),
-                    *tuple_field1.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != construct_tuple::class.java) return false
-        
-                other as construct_tuple
-                if (from_source0 != other.from_source0) return false
-                if (tuple_field1 != other.tuple_field1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = from_source0.hashCode()
-                hc = 31 * hc + tuple_field1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-    }
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Transformer
-    /////////////////////////////////////////////////////////////////////////////
-    
-    
-    private class Transformer : IonElementTransformerBase<partiql_algebra_node>() {
-    
-        override fun innerTransform(sexp: SexpElement): partiql_algebra_node {
-            return when(sexp.tag) {
-                //////////////////////////////////////
-                // Tuple Types
-                //////////////////////////////////////
-                "expr_pair" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    expr_pair(
-                        expr0,
-                        expr1,
-                        metas = sexp.metas)
-                }
-                "group_by_item" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 2))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val symbol1 = sexp.getOptional(1)?.toSymbolPrimitive()
-                    group_by_item(
-                        expr0,
-                        symbol1,
-                        metas = sexp.metas)
-                }
-                "group_by_list" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val group_by_item0 = sexp.values.drop(1).map { it.transformExpect<group_by_item>() }
-                    group_by_list(
-                        group_by_item0,
-                        metas = sexp.metas)
-                }
-                "group_by" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 2))
-                    val group_by_list0 = sexp.getRequired(0).transformExpect<group_by_list>()
-                    val symbol1 = sexp.getOptional(1)?.toSymbolPrimitive()
-                    group_by(
-                        group_by_list0,
-                        symbol1,
-                        metas = sexp.metas)
-                }
-                "tuple_field" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    tuple_field(
-                        symbol0,
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'join_type'
-                //////////////////////////////////////
-                "inner" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    join_type.inner(
-                        metas = sexp.metas)
-                }
-                "left" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    join_type.left(
-                        metas = sexp.metas)
-                }
-                "right" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    join_type.right(
-                        metas = sexp.metas)
-                }
-                "outer" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    join_type.outer(
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'from_source'
-                //////////////////////////////////////
-                "scan" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 4))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val symbol1 = sexp.getOptional(1)?.toSymbolPrimitive()
-                    val symbol2 = sexp.getOptional(2)?.toSymbolPrimitive()
-                    val symbol3 = sexp.getOptional(3)?.toSymbolPrimitive()
-                    from_source.scan(
-                        expr0,
-                        symbol1,
-                        symbol2,
-                        symbol3,
-                        metas = sexp.metas)
-                }
-                "join" -> {
-                    sexp.requireArityOrMalformed(IntRange(3, 4))
-                    val join_type0 = sexp.getRequired(0).transformExpect<join_type>()
-                    val from_source1 = sexp.getRequired(1).transformExpect<from_source>()
-                    val from_source2 = sexp.getRequired(2).transformExpect<from_source>()
-                    val expr3 = sexp.getOptional(3)?.transformExpect<expr>()
-                    from_source.join(
-                        join_type0,
-                        from_source1,
-                        from_source2,
-                        expr3,
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'case_sensitivity'
-                //////////////////////////////////////
-                "case_sensitive" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    case_sensitivity.case_sensitive(
-                        metas = sexp.metas)
-                }
-                "case_insensitive" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    case_sensitivity.case_insensitive(
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'scope_qualifier'
-                //////////////////////////////////////
-                "unqualified" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    scope_qualifier.unqualified(
-                        metas = sexp.metas)
-                }
-                "qualified" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    scope_qualifier.qualified(
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'set_quantifier'
-                //////////////////////////////////////
-                "all" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    set_quantifier.all(
-                        metas = sexp.metas)
-                }
-                "distinct" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    set_quantifier.distinct(
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'path_element'
-                //////////////////////////////////////
-                "path_expr" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    path_element.path_expr(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "path_wildcard" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    path_element.path_wildcard(
-                        metas = sexp.metas)
-                }
-                "path_unpivot" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    path_element.path_unpivot(
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'expr'
-                //////////////////////////////////////
-                "lit" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val ion0 = sexp.getRequiredIon(0)
-                    expr.lit(
-                        ion0,
-                        metas = sexp.metas)
-                }
-                "id" -> {
-                    sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val case_sensitivity1 = sexp.getRequired(1).transformExpect<case_sensitivity>()
-                    val scope_qualifier2 = sexp.getRequired(2).transformExpect<scope_qualifier>()
-                    expr.id(
-                        symbol0,
-                        case_sensitivity1,
-                        scope_qualifier2,
-                        metas = sexp.metas)
-                }
-                "parameter" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    expr.parameter(
-                        int0,
-                        metas = sexp.metas)
-                }
-                "not" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    expr.not(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "plus" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.plus(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "minus" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.minus(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "times" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.times(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "divide" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.divide(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "modulo" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.modulo(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "concat" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.concat(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "like" -> {
-                    sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
-                    expr.like(
-                        expr0,
-                        expr1,
-                        expr2,
-                        metas = sexp.metas)
-                }
-                "between" -> {
-                    sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
-                    expr.between(
-                        expr0,
-                        expr1,
-                        expr2,
-                        metas = sexp.metas)
-                }
-                "path" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val path_element1 = sexp.values.drop(2).map { it.transformExpect<path_element>() }
-                    expr.path(
-                        expr0,
-                        path_element1,
-                        metas = sexp.metas)
-                }
-                "call" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val expr1 = sexp.values.drop(2).map { it.transformExpect<expr>() }
-                    expr.call(
-                        symbol0,
-                        expr1,
-                        metas = sexp.metas)
-                }
-                "call_agg" -> {
-                    sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val set_quantifier1 = sexp.getRequired(1).transformExpect<set_quantifier>()
-                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
-                    expr.call_agg(
-                        symbol0,
-                        set_quantifier1,
-                        expr2,
-                        metas = sexp.metas)
-                }
-                "simple_case" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr_pair1 = sexp.values.drop(2).map { it.transformExpect<expr_pair>() }
-                    expr.simple_case(
-                        expr0,
-                        expr_pair1,
-                        metas = sexp.metas)
-                }
-                "searched_case" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr_pair0 = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
-                    expr.searched_case(
-                        expr_pair0,
-                        metas = sexp.metas)
-                }
-                "struct" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr_pair0 = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
-                    expr.struct(
-                        expr_pair0,
-                        metas = sexp.metas)
-                }
-                "bag" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.bag(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "list" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.list(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "filter" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    expr.filter(
-                        expr0,
-                        expr1,
-                        metas = sexp.metas)
-                }
-                "construct_value" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val from_source0 = sexp.getRequired(0).transformExpect<from_source>()
-                    expr.construct_value(
-                        from_source0,
-                        metas = sexp.metas)
-                }
-                "construct_tuple" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
-                    val from_source0 = sexp.getRequired(0).transformExpect<from_source>()
-                    val tuple_field1 = sexp.values.drop(2).map { it.transformExpect<tuple_field>() }
-                    expr.construct_tuple(
-                        from_source0,
-                        tuple_field1,
-                        metas = sexp.metas)
-                }
-                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'partiql_algebra'")
-            }
-        }
-    }
-}
-
-class partiql_basic_nameless private constructor() {
-    /////////////////////////////////////////////////////////////////////////////
-    // Builder
-    /////////////////////////////////////////////////////////////////////////////
-    companion object {
-        fun <T: partiql_basic_nameless_node> build(block: builder.() -> T) =
-            builder.block()
-    
-        fun transform(element: AnyElement): partiql_basic_nameless_node =
-            transform(element.asSexp())
-    
-        fun transform(element: SexpElement): partiql_basic_nameless_node =
-            Transformer().transform(element)
-    }
-    
-    object builder {
-                // Tuples
-        fun expr_pair(
-            expr0: expr,
-            expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr_pair =
-            partiql_basic_nameless.expr_pair(
-                expr0 = expr0,
-                expr1 = expr1,
-                metas = metas)
-        
-        
-        fun group_by_item(
-            expr0: expr,
-            symbol1: String? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): group_by_item =
-            partiql_basic_nameless.group_by_item(
-                expr0 = expr0,
-                symbol1 = symbol1?.asPrimitive(),
-                metas = metas)
-        
-        fun group_by_item_(
-            expr0: expr,
-            symbol1: SymbolPrimitive? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): group_by_item =
-            partiql_basic_nameless.group_by_item(
-                expr0 = expr0,
-                symbol1 = symbol1,
-                metas = metas)
-        
-        
-        fun group_by_list(
-            group_by_item0: List<group_by_item>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): group_by_list =
-            partiql_basic_nameless.group_by_list(
-                group_by_item0 = group_by_item0,
-                metas = metas)
-        
-        fun group_by_list(
-            group_by_item0_required_0: group_by_item,
-            vararg group_by_item0: group_by_item,
-            metas: MetaContainer = emptyMetaContainer()
-        ): group_by_list =
-            partiql_basic_nameless.group_by_list(
-                group_by_item0 = listOf(group_by_item0_required_0) + group_by_item0.toList(),
-                metas = metas)
-        
-        
-        fun group_by(
-            group_by_list0: group_by_list,
-            symbol1: String? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): group_by =
-            partiql_basic_nameless.group_by(
-                group_by_list0 = group_by_list0,
-                symbol1 = symbol1?.asPrimitive(),
-                metas = metas)
-        
-        fun group_by_(
-            group_by_list0: group_by_list,
-            symbol1: SymbolPrimitive? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): group_by =
-            partiql_basic_nameless.group_by(
-                group_by_list0 = group_by_list0,
-                symbol1 = symbol1,
-                metas = metas)
-        
-        
-        fun tuple_field(
-            symbol0: String,
-            metas: MetaContainer = emptyMetaContainer()
-        ): tuple_field =
-            partiql_basic_nameless.tuple_field(
-                symbol0 = symbol0.asPrimitive(),
-                metas = metas)
-        
-        fun tuple_field_(
-            symbol0: SymbolPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): tuple_field =
-            partiql_basic_nameless.tuple_field(
-                symbol0 = symbol0,
-                metas = metas)
-        
-        
-        // Variants for Sum: join_type 
-        fun inner(
-            metas: MetaContainer = emptyMetaContainer()
-        ): join_type =
-            join_type.inner(
-                metas = metas)
-        
-        
-        fun left(
-            metas: MetaContainer = emptyMetaContainer()
-        ): join_type =
-            join_type.left(
-                metas = metas)
-        
-        
-        fun right(
-            metas: MetaContainer = emptyMetaContainer()
-        ): join_type =
-            join_type.right(
-                metas = metas)
-        
-        
-        fun outer(
-            metas: MetaContainer = emptyMetaContainer()
-        ): join_type =
-            join_type.outer(
-                metas = metas)
-        
-        
-        // Variants for Sum: from_source 
-        fun scan(
-            expr0: expr,
-            symbol1: String? = null,
-            symbol2: String? = null,
-            symbol3: String? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): from_source =
-            from_source.scan(
-                expr0 = expr0,
-                symbol1 = symbol1?.asPrimitive(),
-                symbol2 = symbol2?.asPrimitive(),
-                symbol3 = symbol3?.asPrimitive(),
-                metas = metas)
-        
-        fun scan_(
-            expr0: expr,
-            symbol1: SymbolPrimitive? = null,
-            symbol2: SymbolPrimitive? = null,
-            symbol3: SymbolPrimitive? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): from_source =
-            from_source.scan(
-                expr0 = expr0,
-                symbol1 = symbol1,
-                symbol2 = symbol2,
-                symbol3 = symbol3,
-                metas = metas)
-        
-        
-        fun join(
-            join_type0: join_type,
-            from_source1: from_source,
-            from_source2: from_source,
-            expr3: expr? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): from_source =
-            from_source.join(
-                join_type0 = join_type0,
-                from_source1 = from_source1,
-                from_source2 = from_source2,
-                expr3 = expr3,
-                metas = metas)
-        
-        
-        // Variants for Sum: case_sensitivity 
-        fun case_sensitive(
-            metas: MetaContainer = emptyMetaContainer()
-        ): case_sensitivity =
-            case_sensitivity.case_sensitive(
-                metas = metas)
-        
-        
-        fun case_insensitive(
-            metas: MetaContainer = emptyMetaContainer()
-        ): case_sensitivity =
-            case_sensitivity.case_insensitive(
-                metas = metas)
-        
-        
-        // Variants for Sum: scope_qualifier 
-        fun unqualified(
-            metas: MetaContainer = emptyMetaContainer()
-        ): scope_qualifier =
-            scope_qualifier.unqualified(
-                metas = metas)
-        
-        
-        fun qualified(
-            metas: MetaContainer = emptyMetaContainer()
-        ): scope_qualifier =
-            scope_qualifier.qualified(
-                metas = metas)
-        
-        
-        // Variants for Sum: set_quantifier 
-        fun all(
-            metas: MetaContainer = emptyMetaContainer()
-        ): set_quantifier =
-            set_quantifier.all(
-                metas = metas)
-        
-        
-        fun distinct(
-            metas: MetaContainer = emptyMetaContainer()
-        ): set_quantifier =
-            set_quantifier.distinct(
-                metas = metas)
-        
-        
-        // Variants for Sum: path_element 
-        fun path_expr(
-            expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): path_element =
-            path_element.path_expr(
-                expr0 = expr0,
-                metas = metas)
-        
-        
-        fun path_wildcard(
-            metas: MetaContainer = emptyMetaContainer()
-        ): path_element =
-            path_element.path_wildcard(
-                metas = metas)
-        
-        
-        fun path_unpivot(
-            metas: MetaContainer = emptyMetaContainer()
-        ): path_element =
-            path_element.path_unpivot(
-                metas = metas)
-        
-        
-        // Variants for Sum: expr 
-        fun lit(
-            ion0: IonElement,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.lit(
-                ion0 = ion0,
-                metas = metas)
-        
-        
-        fun parameter(
-            int0: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.parameter(
-                int0 = int0.asPrimitive(),
-                metas = metas)
-        
-        fun parameter_(
-            int0: LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.parameter(
-                int0 = int0,
-                metas = metas)
-        
-        
-        fun not(
-            expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.not(
-                expr0 = expr0,
-                metas = metas)
-        
-        
-        fun plus(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.plus(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun plus(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.plus(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun minus(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.minus(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun minus(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.minus(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun times(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.times(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun times(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.times(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun divide(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.divide(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun divide(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.divide(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun modulo(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.modulo(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun modulo(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.modulo(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun concat(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.concat(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun concat(
-            expr0_required_0: expr,
-            expr0_required_1: expr,
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.concat(
-                expr0 = listOf(expr0_required_0, expr0_required_1) + expr0.toList(),
-                metas = metas)
-        
-        
-        fun like(
-            expr0: expr,
-            expr1: expr,
-            expr2: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.like(
-                expr0 = expr0,
-                expr1 = expr1,
-                expr2 = expr2,
-                metas = metas)
-        
-        
-        fun between(
-            expr0: expr,
-            expr1: expr,
-            expr2: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.between(
-                expr0 = expr0,
-                expr1 = expr1,
-                expr2 = expr2,
-                metas = metas)
-        
-        
-        fun path(
-            expr0: expr,
-            path_element1: List<path_element>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.path(
-                expr0 = expr0,
-                path_element1 = path_element1,
-                metas = metas)
-        
-        fun path(
-            expr0: expr,
-            path_element1_required_0: path_element,
-            vararg path_element1: path_element,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.path(
-                expr0 = expr0,
-                path_element1 = listOf(path_element1_required_0) + path_element1.toList(),
-                metas = metas)
-        
-        
-        fun call(
-            symbol0: String,
-            expr1: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call(
-                symbol0 = symbol0.asPrimitive(),
-                expr1 = expr1,
-                metas = metas)
-        
-        fun call_(
-            symbol0: SymbolPrimitive,
-            expr1: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call(
-                symbol0 = symbol0,
-                expr1 = expr1,
-                metas = metas)
-        
-        fun call(
-            symbol0: String,
-            expr1_required_0: expr,
-            vararg expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call(
-                symbol0 = symbol0.asPrimitive(),
-                expr1 = listOf(expr1_required_0) + expr1.toList(),
-                metas = metas)
-        
-        fun call_(
-            symbol0: SymbolPrimitive,
-            expr1_required_0: expr,
-            vararg expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call(
-                symbol0 = symbol0,
-                expr1 = listOf(expr1_required_0) + expr1.toList(),
-                metas = metas)
-        
-        
-        fun call_agg(
-            symbol0: String,
-            set_quantifier1: set_quantifier,
-            expr2: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call_agg(
-                symbol0 = symbol0.asPrimitive(),
-                set_quantifier1 = set_quantifier1,
-                expr2 = expr2,
-                metas = metas)
-        
-        fun call_agg_(
-            symbol0: SymbolPrimitive,
-            set_quantifier1: set_quantifier,
-            expr2: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.call_agg(
-                symbol0 = symbol0,
-                set_quantifier1 = set_quantifier1,
-                expr2 = expr2,
-                metas = metas)
-        
-        
-        fun simple_case(
-            expr0: expr,
-            expr_pair1: List<expr_pair>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.simple_case(
-                expr0 = expr0,
-                expr_pair1 = expr_pair1,
-                metas = metas)
-        
-        fun simple_case(
-            expr0: expr,
-            expr_pair1_required_0: expr_pair,
-            vararg expr_pair1: expr_pair,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.simple_case(
-                expr0 = expr0,
-                expr_pair1 = listOf(expr_pair1_required_0) + expr_pair1.toList(),
-                metas = metas)
-        
-        
-        fun searched_case(
-            expr_pair0: List<expr_pair>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.searched_case(
-                expr_pair0 = expr_pair0,
-                metas = metas)
-        
-        fun searched_case(
-            expr_pair0_required_0: expr_pair,
-            vararg expr_pair0: expr_pair,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.searched_case(
-                expr_pair0 = listOf(expr_pair0_required_0) + expr_pair0.toList(),
-                metas = metas)
-        
-        
-        fun struct(
-            expr_pair0: List<expr_pair>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.struct(
-                expr_pair0 = expr_pair0,
-                metas = metas)
-        
-        fun struct(
-            vararg expr_pair0: expr_pair,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.struct(
-                expr_pair0 = expr_pair0.toList(),
-                metas = metas)
-        
-        
-        fun bag(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.bag(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun bag(
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.bag(
-                expr0 = expr0.toList(),
-                metas = metas)
-        
-        
-        fun list(
-            expr0: List<expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.list(
-                expr0 = expr0,
-                metas = metas)
-        
-        fun list(
-            vararg expr0: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.list(
-                expr0 = expr0.toList(),
-                metas = metas)
-        
-        
-        fun filter(
-            expr0: expr,
-            expr1: expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.filter(
-                expr0 = expr0,
-                expr1 = expr1,
-                metas = metas)
-        
-        
-        fun construct_value(
-            from_source0: from_source,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.construct_value(
-                from_source0 = from_source0,
-                metas = metas)
-        
-        
-        fun construct_tuple(
-            from_source0: from_source,
-            tuple_field1: List<tuple_field>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.construct_tuple(
-                from_source0 = from_source0,
-                tuple_field1 = tuple_field1,
-                metas = metas)
-        
-        fun construct_tuple(
-            from_source0: from_source,
-            tuple_field1_required_0: tuple_field,
-            vararg tuple_field1: tuple_field,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.construct_tuple(
-                from_source0 = from_source0,
-                tuple_field1 = listOf(tuple_field1_required_0) + tuple_field1.toList(),
-                metas = metas)
-        
-        
-        fun id(
-            int0: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.id(
-                int0 = int0.asPrimitive(),
-                metas = metas)
-        
-        fun id_(
-            int0: LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): expr =
-            expr.id(
-                int0 = int0,
-                metas = metas)
-    }
-    
-    /** Base class for all partiql_basic_nameless types. */
-    abstract class partiql_basic_nameless_node : DomainNode {
-        override fun toString() = toIonElement().toString()
-        abstract override fun withMeta(key: String, value: Any): partiql_basic_nameless_node
-        abstract override fun toIonElement(): SexpElement
-    }
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Tuple Types
-    /////////////////////////////////////////////////////////////////////////////
-    class expr_pair(
-        val expr0: expr,
-        val expr1: expr,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): partiql_basic_nameless_node() {
-    
-        override fun withMeta(key: String, value: Any): expr_pair =
-            expr_pair(
-                expr0 = expr0,
-                expr1 = expr1,
-                metas = metas + metaContainerOf(key to value))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("expr_pair"),
-                expr0.toIonElement(),
-                expr1.toIonElement(),
-                metas = metas)
-            return elements
-        }
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != expr_pair::class.java) return false
-    
-            other as expr_pair
-            if (expr0 != other.expr0) return false
-            if (expr1 != other.expr1) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = expr0.hashCode()
-            hc = 31 * hc + expr1.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class group_by_item(
-        val expr0: expr,
-        val symbol1: SymbolPrimitive?,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): partiql_basic_nameless_node() {
-    
-        override fun withMeta(key: String, value: Any): group_by_item =
-            group_by_item(
-                expr0 = expr0,
-                symbol1 = symbol1,
-                metas = metas + metaContainerOf(key to value))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("group_by_item"),
-                expr0.toIonElement(),
-                symbol1?.toIonElement() ?: ionNull(),
-                metas = metas)
-            return elements
-        }
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != group_by_item::class.java) return false
-    
-            other as group_by_item
-            if (expr0 != other.expr0) return false
-            if (symbol1 != other.symbol1) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = expr0.hashCode()
-            hc = 31 * hc + symbol1.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class group_by_list(
-        val group_by_item0: List<group_by_item>,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): partiql_basic_nameless_node() {
-    
-        override fun withMeta(key: String, value: Any): group_by_list =
-            group_by_list(
-                group_by_item0 = group_by_item0,
-                metas = metas + metaContainerOf(key to value))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("group_by_list"),
-                *group_by_item0.map { it.toIonElement() }.toTypedArray(),
-                metas = metas)
-            return elements
-        }
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != group_by_list::class.java) return false
-    
-            other as group_by_list
-            if (group_by_item0 != other.group_by_item0) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = group_by_item0.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class group_by(
-        val group_by_list0: group_by_list,
-        val symbol1: SymbolPrimitive?,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): partiql_basic_nameless_node() {
-    
-        override fun withMeta(key: String, value: Any): group_by =
-            group_by(
-                group_by_list0 = group_by_list0,
-                symbol1 = symbol1,
-                metas = metas + metaContainerOf(key to value))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("group_by"),
-                group_by_list0.toIonElement(),
-                symbol1?.toIonElement() ?: ionNull(),
-                metas = metas)
-            return elements
-        }
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != group_by::class.java) return false
-    
-            other as group_by
-            if (group_by_list0 != other.group_by_list0) return false
-            if (symbol1 != other.symbol1) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = group_by_list0.hashCode()
-            hc = 31 * hc + symbol1.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class tuple_field(
-        val symbol0: SymbolPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): partiql_basic_nameless_node() {
-    
-        override fun withMeta(key: String, value: Any): tuple_field =
-            tuple_field(
-                symbol0 = symbol0,
-                metas = metas + metaContainerOf(key to value))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("tuple_field"),
-                symbol0.toIonElement(),
-                metas = metas)
-            return elements
-        }
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != tuple_field::class.java) return false
-    
-            other as tuple_field
-            if (symbol0 != other.symbol0) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = symbol0.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Sum Types
-    /////////////////////////////////////////////////////////////////////////////
-    
-    sealed class join_type : partiql_basic_nameless_node() {
-    
-        class inner(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): join_type() {
-        
-            override fun withMeta(key: String, value: Any): inner =
-                inner(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("inner"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != inner::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 1000
-        }
-    
-        class left(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): join_type() {
-        
-            override fun withMeta(key: String, value: Any): left =
-                left(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("left"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != left::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 1001
-        }
-    
-        class right(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): join_type() {
-        
-            override fun withMeta(key: String, value: Any): right =
-                right(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("right"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != right::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 1002
-        }
-    
-        class outer(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): join_type() {
-        
-            override fun withMeta(key: String, value: Any): outer =
-                outer(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("outer"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != outer::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 1003
-        }
-    
-    }
-    
-    sealed class from_source : partiql_basic_nameless_node() {
-    
-        class scan(
-            val expr0: expr,
-            val symbol1: SymbolPrimitive?,
-            val symbol2: SymbolPrimitive?,
-            val symbol3: SymbolPrimitive?,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): from_source() {
-        
-            override fun withMeta(key: String, value: Any): scan =
-                scan(
-                    expr0 = expr0,
-                    symbol1 = symbol1,
-                    symbol2 = symbol2,
-                    symbol3 = symbol3,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("scan"),
-                    expr0.toIonElement(),
-                    symbol1?.toIonElement() ?: ionNull(),
-                    symbol2?.toIonElement() ?: ionNull(),
-                    symbol3?.toIonElement() ?: ionNull(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != scan::class.java) return false
-        
-                other as scan
-                if (expr0 != other.expr0) return false
-                if (symbol1 != other.symbol1) return false
-                if (symbol2 != other.symbol2) return false
-                if (symbol3 != other.symbol3) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + symbol1.hashCode()
-                hc = 31 * hc + symbol2.hashCode()
-                hc = 31 * hc + symbol3.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class join(
-            val join_type0: join_type,
-            val from_source1: from_source,
-            val from_source2: from_source,
-            val expr3: expr?,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): from_source() {
-        
-            override fun withMeta(key: String, value: Any): join =
-                join(
-                    join_type0 = join_type0,
-                    from_source1 = from_source1,
-                    from_source2 = from_source2,
-                    expr3 = expr3,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("join"),
-                    join_type0.toIonElement(),
-                    from_source1.toIonElement(),
-                    from_source2.toIonElement(),
-                    expr3?.toIonElement() ?: ionNull(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != join::class.java) return false
-        
-                other as join
-                if (join_type0 != other.join_type0) return false
-                if (from_source1 != other.from_source1) return false
-                if (from_source2 != other.from_source2) return false
-                if (expr3 != other.expr3) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = join_type0.hashCode()
-                hc = 31 * hc + from_source1.hashCode()
-                hc = 31 * hc + from_source2.hashCode()
-                hc = 31 * hc + expr3.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-    }
-    
-    sealed class case_sensitivity : partiql_basic_nameless_node() {
-    
-        class case_sensitive(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): case_sensitivity() {
-        
-            override fun withMeta(key: String, value: Any): case_sensitive =
-                case_sensitive(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("case_sensitive"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != case_sensitive::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 3000
-        }
-    
-        class case_insensitive(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): case_sensitivity() {
-        
-            override fun withMeta(key: String, value: Any): case_insensitive =
-                case_insensitive(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("case_insensitive"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != case_insensitive::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 3001
-        }
-    
-    }
-    
-    sealed class scope_qualifier : partiql_basic_nameless_node() {
-    
-        class unqualified(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): scope_qualifier() {
-        
-            override fun withMeta(key: String, value: Any): unqualified =
-                unqualified(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("unqualified"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != unqualified::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 4000
-        }
-    
-        class qualified(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): scope_qualifier() {
-        
-            override fun withMeta(key: String, value: Any): qualified =
-                qualified(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("qualified"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != qualified::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 4001
-        }
-    
-    }
-    
-    sealed class set_quantifier : partiql_basic_nameless_node() {
-    
-        class all(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): set_quantifier() {
-        
-            override fun withMeta(key: String, value: Any): all =
-                all(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("all"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != all::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 5000
-        }
-    
-        class distinct(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): set_quantifier() {
-        
-            override fun withMeta(key: String, value: Any): distinct =
-                distinct(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("distinct"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != distinct::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 5001
-        }
-    
-    }
-    
-    sealed class path_element : partiql_basic_nameless_node() {
-    
-        class path_expr(
-            val expr0: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): path_element() {
-        
-            override fun withMeta(key: String, value: Any): path_expr =
-                path_expr(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("path_expr"),
-                    expr0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != path_expr::class.java) return false
-        
-                other as path_expr
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class path_wildcard(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): path_element() {
-        
-            override fun withMeta(key: String, value: Any): path_wildcard =
-                path_wildcard(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("path_wildcard"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != path_wildcard::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 6001
-        }
-    
-        class path_unpivot(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): path_element() {
-        
-            override fun withMeta(key: String, value: Any): path_unpivot =
-                path_unpivot(
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("path_unpivot"),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != path_unpivot::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 6002
-        }
-    
-    }
-    
-    sealed class expr : partiql_basic_nameless_node() {
-    
-        class lit(
-            val ion0: IonElement,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): lit =
-                lit(
-                    ion0 = ion0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("lit"),
-                    ion0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != lit::class.java) return false
-        
-                other as lit
-                if (ion0 != other.ion0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = ion0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class parameter(
-            val int0: LongPrimitive,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): parameter =
-                parameter(
-                    int0 = int0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("parameter"),
-                    int0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != parameter::class.java) return false
-        
-                other as parameter
-                if (int0 != other.int0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = int0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class not(
-            val expr0: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): not =
-                not(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("not"),
-                    expr0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != not::class.java) return false
-        
-                other as not
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class plus(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): plus =
-                plus(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("plus"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != plus::class.java) return false
-        
-                other as plus
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class minus(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): minus =
-                minus(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("minus"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != minus::class.java) return false
-        
-                other as minus
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class times(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): times =
-                times(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("times"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != times::class.java) return false
-        
-                other as times
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class divide(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): divide =
-                divide(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("divide"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != divide::class.java) return false
-        
-                other as divide
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class modulo(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): modulo =
-                modulo(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("modulo"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != modulo::class.java) return false
-        
-                other as modulo
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class concat(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): concat =
-                concat(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("concat"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != concat::class.java) return false
-        
-                other as concat
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class like(
-            val expr0: expr,
-            val expr1: expr,
-            val expr2: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): like =
-                like(
-                    expr0 = expr0,
-                    expr1 = expr1,
-                    expr2 = expr2,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("like"),
-                    expr0.toIonElement(),
-                    expr1.toIonElement(),
-                    expr2.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != like::class.java) return false
-        
-                other as like
-                if (expr0 != other.expr0) return false
-                if (expr1 != other.expr1) return false
-                if (expr2 != other.expr2) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc = 31 * hc + expr2.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class between(
-            val expr0: expr,
-            val expr1: expr,
-            val expr2: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): between =
-                between(
-                    expr0 = expr0,
-                    expr1 = expr1,
-                    expr2 = expr2,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("between"),
-                    expr0.toIonElement(),
-                    expr1.toIonElement(),
-                    expr2.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != between::class.java) return false
-        
-                other as between
-                if (expr0 != other.expr0) return false
-                if (expr1 != other.expr1) return false
-                if (expr2 != other.expr2) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc = 31 * hc + expr2.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class path(
-            val expr0: expr,
-            val path_element1: List<path_element>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): path =
-                path(
-                    expr0 = expr0,
-                    path_element1 = path_element1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("path"),
-                    expr0.toIonElement(),
-                    *path_element1.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != path::class.java) return false
-        
-                other as path
-                if (expr0 != other.expr0) return false
-                if (path_element1 != other.path_element1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + path_element1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class call(
-            val symbol0: SymbolPrimitive,
-            val expr1: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): call =
-                call(
-                    symbol0 = symbol0,
-                    expr1 = expr1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("call"),
-                    symbol0.toIonElement(),
-                    *expr1.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != call::class.java) return false
-        
-                other as call
-                if (symbol0 != other.symbol0) return false
-                if (expr1 != other.expr1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class call_agg(
-            val symbol0: SymbolPrimitive,
-            val set_quantifier1: set_quantifier,
-            val expr2: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): call_agg =
-                call_agg(
-                    symbol0 = symbol0,
-                    set_quantifier1 = set_quantifier1,
-                    expr2 = expr2,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("call_agg"),
-                    symbol0.toIonElement(),
-                    set_quantifier1.toIonElement(),
-                    expr2.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != call_agg::class.java) return false
-        
-                other as call_agg
-                if (symbol0 != other.symbol0) return false
-                if (set_quantifier1 != other.set_quantifier1) return false
-                if (expr2 != other.expr2) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = symbol0.hashCode()
-                hc = 31 * hc + set_quantifier1.hashCode()
-                hc = 31 * hc + expr2.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class simple_case(
-            val expr0: expr,
-            val expr_pair1: List<expr_pair>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): simple_case =
-                simple_case(
-                    expr0 = expr0,
-                    expr_pair1 = expr_pair1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("simple_case"),
-                    expr0.toIonElement(),
-                    *expr_pair1.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != simple_case::class.java) return false
-        
-                other as simple_case
-                if (expr0 != other.expr0) return false
-                if (expr_pair1 != other.expr_pair1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + expr_pair1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class searched_case(
-            val expr_pair0: List<expr_pair>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): searched_case =
-                searched_case(
-                    expr_pair0 = expr_pair0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("searched_case"),
-                    *expr_pair0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != searched_case::class.java) return false
-        
-                other as searched_case
-                if (expr_pair0 != other.expr_pair0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr_pair0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class struct(
-            val expr_pair0: List<expr_pair>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): struct =
-                struct(
-                    expr_pair0 = expr_pair0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("struct"),
-                    *expr_pair0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != struct::class.java) return false
-        
-                other as struct
-                if (expr_pair0 != other.expr_pair0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr_pair0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class bag(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): bag =
-                bag(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("bag"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != bag::class.java) return false
-        
-                other as bag
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class list(
-            val expr0: List<expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): list =
-                list(
-                    expr0 = expr0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("list"),
-                    *expr0.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != list::class.java) return false
-        
-                other as list
-                if (expr0 != other.expr0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class filter(
-            val expr0: expr,
-            val expr1: expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): filter =
-                filter(
-                    expr0 = expr0,
-                    expr1 = expr1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("filter"),
-                    expr0.toIonElement(),
-                    expr1.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != filter::class.java) return false
-        
-                other as filter
-                if (expr0 != other.expr0) return false
-                if (expr1 != other.expr1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = expr0.hashCode()
-                hc = 31 * hc + expr1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class construct_value(
-            val from_source0: from_source,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): construct_value =
-                construct_value(
-                    from_source0 = from_source0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("construct_value"),
-                    from_source0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != construct_value::class.java) return false
-        
-                other as construct_value
-                if (from_source0 != other.from_source0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = from_source0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class construct_tuple(
-            val from_source0: from_source,
-            val tuple_field1: List<tuple_field>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): construct_tuple =
-                construct_tuple(
-                    from_source0 = from_source0,
-                    tuple_field1 = tuple_field1,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("construct_tuple"),
-                    from_source0.toIonElement(),
-                    *tuple_field1.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != construct_tuple::class.java) return false
-        
-                other as construct_tuple
-                if (from_source0 != other.from_source0) return false
-                if (tuple_field1 != other.tuple_field1) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = from_source0.hashCode()
-                hc = 31 * hc + tuple_field1.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class id(
-            val int0: LongPrimitive,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): expr() {
-        
-            override fun withMeta(key: String, value: Any): id =
-                id(
-                    int0 = int0,
-                    metas = metas + metaContainerOf(key to value))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("id"),
-                    int0.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != id::class.java) return false
-        
-                other as id
-                if (int0 != other.int0) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = int0.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-    }
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Transformer
-    /////////////////////////////////////////////////////////////////////////////
-    
-    
-    private class Transformer : IonElementTransformerBase<partiql_basic_nameless_node>() {
-    
-        override fun innerTransform(sexp: SexpElement): partiql_basic_nameless_node {
-            return when(sexp.tag) {
-                //////////////////////////////////////
-                // Tuple Types
-                //////////////////////////////////////
-                "expr_pair" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    expr_pair(
-                        expr0,
-                        expr1,
-                        metas = sexp.metas)
-                }
-                "group_by_item" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 2))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val symbol1 = sexp.getOptional(1)?.toSymbolPrimitive()
-                    group_by_item(
-                        expr0,
-                        symbol1,
-                        metas = sexp.metas)
-                }
-                "group_by_list" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val group_by_item0 = sexp.values.drop(1).map { it.transformExpect<group_by_item>() }
-                    group_by_list(
-                        group_by_item0,
-                        metas = sexp.metas)
-                }
-                "group_by" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 2))
-                    val group_by_list0 = sexp.getRequired(0).transformExpect<group_by_list>()
-                    val symbol1 = sexp.getOptional(1)?.toSymbolPrimitive()
-                    group_by(
-                        group_by_list0,
-                        symbol1,
-                        metas = sexp.metas)
-                }
-                "tuple_field" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    tuple_field(
-                        symbol0,
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'join_type'
-                //////////////////////////////////////
-                "inner" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    join_type.inner(
-                        metas = sexp.metas)
-                }
-                "left" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    join_type.left(
-                        metas = sexp.metas)
-                }
-                "right" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    join_type.right(
-                        metas = sexp.metas)
-                }
-                "outer" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    join_type.outer(
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'from_source'
-                //////////////////////////////////////
-                "scan" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 4))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val symbol1 = sexp.getOptional(1)?.toSymbolPrimitive()
-                    val symbol2 = sexp.getOptional(2)?.toSymbolPrimitive()
-                    val symbol3 = sexp.getOptional(3)?.toSymbolPrimitive()
-                    from_source.scan(
-                        expr0,
-                        symbol1,
-                        symbol2,
-                        symbol3,
-                        metas = sexp.metas)
-                }
-                "join" -> {
-                    sexp.requireArityOrMalformed(IntRange(3, 4))
-                    val join_type0 = sexp.getRequired(0).transformExpect<join_type>()
-                    val from_source1 = sexp.getRequired(1).transformExpect<from_source>()
-                    val from_source2 = sexp.getRequired(2).transformExpect<from_source>()
-                    val expr3 = sexp.getOptional(3)?.transformExpect<expr>()
-                    from_source.join(
-                        join_type0,
-                        from_source1,
-                        from_source2,
-                        expr3,
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'case_sensitivity'
-                //////////////////////////////////////
-                "case_sensitive" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    case_sensitivity.case_sensitive(
-                        metas = sexp.metas)
-                }
-                "case_insensitive" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    case_sensitivity.case_insensitive(
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'scope_qualifier'
-                //////////////////////////////////////
-                "unqualified" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    scope_qualifier.unqualified(
-                        metas = sexp.metas)
-                }
-                "qualified" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    scope_qualifier.qualified(
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'set_quantifier'
-                //////////////////////////////////////
-                "all" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    set_quantifier.all(
-                        metas = sexp.metas)
-                }
-                "distinct" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    set_quantifier.distinct(
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'path_element'
-                //////////////////////////////////////
-                "path_expr" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    path_element.path_expr(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "path_wildcard" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    path_element.path_wildcard(
-                        metas = sexp.metas)
-                }
-                "path_unpivot" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    path_element.path_unpivot(
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'expr'
-                //////////////////////////////////////
-                "lit" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val ion0 = sexp.getRequiredIon(0)
-                    expr.lit(
-                        ion0,
-                        metas = sexp.metas)
-                }
-                "parameter" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    expr.parameter(
-                        int0,
-                        metas = sexp.metas)
-                }
-                "not" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    expr.not(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "plus" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.plus(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "minus" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.minus(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "times" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.times(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "divide" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.divide(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "modulo" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.modulo(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "concat" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.concat(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "like" -> {
-                    sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
-                    expr.like(
-                        expr0,
-                        expr1,
-                        expr2,
-                        metas = sexp.metas)
-                }
-                "between" -> {
-                    sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
-                    expr.between(
-                        expr0,
-                        expr1,
-                        expr2,
-                        metas = sexp.metas)
-                }
-                "path" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val path_element1 = sexp.values.drop(2).map { it.transformExpect<path_element>() }
-                    expr.path(
-                        expr0,
-                        path_element1,
-                        metas = sexp.metas)
-                }
-                "call" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val expr1 = sexp.values.drop(2).map { it.transformExpect<expr>() }
-                    expr.call(
-                        symbol0,
-                        expr1,
-                        metas = sexp.metas)
-                }
-                "call_agg" -> {
-                    sexp.requireArityOrMalformed(IntRange(3, 3))
-                    val symbol0 = sexp.getRequired(0).toSymbolPrimitive()
-                    val set_quantifier1 = sexp.getRequired(1).transformExpect<set_quantifier>()
-                    val expr2 = sexp.getRequired(2).transformExpect<expr>()
-                    expr.call_agg(
-                        symbol0,
-                        set_quantifier1,
-                        expr2,
-                        metas = sexp.metas)
-                }
-                "simple_case" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr_pair1 = sexp.values.drop(2).map { it.transformExpect<expr_pair>() }
-                    expr.simple_case(
-                        expr0,
-                        expr_pair1,
-                        metas = sexp.metas)
-                }
-                "searched_case" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr_pair0 = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
-                    expr.searched_case(
-                        expr_pair0,
-                        metas = sexp.metas)
-                }
-                "struct" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr_pair0 = sexp.values.drop(1).map { it.transformExpect<expr_pair>() }
-                    expr.struct(
-                        expr_pair0,
-                        metas = sexp.metas)
-                }
-                "bag" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.bag(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "list" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val expr0 = sexp.values.drop(1).map { it.transformExpect<expr>() }
-                    expr.list(
-                        expr0,
-                        metas = sexp.metas)
-                }
-                "filter" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val expr0 = sexp.getRequired(0).transformExpect<expr>()
-                    val expr1 = sexp.getRequired(1).transformExpect<expr>()
-                    expr.filter(
-                        expr0,
-                        expr1,
-                        metas = sexp.metas)
-                }
-                "construct_value" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val from_source0 = sexp.getRequired(0).transformExpect<from_source>()
-                    expr.construct_value(
-                        from_source0,
-                        metas = sexp.metas)
-                }
-                "construct_tuple" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
-                    val from_source0 = sexp.getRequired(0).transformExpect<from_source>()
-                    val tuple_field1 = sexp.values.drop(2).map { it.transformExpect<tuple_field>() }
-                    expr.construct_tuple(
-                        from_source0,
-                        tuple_field1,
-                        metas = sexp.metas)
-                }
-                "id" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val int0 = sexp.getRequired(0).toLongPrimitive()
-                    expr.id(
-                        int0,
-                        metas = sexp.metas)
-                }
-                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'partiql_basic_nameless'")
             }
         }
     }

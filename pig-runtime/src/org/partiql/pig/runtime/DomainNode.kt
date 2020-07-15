@@ -25,7 +25,7 @@ interface DomainNode {
     val metas: MetaContainer
 
     /** Creates a copy of the current node with the specified [key] and [value] as metadata.*/
-    fun withMeta(key: String, value: Any): DomainNode
+    fun withMeta(metaKey: String, metaValue: Any): DomainNode
 
     /** Converts the current node to an instance of `IonElement`. */
     fun toIonElement(): IonElement
