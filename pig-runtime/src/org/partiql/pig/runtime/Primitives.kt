@@ -25,8 +25,8 @@ import com.amazon.ionelement.api.metaContainerOf
 import com.amazon.ionelement.api.withMetas
 
 class LongPrimitive(val value: Long, override val metas: MetaContainer) : DomainNode {
-    override fun withMeta(key: String, value: Any): LongPrimitive =
-        LongPrimitive(this.value, metas + metaContainerOf(key to value))
+    override fun withMeta(metaKey: String, metaValue: Any): LongPrimitive =
+        LongPrimitive(this.value, metas + metaContainerOf(metaKey to metaValue))
 
     override fun toIonElement(): IonElement = ionInt(value).withMetas(metas)
     override fun toString(): String = value.toString()
@@ -48,8 +48,8 @@ class LongPrimitive(val value: Long, override val metas: MetaContainer) : Domain
 }
 
 class SymbolPrimitive(val text: String, override val metas: MetaContainer) : DomainNode {
-    override fun withMeta(key: String, value: Any): SymbolPrimitive =
-        SymbolPrimitive(text, metas + metaContainerOf(key to value))
+    override fun withMeta(metaKey: String, metaValue: Any): SymbolPrimitive =
+        SymbolPrimitive(text, metas + metaContainerOf(metaKey to metaValue))
 
     override fun toIonElement(): IonElement = ionSymbol(text).withMetas(metas)
     override fun toString(): String = text

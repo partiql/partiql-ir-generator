@@ -22,7 +22,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.partiql.pig.runtime.MalformedDomainDataException
-import org.partiql.pig.tests.generated.partiql_basic
+import org.partiql.pig.tests.generated.PartiqlBasic
 
 class IonElementTransformerErrorTests {
     data class ErrorTestCase(val domainText: String, val message: String)
@@ -31,7 +31,7 @@ class IonElementTransformerErrorTests {
     @MethodSource("parametersForSerializationErrorTest")
     fun serializationErrorTest(tc: ErrorTestCase) {
         val element = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true)).loadSingleElement(tc.domainText)
-        val ex = assertThrows<MalformedDomainDataException> { partiql_basic.transform(element) }
+        val ex = assertThrows<MalformedDomainDataException> { PartiqlBasic.transform(element) }
         assertEquals(tc.message, ex.message, "Exception's message must match")
     }
 
@@ -58,7 +58,7 @@ class IonElementTransformerErrorTests {
             // Incorrect type of second argument to plus
             ErrorTestCase(
                 "(plus (lit 1) (project_value (lit 1)))",
-                "1:15: Expected 'class org.partiql.pig.tests.generated.partiql_basic${'$'}expr' but found 'class org.partiql.pig.tests.generated.partiql_basic${'$'}projection${'$'}project_value'"),
+                "1:15: Expected 'class org.partiql.pig.tests.generated.PartiqlBasic${'$'}Expr' but found 'class org.partiql.pig.tests.generated.PartiqlBasic${'$'}Projection${'$'}ProjectValue'"),
             // Missing record field
             ErrorTestCase(
                 "(select (from (scan (lit foo))))",

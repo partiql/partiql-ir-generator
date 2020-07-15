@@ -72,7 +72,7 @@ fun TypeDomain.toCTypeDomain(): CTypeDomain {
     }
 
     return CTypeDomain(
-        name = this.name,
+        name = this.tag,
         tuples = gTuples,
         sums = gSums
     )
@@ -95,7 +95,7 @@ private fun NamedElement.toCElement(): CElement {
     }
 
     return CElement(
-        name = this.name,
+        name = this.tag,
         type = this.typeReference.typeName,
         isOptional = isOptional,
         isVariadic = isVariadic)

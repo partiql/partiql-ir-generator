@@ -25,18 +25,18 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ArgumentsSource
 import org.partiql.pig.runtime.DomainNode
 import org.partiql.pig.runtime.asPrimitive
-import org.partiql.pig.tests.generated.test_domain
+import org.partiql.pig.tests.generated.TestDomain
 
 /**
- * Tests all of the equivalence classes outlined in the comment above `test_domain` defined in
+ * Tests all of the equivalence classes outlined in the comment above `TestDomain` defined in
  * `type-domains/sample-universe.ion`
  */
 class IonElementTransformerTests {
 
     @Test
     fun `int primitives preserve metas round trip`() {
-        val input = test_domain.build {
-            int_pair_(
+        val input = TestDomain.build {
+            intPair_(
                 1.asPrimitive().withMeta("life", 42),
                 2.asPrimitive().withMeta("so long", "thanks for all the fish"))
         }
@@ -50,7 +50,7 @@ class IonElementTransformerTests {
         assertEquals(42, element.values[1].metas["life"])
         assertEquals("thanks for all the fish", element.values[2].metas["so long"])
 
-        val output = test_domain.transform(element) as test_domain.int_pair
+        val output = TestDomain.transform(element) as TestDomain.IntPair
 
         // Assert that metas were added to the domain elements during transformation
         assertEquals(42, output.first.metas["life"])
@@ -59,8 +59,8 @@ class IonElementTransformerTests {
 
     @Test
     fun `symbol primitives preserve metas round trip`() {
-        val input = test_domain.build {
-            symbol_pair_(
+        val input = TestDomain.build {
+            symbolPair_(
                 "foo".asPrimitive(metaContainerOf("life" to 42)),
                 "bar".asPrimitive(metaContainerOf("so long" to "thanks for all the fish")))
         }
@@ -74,7 +74,7 @@ class IonElementTransformerTests {
         assertEquals(42, element.values[1].metas["life"])
         assertEquals("thanks for all the fish", element.values[2].metas["so long"])
 
-        val output = test_domain.transform(element) as test_domain.symbol_pair
+        val output = TestDomain.transform(element) as TestDomain.SymbolPair
 
         // Assert that metas were added to the domain elements during deserialization
         assertEquals(42, output.first.metas["life"])
@@ -89,91 +89,91 @@ class IonElementTransformerTests {
     class AllElementTypesTestArgumentProvider: ArgumentsProviderBase() {
         override fun getParameters(): List<Any> = listOf(
             TestCase(
-                test_domain.build { int_pair(1, 2) },
+                TestDomain.build { intPair(1, 2) },
                 "(int_pair 1 2)"
             ),
             TestCase(
-                test_domain.build { symbol_pair("foo", "bar") },
+                TestDomain.build { symbolPair("foo", "bar") },
                 "(symbol_pair foo bar)"
             ),
             TestCase(
-                test_domain.build { int_symbol_pair(123, "bar") },
+                TestDomain.build { intSymbolPair(123, "bar") },
                 "(int_symbol_pair 123 bar)"
             ),
             TestCase(
-                test_domain.build { symbol_int_pair("bar", 123) },
+                TestDomain.build { symbolIntPair("bar", 123) },
                 "(symbol_int_pair bar 123)"
             ),
             TestCase(
-                test_domain.build { int_pair_pair(int_pair(1, 2), int_pair(3, 4)) },
+                TestDomain.build { intPairPair(intPair(1, 2), intPair(3, 4)) },
                 "(int_pair_pair (int_pair 1 2) (int_pair 3 4))"
             ),
             TestCase(
-                test_domain.build { symbol_pair_pair(symbol_pair("foo", "bar"), symbol_pair("bat", "baz")) },
+                TestDomain.build { symbolPairPair(symbolPair("foo", "bar"), symbolPair("bat", "baz")) },
                 "(symbol_pair_pair (symbol_pair foo bar) (symbol_pair bat baz))"
             ),
             TestCase(
-                test_domain.build { answer_pair(yes(), no()) },
+                TestDomain.build { answerPair(yes(), no()) },
                 "(answer_pair (yes) (no))"
             ),
             TestCase(
-                test_domain.build { answer_pair(no(), yes()) },
+                TestDomain.build { answerPair(no(), yes()) },
                 "(answer_pair (no) (yes))"
             ),
             TestCase(
-                test_domain.build { answer_int_pair(yes(), 123) },
+                TestDomain.build { answerIntPair(yes(), 123) },
                 "(answer_int_pair (yes) 123)"
             ),
             TestCase(
-                test_domain.build { answer_int_pair(no(), 123) },
+                TestDomain.build { answerIntPair(no(), 123) },
                 "(answer_int_pair (no) 123)"
             ),
             TestCase(
-                test_domain.build { int_answer_pair(456, yes()) },
+                TestDomain.build { intAnswerPair(456, yes()) },
                 "(int_answer_pair 456 (yes))"
             ),
             TestCase(
-                test_domain.build { int_answer_pair(456, no()) },
+                TestDomain.build { intAnswerPair(456, no()) },
                 "(int_answer_pair 456 (no))"
             ),
             TestCase(
-                test_domain.build { answer_symbol_pair(yes(), "bob") },
+                TestDomain.build { answerSymbolPair(yes(), "bob") },
                 "(answer_symbol_pair (yes) bob)"
             ),
             TestCase(
-                test_domain.build { answer_symbol_pair(no(), "bob") },
+                TestDomain.build { answerSymbolPair(no(), "bob") },
                 "(answer_symbol_pair (no) bob)"
             ),
             TestCase(
-                test_domain.build { symbol_answer_pair("betty", yes()) },
+                TestDomain.build { symbolAnswerPair("betty", yes()) },
                 "(symbol_answer_pair betty (yes))"
             ),
             TestCase(
-                test_domain.build { symbol_answer_pair("betty", no()) },
+                TestDomain.build { symbolAnswerPair("betty", no()) },
                 "(symbol_answer_pair betty (no))"
             ),
             TestCase(
-                test_domain.build { recursive_pair(123) },
+                TestDomain.build { recursivePair(123) },
                 "(recursive_pair 123 null)"
             ),
             TestCase(
-                test_domain.build { recursive_pair(123, recursive_pair(456)) },
+                TestDomain.build { recursivePair(123, recursivePair(456)) },
                 "(recursive_pair 123 (recursive_pair 456 null))"
             ),
             TestCase(
-                test_domain.build { domain_level_record(42, "fourty-three") },
+                TestDomain.build { domainLevelRecord(42, "fourty-three") },
                 "(domain_level_record (some_field 42) (another_field 'fourty-three'))"
             ),
             TestCase(
-                test_domain.build { domain_level_record(42, "fourty-three", 44) },
+                TestDomain.build { domainLevelRecord(42, "fourty-three", 44) },
                 "(domain_level_record (some_field 42) (another_field 'fourty-three') (optional_field 44))"
             ),
             TestCase(
-                test_domain.build { product_with_record(41, domain_level_record(42, "fourty-three", 44)) },
+                TestDomain.build { productWithRecord(41, domainLevelRecord(42, "fourty-three", 44)) },
                 "(product_with_record 41 (domain_level_record (some_field 42) (another_field 'fourty-three') (optional_field 44)))"
             ),
             TestCase(
-                test_domain.build { variant_with_record(41, domain_level_record(42, "fourty-three", 44)) },
+                TestDomain.build { variantWithRecord(41, domainLevelRecord(42, "fourty-three", 44)) },
                 "(variant_with_record 41 (domain_level_record (some_field 42) (another_field 'fourty-three') (optional_field 44)))"
             )
         )
@@ -185,95 +185,95 @@ class IonElementTransformerTests {
     class VariadicElementssTestArgumentsProvider: ArgumentsProviderBase() {
         override fun getParameters(): List<Any> = listOf(
 
-            // variadic_min_0 has a single variadic element with no minimum arity
+            // variadicMin0 has a single variadic element with no minimum arity
 
             TestCase(
-                test_domain.build { variadic_min_0(listOf()) },
+                TestDomain.build { variadicMin0(listOf()) },
                 "(variadic_min_0)"
             ),
             TestCase(
-                test_domain.build { variadic_min_0(listOf(1L)) },
+                TestDomain.build { variadicMin0(listOf(1L)) },
                 "(variadic_min_0 1)"
             ),
             TestCase(
-                test_domain.build { variadic_min_0(listOf(1L, 2L)) },
+                TestDomain.build { variadicMin0(listOf(1L, 2L)) },
                 "(variadic_min_0 1 2)"
             ),
             TestCase(
-                test_domain.build { variadic_min_0(listOf(1L, 2L, 3L)) },
+                TestDomain.build { variadicMin0(listOf(1L, 2L, 3L)) },
                 "(variadic_min_0 1 2 3)"
             ),
             // same as above but using alternate constructor
             TestCase(
-                test_domain.build { variadic_min_0() },
+                TestDomain.build { variadicMin0() },
                 "(variadic_min_0)"
             ),
             TestCase(
-                test_domain.build { variadic_min_0(1L) },
+                TestDomain.build { variadicMin0(1L) },
                 "(variadic_min_0 1)"
             ),
             TestCase(
-                test_domain.build { variadic_min_0(1L, 2L) },
+                TestDomain.build { variadicMin0(1L, 2L) },
                 "(variadic_min_0 1 2)"
             ),
             TestCase(
-                test_domain.build { variadic_min_0(1L, 2L, 3L) },
+                TestDomain.build { variadicMin0(1L, 2L, 3L) },
                 "(variadic_min_0 1 2 3)"
             ),
 
-            // variadic_min_1 has a single variadic element with a minimum arity of 1
+            // variadicMin1 has a single variadic element with a minimum arity of 1
 
             TestCase(
-                test_domain.build { variadic_min_1(listOf(1L)) },
+                TestDomain.build { variadicMin1(listOf(1L)) },
                 "(variadic_min_1 1)"
             ),
             TestCase(
-                test_domain.build { variadic_min_1(listOf(1L, 2L)) },
+                TestDomain.build { variadicMin1(listOf(1L, 2L)) },
                 "(variadic_min_1 1 2)"
             ),
             TestCase(
-                test_domain.build { variadic_min_1(listOf(1L, 2L, 3L)) },
+                TestDomain.build { variadicMin1(listOf(1L, 2L, 3L)) },
                 "(variadic_min_1 1 2 3)"
             ),
             // same as above but using alternate constructor
             TestCase(
-                test_domain.build { variadic_min_1(1L) },
+                TestDomain.build { variadicMin1(1L) },
                 "(variadic_min_1 1)"
             ),
             TestCase(
-                test_domain.build { variadic_min_1(1L, 2L) },
+                TestDomain.build { variadicMin1(1L, 2L) },
                 "(variadic_min_1 1 2)"
             ),
             TestCase(
-                test_domain.build { variadic_min_1(1L, 2L, 3L) },
+                TestDomain.build { variadicMin1(1L, 2L, 3L) },
                 "(variadic_min_1 1 2 3)"
             ),
 
-            // element_variadic
+            // elementVariadic
 
             TestCase(
-                test_domain.build { element_variadic("boo", listOf(1L)) },
+                TestDomain.build { elementVariadic("boo", listOf(1L)) },
                 "(element_variadic boo 1)"
             ),
             TestCase(
-                test_domain.build { element_variadic("loo", listOf(1L, 2L)) },
+                TestDomain.build { elementVariadic("loo", listOf(1L, 2L)) },
                 "(element_variadic loo 1 2)"
             ),
             TestCase(
-                test_domain.build { element_variadic("noo", listOf(1L, 2L, 3L)) },
+                TestDomain.build { elementVariadic("noo", listOf(1L, 2L, 3L)) },
                 "(element_variadic noo 1 2 3)"
             ),
             // same as above but using alternate constructor
             TestCase(
-                test_domain.build { element_variadic("coo", 1L) },
+                TestDomain.build { elementVariadic("coo", 1L) },
                 "(element_variadic coo 1)"
             ),
             TestCase(
-                test_domain.build { element_variadic("snoo", 1L, 2L) },
+                TestDomain.build { elementVariadic("snoo", 1L, 2L) },
                 "(element_variadic snoo 1 2)"
             ),
             TestCase(
-                test_domain.build { element_variadic("moo", 1L, 2L, 3L) },
+                TestDomain.build { elementVariadic("moo", 1L, 2L, 3L) },
                 "(element_variadic moo 1 2 3)"
             )
         )
@@ -287,51 +287,51 @@ class IonElementTransformerTests {
     class OptionalElementsTestArgumentsProvider: ArgumentsProviderBase() {
         override fun getParameters(): List<Any> = listOf(
 
-            // optional_1
+            // optional1
 
             TestCase(
-                test_domain.build { optional_1(1L) },
+                TestDomain.build { optional1(1L) },
                 "(optional_1 1)"
             ),
             TestCase(
-                test_domain.build { optional_1(null) },
+                TestDomain.build { optional1(null) },
                 "(optional_1 null)"
             ),
             // Using default value for argument.
             TestCase(
-                test_domain.build { optional_1() },
+                TestDomain.build { optional1() },
                 "(optional_1 null)"
             ),
 
-            // optional_2
+            // optional2
 
             TestCase(
-                test_domain.build { optional_2(null, null) },
+                TestDomain.build { optional2(null, null) },
                 "(optional_2 null null)"
             ),
             TestCase(
-                test_domain.build { optional_2(null, 2) },
+                TestDomain.build { optional2(null, 2) },
                 "(optional_2 null 2)"
             ),
             TestCase(
-                test_domain.build { optional_2(1, null) },
+                TestDomain.build { optional2(1, null) },
                 "(optional_2 1 null)"
             ),
             TestCase(
-                test_domain.build { optional_2(1L, 2L) },
+                TestDomain.build { optional2(1L, 2L) },
                 "(optional_2 1 2)"
             ),
             // Using default value for argument.
             TestCase(
-                test_domain.build { optional_2() },
+                TestDomain.build { optional2() },
                 "(optional_2 null null)"
             ),
             TestCase(
-                test_domain.build { optional_2(1L) },
+                TestDomain.build { optional2(1L) },
                 "(optional_2 1 null)"
             ),
             TestCase(
-                test_domain.build { optional_2(second = 2L) },
+                TestDomain.build { optional2(second = 2L) },
                 "(optional_2 null 2)"
             ))
     }
@@ -345,22 +345,22 @@ class IonElementTransformerTests {
     class SumTestArgumentsProvider: ArgumentsProviderBase() {
         override fun getParameters(): List<Any> = listOf(
             TestCase(
-                test_domain.build { entity_pair(slug(), slug()) },
+                TestDomain.build { entityPair(slug(), slug()) },
                 "(entity_pair (slug) (slug))"
             ),
             TestCase(
-                test_domain.build { entity_pair(android(123), slug()) },
+                TestDomain.build { entityPair(android(123), slug()) },
                 "(entity_pair (android 123) (slug))"
             ),
             TestCase(
-                test_domain.build { entity_pair(slug(), android(456)) },
+                TestDomain.build { entityPair(slug(), android(456)) },
                 "(entity_pair (slug) (android 456))"
             ),
             TestCase(
-                test_domain.build {
-                    entity_pair(
+                TestDomain.build {
+                    entityPair(
                         android(789),
-                        human(first_name = "billy", last_name = "bob"))
+                        human(firstName = "billy", lastName = "bob"))
                 },
                 """
                     (entity_pair 
@@ -371,11 +371,11 @@ class IonElementTransformerTests {
                 """
             ),
             TestCase(
-                test_domain.build {
+                TestDomain.build {
                     human(
                         title = "mister",
-                        first_name = "joe",
-                        last_name = "schmoe",
+                        firstName = "joe",
+                        lastName = "schmoe",
                         parent = slug())
                 },
                 """
@@ -387,7 +387,7 @@ class IonElementTransformerTests {
                 """
             ),
             TestCase(
-                test_domain.build { entity_pair(slug(), slug()) },
+                TestDomain.build { entityPair(slug(), slug()) },
                 "(entity_pair (slug) (slug))"
             )
         )
@@ -401,7 +401,7 @@ class IonElementTransformerTests {
         }
 
         // Deserialize and assert that the result is as expected.
-        val actualTransformed = test_domain.transform(expectedIonElement)
+        val actualTransformed = TestDomain.transform(expectedIonElement)
 
         assertEquals(
             tc.expectedDomainInstance,
@@ -422,7 +422,7 @@ class IonElementTransformerTests {
 
         // Add some metas to expectedIonElement, transform again and verify that the metas are present
         val expectedIonElementWithMetas = expectedIonElement.withMetas(metaContainerOf("foo" to 1, "bar" to 2))
-        val transformedWithMetas = test_domain.transform(expectedIonElementWithMetas)
+        val transformedWithMetas = TestDomain.transform(expectedIonElementWithMetas)
         assertEquals(2, transformedWithMetas.metas.size)
         assertEquals(1, transformedWithMetas.metas["foo"])
         assertEquals(2, transformedWithMetas.metas["bar"])

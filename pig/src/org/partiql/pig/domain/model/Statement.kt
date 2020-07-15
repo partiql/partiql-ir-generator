@@ -17,8 +17,6 @@ package org.partiql.pig.domain.model
 
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.emptyMetaContainer
-import com.amazon.ionelement.api.ionSexpOf
-import com.amazon.ionelement.api.ionSymbol
 import com.amazon.ionelement.api.location
 import com.amazon.ionelement.api.locationToString
 
@@ -29,7 +27,7 @@ sealed class Statement(val metas: MetaContainer)
 /** Represents a fully defined type domain. */
 class TypeDomain(
     /** The name of the type domain. */
-    val name: String,
+    val tag: String,
     /** The list of user-defined types.  Does not include primitive types. */
     val userTypes: List<DataType>,
     metas: MetaContainer = emptyMetaContainer()
@@ -54,7 +52,7 @@ class TypeDomain(
  * as specified by the [PermutedDomain].
  */
 class PermutedDomain(
-    val name: String,
+    val tag: String,
     val permutesDomain: String,
     val excludedTypes: List<String>,
     val includedTypes: List<DataType>,
@@ -69,7 +67,7 @@ class PermutedDomain(
     fun computePermutation(domains: Map<String, TypeDomain>): TypeDomain {
         val permutingDomain =
             domains[this.permutesDomain]
-            ?: semanticError(metas, SemanticErrorContext.DomainPermutesNonExistentDomain(name, permutesDomain))
+            ?: semanticError(metas, SemanticErrorContext.DomainPermutesNonExistentDomain(tag, permutesDomain))
 
         val newTypes = permutingDomain.types.toMutableList()
 
@@ -80,7 +78,7 @@ class PermutedDomain(
                 typeToRemove == null -> {
                    semanticError(
                        metas,
-                       SemanticErrorContext.CannotRemoveNonExistentType(removedTypeName, name, permutesDomain))
+                       SemanticErrorContext.CannotRemoveNonExistentType(removedTypeName, tag, permutesDomain))
                 }
                 typeToRemove.isBuiltin -> {
                     semanticError(this.metas, SemanticErrorContext.CannotRemoveBuiltinType(removedTypeName))
@@ -100,7 +98,7 @@ class PermutedDomain(
                 null -> {
                     semanticError(
                         extSum.metas,
-                        SemanticErrorContext.CannotPermuteNonExistentSum(extSum.tag, name, permutesDomain))
+                        SemanticErrorContext.CannotPermuteNonExistentSum(extSum.tag, tag, permutesDomain))
                 }
                 is DataType.Tuple, is DataType.Int, is DataType.Symbol -> {
                     semanticError(extSum.metas, SemanticErrorContext.CannotPermuteNonSumType(extSum.tag))
@@ -132,7 +130,7 @@ class PermutedDomain(
         newTypes.addAll(this.includedTypes)
 
         // errorCheck is being called by TypeUniverse.resolveExtensions
-        return TypeDomain(name, newTypes.filter { !it.isBuiltin }, metas)
+        return TypeDomain(tag, newTypes.filter { !it.isBuiltin }, metas)
     }
 }
 

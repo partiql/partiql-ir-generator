@@ -182,7 +182,7 @@ private fun parsePermuteDomain(domainName: String, sexp: SexpElement): PermutedD
     }
 
     return PermutedDomain(
-        name = domainName,
+        tag = domainName,
         permutesDomain = permutingDomain,
         excludedTypes = removedTypes,
         includedTypes = newTypes,

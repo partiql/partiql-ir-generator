@@ -42,8 +42,8 @@ data class TypeUniverse(val statements: List<Statement>) {
 
             typeDomain.checkSemantics()
 
-            if(domains.putIfAbsent(typeDomain.name, typeDomain) != null) {
-                semanticError(typeDomain.metas, SemanticErrorContext.DuplicateTypeDomainName(typeDomain.name))
+            if(domains.putIfAbsent(typeDomain.tag, typeDomain) != null) {
+                semanticError(typeDomain.metas, SemanticErrorContext.DuplicateTypeDomainName(typeDomain.tag))
             }
         }
 

@@ -51,7 +51,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
         typeDomain.types.forEach { dataType ->
             // Check that the data type name isn't already used.
             if(this.names.putIfAbsent(dataType.tag, NameType.TYPE) != null) {
-                semanticError(dataType.metas, SemanticErrorContext.NameAlreadyUsed(dataType.tag, typeDomain.name))
+                semanticError(dataType.metas, SemanticErrorContext.NameAlreadyUsed(dataType.tag, typeDomain.tag))
             }
 
             when (dataType) {
@@ -62,7 +62,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
                     dataType.variants.forEach { variant ->
                         // Check that the variant name isn't already used.
                         if (names.putIfAbsent(variant.tag, NameType.VARIANT) != null) {
-                            semanticError(variant.metas, SemanticErrorContext.NameAlreadyUsed(variant.tag, typeDomain.name))
+                            semanticError(variant.metas, SemanticErrorContext.NameAlreadyUsed(variant.tag, typeDomain.tag))
                         }
 
                         when(variant.tupleType) {
@@ -85,8 +85,8 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
         variant.namedElements.forEach {
             // Check that the element name hasn't already been used.
             when {
-                !elementNames.contains(it.name) -> elementNames.add(it.name)
-                else -> semanticError(it.metas, SemanticErrorContext.DuplicateRecordElementName(it.name))
+                !elementNames.contains(it.tag) -> elementNames.add(it.tag)
+                else -> semanticError(it.metas, SemanticErrorContext.DuplicateRecordElementName(it.tag))
             }
         }
     }

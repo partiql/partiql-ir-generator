@@ -22,9 +22,11 @@
 package org.partiql.pig.generator.kotlin
 
 import org.partiql.pig.domain.model.*
+import org.partiql.pig.util.snakeToCamelCase
+import org.partiql.pig.util.snakeToPascalCase
 
 internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
-    private val defaultBaseClass get() = "${typeDomain.name}_node"
+    private val defaultBaseClass get() = "${typeDomain.tag}Node"
 
     fun convert(): KTypeDomain {
         val ktProducts = mutableListOf<KTuple>()
@@ -34,27 +36,31 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             when(it) {
                 DataType.Int, DataType.Symbol, DataType.Ion -> { /* intentionally blank */ }
                 is DataType.Tuple ->
-                    ktProducts.add(it.toKProduct(superClass = defaultBaseClass, constructorName = it.tag))
+                    ktProducts.add(
+                        it.toKProduct(
+                            superClass = defaultBaseClass.snakeToPascalCase(),
+                            constructorName = it.tag.snakeToPascalCase()))
                 is DataType.Sum ->
                     ktSums.add(
                         KSum(
-                            name = it.tag,
-                            superClass = defaultBaseClass,
+                            kotlinName = it.tag.snakeToPascalCase(),
+                            superClass = defaultBaseClass.snakeToPascalCase(),
                             variants = it.variants.map { v ->
                                 v.toKProduct(
-                                    superClass = it.tag,
-                                    constructorName = "${it.tag}.${v.tag}")
+                                    superClass = it.tag.snakeToPascalCase(),
+                                    constructorName = "${it.tag.snakeToPascalCase()}.${v.tag.snakeToPascalCase()}")
                             }
                         ))
             }
         }
 
-        return KTypeDomain(typeDomain.name, ktProducts, ktSums)
+        return KTypeDomain(typeDomain.tag.snakeToPascalCase(), typeDomain.tag, ktProducts, ktSums)
     }
 
     private fun DataType.Tuple.toKProduct(superClass: String, constructorName: String): KTuple {
         return KTuple(
-            name = this.tag,
+            kotlinName = this.tag.snakeToPascalCase(),
+            tag = this.tag,
             superClass = superClass,
             constructorName = constructorName,
             properties = computeProperties(this),
@@ -71,7 +77,6 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
      * Locates a data type by its tag and returns true if it is a Kotlin primitive.
      */
     private fun isKotlinPrimitive(element: NamedElement) = typeDomain.resolveTypeRef(element.typeReference).isPrimitive
-
 
     private fun DataType.Tuple.hasPrimitiveElement() = this.namedElements.any { isKotlinPrimitive(it) }
 
@@ -112,11 +117,11 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
     ): KBuilderFunction {
 
         return KBuilderFunction(
-            name = tuple.tag + if(!useKotlinPrimitives) "_" else "",
+            kotlinName = tuple.tag.snakeToCamelCase() + if(!useKotlinPrimitives) "_" else "",
             parameters = tuple.namedElements
                 .map {
                     KParameter(
-                        name =  it.name,
+                        kotlinName =  it.tag.snakeToCamelCase(),
                         type = it.typeReference.toKotlinTypeName(useKotlinPrimitives),
                         defaultValue = if (it.typeReference.arity is Arity.Optional) "null" else null,
                         isVariadic = false)
@@ -131,37 +136,43 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
         element: NamedElement,
         useKotlinPrimitives: Boolean
     ): KConstructorArgument {
+        val elementKotlinName = element.tag.snakeToCamelCase()
         val argumentExpr = when {
-            isKotlinPrimitive(element) && useKotlinPrimitives -> {
-                if (element.typeReference.arity !is Arity.Variadic) {
-                    val maybeQuestionMark = if (element.typeReference.arity is Arity.Optional) "?" else ""
-                    element.name + "$maybeQuestionMark.asPrimitive()"
+            isKotlinPrimitive(element) && useKotlinPrimitives ->
+                when (element.typeReference.arity) {
+                    !is Arity.Variadic -> {
+                        val maybeQuestionMark = when (element.typeReference.arity) {
+                            is Arity.Optional -> "?"
+                            else -> ""
+                        }
+                        "$elementKotlinName$maybeQuestionMark.asPrimitive()"
+                    }
+                    else -> "$elementKotlinName.map { it.asPrimitive() }"
                 }
-                else {
-                    element.name + ".map { it.asPrimitive() }"
-                }
-            }
-            else -> element.name
+            else -> elementKotlinName
         }
 
-        return KConstructorArgument(element.name, argumentExpr)
+        return KConstructorArgument(elementKotlinName, argumentExpr)
     }
 
-    /** Computes a non-variadic builder function that `vararg` for its variadic element if one exists. */
+    /** Computes a non-variadic builder function that uses a `vararg` argument for its variadic element if one exists. */
     private fun computeVariadicBuilderFunction(tuple: DataType.Tuple, useKotlinPrimitives: Boolean): KBuilderFunction {
         return KBuilderFunction(
-            name =  tuple.tag + if(!useKotlinPrimitives) "_" else "",
+            kotlinName = tuple.tag.snakeToCamelCase() + if(!useKotlinPrimitives) "_" else "",
             parameters = computeExpandedVariadicBuilderFunctionParameters(tuple, useKotlinPrimitives),
             constructorArguments = tuple.namedElements.map { element ->
                 val elementIsKotlinPrimitive = isKotlinPrimitive(element)
+                val elementKotlinName = element.tag.snakeToCamelCase()
                 when (element.typeReference.arity) {
-                    is Arity.Required, Arity.Optional ->
+                    is Arity.Required, Arity.Optional -> {
                         KConstructorArgument(
-                            element.name,
-                            element.name + when {
+                            // TODO: missing test case
+                            kotlinName = elementKotlinName,
+                            value = elementKotlinName + when {
                                 elementIsKotlinPrimitive && useKotlinPrimitives -> ".asPrimitive()"
                                 else -> ""
                             })
+                    }
                     is Arity.Variadic -> {
                         // We're generating the right hand side of the assignment statement here because it's a royal
                         // pain to do this with the FreeMarker template--Kotlin is much better suited to this particular
@@ -169,25 +180,25 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                         when {
                             element.typeReference.arity.minimumArity > 0 -> {
                                 val requiredParameterList = IntRange(0, element.typeReference.arity.minimumArity - 1)
-                                    .joinToString(", ") { paramIndex -> "${element.name}_required_$paramIndex" }
+                                    .joinToString(", ") { paramIndex -> "${elementKotlinName}$paramIndex" }
 
                                 if (elementIsKotlinPrimitive) {
                                     KConstructorArgument(
-                                        element.name,
-                                        "listOfPrimitives($requiredParameterList) + ${element.name}" + when {
+                                        elementKotlinName,
+                                        "listOfPrimitives($requiredParameterList) + $elementKotlinName" + when {
                                             useKotlinPrimitives -> ".map { it.asPrimitive() }"
                                             else -> ".toList()"
                                         })
                                 } else {
                                     KConstructorArgument(
-                                        element.name,
-                                        "listOf($requiredParameterList) + ${element.name}.toList()")
+                                        elementKotlinName,
+                                        "listOf($requiredParameterList) + $elementKotlinName.toList()")
                                 }
                             }
                             else -> {
                                 KConstructorArgument(
-                                    element.name,
-                                    element.name + when {
+                                    elementKotlinName,
+                                    elementKotlinName + when {
                                         elementIsKotlinPrimitive && useKotlinPrimitives -> ".map { it.asPrimitive() }"
                                         else -> ".toList()"
                                     })
@@ -213,6 +224,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
      *        vararg symbol1: String
      *     ) = ...
      * ```
+     * // TODO: update the above
      *
      * This provides a way of enforcing the minimum arity of variadic fields of at Kotlin compile-time when
      * using a generated builder.
@@ -222,8 +234,9 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             when (val arity = element.typeReference.arity) {
                 is Arity.Required, is Arity.Optional -> {
                     listOf(
+                        // TODO: missing test case
                         KParameter(
-                            name = element.name,
+                            kotlinName = element.tag.snakeToCamelCase(),
                             type = element.typeReference.toKotlinTypeName(primitive),
                             defaultValue = if(arity is Arity.Optional) "null" else null,
                             isVariadic = false))
@@ -232,7 +245,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                     val requiredParameters =
                         IntRange(0, arity.minimumArity - 1).map { paramIndex ->
                             KParameter(
-                                name = "${element.name}_required_$paramIndex",
+                                kotlinName = "${element.tag.snakeToCamelCase()}$paramIndex",
                                 type = element.typeReference.toBaseKotlinTypeName(primitive),
                                 defaultValue = null,
                                 isVariadic = false)
@@ -240,7 +253,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
 
                     val variadicParameter =
                         KParameter(
-                            name = element.name,
+                            kotlinName = element.tag.snakeToCamelCase(),
                             type = element.typeReference.toBaseKotlinTypeName(primitive),
                             defaultValue = null,
                             isVariadic = true)
@@ -259,7 +272,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                     is Arity.Optional -> "processOptionalField"
                     is Arity.Variadic -> TODO("Variadic elements in records not yet supported")
                 }
-                "ir.${processFuncName}(\"${element.name}\") { it$expectCast }"
+                "ir.${processFuncName}(\"${element.tag}\") { it$expectCast }"
             }
             TupleType.PRODUCT -> {
                 val expectCast = createExpectCast(element.typeReference)
@@ -285,7 +298,8 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                 is Arity.Variadic -> true to false
             }
             KProperty(
-                name = element.name,
+                kotlinName = element.tag.snakeToCamelCase(),
+                tag = element.tag,
                 type = element.typeReference.toKotlinTypeName(useKotlinPrimitives = false),
                 isVariadic = isVariadic,
                 isNullable = isNullable,
@@ -301,7 +315,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             DataType.Int -> ".toLongPrimitive()"
             DataType.Symbol -> ".toSymbolPrimitive()"
             is DataType.Tuple, is DataType.Sum ->
-                ".transformExpect<${typeRef.typeName.quotedKotlinKeyword}>()"
+                ".transformExpect<${typeRef.typeName.snakeToPascalCase()}>()"
         }
         return expectExpr
     }
@@ -311,31 +325,16 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             when(this.arity) {
                 Arity.Required -> it
                 Arity.Optional -> "$it?"
-                is Arity.Variadic -> "List<$it>"
+                is Arity.Variadic -> "kotlin.collections.List<$it>"
             }
         }
 
     private fun TypeRef.toBaseKotlinTypeName(kotlinPrimitives: Boolean): String {
-
         return when (typeName) {
             "ion" -> "IonElement"
             "int" -> if (kotlinPrimitives) "Long" else "LongPrimitive"
             "symbol" -> if (kotlinPrimitives) "String" else "SymbolPrimitive"
-            else -> this.typeName.quotedKotlinKeyword
+            else -> this.typeName.snakeToPascalCase()
         }
     }
-
-    private val String.quotedKotlinKeyword
-        get() = if (KOTLIN_KEYWORDS.contains(this)) {
-            "`$this`"
-        } else {
-            this
-        }
-
-    // TODO:  expand on this https://kotlinlang.org/docs/reference/keyword-reference.html
-    private val KOTLIN_KEYWORDS = setOf(
-        "as",
-        "in",
-        "is"
-    )
 }
