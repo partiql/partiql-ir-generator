@@ -174,7 +174,7 @@
       (product modulo (operands (* expr 2)))
       (product concat (operands (* expr 2)))
 
-      (product like (left expr) (right expr) (escape expr))
+      (product like (value expr) (pattern expr) (escape expr))
       (product between (value expr) (from expr) (to expr))
       (product path (root expr) (elements (* path_element 1)))
       (product call (name symbol) (args (* expr 1)))
@@ -199,4 +199,3 @@
       (limit (? expr))))       // limit
     ) // end domain
  ) // end define
-
