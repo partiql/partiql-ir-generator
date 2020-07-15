@@ -77,73 +77,40 @@ private fun parseTypeDomain(domainName: String, sexp: SexpElement): TypeDomain {
         domainName,
         userTypes,
         sexp.metas)
-
 }
 
 private fun parseDomainLevelStatement(tlvs: SexpElement): DataType {
     return when (tlvs.tag) {
-        "product" -> parseProductBody(tlvs.tail, tlvs.metas)
-        "record" -> parseRecordBody(tlvs.tail, tlvs.metas)
+        "product" -> parseTupleBody(TupleType.PRODUCT, tlvs.tail, tlvs.metas)
+        "record" -> parseTupleBody(TupleType.RECORD, tlvs.tail, tlvs.metas)
         "sum" -> parseSum(tlvs)
         else -> parseError(tlvs.head, ParserErrorContext.InvalidDomainLevelTag(tlvs.tag))
     }
 }
 
-private fun parseTypeRefs(values: List<IonElement>): List<TypeRef> =
-    values.map { parseSingleTypeRef(it) }
-
 // Parses a sum-variant product or record (depending on the syntax used)
 private fun parseVariant(
-    bodyArguments: List<AnyElement>,
+    sexp: SexpElement,
     metas: MetaContainer
 ): DataType.Tuple {
-    val elements = bodyArguments.tail
 
-    // If there are no elements, definitely not a record.
-    val isRecord = if(elements.none()) {
-        false
-    } else {
-        // if the head element is an s-exp that does not start with `?` or `*` then we're parsing a record
-        when (val headElem = elements.head) {
-            is SexpElement -> {
-                when (headElem.values.head.symbolValue) {
-                    "?", "*" -> false
-                    else -> true
-                }
-            }
-            is SymbolElement -> false
-            else -> parseError(elements.head, ParserErrorContext.ExpectedSymbolOrSexp(elements.head.type))
-        }
+    val tupleType = when(sexp.tag) {
+        "product" -> TupleType.PRODUCT
+        "record" -> TupleType.RECORD
+        else -> parseError(sexp.head, ParserErrorContext.InvalidSumLevelTag(sexp.tag))
     }
 
-    return when {
-        isRecord -> {
-            parseRecordBody(bodyArguments, metas)
-        } else -> {
-            parseProductBody(bodyArguments, metas)
-        }
-    }
+    return parseTupleBody(tupleType, sexp.tail, metas)
 }
 
-private fun parseProductBody(bodyArguments: List<AnyElement>, metas: MetaContainer): DataType.Tuple {
+private fun parseTupleBody(type: TupleType, bodyArguments: List<AnyElement>, metas: MetaContainer): DataType.Tuple {
     val typeName = bodyArguments.head.symbolValue
-    val types = parseTypeRefs(bodyArguments.tail)
-
-    // Synthesize names for the un-named elements here...
-    val namedElements = types.mapIndexed { i, t ->
-        NamedElement("${t.typeName}$i", t, t.metas)
-    }
-
-    return DataType.Tuple(typeName, TupleType.PRODUCT, namedElements, metas)
+    val namedElements = parseTupleElements(bodyArguments.tail)
+    return DataType.Tuple(typeName, type, namedElements, metas)
 }
 
-private fun parseRecordBody(bodyArguments: List<AnyElement>, metas: MetaContainer): DataType.Tuple {
-    val typeName = bodyArguments.head.symbolValue
-    val namedElements = parseNamedElements(bodyArguments.tail)
-    return DataType.Tuple(typeName, TupleType.RECORD, namedElements, metas)
-}
 
-fun parseNamedElements(elementSexps: List<AnyElement>): List<NamedElement> =
+fun parseTupleElements(elementSexps: List<AnyElement>): List<NamedElement> =
     elementSexps.asSequence()
         .map { it.asSexp() }
         .map { elementSexp ->
@@ -161,14 +128,14 @@ private fun parseSum(sexp: SexpElement): DataType.Sum {
     val typeName = args.head.symbolValue
 
     val variants = args.tail.map {
-        parseSumVariant(it.asSexp())
+        parseVariant(it.asSexp(), it.metas)
     }
 
     return DataType.Sum(typeName, variants.toList(), sexp.metas)
 }
 
 private fun parseSumVariant(sexp: SexpElement): DataType.Tuple {
-    return parseVariant(sexp.values, sexp.metas)
+    return parseVariant(sexp, sexp.metas)
 }
 
 private fun parseSingleTypeRef(typeRefExp: IonElement): TypeRef {

@@ -73,17 +73,17 @@ transformation code.
 (define toy_lang
     (domain 
         (sum expr
-            (lit ion)
-            (variable symbol)
-            (not expr)
-            (plus (* expr 2))
-            (minus (* expr 2))
-            (times (* expr 2))
-            (divide (* expr 2))
-            (modulo (* expr 2))
-            (call expr expr)
-            (let symbol expr expr)
-            (function symbol expr))))
+            (product lit (value ion))
+            (product variable (name symbol))
+            (product not (expr expr))
+            (product plus (operands (* expr 2)))
+            (product minus (operands (* expr 2)))
+            (product times (operands (* expr 2)))
+            (product divide (operands (* expr 2)))
+            (product modulo (operands (* expr 2)))
+            (product call (func expr) (arg expr))
+            (product let (name symbol) (value expr) (body expr))
+            (product function (arg_name symbol) (body (expr))))
 
 // Define another type domain which is the same as "toy_lang" but replaces variable names with DeBruijn indices:
 
@@ -92,84 +92,14 @@ transformation code.
         (with expr
             (exclude variable let)
             (include 
-                (variable int)
-                (let int expr expr)))))
+                (product variable (index int))
+                (product let (index int) (value expr) (body expr))))))
 ```
 
-### Generated Kotlin Domain Model Sample (shortened)
+### Generated Kotlin Domain Model Sample
 
-A shortened sample of generated code for the above `toy_lang` domain is below.  Code for the `toy_lang_nameless` domain
-differs only as noted.
+See the sample generated code [here](pig-tests/src/org/partiql/pig/tests/generated/sample-universe.kt)
 
-```Kotlin
-class toy_lang private constructor() {
-    sealed class expr : DomainType() {
-        
-        class lit(required0: IonElement): expr() {
-            val required0: IonElement = required0
-            override fun toIonElement(): IonElement =  { /* removed for brevity */ }
-        }
-    
-        // In `toy_lang_nameless`, `required0` is an `Int` instead of a string        
-        class variable(required0: String): expr() {
-            val required0: String = required0        
-            override fun toIonElement(): IonElement = { /* removed for brevity */ }
-        }
-    
-        class not(required0: expr): expr() {
-            val required0: expr = required0
-            override fun toIonElement(): IonElement = { /* removed for brevity */ }
-        }
-    
-        class plus(requiredVariadic0: expr, requiredVariadic1: expr, vararg variadic: expr ): expr() {
-            val variadic: List<expr> = listOf(requiredVariadic0, requiredVariadic1) + variadic.toList()
-            override fun toIonElement(): IonElement = { /* removed for brevity */ }
-        }
-        
-        /* removed for brevity:  minus times, divide, modulo.  All follow the same pattern as `plus`, above. */
-    
-        class call(required0: String, required1: expr): expr() {
-            val required0: String = required0
-            val required1: expr = required1        
-            override fun toIonElement(): IonElement = { /* removed for brevity */ }
-        }
-    
-        // In `toy_lang_nameless`, `required0` is an `Int` instead of a string
-        class let(required0: String, required1: expr, required2: expr ): expr() {
-            val required0: String = required0
-            val required1: expr = required1
-            val required2: expr = required2        
-            override fun toIonElement(): IonElement = { /* removed for brevity */ }
-        }
-    
-        class function(required0: expr): expr() {
-            val required0: String = required0
-            val required1: expr = required0
-            override fun toIonElement(): IonElement = { /* removed for brevity */ }
-        }
-    }
-    
-    class transformer : IonElementTransformerBase() {
-    
-        override fun innerTransform(maybeSexp: IonElement): DomainType {
-            val sexp = maybeSexp.sexpValue
-            return when(sexp.tag) {
-                "lit" -> { /* removed for brevity */ }
-                "variable" -> { /* removed for brevity */ }
-                "not" -> { /* removed for brevity */ }
-                "plus" -> { /* removed for brevity */ }
-                "minus" -> { /* removed for brevity */ }
-                "times" -> { /* removed for brevity */ }
-                "divide" -> { /* removed for brevity */ }
-                "modulo" -> { /* removed for brevity */ }
-                "call" ->  { /* removed for brevity */ }
-                "let" ->  { /* removed for brevity */ }
-                "function" ->  { /* removed for brevity */ }
-                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'toy_lang'")
-            }
-        }
-    }
-}
 ```
 
 ### Typical Use Of Generated Domain Models
@@ -247,20 +177,14 @@ type_universe ::= '(' 'define' symbol <domain_definition> ')'...
 // Domain
 domain_definition ::= <domain> | <permute_domain>
 domain ::= '(' 'domain' <type_definition>... ')'
-type_definition ::= <product_definition> | <sum_definition> | <record_definition>
+type_definition ::= <tuple> | <sum>
 
-// Product
-product_definition ::= '(' 'product' <product_body>')'
-product_body ::= symbol <type_ref>...
-
-// Record
-record_definition ::= '(' 'record' <record_body> ')'
-record_body ::= symbol ('(' symbol <field_definition>... ')')
-field_definition ::= '(' symbol <type_ref> ')'
+// Tuples
+tuple ::= '(' ('product' | 'record') symbol <tuple_element>...')'
+tuple_element ::= '(' symbol <type_ref> ')'
 
 // Sum
-sum_definition ::= '(' 'sum' symbol <variant_definition>...')'
-variant_definition ::= '(' symbol (<product_body> | <record_body>) ')'
+sum ::= '(' 'sum' symbol <tuple>...')'
 
 // Domain permutation
 permute_domain ::=
@@ -277,7 +201,7 @@ with ::=
     '(' 'with' symbol 
         (
               '(' 'exclude' symbol... ')' 
-            | '(' 'include' ( '(' <product_body> ')' )... ')' 
+            | '(' 'include' ( '(' <tuple> ')' )... ')' 
         )...
     ')'
 
@@ -401,7 +325,7 @@ An example of a sum variant record:
         ...
         (sum expr
             ...
-            (select
+            (record select
                 (project projection)
                 (from from_source)
                 (where (? expr))

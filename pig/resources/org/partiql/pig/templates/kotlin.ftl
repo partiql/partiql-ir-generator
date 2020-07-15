@@ -29,16 +29,15 @@ class ${t.name}(
     override val metas: MetaContainer = emptyMetaContainer()
 ): ${t.superClass}() {
 
-    override fun withMeta(key: String, value: Any): ${t.name} =
+    override fun withMeta(metaKey: String, metaValue: Any): ${t.name} =
         ${t.name}(
             [#list t.properties as p]
             ${p.name} = ${p.name},
             [/#list]
-            metas = metas + metaContainerOf(key to value))
+            metas = metas + metaContainerOf(metaKey to metaValue))
 
 [#if t.record]
     override fun toIonElement(): SexpElement {
-
         val elements = listOfNotNull(
             ionSymbol("${t.name}"),
         [#list t.properties as p]
@@ -161,7 +160,7 @@ object builder {
         [#-- Not sure why the [#lt] below is needed to emit the correct indentation. --]
         // Variants for Sum: ${s.name} [#lt]
         [#list s.variants as tuple]
-        [@builder_constructor_fun tuple s.name "${s.name}.${tuple.name}"/]
+        [@builder_constructor_fun tuple s.name "${domain.name}.${s.name}.${tuple.name}"/]
 
         [/#list]
         [/#list]
@@ -171,7 +170,7 @@ object builder {
 /** Base class for all ${domain.name} types. */
 abstract class ${domain.name}_node : DomainNode {
     override fun toString() = toIonElement().toString()
-    abstract override fun withMeta(key: String, value: Any): ${domain.name}_node
+    abstract override fun withMeta(metaKey: String, metaValue: Any): ${domain.name}_node
     abstract override fun toIonElement(): SexpElement
 }
 
@@ -205,7 +204,7 @@ sealed class ${s.name} : ${s.superClass}() {
 // Transformer
 /////////////////////////////////////////////////////////////////////////////
 
-[#macro transformer_case tuple]
+[#macro transformer_case tuple domain_name]
     "${tuple.name}" -> {
     [#if tuple.record]
         val ir = sexp.transformToIntermediateRecord()
@@ -223,7 +222,7 @@ sealed class ${s.name} : ${s.superClass}() {
         [#list tuple.properties as p]
         val ${p.name} = ${p.transformExpr}
         [/#list]
-        ${tuple.constructorName}(
+        ${domain_name}.${tuple.constructorName}(
             [#list tuple.properties as p]
             ${p.name},
             [/#list]
@@ -242,7 +241,7 @@ private class Transformer : IonElementTransformerBase<${domain.name}_node>() {
             //////////////////////////////////////
 [#list domain.tuples as p]
 [@indent count = 8]
-[@transformer_case p /]
+[@transformer_case p domain.name /]
 [/@indent]
 [/#list]
 [/#if]
@@ -252,7 +251,7 @@ private class Transformer : IonElementTransformerBase<${domain.name}_node>() {
             //////////////////////////////////////
 [#list s.variants as v]
 [@indent count = 8]
-[@transformer_case v /]
+[@transformer_case v domain.name /]
 [/@indent]
 [/#list]
 [/#list]

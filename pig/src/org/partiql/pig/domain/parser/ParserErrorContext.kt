@@ -15,8 +15,6 @@
 
 package org.partiql.pig.domain.parser
 
-
-//import com.amazon.ionelement.api.Ion
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.location
@@ -52,6 +50,9 @@ sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
 
     data class InvalidTopLevelTag(val tag: String)
         : ParserErrorContext({ "Invalid top-level tag: '$tag'"})
+
+    data class InvalidSumLevelTag(val tag: String)
+        : ParserErrorContext({ "Invalid tag for sum variant: '$tag'"})
 
     data class InvalidPermutedDomainTag(val tag: String)
         : ParserErrorContext({ "Invalid tag for permute_domain body: '$tag'"})

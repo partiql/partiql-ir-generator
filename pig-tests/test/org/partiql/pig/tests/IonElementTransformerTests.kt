@@ -53,8 +53,8 @@ class IonElementTransformerTests {
         val output = test_domain.transform(element) as test_domain.int_pair
 
         // Assert that metas were added to the domain elements during transformation
-        assertEquals(42, output.int0.metas["life"])
-        assertEquals("thanks for all the fish", output.int1.metas["so long"])
+        assertEquals(42, output.first.metas["life"])
+        assertEquals("thanks for all the fish", output.second.metas["so long"])
     }
 
     @Test
@@ -77,8 +77,8 @@ class IonElementTransformerTests {
         val output = test_domain.transform(element) as test_domain.symbol_pair
 
         // Assert that metas were added to the domain elements during deserialization
-        assertEquals(42, output.symbol0.metas["life"])
-        assertEquals("thanks for all the fish", output.symbol1.metas["so long"])
+        assertEquals(42, output.first.metas["life"])
+        assertEquals("thanks for all the fish", output.second.metas["so long"])
     }
 
     data class TestCase(val expectedDomainInstance: DomainNode, val expectedIonText: String)
@@ -331,7 +331,7 @@ class IonElementTransformerTests {
                 "(optional_2 1 null)"
             ),
             TestCase(
-                test_domain.build { optional_2(int1 = 2L) },
+                test_domain.build { optional_2(second = 2L) },
                 "(optional_2 null 2)"
             ))
     }
