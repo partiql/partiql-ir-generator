@@ -58,8 +58,8 @@
 
         (product int_symbol_pair (first int) (second symbol))
         (product symbol_int_pair (first symbol) (second int))
-        (product ion_int_pair (firs  ion) (second int))
-        (product ion_symbol_pair (firs  ion) (second ion))
+        (product ion_int_pair (first  ion) (second int))
+        (product ion_symbol_pair (first  ion) (second ion))
 
         (product int_pair_pair (first int_pair) (second int_pair))
         (product symbol_pair_pair (first symbol_pair) (second symbol_pair))
@@ -199,5 +199,4 @@
       (limit (? expr))))       // limit
     ) // end domain
  ) // end define
-
 
