@@ -27,7 +27,7 @@ class ToyLang private constructor() {
     object builder {
         // Variants for Sum: Expr 
         fun lit(
-            value: IonElement,
+            value: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): ToyLang.Expr.Lit =
             ToyLang.Expr.Lit(
@@ -44,7 +44,7 @@ class ToyLang private constructor() {
                 metas = metas)
         
         fun variable_(
-            name: SymbolPrimitive,
+            name: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): ToyLang.Expr.Variable =
             ToyLang.Expr.Variable(
@@ -167,7 +167,7 @@ class ToyLang private constructor() {
                 metas = metas)
         
         fun call_(
-            name: SymbolPrimitive,
+            name: org.partiql.pig.runtime.SymbolPrimitive,
             argument: Expr,
             metas: MetaContainer = emptyMetaContainer()
         ): ToyLang.Expr.Call =
@@ -190,7 +190,7 @@ class ToyLang private constructor() {
                 metas = metas)
         
         fun let_(
-            name: SymbolPrimitive,
+            name: org.partiql.pig.runtime.SymbolPrimitive,
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
@@ -213,7 +213,7 @@ class ToyLang private constructor() {
                 metas = metas)
         
         fun function_(
-            varName: SymbolPrimitive,
+            varName: org.partiql.pig.runtime.SymbolPrimitive,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
         ): ToyLang.Expr.Function =
@@ -239,7 +239,7 @@ class ToyLang private constructor() {
     sealed class Expr : ToyLangNode() {
     
         class Lit(
-            val value: IonElement,
+            val value: com.amazon.ionelement.api.IonElement,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
@@ -275,7 +275,7 @@ class ToyLang private constructor() {
         }
     
         class Variable(
-            val name: SymbolPrimitive,
+            val name: org.partiql.pig.runtime.SymbolPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
@@ -527,7 +527,7 @@ class ToyLang private constructor() {
         }
     
         class Call(
-            val name: SymbolPrimitive,
+            val name: org.partiql.pig.runtime.SymbolPrimitive,
             val argument: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
@@ -568,7 +568,7 @@ class ToyLang private constructor() {
         }
     
         class Let(
-            val name: SymbolPrimitive,
+            val name: org.partiql.pig.runtime.SymbolPrimitive,
             val value: Expr,
             val body: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -614,7 +614,7 @@ class ToyLang private constructor() {
         }
     
         class Function(
-            val varName: SymbolPrimitive,
+            val varName: org.partiql.pig.runtime.SymbolPrimitive,
             val body: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
@@ -757,6 +757,121 @@ class ToyLang private constructor() {
             }
         }
     }
+    
+    
+    open class InspectingVisitor : InspectingDomainVisitorBase() {
+        //////////////////////////////////////
+        // Sum Type: Expr
+        //////////////////////////////////////
+        open fun visitExpr(node: ToyLang.Expr) { }
+        open fun visitExprLit(node: ToyLang.Expr.Lit) { }
+        open fun visitExprVariable(node: ToyLang.Expr.Variable) { }
+        open fun visitExprNot(node: ToyLang.Expr.Not) { }
+        open fun visitExprPlus(node: ToyLang.Expr.Plus) { }
+        open fun visitExprMinus(node: ToyLang.Expr.Minus) { }
+        open fun visitExprTimes(node: ToyLang.Expr.Times) { }
+        open fun visitExprDivide(node: ToyLang.Expr.Divide) { }
+        open fun visitExprModulo(node: ToyLang.Expr.Modulo) { }
+        open fun visitExprCall(node: ToyLang.Expr.Call) { }
+        open fun visitExprLet(node: ToyLang.Expr.Let) { }
+        open fun visitExprFunction(node: ToyLang.Expr.Function) { }
+    }
+    
+    open class InspectingWalker(
+        visitor: ToyLang.InspectingVisitor
+    ) : InspectingDomainWalkerBase<InspectingVisitor>(visitor) {
+    
+        //////////////////////////////////////
+        // Sum Type: Expr
+        //////////////////////////////////////
+        open fun walkExpr(node: ToyLang.Expr) {
+            visitor.visitExpr(node)
+            when(node) {
+                is ToyLang.Expr.Lit -> walkExprLit(node)
+                is ToyLang.Expr.Variable -> walkExprVariable(node)
+                is ToyLang.Expr.Not -> walkExprNot(node)
+                is ToyLang.Expr.Plus -> walkExprPlus(node)
+                is ToyLang.Expr.Minus -> walkExprMinus(node)
+                is ToyLang.Expr.Times -> walkExprTimes(node)
+                is ToyLang.Expr.Divide -> walkExprDivide(node)
+                is ToyLang.Expr.Modulo -> walkExprModulo(node)
+                is ToyLang.Expr.Call -> walkExprCall(node)
+                is ToyLang.Expr.Let -> walkExprLet(node)
+                is ToyLang.Expr.Function -> walkExprFunction(node)
+            }
+        }
+    
+        open fun walkExprLit(node: ToyLang.Expr.Lit) {
+            visitor.visitExprLit(node)
+            walkIonElement(node.value)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprVariable(node: ToyLang.Expr.Variable) {
+            visitor.visitExprVariable(node)
+            walkSymbolPrimitive(node.name)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprNot(node: ToyLang.Expr.Not) {
+            visitor.visitExprNot(node)
+            walkExpr(node.expr)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprPlus(node: ToyLang.Expr.Plus) {
+            visitor.visitExprPlus(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprMinus(node: ToyLang.Expr.Minus) {
+            visitor.visitExprMinus(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprTimes(node: ToyLang.Expr.Times) {
+            visitor.visitExprTimes(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprDivide(node: ToyLang.Expr.Divide) {
+            visitor.visitExprDivide(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprModulo(node: ToyLang.Expr.Modulo) {
+            visitor.visitExprModulo(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprCall(node: ToyLang.Expr.Call) {
+            visitor.visitExprCall(node)
+            walkSymbolPrimitive(node.name)
+            walkExpr(node.argument)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprLet(node: ToyLang.Expr.Let) {
+            visitor.visitExprLet(node)
+            walkSymbolPrimitive(node.name)
+            walkExpr(node.value)
+            walkExpr(node.body)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprFunction(node: ToyLang.Expr.Function) {
+            visitor.visitExprFunction(node)
+            walkSymbolPrimitive(node.varName)
+            walkExpr(node.body)
+            walkMetas(node.metas)
+        }
+    
+    }
 }
 
 class ToyLangNameless private constructor() {
@@ -777,7 +892,7 @@ class ToyLangNameless private constructor() {
     object builder {
         // Variants for Sum: Expr 
         fun lit(
-            value: IonElement,
+            value: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): ToyLangNameless.Expr.Lit =
             ToyLangNameless.Expr.Lit(
@@ -900,7 +1015,7 @@ class ToyLangNameless private constructor() {
                 metas = metas)
         
         fun call_(
-            name: SymbolPrimitive,
+            name: org.partiql.pig.runtime.SymbolPrimitive,
             argument: Expr,
             metas: MetaContainer = emptyMetaContainer()
         ): ToyLangNameless.Expr.Call =
@@ -921,7 +1036,7 @@ class ToyLangNameless private constructor() {
                 metas = metas)
         
         fun function_(
-            varName: SymbolPrimitive,
+            varName: org.partiql.pig.runtime.SymbolPrimitive,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
         ): ToyLangNameless.Expr.Function =
@@ -940,7 +1055,7 @@ class ToyLangNameless private constructor() {
                 metas = metas)
         
         fun variable_(
-            index: LongPrimitive,
+            index: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): ToyLangNameless.Expr.Variable =
             ToyLangNameless.Expr.Variable(
@@ -961,7 +1076,7 @@ class ToyLangNameless private constructor() {
                 metas = metas)
         
         fun let_(
-            index: LongPrimitive,
+            index: org.partiql.pig.runtime.LongPrimitive,
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
@@ -989,7 +1104,7 @@ class ToyLangNameless private constructor() {
     sealed class Expr : ToyLangNamelessNode() {
     
         class Lit(
-            val value: IonElement,
+            val value: com.amazon.ionelement.api.IonElement,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
@@ -1241,7 +1356,7 @@ class ToyLangNameless private constructor() {
         }
     
         class Call(
-            val name: SymbolPrimitive,
+            val name: org.partiql.pig.runtime.SymbolPrimitive,
             val argument: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
@@ -1282,7 +1397,7 @@ class ToyLangNameless private constructor() {
         }
     
         class Function(
-            val varName: SymbolPrimitive,
+            val varName: org.partiql.pig.runtime.SymbolPrimitive,
             val body: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
@@ -1323,7 +1438,7 @@ class ToyLangNameless private constructor() {
         }
     
         class Variable(
-            val index: LongPrimitive,
+            val index: org.partiql.pig.runtime.LongPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
@@ -1359,7 +1474,7 @@ class ToyLangNameless private constructor() {
         }
     
         class Let(
-            val index: LongPrimitive,
+            val index: org.partiql.pig.runtime.LongPrimitive,
             val value: Expr,
             val body: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -1507,6 +1622,121 @@ class ToyLangNameless private constructor() {
             }
         }
     }
+    
+    
+    open class InspectingVisitor : InspectingDomainVisitorBase() {
+        //////////////////////////////////////
+        // Sum Type: Expr
+        //////////////////////////////////////
+        open fun visitExpr(node: ToyLangNameless.Expr) { }
+        open fun visitExprLit(node: ToyLangNameless.Expr.Lit) { }
+        open fun visitExprNot(node: ToyLangNameless.Expr.Not) { }
+        open fun visitExprPlus(node: ToyLangNameless.Expr.Plus) { }
+        open fun visitExprMinus(node: ToyLangNameless.Expr.Minus) { }
+        open fun visitExprTimes(node: ToyLangNameless.Expr.Times) { }
+        open fun visitExprDivide(node: ToyLangNameless.Expr.Divide) { }
+        open fun visitExprModulo(node: ToyLangNameless.Expr.Modulo) { }
+        open fun visitExprCall(node: ToyLangNameless.Expr.Call) { }
+        open fun visitExprFunction(node: ToyLangNameless.Expr.Function) { }
+        open fun visitExprVariable(node: ToyLangNameless.Expr.Variable) { }
+        open fun visitExprLet(node: ToyLangNameless.Expr.Let) { }
+    }
+    
+    open class InspectingWalker(
+        visitor: ToyLangNameless.InspectingVisitor
+    ) : InspectingDomainWalkerBase<InspectingVisitor>(visitor) {
+    
+        //////////////////////////////////////
+        // Sum Type: Expr
+        //////////////////////////////////////
+        open fun walkExpr(node: ToyLangNameless.Expr) {
+            visitor.visitExpr(node)
+            when(node) {
+                is ToyLangNameless.Expr.Lit -> walkExprLit(node)
+                is ToyLangNameless.Expr.Not -> walkExprNot(node)
+                is ToyLangNameless.Expr.Plus -> walkExprPlus(node)
+                is ToyLangNameless.Expr.Minus -> walkExprMinus(node)
+                is ToyLangNameless.Expr.Times -> walkExprTimes(node)
+                is ToyLangNameless.Expr.Divide -> walkExprDivide(node)
+                is ToyLangNameless.Expr.Modulo -> walkExprModulo(node)
+                is ToyLangNameless.Expr.Call -> walkExprCall(node)
+                is ToyLangNameless.Expr.Function -> walkExprFunction(node)
+                is ToyLangNameless.Expr.Variable -> walkExprVariable(node)
+                is ToyLangNameless.Expr.Let -> walkExprLet(node)
+            }
+        }
+    
+        open fun walkExprLit(node: ToyLangNameless.Expr.Lit) {
+            visitor.visitExprLit(node)
+            walkIonElement(node.value)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprNot(node: ToyLangNameless.Expr.Not) {
+            visitor.visitExprNot(node)
+            walkExpr(node.expr)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprPlus(node: ToyLangNameless.Expr.Plus) {
+            visitor.visitExprPlus(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprMinus(node: ToyLangNameless.Expr.Minus) {
+            visitor.visitExprMinus(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprTimes(node: ToyLangNameless.Expr.Times) {
+            visitor.visitExprTimes(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprDivide(node: ToyLangNameless.Expr.Divide) {
+            visitor.visitExprDivide(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprModulo(node: ToyLangNameless.Expr.Modulo) {
+            visitor.visitExprModulo(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprCall(node: ToyLangNameless.Expr.Call) {
+            visitor.visitExprCall(node)
+            walkSymbolPrimitive(node.name)
+            walkExpr(node.argument)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprFunction(node: ToyLangNameless.Expr.Function) {
+            visitor.visitExprFunction(node)
+            walkSymbolPrimitive(node.varName)
+            walkExpr(node.body)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprVariable(node: ToyLangNameless.Expr.Variable) {
+            visitor.visitExprVariable(node)
+            walkLongPrimitive(node.index)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprLet(node: ToyLangNameless.Expr.Let) {
+            visitor.visitExprLet(node)
+            walkLongPrimitive(node.index)
+            walkExpr(node.value)
+            walkExpr(node.body)
+            walkMetas(node.metas)
+        }
+    
+    }
 }
 
 class TestDomain private constructor() {
@@ -1537,8 +1767,8 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun intPair_(
-            first: LongPrimitive,
-            second: LongPrimitive,
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IntPair =
             TestDomain.IntPair(
@@ -1558,8 +1788,8 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun symbolPair_(
-            first: SymbolPrimitive,
-            second: SymbolPrimitive,
+            first: org.partiql.pig.runtime.SymbolPrimitive,
+            second: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SymbolPair =
             TestDomain.SymbolPair(
@@ -1569,8 +1799,8 @@ class TestDomain private constructor() {
         
         
         fun ionPair(
-            first: IonElement,
-            second: IonElement,
+            first: com.amazon.ionelement.api.IonElement,
+            second: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonPair =
             TestDomain.IonPair(
@@ -1590,8 +1820,8 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun intSymbolPair_(
-            first: LongPrimitive,
-            second: SymbolPrimitive,
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IntSymbolPair =
             TestDomain.IntSymbolPair(
@@ -1611,8 +1841,8 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun symbolIntPair_(
-            first: SymbolPrimitive,
-            second: LongPrimitive,
+            first: org.partiql.pig.runtime.SymbolPrimitive,
+            second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SymbolIntPair =
             TestDomain.SymbolIntPair(
@@ -1622,7 +1852,7 @@ class TestDomain private constructor() {
         
         
         fun ionIntPair(
-            first: IonElement,
+            first: com.amazon.ionelement.api.IonElement,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonIntPair =
@@ -1632,8 +1862,8 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun ionIntPair_(
-            first: IonElement,
-            second: LongPrimitive,
+            first: com.amazon.ionelement.api.IonElement,
+            second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonIntPair =
             TestDomain.IonIntPair(
@@ -1643,8 +1873,8 @@ class TestDomain private constructor() {
         
         
         fun ionSymbolPair(
-            first: IonElement,
-            second: IonElement,
+            first: com.amazon.ionelement.api.IonElement,
+            second: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonSymbolPair =
             TestDomain.IonSymbolPair(
@@ -1697,7 +1927,7 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun recursivePair_(
-            first: LongPrimitive,
+            first: org.partiql.pig.runtime.LongPrimitive,
             second: RecursivePair? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.RecursivePair =
@@ -1730,7 +1960,7 @@ class TestDomain private constructor() {
         
         fun answerIntPair_(
             first: Answer,
-            second: LongPrimitive,
+            second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.AnswerIntPair =
             TestDomain.AnswerIntPair(
@@ -1750,7 +1980,7 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun intAnswerPair_(
-            first: LongPrimitive,
+            first: org.partiql.pig.runtime.LongPrimitive,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IntAnswerPair =
@@ -1771,7 +2001,7 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun symbolAnswerPair_(
-            first: SymbolPrimitive,
+            first: org.partiql.pig.runtime.SymbolPrimitive,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SymbolAnswerPair =
@@ -1793,7 +2023,7 @@ class TestDomain private constructor() {
         
         fun answerSymbolPair_(
             first: Answer,
-            second: SymbolPrimitive,
+            second: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.AnswerSymbolPair =
             TestDomain.AnswerSymbolPair(
@@ -1811,7 +2041,7 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun variadicMin0_(
-            ints: kotlin.collections.List<LongPrimitive>,
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin0 =
             TestDomain.VariadicMin0(
@@ -1827,7 +2057,7 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun variadicMin0_(
-            vararg ints: LongPrimitive,
+            vararg ints: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin0 =
             TestDomain.VariadicMin0(
@@ -1844,7 +2074,7 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun variadicMin1_(
-            ints: kotlin.collections.List<LongPrimitive>,
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin1 =
             TestDomain.VariadicMin1(
@@ -1861,8 +2091,8 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun variadicMin1_(
-            ints0: LongPrimitive,
-            vararg ints: LongPrimitive,
+            ints0: org.partiql.pig.runtime.LongPrimitive,
+            vararg ints: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin1 =
             TestDomain.VariadicMin1(
@@ -1881,8 +2111,8 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun elementVariadic_(
-            name: SymbolPrimitive,
-            ints: kotlin.collections.List<LongPrimitive>,
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.ElementVariadic =
             TestDomain.ElementVariadic(
@@ -1901,8 +2131,8 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun elementVariadic_(
-            name: SymbolPrimitive,
-            vararg ints: LongPrimitive,
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            vararg ints: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.ElementVariadic =
             TestDomain.ElementVariadic(
@@ -1920,7 +2150,7 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun optional1_(
-            value: LongPrimitive? = null,
+            value: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Optional1 =
             TestDomain.Optional1(
@@ -1939,8 +2169,8 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun optional2_(
-            first: LongPrimitive? = null,
-            second: LongPrimitive? = null,
+            first: org.partiql.pig.runtime.LongPrimitive? = null,
+            second: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Optional2 =
             TestDomain.Optional2(
@@ -1962,9 +2192,9 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun domainLevelRecord_(
-            someField: LongPrimitive,
-            anotherField: SymbolPrimitive,
-            optionalField: LongPrimitive? = null,
+            someField: org.partiql.pig.runtime.LongPrimitive,
+            anotherField: org.partiql.pig.runtime.SymbolPrimitive,
+            optionalField: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.DomainLevelRecord =
             TestDomain.DomainLevelRecord(
@@ -1985,13 +2215,26 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun productWithRecord_(
-            value: LongPrimitive,
+            value: org.partiql.pig.runtime.LongPrimitive,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.ProductWithRecord =
             TestDomain.ProductWithRecord(
                 value = value,
                 dlr = dlr,
+                metas = metas)
+        
+        
+        fun testSumTriplet(
+            a: TestSum,
+            b: TestSum,
+            c: TestSum,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.TestSumTriplet =
+            TestDomain.TestSumTriplet(
+                a = a,
+                b = b,
+                c = c,
                 metas = metas)
         
         
@@ -2033,13 +2276,77 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun variantWithRecord_(
-            value: LongPrimitive,
+            value: org.partiql.pig.runtime.LongPrimitive,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SumWithRecord.VariantWithRecord =
             TestDomain.SumWithRecord.VariantWithRecord(
                 value = value,
                 dlr = dlr,
+                metas = metas)
+        
+        
+        // Variants for Sum: TestSum 
+        fun one(
+            a: Long,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.TestSum.One =
+            TestDomain.TestSum.One(
+                a = a.asPrimitive(),
+                metas = metas)
+        
+        fun one_(
+            a: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.TestSum.One =
+            TestDomain.TestSum.One(
+                a = a,
+                metas = metas)
+        
+        
+        fun two(
+            a: Long,
+            b: Long,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.TestSum.Two =
+            TestDomain.TestSum.Two(
+                a = a.asPrimitive(),
+                b = b.asPrimitive(),
+                metas = metas)
+        
+        fun two_(
+            a: org.partiql.pig.runtime.LongPrimitive,
+            b: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.TestSum.Two =
+            TestDomain.TestSum.Two(
+                a = a,
+                b = b,
+                metas = metas)
+        
+        
+        fun three(
+            a: Long,
+            b: Long,
+            c: Long,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.TestSum.Three =
+            TestDomain.TestSum.Three(
+                a = a.asPrimitive(),
+                b = b.asPrimitive(),
+                c = c.asPrimitive(),
+                metas = metas)
+        
+        fun three_(
+            a: org.partiql.pig.runtime.LongPrimitive,
+            b: org.partiql.pig.runtime.LongPrimitive,
+            c: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.TestSum.Three =
+            TestDomain.TestSum.Three(
+                a = a,
+                b = b,
+                c = c,
                 metas = metas)
         
         
@@ -2060,7 +2367,7 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun android_(
-            id: LongPrimitive,
+            id: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Entity.Android =
             TestDomain.Entity.Android(
@@ -2083,9 +2390,9 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun human_(
-            firstName: SymbolPrimitive,
-            lastName: SymbolPrimitive,
-            title: SymbolPrimitive? = null,
+            firstName: org.partiql.pig.runtime.SymbolPrimitive,
+            lastName: org.partiql.pig.runtime.SymbolPrimitive,
+            title: org.partiql.pig.runtime.SymbolPrimitive? = null,
             parent: Entity? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Entity.Human =
@@ -2109,8 +2416,8 @@ class TestDomain private constructor() {
     // Tuple Types
     /////////////////////////////////////////////////////////////////////////////
     class IntPair(
-        val first: LongPrimitive,
-        val second: LongPrimitive,
+        val first: org.partiql.pig.runtime.LongPrimitive,
+        val second: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2150,8 +2457,8 @@ class TestDomain private constructor() {
     }
     
     class SymbolPair(
-        val first: SymbolPrimitive,
-        val second: SymbolPrimitive,
+        val first: org.partiql.pig.runtime.SymbolPrimitive,
+        val second: org.partiql.pig.runtime.SymbolPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2191,8 +2498,8 @@ class TestDomain private constructor() {
     }
     
     class IonPair(
-        val first: IonElement,
-        val second: IonElement,
+        val first: com.amazon.ionelement.api.IonElement,
+        val second: com.amazon.ionelement.api.IonElement,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2232,8 +2539,8 @@ class TestDomain private constructor() {
     }
     
     class IntSymbolPair(
-        val first: LongPrimitive,
-        val second: SymbolPrimitive,
+        val first: org.partiql.pig.runtime.LongPrimitive,
+        val second: org.partiql.pig.runtime.SymbolPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2273,8 +2580,8 @@ class TestDomain private constructor() {
     }
     
     class SymbolIntPair(
-        val first: SymbolPrimitive,
-        val second: LongPrimitive,
+        val first: org.partiql.pig.runtime.SymbolPrimitive,
+        val second: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2314,8 +2621,8 @@ class TestDomain private constructor() {
     }
     
     class IonIntPair(
-        val first: IonElement,
-        val second: LongPrimitive,
+        val first: com.amazon.ionelement.api.IonElement,
+        val second: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2355,8 +2662,8 @@ class TestDomain private constructor() {
     }
     
     class IonSymbolPair(
-        val first: IonElement,
-        val second: IonElement,
+        val first: com.amazon.ionelement.api.IonElement,
+        val second: com.amazon.ionelement.api.IonElement,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2519,7 +2826,7 @@ class TestDomain private constructor() {
     }
     
     class RecursivePair(
-        val first: LongPrimitive,
+        val first: org.partiql.pig.runtime.LongPrimitive,
         val second: RecursivePair?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
@@ -2602,7 +2909,7 @@ class TestDomain private constructor() {
     
     class AnswerIntPair(
         val first: Answer,
-        val second: LongPrimitive,
+        val second: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2642,7 +2949,7 @@ class TestDomain private constructor() {
     }
     
     class IntAnswerPair(
-        val first: LongPrimitive,
+        val first: org.partiql.pig.runtime.LongPrimitive,
         val second: Answer,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
@@ -2683,7 +2990,7 @@ class TestDomain private constructor() {
     }
     
     class SymbolAnswerPair(
-        val first: SymbolPrimitive,
+        val first: org.partiql.pig.runtime.SymbolPrimitive,
         val second: Answer,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
@@ -2725,7 +3032,7 @@ class TestDomain private constructor() {
     
     class AnswerSymbolPair(
         val first: Answer,
-        val second: SymbolPrimitive,
+        val second: org.partiql.pig.runtime.SymbolPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2765,7 +3072,7 @@ class TestDomain private constructor() {
     }
     
     class VariadicMin0(
-        val ints: kotlin.collections.List<LongPrimitive>,
+        val ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2801,7 +3108,7 @@ class TestDomain private constructor() {
     }
     
     class VariadicMin1(
-        val ints: kotlin.collections.List<LongPrimitive>,
+        val ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2837,8 +3144,8 @@ class TestDomain private constructor() {
     }
     
     class ElementVariadic(
-        val name: SymbolPrimitive,
-        val ints: kotlin.collections.List<LongPrimitive>,
+        val name: org.partiql.pig.runtime.SymbolPrimitive,
+        val ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2878,7 +3185,7 @@ class TestDomain private constructor() {
     }
     
     class Optional1(
-        val value: LongPrimitive?,
+        val value: org.partiql.pig.runtime.LongPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2914,8 +3221,8 @@ class TestDomain private constructor() {
     }
     
     class Optional2(
-        val first: LongPrimitive?,
-        val second: LongPrimitive?,
+        val first: org.partiql.pig.runtime.LongPrimitive?,
+        val second: org.partiql.pig.runtime.LongPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -2955,9 +3262,9 @@ class TestDomain private constructor() {
     }
     
     class DomainLevelRecord(
-        val someField: LongPrimitive,
-        val anotherField: SymbolPrimitive,
-        val optionalField: LongPrimitive?,
+        val someField: org.partiql.pig.runtime.LongPrimitive,
+        val anotherField: org.partiql.pig.runtime.SymbolPrimitive,
+        val optionalField: org.partiql.pig.runtime.LongPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -3002,7 +3309,7 @@ class TestDomain private constructor() {
     }
     
     class ProductWithRecord(
-        val value: LongPrimitive,
+        val value: org.partiql.pig.runtime.LongPrimitive,
         val dlr: DomainLevelRecord,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
@@ -3036,6 +3343,52 @@ class TestDomain private constructor() {
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
             var hc = value.hashCode()
             hc = 31 * hc + dlr.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
+    class TestSumTriplet(
+        val a: TestSum,
+        val b: TestSum,
+        val c: TestSum,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): TestDomainNode() {
+    
+        override fun withMeta(metaKey: String, metaValue: Any): TestSumTriplet =
+            TestSumTriplet(
+                a = a,
+                b = b,
+                c = c,
+                metas = metas + metaContainerOf(metaKey to metaValue))
+    
+        override fun toIonElement(): SexpElement {
+            val elements = ionSexpOf(
+                ionSymbol("test_sum_triplet"),
+                a.toIonElement(),
+                b.toIonElement(),
+                c.toIonElement(),
+                metas = metas)
+            return elements
+        }
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != TestSumTriplet::class.java) return false
+    
+            other as TestSumTriplet
+            if (a != other.a) return false
+            if (b != other.b) return false
+            if (c != other.c) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            var hc = a.hashCode()
+            hc = 31 * hc + b.hashCode()
+            hc = 31 * hc + c.hashCode()
             hc
         }
     
@@ -3147,7 +3500,7 @@ class TestDomain private constructor() {
     sealed class SumWithRecord : TestDomainNode() {
     
         class VariantWithRecord(
-            val value: LongPrimitive,
+            val value: org.partiql.pig.runtime.LongPrimitive,
             val dlr: DomainLevelRecord,
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumWithRecord() {
@@ -3189,6 +3542,133 @@ class TestDomain private constructor() {
     
     }
     
+    sealed class TestSum : TestDomainNode() {
+    
+        class One(
+            val a: org.partiql.pig.runtime.LongPrimitive,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): TestSum() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): One =
+                One(
+                    a = a,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("one"),
+                    a.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != One::class.java) return false
+        
+                other as One
+                if (a != other.a) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = a.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class Two(
+            val a: org.partiql.pig.runtime.LongPrimitive,
+            val b: org.partiql.pig.runtime.LongPrimitive,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): TestSum() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Two =
+                Two(
+                    a = a,
+                    b = b,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("two"),
+                    a.toIonElement(),
+                    b.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Two::class.java) return false
+        
+                other as Two
+                if (a != other.a) return false
+                if (b != other.b) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = a.hashCode()
+                hc = 31 * hc + b.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+        class Three(
+            val a: org.partiql.pig.runtime.LongPrimitive,
+            val b: org.partiql.pig.runtime.LongPrimitive,
+            val c: org.partiql.pig.runtime.LongPrimitive,
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): TestSum() {
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Three =
+                Three(
+                    a = a,
+                    b = b,
+                    c = c,
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("three"),
+                    a.toIonElement(),
+                    b.toIonElement(),
+                    c.toIonElement(),
+                    metas = metas)
+                return elements
+            }
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Three::class.java) return false
+        
+                other as Three
+                if (a != other.a) return false
+                if (b != other.b) return false
+                if (c != other.c) return false
+                return true
+            }
+        
+            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+                var hc = a.hashCode()
+                hc = 31 * hc + b.hashCode()
+                hc = 31 * hc + c.hashCode()
+                hc
+            }
+        
+            override fun hashCode(): Int = myHashCode
+        }
+    
+    }
+    
     sealed class Entity : TestDomainNode() {
     
         class Slug(
@@ -3214,11 +3694,11 @@ class TestDomain private constructor() {
                 return true
             }
         
-            override fun hashCode(): Int = 3000
+            override fun hashCode(): Int = 4000
         }
     
         class Android(
-            val id: LongPrimitive,
+            val id: org.partiql.pig.runtime.LongPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Entity() {
         
@@ -3254,9 +3734,9 @@ class TestDomain private constructor() {
         }
     
         class Human(
-            val firstName: SymbolPrimitive,
-            val lastName: SymbolPrimitive,
-            val title: SymbolPrimitive?,
+            val firstName: org.partiql.pig.runtime.SymbolPrimitive,
+            val lastName: org.partiql.pig.runtime.SymbolPrimitive,
+            val title: org.partiql.pig.runtime.SymbolPrimitive?,
             val parent: Entity?,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Entity() {
@@ -3522,6 +4002,17 @@ class TestDomain private constructor() {
                         dlr,
                         metas = sexp.metas)
                 }
+                "test_sum_triplet" -> {
+                    sexp.requireArityOrMalformed(IntRange(3, 3))
+                    val a = sexp.getRequired(0).transformExpect<TestSum>()
+                    val b = sexp.getRequired(1).transformExpect<TestSum>()
+                    val c = sexp.getRequired(2).transformExpect<TestSum>()
+                    TestDomain.TestSumTriplet(
+                        a,
+                        b,
+                        c,
+                        metas = sexp.metas)
+                }
                 "entity_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
                     val first = sexp.getRequired(0).transformExpect<Entity>()
@@ -3557,6 +4048,36 @@ class TestDomain private constructor() {
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
+                // Variants for Sum Type 'TestSum'
+                //////////////////////////////////////
+                "one" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 1))
+                    val a = sexp.getRequired(0).toLongPrimitive()
+                    TestDomain.TestSum.One(
+                        a,
+                        metas = sexp.metas)
+                }
+                "two" -> {
+                    sexp.requireArityOrMalformed(IntRange(2, 2))
+                    val a = sexp.getRequired(0).toLongPrimitive()
+                    val b = sexp.getRequired(1).toLongPrimitive()
+                    TestDomain.TestSum.Two(
+                        a,
+                        b,
+                        metas = sexp.metas)
+                }
+                "three" -> {
+                    sexp.requireArityOrMalformed(IntRange(3, 3))
+                    val a = sexp.getRequired(0).toLongPrimitive()
+                    val b = sexp.getRequired(1).toLongPrimitive()
+                    val c = sexp.getRequired(2).toLongPrimitive()
+                    TestDomain.TestSum.Three(
+                        a,
+                        b,
+                        c,
+                        metas = sexp.metas)
+                }
+                //////////////////////////////////////
                 // Variants for Sum Type 'Entity'
                 //////////////////////////////////////
                 "slug" -> {
@@ -3586,6 +4107,349 @@ class TestDomain private constructor() {
                 else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'test_domain'")
             }
         }
+    }
+    
+    
+    open class InspectingVisitor : InspectingDomainVisitorBase() {
+        //////////////////////////////////////
+        // Tuple Types
+        //////////////////////////////////////
+        open fun visitIntPair(node: TestDomain.IntPair) { }
+        open fun visitSymbolPair(node: TestDomain.SymbolPair) { }
+        open fun visitIonPair(node: TestDomain.IonPair) { }
+        open fun visitIntSymbolPair(node: TestDomain.IntSymbolPair) { }
+        open fun visitSymbolIntPair(node: TestDomain.SymbolIntPair) { }
+        open fun visitIonIntPair(node: TestDomain.IonIntPair) { }
+        open fun visitIonSymbolPair(node: TestDomain.IonSymbolPair) { }
+        open fun visitIntPairPair(node: TestDomain.IntPairPair) { }
+        open fun visitSymbolPairPair(node: TestDomain.SymbolPairPair) { }
+        open fun visitIonPairPair(node: TestDomain.IonPairPair) { }
+        open fun visitRecursivePair(node: TestDomain.RecursivePair) { }
+        open fun visitAnswerPair(node: TestDomain.AnswerPair) { }
+        open fun visitAnswerIntPair(node: TestDomain.AnswerIntPair) { }
+        open fun visitIntAnswerPair(node: TestDomain.IntAnswerPair) { }
+        open fun visitSymbolAnswerPair(node: TestDomain.SymbolAnswerPair) { }
+        open fun visitAnswerSymbolPair(node: TestDomain.AnswerSymbolPair) { }
+        open fun visitVariadicMin0(node: TestDomain.VariadicMin0) { }
+        open fun visitVariadicMin1(node: TestDomain.VariadicMin1) { }
+        open fun visitElementVariadic(node: TestDomain.ElementVariadic) { }
+        open fun visitOptional1(node: TestDomain.Optional1) { }
+        open fun visitOptional2(node: TestDomain.Optional2) { }
+        open fun visitDomainLevelRecord(node: TestDomain.DomainLevelRecord) { }
+        open fun visitProductWithRecord(node: TestDomain.ProductWithRecord) { }
+        open fun visitTestSumTriplet(node: TestDomain.TestSumTriplet) { }
+        open fun visitEntityPair(node: TestDomain.EntityPair) { }
+        //////////////////////////////////////
+        // Sum Type: Answer
+        //////////////////////////////////////
+        open fun visitAnswer(node: TestDomain.Answer) { }
+        open fun visitAnswerNo(node: TestDomain.Answer.No) { }
+        open fun visitAnswerYes(node: TestDomain.Answer.Yes) { }
+        //////////////////////////////////////
+        // Sum Type: SumWithRecord
+        //////////////////////////////////////
+        open fun visitSumWithRecord(node: TestDomain.SumWithRecord) { }
+        open fun visitSumWithRecordVariantWithRecord(node: TestDomain.SumWithRecord.VariantWithRecord) { }
+        //////////////////////////////////////
+        // Sum Type: TestSum
+        //////////////////////////////////////
+        open fun visitTestSum(node: TestDomain.TestSum) { }
+        open fun visitTestSumOne(node: TestDomain.TestSum.One) { }
+        open fun visitTestSumTwo(node: TestDomain.TestSum.Two) { }
+        open fun visitTestSumThree(node: TestDomain.TestSum.Three) { }
+        //////////////////////////////////////
+        // Sum Type: Entity
+        //////////////////////////////////////
+        open fun visitEntity(node: TestDomain.Entity) { }
+        open fun visitEntitySlug(node: TestDomain.Entity.Slug) { }
+        open fun visitEntityAndroid(node: TestDomain.Entity.Android) { }
+        open fun visitEntityHuman(node: TestDomain.Entity.Human) { }
+    }
+    
+    open class InspectingWalker(
+        visitor: TestDomain.InspectingVisitor
+    ) : InspectingDomainWalkerBase<InspectingVisitor>(visitor) {
+    
+        //////////////////////////////////////
+        // Tuple Types
+        //////////////////////////////////////
+        open fun walkIntPair(node: TestDomain.IntPair) {
+            visitor.visitIntPair(node)
+            walkLongPrimitive(node.first)
+            walkLongPrimitive(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkSymbolPair(node: TestDomain.SymbolPair) {
+            visitor.visitSymbolPair(node)
+            walkSymbolPrimitive(node.first)
+            walkSymbolPrimitive(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkIonPair(node: TestDomain.IonPair) {
+            visitor.visitIonPair(node)
+            walkIonElement(node.first)
+            walkIonElement(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkIntSymbolPair(node: TestDomain.IntSymbolPair) {
+            visitor.visitIntSymbolPair(node)
+            walkLongPrimitive(node.first)
+            walkSymbolPrimitive(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkSymbolIntPair(node: TestDomain.SymbolIntPair) {
+            visitor.visitSymbolIntPair(node)
+            walkSymbolPrimitive(node.first)
+            walkLongPrimitive(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkIonIntPair(node: TestDomain.IonIntPair) {
+            visitor.visitIonIntPair(node)
+            walkIonElement(node.first)
+            walkLongPrimitive(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkIonSymbolPair(node: TestDomain.IonSymbolPair) {
+            visitor.visitIonSymbolPair(node)
+            walkIonElement(node.first)
+            walkIonElement(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkIntPairPair(node: TestDomain.IntPairPair) {
+            visitor.visitIntPairPair(node)
+            walkIntPair(node.first)
+            walkIntPair(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkSymbolPairPair(node: TestDomain.SymbolPairPair) {
+            visitor.visitSymbolPairPair(node)
+            walkSymbolPair(node.first)
+            walkSymbolPair(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkIonPairPair(node: TestDomain.IonPairPair) {
+            visitor.visitIonPairPair(node)
+            walkIonPair(node.first)
+            walkIonPair(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkRecursivePair(node: TestDomain.RecursivePair) {
+            visitor.visitRecursivePair(node)
+            walkLongPrimitive(node.first)
+            node.second?.let { walkRecursivePair(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAnswerPair(node: TestDomain.AnswerPair) {
+            visitor.visitAnswerPair(node)
+            walkAnswer(node.first)
+            walkAnswer(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAnswerIntPair(node: TestDomain.AnswerIntPair) {
+            visitor.visitAnswerIntPair(node)
+            walkAnswer(node.first)
+            walkLongPrimitive(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkIntAnswerPair(node: TestDomain.IntAnswerPair) {
+            visitor.visitIntAnswerPair(node)
+            walkLongPrimitive(node.first)
+            walkAnswer(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkSymbolAnswerPair(node: TestDomain.SymbolAnswerPair) {
+            visitor.visitSymbolAnswerPair(node)
+            walkSymbolPrimitive(node.first)
+            walkAnswer(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAnswerSymbolPair(node: TestDomain.AnswerSymbolPair) {
+            visitor.visitAnswerSymbolPair(node)
+            walkAnswer(node.first)
+            walkSymbolPrimitive(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkVariadicMin0(node: TestDomain.VariadicMin0) {
+            visitor.visitVariadicMin0(node)
+            node.ints.map { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkVariadicMin1(node: TestDomain.VariadicMin1) {
+            visitor.visitVariadicMin1(node)
+            node.ints.map { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkElementVariadic(node: TestDomain.ElementVariadic) {
+            visitor.visitElementVariadic(node)
+            walkSymbolPrimitive(node.name)
+            node.ints.map { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOptional1(node: TestDomain.Optional1) {
+            visitor.visitOptional1(node)
+            node.value?.let { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOptional2(node: TestDomain.Optional2) {
+            visitor.visitOptional2(node)
+            node.first?.let { walkLongPrimitive(it) }
+            node.second?.let { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkDomainLevelRecord(node: TestDomain.DomainLevelRecord) {
+            visitor.visitDomainLevelRecord(node)
+            walkLongPrimitive(node.someField)
+            walkSymbolPrimitive(node.anotherField)
+            node.optionalField?.let { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkProductWithRecord(node: TestDomain.ProductWithRecord) {
+            visitor.visitProductWithRecord(node)
+            walkLongPrimitive(node.value)
+            walkDomainLevelRecord(node.dlr)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkTestSumTriplet(node: TestDomain.TestSumTriplet) {
+            visitor.visitTestSumTriplet(node)
+            walkTestSum(node.a)
+            walkTestSum(node.b)
+            walkTestSum(node.c)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkEntityPair(node: TestDomain.EntityPair) {
+            visitor.visitEntityPair(node)
+            walkEntity(node.first)
+            walkEntity(node.second)
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: Answer
+        //////////////////////////////////////
+        open fun walkAnswer(node: TestDomain.Answer) {
+            visitor.visitAnswer(node)
+            when(node) {
+                is TestDomain.Answer.No -> walkAnswerNo(node)
+                is TestDomain.Answer.Yes -> walkAnswerYes(node)
+            }
+        }
+    
+        open fun walkAnswerNo(node: TestDomain.Answer.No) {
+            visitor.visitAnswerNo(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAnswerYes(node: TestDomain.Answer.Yes) {
+            visitor.visitAnswerYes(node)
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: SumWithRecord
+        //////////////////////////////////////
+        open fun walkSumWithRecord(node: TestDomain.SumWithRecord) {
+            visitor.visitSumWithRecord(node)
+            when(node) {
+                is TestDomain.SumWithRecord.VariantWithRecord -> walkSumWithRecordVariantWithRecord(node)
+            }
+        }
+    
+        open fun walkSumWithRecordVariantWithRecord(node: TestDomain.SumWithRecord.VariantWithRecord) {
+            visitor.visitSumWithRecordVariantWithRecord(node)
+            walkLongPrimitive(node.value)
+            walkDomainLevelRecord(node.dlr)
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: TestSum
+        //////////////////////////////////////
+        open fun walkTestSum(node: TestDomain.TestSum) {
+            visitor.visitTestSum(node)
+            when(node) {
+                is TestDomain.TestSum.One -> walkTestSumOne(node)
+                is TestDomain.TestSum.Two -> walkTestSumTwo(node)
+                is TestDomain.TestSum.Three -> walkTestSumThree(node)
+            }
+        }
+    
+        open fun walkTestSumOne(node: TestDomain.TestSum.One) {
+            visitor.visitTestSumOne(node)
+            walkLongPrimitive(node.a)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkTestSumTwo(node: TestDomain.TestSum.Two) {
+            visitor.visitTestSumTwo(node)
+            walkLongPrimitive(node.a)
+            walkLongPrimitive(node.b)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkTestSumThree(node: TestDomain.TestSum.Three) {
+            visitor.visitTestSumThree(node)
+            walkLongPrimitive(node.a)
+            walkLongPrimitive(node.b)
+            walkLongPrimitive(node.c)
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: Entity
+        //////////////////////////////////////
+        open fun walkEntity(node: TestDomain.Entity) {
+            visitor.visitEntity(node)
+            when(node) {
+                is TestDomain.Entity.Slug -> walkEntitySlug(node)
+                is TestDomain.Entity.Android -> walkEntityAndroid(node)
+                is TestDomain.Entity.Human -> walkEntityHuman(node)
+            }
+        }
+    
+        open fun walkEntitySlug(node: TestDomain.Entity.Slug) {
+            visitor.visitEntitySlug(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkEntityAndroid(node: TestDomain.Entity.Android) {
+            visitor.visitEntityAndroid(node)
+            walkLongPrimitive(node.id)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkEntityHuman(node: TestDomain.Entity.Human) {
+            visitor.visitEntityHuman(node)
+            walkSymbolPrimitive(node.firstName)
+            walkSymbolPrimitive(node.lastName)
+            node.title?.let { walkSymbolPrimitive(it) }
+            node.parent?.let { walkEntity(it) }
+            walkMetas(node.metas)
+        }
+    
     }
 }
 
@@ -3622,7 +4486,7 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aaaAab_(
-            dField: LongPrimitive? = null,
+            dField: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAab =
             MultiWordDomain.AaaAab(
@@ -3641,8 +4505,8 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aaaAac_(
-            dField: LongPrimitive? = null,
-            eField: SymbolPrimitive? = null,
+            dField: org.partiql.pig.runtime.LongPrimitive? = null,
+            eField: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAac =
             MultiWordDomain.AaaAac(
@@ -3660,7 +4524,7 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aaaAad_(
-            dField: kotlin.collections.List<LongPrimitive>,
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAad =
             MultiWordDomain.AaaAad(
@@ -3676,7 +4540,7 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aaaAad_(
-            vararg dField: LongPrimitive,
+            vararg dField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAad =
             MultiWordDomain.AaaAad(
@@ -3693,7 +4557,7 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aaaAae_(
-            dField: kotlin.collections.List<LongPrimitive>,
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAae =
             MultiWordDomain.AaaAae(
@@ -3711,9 +4575,9 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aaaAae_(
-            dField0: LongPrimitive,
-            dField1: LongPrimitive,
-            vararg dField: LongPrimitive,
+            dField0: org.partiql.pig.runtime.LongPrimitive,
+            dField1: org.partiql.pig.runtime.LongPrimitive,
+            vararg dField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAae =
             MultiWordDomain.AaaAae(
@@ -3732,8 +4596,8 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aabAaa_(
-            bField: LongPrimitive,
-            cField: SymbolPrimitive,
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAaa =
             MultiWordDomain.AabAaa(
@@ -3755,9 +4619,9 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aabAab_(
-            bField: LongPrimitive,
-            cField: SymbolPrimitive,
-            dField: LongPrimitive? = null,
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAab =
             MultiWordDomain.AabAab(
@@ -3782,10 +4646,10 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aabAac_(
-            bField: LongPrimitive,
-            cField: SymbolPrimitive,
-            dField: LongPrimitive? = null,
-            eField: SymbolPrimitive? = null,
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField: org.partiql.pig.runtime.LongPrimitive? = null,
+            eField: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAac =
             MultiWordDomain.AabAac(
@@ -3809,9 +4673,9 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aabAad_(
-            bField: LongPrimitive,
-            cField: SymbolPrimitive,
-            dField: kotlin.collections.List<LongPrimitive>,
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAad =
             MultiWordDomain.AabAad(
@@ -3833,9 +4697,9 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aabAad_(
-            bField: LongPrimitive,
-            cField: SymbolPrimitive,
-            vararg dField: LongPrimitive,
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            vararg dField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAad =
             MultiWordDomain.AabAad(
@@ -3858,9 +4722,9 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aabAae_(
-            bField: LongPrimitive,
-            cField: SymbolPrimitive,
-            dField: kotlin.collections.List<LongPrimitive>,
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAae =
             MultiWordDomain.AabAae(
@@ -3884,11 +4748,11 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun aabAae_(
-            bField: LongPrimitive,
-            cField: SymbolPrimitive,
-            dField0: LongPrimitive,
-            dField1: LongPrimitive,
-            vararg dField: LongPrimitive,
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField0: org.partiql.pig.runtime.LongPrimitive,
+            dField1: org.partiql.pig.runtime.LongPrimitive,
+            vararg dField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAae =
             MultiWordDomain.AabAae(
@@ -3909,8 +4773,8 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun rrr_(
-            aField: LongPrimitive,
-            bbbField: LongPrimitive,
+            aField: org.partiql.pig.runtime.LongPrimitive,
+            bbbField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.Rrr =
             MultiWordDomain.Rrr(
@@ -3929,7 +4793,7 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun lll_(
-            uField: LongPrimitive,
+            uField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.SssTtt.Lll =
             MultiWordDomain.SssTtt.Lll(
@@ -3946,7 +4810,7 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         fun mmm_(
-            vField: SymbolPrimitive,
+            vField: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.SssTtt.Mmm =
             MultiWordDomain.SssTtt.Mmm(
@@ -3992,7 +4856,7 @@ class MultiWordDomain private constructor() {
     }
     
     class AaaAab(
-        val dField: LongPrimitive?,
+        val dField: org.partiql.pig.runtime.LongPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
@@ -4028,8 +4892,8 @@ class MultiWordDomain private constructor() {
     }
     
     class AaaAac(
-        val dField: LongPrimitive?,
-        val eField: SymbolPrimitive?,
+        val dField: org.partiql.pig.runtime.LongPrimitive?,
+        val eField: org.partiql.pig.runtime.SymbolPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
@@ -4069,7 +4933,7 @@ class MultiWordDomain private constructor() {
     }
     
     class AaaAad(
-        val dField: kotlin.collections.List<LongPrimitive>,
+        val dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
@@ -4105,7 +4969,7 @@ class MultiWordDomain private constructor() {
     }
     
     class AaaAae(
-        val dField: kotlin.collections.List<LongPrimitive>,
+        val dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
@@ -4141,8 +5005,8 @@ class MultiWordDomain private constructor() {
     }
     
     class AabAaa(
-        val bField: LongPrimitive,
-        val cField: SymbolPrimitive,
+        val bField: org.partiql.pig.runtime.LongPrimitive,
+        val cField: org.partiql.pig.runtime.SymbolPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
@@ -4182,9 +5046,9 @@ class MultiWordDomain private constructor() {
     }
     
     class AabAab(
-        val bField: LongPrimitive,
-        val cField: SymbolPrimitive,
-        val dField: LongPrimitive?,
+        val bField: org.partiql.pig.runtime.LongPrimitive,
+        val cField: org.partiql.pig.runtime.SymbolPrimitive,
+        val dField: org.partiql.pig.runtime.LongPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
@@ -4228,10 +5092,10 @@ class MultiWordDomain private constructor() {
     }
     
     class AabAac(
-        val bField: LongPrimitive,
-        val cField: SymbolPrimitive,
-        val dField: LongPrimitive?,
-        val eField: SymbolPrimitive?,
+        val bField: org.partiql.pig.runtime.LongPrimitive,
+        val cField: org.partiql.pig.runtime.SymbolPrimitive,
+        val dField: org.partiql.pig.runtime.LongPrimitive?,
+        val eField: org.partiql.pig.runtime.SymbolPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
@@ -4279,9 +5143,9 @@ class MultiWordDomain private constructor() {
     }
     
     class AabAad(
-        val bField: LongPrimitive,
-        val cField: SymbolPrimitive,
-        val dField: kotlin.collections.List<LongPrimitive>,
+        val bField: org.partiql.pig.runtime.LongPrimitive,
+        val cField: org.partiql.pig.runtime.SymbolPrimitive,
+        val dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
@@ -4325,9 +5189,9 @@ class MultiWordDomain private constructor() {
     }
     
     class AabAae(
-        val bField: LongPrimitive,
-        val cField: SymbolPrimitive,
-        val dField: kotlin.collections.List<LongPrimitive>,
+        val bField: org.partiql.pig.runtime.LongPrimitive,
+        val cField: org.partiql.pig.runtime.SymbolPrimitive,
+        val dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
@@ -4371,8 +5235,8 @@ class MultiWordDomain private constructor() {
     }
     
     class Rrr(
-        val aField: LongPrimitive,
-        val bbbField: LongPrimitive,
+        val aField: org.partiql.pig.runtime.LongPrimitive,
+        val bbbField: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
@@ -4420,7 +5284,7 @@ class MultiWordDomain private constructor() {
     sealed class SssTtt : MultiWordDomainNode() {
     
         class Lll(
-            val uField: LongPrimitive,
+            val uField: org.partiql.pig.runtime.LongPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
         ): SssTtt() {
         
@@ -4456,7 +5320,7 @@ class MultiWordDomain private constructor() {
         }
     
         class Mmm(
-            val vField: SymbolPrimitive,
+            val vField: org.partiql.pig.runtime.SymbolPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
         ): SssTtt() {
         
@@ -4626,6 +5490,139 @@ class MultiWordDomain private constructor() {
             }
         }
     }
+    
+    
+    open class InspectingVisitor : InspectingDomainVisitorBase() {
+        //////////////////////////////////////
+        // Tuple Types
+        //////////////////////////////////////
+        open fun visitAaaAaa(node: MultiWordDomain.AaaAaa) { }
+        open fun visitAaaAab(node: MultiWordDomain.AaaAab) { }
+        open fun visitAaaAac(node: MultiWordDomain.AaaAac) { }
+        open fun visitAaaAad(node: MultiWordDomain.AaaAad) { }
+        open fun visitAaaAae(node: MultiWordDomain.AaaAae) { }
+        open fun visitAabAaa(node: MultiWordDomain.AabAaa) { }
+        open fun visitAabAab(node: MultiWordDomain.AabAab) { }
+        open fun visitAabAac(node: MultiWordDomain.AabAac) { }
+        open fun visitAabAad(node: MultiWordDomain.AabAad) { }
+        open fun visitAabAae(node: MultiWordDomain.AabAae) { }
+        open fun visitRrr(node: MultiWordDomain.Rrr) { }
+        //////////////////////////////////////
+        // Sum Type: SssTtt
+        //////////////////////////////////////
+        open fun visitSssTtt(node: MultiWordDomain.SssTtt) { }
+        open fun visitSssTttLll(node: MultiWordDomain.SssTtt.Lll) { }
+        open fun visitSssTttMmm(node: MultiWordDomain.SssTtt.Mmm) { }
+    }
+    
+    open class InspectingWalker(
+        visitor: MultiWordDomain.InspectingVisitor
+    ) : InspectingDomainWalkerBase<InspectingVisitor>(visitor) {
+    
+        //////////////////////////////////////
+        // Tuple Types
+        //////////////////////////////////////
+        open fun walkAaaAaa(node: MultiWordDomain.AaaAaa) {
+            visitor.visitAaaAaa(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAaaAab(node: MultiWordDomain.AaaAab) {
+            visitor.visitAaaAab(node)
+            node.dField?.let { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAaaAac(node: MultiWordDomain.AaaAac) {
+            visitor.visitAaaAac(node)
+            node.dField?.let { walkLongPrimitive(it) }
+            node.eField?.let { walkSymbolPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAaaAad(node: MultiWordDomain.AaaAad) {
+            visitor.visitAaaAad(node)
+            node.dField.map { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAaaAae(node: MultiWordDomain.AaaAae) {
+            visitor.visitAaaAae(node)
+            node.dField.map { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAabAaa(node: MultiWordDomain.AabAaa) {
+            visitor.visitAabAaa(node)
+            walkLongPrimitive(node.bField)
+            walkSymbolPrimitive(node.cField)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAabAab(node: MultiWordDomain.AabAab) {
+            visitor.visitAabAab(node)
+            walkLongPrimitive(node.bField)
+            walkSymbolPrimitive(node.cField)
+            node.dField?.let { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAabAac(node: MultiWordDomain.AabAac) {
+            visitor.visitAabAac(node)
+            walkLongPrimitive(node.bField)
+            walkSymbolPrimitive(node.cField)
+            node.dField?.let { walkLongPrimitive(it) }
+            node.eField?.let { walkSymbolPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAabAad(node: MultiWordDomain.AabAad) {
+            visitor.visitAabAad(node)
+            walkLongPrimitive(node.bField)
+            walkSymbolPrimitive(node.cField)
+            node.dField.map { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkAabAae(node: MultiWordDomain.AabAae) {
+            visitor.visitAabAae(node)
+            walkLongPrimitive(node.bField)
+            walkSymbolPrimitive(node.cField)
+            node.dField.map { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkRrr(node: MultiWordDomain.Rrr) {
+            visitor.visitRrr(node)
+            walkLongPrimitive(node.aField)
+            walkLongPrimitive(node.bbbField)
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: SssTtt
+        //////////////////////////////////////
+        open fun walkSssTtt(node: MultiWordDomain.SssTtt) {
+            visitor.visitSssTtt(node)
+            when(node) {
+                is MultiWordDomain.SssTtt.Lll -> walkSssTttLll(node)
+                is MultiWordDomain.SssTtt.Mmm -> walkSssTttMmm(node)
+            }
+        }
+    
+        open fun walkSssTttLll(node: MultiWordDomain.SssTtt.Lll) {
+            visitor.visitSssTttLll(node)
+            walkLongPrimitive(node.uField)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkSssTttMmm(node: MultiWordDomain.SssTtt.Mmm) {
+            visitor.visitSssTttMmm(node)
+            walkSymbolPrimitive(node.vField)
+            walkMetas(node.metas)
+        }
+    
+    }
 }
 
 class PartiqlBasic private constructor() {
@@ -4668,7 +5665,7 @@ class PartiqlBasic private constructor() {
         
         fun groupByItem_(
             value: Expr,
-            asAlias: SymbolPrimitive? = null,
+            asAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.GroupByItem =
             PartiqlBasic.GroupByItem(
@@ -4707,7 +5704,7 @@ class PartiqlBasic private constructor() {
         
         fun groupBy_(
             items: GroupByList,
-            groupAsAlias: SymbolPrimitive? = null,
+            groupAsAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.GroupBy =
             PartiqlBasic.GroupBy(
@@ -4764,7 +5761,7 @@ class PartiqlBasic private constructor() {
         
         fun projectExpr_(
             value: Expr,
-            asAlias: SymbolPrimitive? = null,
+            asAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.ProjectItem.ProjectExpr =
             PartiqlBasic.ProjectItem.ProjectExpr(
@@ -4819,9 +5816,9 @@ class PartiqlBasic private constructor() {
         
         fun scan_(
             expr: Expr,
-            asAlias: SymbolPrimitive? = null,
-            atAlias: SymbolPrimitive? = null,
-            byAlias: SymbolPrimitive? = null,
+            asAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
+            atAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
+            byAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.FromSource.Scan =
             PartiqlBasic.FromSource.Scan(
@@ -4918,7 +5915,7 @@ class PartiqlBasic private constructor() {
         
         // Variants for Sum: Expr 
         fun lit(
-            value: IonElement,
+            value: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Lit =
             PartiqlBasic.Expr.Lit(
@@ -4939,7 +5936,7 @@ class PartiqlBasic private constructor() {
                 metas = metas)
         
         fun id_(
-            name: SymbolPrimitive,
+            name: org.partiql.pig.runtime.SymbolPrimitive,
             case: CaseSensitivity,
             scopeQualifier: ScopeQualifier,
             metas: MetaContainer = emptyMetaContainer()
@@ -4960,7 +5957,7 @@ class PartiqlBasic private constructor() {
                 metas = metas)
         
         fun parameter_(
-            index: LongPrimitive,
+            index: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Parameter =
             PartiqlBasic.Expr.Parameter(
@@ -5150,7 +6147,7 @@ class PartiqlBasic private constructor() {
                 metas = metas)
         
         fun call_(
-            name: SymbolPrimitive,
+            name: org.partiql.pig.runtime.SymbolPrimitive,
             args: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Call =
@@ -5171,7 +6168,7 @@ class PartiqlBasic private constructor() {
                 metas = metas)
         
         fun call_(
-            name: SymbolPrimitive,
+            name: org.partiql.pig.runtime.SymbolPrimitive,
             args0: Expr,
             vararg args: Expr,
             metas: MetaContainer = emptyMetaContainer()
@@ -5195,7 +6192,7 @@ class PartiqlBasic private constructor() {
                 metas = metas)
         
         fun callAgg_(
-            name: SymbolPrimitive,
+            name: org.partiql.pig.runtime.SymbolPrimitive,
             setQuantifier: SetQuantifier,
             arg: Expr,
             metas: MetaContainer = emptyMetaContainer()
@@ -5373,7 +6370,7 @@ class PartiqlBasic private constructor() {
     
     class GroupByItem(
         val value: Expr,
-        val asAlias: SymbolPrimitive?,
+        val asAlias: org.partiql.pig.runtime.SymbolPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): PartiqlBasicNode() {
     
@@ -5450,7 +6447,7 @@ class PartiqlBasic private constructor() {
     
     class GroupBy(
         val items: GroupByList,
-        val groupAsAlias: SymbolPrimitive?,
+        val groupAsAlias: org.partiql.pig.runtime.SymbolPrimitive?,
         override val metas: MetaContainer = emptyMetaContainer()
     ): PartiqlBasicNode() {
     
@@ -5600,7 +6597,7 @@ class PartiqlBasic private constructor() {
     
         class ProjectExpr(
             val value: Expr,
-            val asAlias: SymbolPrimitive?,
+            val asAlias: org.partiql.pig.runtime.SymbolPrimitive?,
             override val metas: MetaContainer = emptyMetaContainer()
         ): ProjectItem() {
         
@@ -5753,9 +6750,9 @@ class PartiqlBasic private constructor() {
     
         class Scan(
             val expr: Expr,
-            val asAlias: SymbolPrimitive?,
-            val atAlias: SymbolPrimitive?,
-            val byAlias: SymbolPrimitive?,
+            val asAlias: org.partiql.pig.runtime.SymbolPrimitive?,
+            val atAlias: org.partiql.pig.runtime.SymbolPrimitive?,
+            val byAlias: org.partiql.pig.runtime.SymbolPrimitive?,
             override val metas: MetaContainer = emptyMetaContainer()
         ): FromSource() {
         
@@ -6118,7 +7115,7 @@ class PartiqlBasic private constructor() {
     sealed class Expr : PartiqlBasicNode() {
     
         class Lit(
-            val value: IonElement,
+            val value: com.amazon.ionelement.api.IonElement,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
@@ -6154,7 +7151,7 @@ class PartiqlBasic private constructor() {
         }
     
         class Id(
-            val name: SymbolPrimitive,
+            val name: org.partiql.pig.runtime.SymbolPrimitive,
             val case: CaseSensitivity,
             val scopeQualifier: ScopeQualifier,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -6200,7 +7197,7 @@ class PartiqlBasic private constructor() {
         }
     
         class Parameter(
-            val index: LongPrimitive,
+            val index: org.partiql.pig.runtime.LongPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
@@ -6621,7 +7618,7 @@ class PartiqlBasic private constructor() {
         }
     
         class Call(
-            val name: SymbolPrimitive,
+            val name: org.partiql.pig.runtime.SymbolPrimitive,
             val args: kotlin.collections.List<Expr>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
@@ -6662,7 +7659,7 @@ class PartiqlBasic private constructor() {
         }
     
         class CallAgg(
-            val name: SymbolPrimitive,
+            val name: org.partiql.pig.runtime.SymbolPrimitive,
             val setQuantifier: SetQuantifier,
             val arg: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -7335,6 +8332,501 @@ class PartiqlBasic private constructor() {
                 else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'partiql_basic'")
             }
         }
+    }
+    
+    
+    open class InspectingVisitor : InspectingDomainVisitorBase() {
+        //////////////////////////////////////
+        // Tuple Types
+        //////////////////////////////////////
+        open fun visitExprPair(node: PartiqlBasic.ExprPair) { }
+        open fun visitGroupByItem(node: PartiqlBasic.GroupByItem) { }
+        open fun visitGroupByList(node: PartiqlBasic.GroupByList) { }
+        open fun visitGroupBy(node: PartiqlBasic.GroupBy) { }
+        //////////////////////////////////////
+        // Sum Type: Projection
+        //////////////////////////////////////
+        open fun visitProjection(node: PartiqlBasic.Projection) { }
+        open fun visitProjectionProjectList(node: PartiqlBasic.Projection.ProjectList) { }
+        open fun visitProjectionProjectValue(node: PartiqlBasic.Projection.ProjectValue) { }
+        //////////////////////////////////////
+        // Sum Type: ProjectItem
+        //////////////////////////////////////
+        open fun visitProjectItem(node: PartiqlBasic.ProjectItem) { }
+        open fun visitProjectItemProjectAll(node: PartiqlBasic.ProjectItem.ProjectAll) { }
+        open fun visitProjectItemProjectExpr(node: PartiqlBasic.ProjectItem.ProjectExpr) { }
+        //////////////////////////////////////
+        // Sum Type: JoinType
+        //////////////////////////////////////
+        open fun visitJoinType(node: PartiqlBasic.JoinType) { }
+        open fun visitJoinTypeInner(node: PartiqlBasic.JoinType.Inner) { }
+        open fun visitJoinTypeLeft(node: PartiqlBasic.JoinType.Left) { }
+        open fun visitJoinTypeRight(node: PartiqlBasic.JoinType.Right) { }
+        open fun visitJoinTypeOuter(node: PartiqlBasic.JoinType.Outer) { }
+        //////////////////////////////////////
+        // Sum Type: FromSource
+        //////////////////////////////////////
+        open fun visitFromSource(node: PartiqlBasic.FromSource) { }
+        open fun visitFromSourceScan(node: PartiqlBasic.FromSource.Scan) { }
+        open fun visitFromSourceJoin(node: PartiqlBasic.FromSource.Join) { }
+        //////////////////////////////////////
+        // Sum Type: CaseSensitivity
+        //////////////////////////////////////
+        open fun visitCaseSensitivity(node: PartiqlBasic.CaseSensitivity) { }
+        open fun visitCaseSensitivityCaseSensitive(node: PartiqlBasic.CaseSensitivity.CaseSensitive) { }
+        open fun visitCaseSensitivityCaseInsensitive(node: PartiqlBasic.CaseSensitivity.CaseInsensitive) { }
+        //////////////////////////////////////
+        // Sum Type: ScopeQualifier
+        //////////////////////////////////////
+        open fun visitScopeQualifier(node: PartiqlBasic.ScopeQualifier) { }
+        open fun visitScopeQualifierUnqualified(node: PartiqlBasic.ScopeQualifier.Unqualified) { }
+        open fun visitScopeQualifierQualified(node: PartiqlBasic.ScopeQualifier.Qualified) { }
+        //////////////////////////////////////
+        // Sum Type: SetQuantifier
+        //////////////////////////////////////
+        open fun visitSetQuantifier(node: PartiqlBasic.SetQuantifier) { }
+        open fun visitSetQuantifierAll(node: PartiqlBasic.SetQuantifier.All) { }
+        open fun visitSetQuantifierDistinct(node: PartiqlBasic.SetQuantifier.Distinct) { }
+        //////////////////////////////////////
+        // Sum Type: PathElement
+        //////////////////////////////////////
+        open fun visitPathElement(node: PartiqlBasic.PathElement) { }
+        open fun visitPathElementPathExpr(node: PartiqlBasic.PathElement.PathExpr) { }
+        open fun visitPathElementPathWildcard(node: PartiqlBasic.PathElement.PathWildcard) { }
+        open fun visitPathElementPathUnpivot(node: PartiqlBasic.PathElement.PathUnpivot) { }
+        //////////////////////////////////////
+        // Sum Type: Expr
+        //////////////////////////////////////
+        open fun visitExpr(node: PartiqlBasic.Expr) { }
+        open fun visitExprLit(node: PartiqlBasic.Expr.Lit) { }
+        open fun visitExprId(node: PartiqlBasic.Expr.Id) { }
+        open fun visitExprParameter(node: PartiqlBasic.Expr.Parameter) { }
+        open fun visitExprNot(node: PartiqlBasic.Expr.Not) { }
+        open fun visitExprPlus(node: PartiqlBasic.Expr.Plus) { }
+        open fun visitExprMinus(node: PartiqlBasic.Expr.Minus) { }
+        open fun visitExprTimes(node: PartiqlBasic.Expr.Times) { }
+        open fun visitExprDivide(node: PartiqlBasic.Expr.Divide) { }
+        open fun visitExprModulo(node: PartiqlBasic.Expr.Modulo) { }
+        open fun visitExprConcat(node: PartiqlBasic.Expr.Concat) { }
+        open fun visitExprLike(node: PartiqlBasic.Expr.Like) { }
+        open fun visitExprBetween(node: PartiqlBasic.Expr.Between) { }
+        open fun visitExprPath(node: PartiqlBasic.Expr.Path) { }
+        open fun visitExprCall(node: PartiqlBasic.Expr.Call) { }
+        open fun visitExprCallAgg(node: PartiqlBasic.Expr.CallAgg) { }
+        open fun visitExprSimpleCase(node: PartiqlBasic.Expr.SimpleCase) { }
+        open fun visitExprSearchedCase(node: PartiqlBasic.Expr.SearchedCase) { }
+        open fun visitExprStruct(node: PartiqlBasic.Expr.Struct) { }
+        open fun visitExprBag(node: PartiqlBasic.Expr.Bag) { }
+        open fun visitExprList(node: PartiqlBasic.Expr.List) { }
+        open fun visitExprSelect(node: PartiqlBasic.Expr.Select) { }
+    }
+    
+    open class InspectingWalker(
+        visitor: PartiqlBasic.InspectingVisitor
+    ) : InspectingDomainWalkerBase<InspectingVisitor>(visitor) {
+    
+        //////////////////////////////////////
+        // Tuple Types
+        //////////////////////////////////////
+        open fun walkExprPair(node: PartiqlBasic.ExprPair) {
+            visitor.visitExprPair(node)
+            walkExpr(node.first)
+            walkExpr(node.second)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkGroupByItem(node: PartiqlBasic.GroupByItem) {
+            visitor.visitGroupByItem(node)
+            walkExpr(node.value)
+            node.asAlias?.let { walkSymbolPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkGroupByList(node: PartiqlBasic.GroupByList) {
+            visitor.visitGroupByList(node)
+            node.items.map { walkGroupByItem(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkGroupBy(node: PartiqlBasic.GroupBy) {
+            visitor.visitGroupBy(node)
+            walkGroupByList(node.items)
+            node.groupAsAlias?.let { walkSymbolPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: Projection
+        //////////////////////////////////////
+        open fun walkProjection(node: PartiqlBasic.Projection) {
+            visitor.visitProjection(node)
+            when(node) {
+                is PartiqlBasic.Projection.ProjectList -> walkProjectionProjectList(node)
+                is PartiqlBasic.Projection.ProjectValue -> walkProjectionProjectValue(node)
+            }
+        }
+    
+        open fun walkProjectionProjectList(node: PartiqlBasic.Projection.ProjectList) {
+            visitor.visitProjectionProjectList(node)
+            node.items.map { walkProjectItem(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkProjectionProjectValue(node: PartiqlBasic.Projection.ProjectValue) {
+            visitor.visitProjectionProjectValue(node)
+            walkExpr(node.value)
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: ProjectItem
+        //////////////////////////////////////
+        open fun walkProjectItem(node: PartiqlBasic.ProjectItem) {
+            visitor.visitProjectItem(node)
+            when(node) {
+                is PartiqlBasic.ProjectItem.ProjectAll -> walkProjectItemProjectAll(node)
+                is PartiqlBasic.ProjectItem.ProjectExpr -> walkProjectItemProjectExpr(node)
+            }
+        }
+    
+        open fun walkProjectItemProjectAll(node: PartiqlBasic.ProjectItem.ProjectAll) {
+            visitor.visitProjectItemProjectAll(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkProjectItemProjectExpr(node: PartiqlBasic.ProjectItem.ProjectExpr) {
+            visitor.visitProjectItemProjectExpr(node)
+            walkExpr(node.value)
+            node.asAlias?.let { walkSymbolPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: JoinType
+        //////////////////////////////////////
+        open fun walkJoinType(node: PartiqlBasic.JoinType) {
+            visitor.visitJoinType(node)
+            when(node) {
+                is PartiqlBasic.JoinType.Inner -> walkJoinTypeInner(node)
+                is PartiqlBasic.JoinType.Left -> walkJoinTypeLeft(node)
+                is PartiqlBasic.JoinType.Right -> walkJoinTypeRight(node)
+                is PartiqlBasic.JoinType.Outer -> walkJoinTypeOuter(node)
+            }
+        }
+    
+        open fun walkJoinTypeInner(node: PartiqlBasic.JoinType.Inner) {
+            visitor.visitJoinTypeInner(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkJoinTypeLeft(node: PartiqlBasic.JoinType.Left) {
+            visitor.visitJoinTypeLeft(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkJoinTypeRight(node: PartiqlBasic.JoinType.Right) {
+            visitor.visitJoinTypeRight(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkJoinTypeOuter(node: PartiqlBasic.JoinType.Outer) {
+            visitor.visitJoinTypeOuter(node)
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: FromSource
+        //////////////////////////////////////
+        open fun walkFromSource(node: PartiqlBasic.FromSource) {
+            visitor.visitFromSource(node)
+            when(node) {
+                is PartiqlBasic.FromSource.Scan -> walkFromSourceScan(node)
+                is PartiqlBasic.FromSource.Join -> walkFromSourceJoin(node)
+            }
+        }
+    
+        open fun walkFromSourceScan(node: PartiqlBasic.FromSource.Scan) {
+            visitor.visitFromSourceScan(node)
+            walkExpr(node.expr)
+            node.asAlias?.let { walkSymbolPrimitive(it) }
+            node.atAlias?.let { walkSymbolPrimitive(it) }
+            node.byAlias?.let { walkSymbolPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkFromSourceJoin(node: PartiqlBasic.FromSource.Join) {
+            visitor.visitFromSourceJoin(node)
+            walkJoinType(node.type)
+            walkFromSource(node.left)
+            walkFromSource(node.right)
+            node.predicate?.let { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: CaseSensitivity
+        //////////////////////////////////////
+        open fun walkCaseSensitivity(node: PartiqlBasic.CaseSensitivity) {
+            visitor.visitCaseSensitivity(node)
+            when(node) {
+                is PartiqlBasic.CaseSensitivity.CaseSensitive -> walkCaseSensitivityCaseSensitive(node)
+                is PartiqlBasic.CaseSensitivity.CaseInsensitive -> walkCaseSensitivityCaseInsensitive(node)
+            }
+        }
+    
+        open fun walkCaseSensitivityCaseSensitive(node: PartiqlBasic.CaseSensitivity.CaseSensitive) {
+            visitor.visitCaseSensitivityCaseSensitive(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkCaseSensitivityCaseInsensitive(node: PartiqlBasic.CaseSensitivity.CaseInsensitive) {
+            visitor.visitCaseSensitivityCaseInsensitive(node)
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: ScopeQualifier
+        //////////////////////////////////////
+        open fun walkScopeQualifier(node: PartiqlBasic.ScopeQualifier) {
+            visitor.visitScopeQualifier(node)
+            when(node) {
+                is PartiqlBasic.ScopeQualifier.Unqualified -> walkScopeQualifierUnqualified(node)
+                is PartiqlBasic.ScopeQualifier.Qualified -> walkScopeQualifierQualified(node)
+            }
+        }
+    
+        open fun walkScopeQualifierUnqualified(node: PartiqlBasic.ScopeQualifier.Unqualified) {
+            visitor.visitScopeQualifierUnqualified(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkScopeQualifierQualified(node: PartiqlBasic.ScopeQualifier.Qualified) {
+            visitor.visitScopeQualifierQualified(node)
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: SetQuantifier
+        //////////////////////////////////////
+        open fun walkSetQuantifier(node: PartiqlBasic.SetQuantifier) {
+            visitor.visitSetQuantifier(node)
+            when(node) {
+                is PartiqlBasic.SetQuantifier.All -> walkSetQuantifierAll(node)
+                is PartiqlBasic.SetQuantifier.Distinct -> walkSetQuantifierDistinct(node)
+            }
+        }
+    
+        open fun walkSetQuantifierAll(node: PartiqlBasic.SetQuantifier.All) {
+            visitor.visitSetQuantifierAll(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkSetQuantifierDistinct(node: PartiqlBasic.SetQuantifier.Distinct) {
+            visitor.visitSetQuantifierDistinct(node)
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: PathElement
+        //////////////////////////////////////
+        open fun walkPathElement(node: PartiqlBasic.PathElement) {
+            visitor.visitPathElement(node)
+            when(node) {
+                is PartiqlBasic.PathElement.PathExpr -> walkPathElementPathExpr(node)
+                is PartiqlBasic.PathElement.PathWildcard -> walkPathElementPathWildcard(node)
+                is PartiqlBasic.PathElement.PathUnpivot -> walkPathElementPathUnpivot(node)
+            }
+        }
+    
+        open fun walkPathElementPathExpr(node: PartiqlBasic.PathElement.PathExpr) {
+            visitor.visitPathElementPathExpr(node)
+            walkExpr(node.expr)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkPathElementPathWildcard(node: PartiqlBasic.PathElement.PathWildcard) {
+            visitor.visitPathElementPathWildcard(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkPathElementPathUnpivot(node: PartiqlBasic.PathElement.PathUnpivot) {
+            visitor.visitPathElementPathUnpivot(node)
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: Expr
+        //////////////////////////////////////
+        open fun walkExpr(node: PartiqlBasic.Expr) {
+            visitor.visitExpr(node)
+            when(node) {
+                is PartiqlBasic.Expr.Lit -> walkExprLit(node)
+                is PartiqlBasic.Expr.Id -> walkExprId(node)
+                is PartiqlBasic.Expr.Parameter -> walkExprParameter(node)
+                is PartiqlBasic.Expr.Not -> walkExprNot(node)
+                is PartiqlBasic.Expr.Plus -> walkExprPlus(node)
+                is PartiqlBasic.Expr.Minus -> walkExprMinus(node)
+                is PartiqlBasic.Expr.Times -> walkExprTimes(node)
+                is PartiqlBasic.Expr.Divide -> walkExprDivide(node)
+                is PartiqlBasic.Expr.Modulo -> walkExprModulo(node)
+                is PartiqlBasic.Expr.Concat -> walkExprConcat(node)
+                is PartiqlBasic.Expr.Like -> walkExprLike(node)
+                is PartiqlBasic.Expr.Between -> walkExprBetween(node)
+                is PartiqlBasic.Expr.Path -> walkExprPath(node)
+                is PartiqlBasic.Expr.Call -> walkExprCall(node)
+                is PartiqlBasic.Expr.CallAgg -> walkExprCallAgg(node)
+                is PartiqlBasic.Expr.SimpleCase -> walkExprSimpleCase(node)
+                is PartiqlBasic.Expr.SearchedCase -> walkExprSearchedCase(node)
+                is PartiqlBasic.Expr.Struct -> walkExprStruct(node)
+                is PartiqlBasic.Expr.Bag -> walkExprBag(node)
+                is PartiqlBasic.Expr.List -> walkExprList(node)
+                is PartiqlBasic.Expr.Select -> walkExprSelect(node)
+            }
+        }
+    
+        open fun walkExprLit(node: PartiqlBasic.Expr.Lit) {
+            visitor.visitExprLit(node)
+            walkIonElement(node.value)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprId(node: PartiqlBasic.Expr.Id) {
+            visitor.visitExprId(node)
+            walkSymbolPrimitive(node.name)
+            walkCaseSensitivity(node.case)
+            walkScopeQualifier(node.scopeQualifier)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprParameter(node: PartiqlBasic.Expr.Parameter) {
+            visitor.visitExprParameter(node)
+            walkLongPrimitive(node.index)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprNot(node: PartiqlBasic.Expr.Not) {
+            visitor.visitExprNot(node)
+            walkExpr(node.expr)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprPlus(node: PartiqlBasic.Expr.Plus) {
+            visitor.visitExprPlus(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprMinus(node: PartiqlBasic.Expr.Minus) {
+            visitor.visitExprMinus(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprTimes(node: PartiqlBasic.Expr.Times) {
+            visitor.visitExprTimes(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprDivide(node: PartiqlBasic.Expr.Divide) {
+            visitor.visitExprDivide(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprModulo(node: PartiqlBasic.Expr.Modulo) {
+            visitor.visitExprModulo(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprConcat(node: PartiqlBasic.Expr.Concat) {
+            visitor.visitExprConcat(node)
+            node.operands.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprLike(node: PartiqlBasic.Expr.Like) {
+            visitor.visitExprLike(node)
+            walkExpr(node.left)
+            walkExpr(node.right)
+            walkExpr(node.escape)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprBetween(node: PartiqlBasic.Expr.Between) {
+            visitor.visitExprBetween(node)
+            walkExpr(node.value)
+            walkExpr(node.from)
+            walkExpr(node.to)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprPath(node: PartiqlBasic.Expr.Path) {
+            visitor.visitExprPath(node)
+            walkExpr(node.root)
+            node.elements.map { walkPathElement(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprCall(node: PartiqlBasic.Expr.Call) {
+            visitor.visitExprCall(node)
+            walkSymbolPrimitive(node.name)
+            node.args.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprCallAgg(node: PartiqlBasic.Expr.CallAgg) {
+            visitor.visitExprCallAgg(node)
+            walkSymbolPrimitive(node.name)
+            walkSetQuantifier(node.setQuantifier)
+            walkExpr(node.arg)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprSimpleCase(node: PartiqlBasic.Expr.SimpleCase) {
+            visitor.visitExprSimpleCase(node)
+            walkExpr(node.value)
+            node.branches.map { walkExprPair(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprSearchedCase(node: PartiqlBasic.Expr.SearchedCase) {
+            visitor.visitExprSearchedCase(node)
+            node.branches.map { walkExprPair(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprStruct(node: PartiqlBasic.Expr.Struct) {
+            visitor.visitExprStruct(node)
+            node.fields.map { walkExprPair(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprBag(node: PartiqlBasic.Expr.Bag) {
+            visitor.visitExprBag(node)
+            node.values.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprList(node: PartiqlBasic.Expr.List) {
+            visitor.visitExprList(node)
+            node.values.map { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkExprSelect(node: PartiqlBasic.Expr.Select) {
+            visitor.visitExprSelect(node)
+            node.setq?.let { walkSetQuantifier(it) }
+            walkProjection(node.project)
+            walkFromSource(node.from)
+            node.where?.let { walkExpr(it) }
+            node.group?.let { walkGroupBy(it) }
+            node.having?.let { walkExpr(it) }
+            node.limit?.let { walkExpr(it) }
+            walkMetas(node.metas)
+        }
+    
     }
 }
 
