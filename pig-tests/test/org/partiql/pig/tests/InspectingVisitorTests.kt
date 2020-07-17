@@ -27,9 +27,9 @@ class InspectingVisitorTests {
 
     class DummyVisitor : TestDomain.InspectingVisitor() {
 
-        // The best way I have found to test this type of visitor by observing
+        // The best way I have found to test this type of visitor is to observe
         // these side effects.  Normally, if you wanted to extract information
-        // from a tree you'd use a different style of visitor.
+        // from a tree you'd use [TestDomain.FoldingVisitor] instead.
 
         var numberAccumulator: Long = 0
         var stringAccumulator: String = ""
@@ -56,7 +56,7 @@ class InspectingVisitorTests {
         }.withMeta(NUMBER_KEY, 5)
 
         val visitor = DummyVisitor()
-        TestDomain.InspectingWalker(visitor).walkIntPairPair(node)
+        visitor.walkIntPairPair(node)
         assertEquals(15, visitor.numberAccumulator)
     }
 
@@ -67,7 +67,7 @@ class InspectingVisitorTests {
         }.withMeta("number", 4)
 
         val visitor = DummyVisitor()
-        TestDomain.InspectingWalker(visitor).walkDomainLevelRecord(node)
+        visitor.walkDomainLevelRecord(node)
 
         assertEquals(9, visitor.numberAccumulator)
         assertEquals("hi", visitor.stringAccumulator)
@@ -84,7 +84,7 @@ class InspectingVisitorTests {
         }
 
         val visitor = DummyVisitor()
-        TestDomain.InspectingWalker(visitor).walkTestSumTriplet(node)
+        visitor.walkTestSumTriplet(node)
 
         assertEquals(28, visitor.numberAccumulator)
     }
@@ -94,19 +94,19 @@ class InspectingVisitorTests {
         // No elements
         val node1 = TestDomain.build { variadicMin0() }.withMeta(NUMBER_KEY, 1)
         val visitor1 = DummyVisitor()
-        TestDomain.InspectingWalker(visitor1).walkVariadicMin0(node1)
+        visitor1.walkVariadicMin0(node1)
         assertEquals(1, visitor1.numberAccumulator)
 
         // One element
         val node2 = TestDomain.build { variadicMin0(42) }.withMeta(NUMBER_KEY, 43)
         val visitor2 = DummyVisitor()
-        TestDomain.InspectingWalker(visitor2).walkVariadicMin0(node2)
+        visitor2.walkVariadicMin0(node2)
         assertEquals(85, visitor2.numberAccumulator)
 
         // Four elements.
         val node3 = TestDomain.build { variadicMin0(1, 2, 3, 4) }.withMeta(NUMBER_KEY, 5)
         val visitor3 = DummyVisitor()
-        TestDomain.InspectingWalker(visitor3).walkVariadicMin0(node3)
+        visitor3.walkVariadicMin0(node3)
         assertEquals(15, visitor3.numberAccumulator)
     }
 }

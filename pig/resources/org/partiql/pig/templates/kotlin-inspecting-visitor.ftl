@@ -1,6 +1,5 @@
-[#ftl output_format="Text"]
+[#ftl output_format="plainText"]
 [#-- @ftlvariable name="universe" type="org.partiql.pig.generator.kotlin.KTypeUniverse" --]
-
 
 [#--------------------------------------------------------------
     InspectingVisitor/InspectingWalker
@@ -11,7 +10,27 @@
   of an interface.
 ----------------------------------------------------------------]
 
+[#macro tuple_walker_body t visitSuffix]
+    [@indent count=4]
+    visit${visitSuffix}(node)
+        [#list t.properties as p]
+            [#if p.variadic]
+    node.${p.kotlinName}.map { walk${p.rawTypeName}(it) }
+            [#elseif p.nullable]
+    node.${p.kotlinName}?.let { walk${p.rawTypeName}(it) }
+            [#else]
+    walk${p.rawTypeName}(node.${p.kotlinName})
+            [/#if]
+        [/#list]
+    walkMetas(node.metas)
+    [/@indent]
+[/#macro]
+
 open class InspectingVisitor : InspectingDomainVisitorBase() {
+    ////////////////////////////////////////////////////////////////////////////
+    // Visit Functions
+    ////////////////////////////////////////////////////////////////////////////
+
     [#list domain.tuples]
     //////////////////////////////////////
     // Tuple Types
@@ -29,26 +48,10 @@ open class InspectingVisitor : InspectingDomainVisitorBase() {
     open fun visit${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}) { }
 [/#list]
     [/#list]
-}
 
-[#macro tuple_walker_body t visitSuffix]
-[@indent count=4]
-    visitor.visit${visitSuffix}(node)
-[#list t.properties as p]
-[#if p.variadic]
-    node.${p.kotlinName}.map { walk${p.rawTypeName}(it) }
-[#elseif p.nullable]
-    node.${p.kotlinName}?.let { walk${p.rawTypeName}(it) }
-[#else]
-    walk${p.rawTypeName}(node.${p.kotlinName})
-[/#if]
-[/#list]
-    walkMetas(node.metas)
-[/@indent]
-[/#macro]
-open class InspectingWalker(
-    visitor: ${domain.kotlinName}.InspectingVisitor
-) : InspectingDomainWalkerBase<InspectingVisitor>(visitor) {
+    ////////////////////////////////////////////////////////////////////////////
+    // Walk Functions
+    ////////////////////////////////////////////////////////////////////////////
 
     [#list domain.tuples]
     //////////////////////////////////////
@@ -66,7 +69,7 @@ open class InspectingWalker(
     // Sum Type: ${s.kotlinName}
     //////////////////////////////////////
     open fun walk${s.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}) {
-        visitor.visit${s.kotlinName}(node)
+        visit${s.kotlinName}(node)
         when(node) {
         [#list s.variants as v]
             is ${domain.kotlinName}.${s.kotlinName}.${v.kotlinName} -> walk${s.kotlinName}${v.kotlinName}(node)
