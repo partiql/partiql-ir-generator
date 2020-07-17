@@ -16,25 +16,14 @@
 package org.partiql.pig.domain.model
 
 import com.amazon.ionelement.api.MetaContainer
-import com.amazon.ionelement.api.ionSexpOf
-import com.amazon.ionelement.api.ionSymbol
 
-/**
- * An element of a product or record.
- *
- * For products whose elements do not have names, the [tag] field should be synthesized by the
- * instantiator.
- */
-class NamedElement(val tag: String, val typeReference: TypeRef, val metas: MetaContainer) {
-
-    /**
-     * Generates an s-expression representation of this [NamedElement].
-     *
-     * This primarily aids in unit testing and is not intended to have an identical structure to PIG's type universe
-     * syntax.
-     */
-    fun toIonElement() =
-        ionSexpOf(
-            ionSymbol(tag),
-            typeReference.toIonElement())
-}
+/** An element of a product or record. */
+class NamedElement(
+    /** The name of the element that should be used in generated code. */
+    val identifier: String,
+    /** The tag used in the s-expression representation, if this is a record element. */
+    val tag: String,
+    /** A reference to the type of this element.*/
+    val typeReference: TypeRef,
+    val metas: MetaContainer
+)

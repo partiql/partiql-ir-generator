@@ -66,10 +66,13 @@ sealed class SemanticErrorContext(val msgFormatter: () -> String): ErrorContext 
         : SemanticErrorContext({ "Cannot remove built-in type '$typeName'" })
 
     data class DuplicateTypeDomainName(val domainName: String)
-        : SemanticErrorContext({ "Duplicate type domain name: '${domainName} "})
+        : SemanticErrorContext({ "Duplicate type domain tag: '${domainName} "})
 
-    data class DuplicateRecordElementName(val elementName: String)
-        : SemanticErrorContext({ "Duplicate record element name: '${elementName} "})
+    data class DuplicateRecordElementTag(val elementName: String)
+        : SemanticErrorContext({ "Duplicate record element tag: '${elementName} "})
+
+    data class DuplicateElementIdentifier(val elementName: String)
+        : SemanticErrorContext({ "Duplicate element identifier: '${elementName} "})
 
     data class NameAlreadyUsed(val name: String, val domainName: String)
         : SemanticErrorContext({ "Name '$name' was previously used in the `$domainName` type domain" })

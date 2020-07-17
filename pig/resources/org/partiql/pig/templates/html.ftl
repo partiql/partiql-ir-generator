@@ -27,7 +27,10 @@
     <thead>
     <tr>
         <th>
-            Name
+            Identifier
+        </th>
+        <th>
+            Tag
         </th>
         <th>
             Type
@@ -44,7 +47,10 @@
     [#list tuple.elements as element]
         <tr>
             <td>
-                ${element.name}
+                ${element.identifier}
+            </td>
+            <td>
+                ${element.tag}
             </td>
             <td>
                 ${element.type}
@@ -66,7 +72,7 @@
         <thead>
             <tr>
                 <th>
-                    Tag Name
+                    Tag
                 </th>
                 <th>
                     Tuple Type
@@ -79,8 +85,9 @@
         <tbody>
             [#list tuples as tuple]
                 <tr>
+
                     <td>
-                        ${tuple.name}
+                        ${tuple.tag}
                     </td>
                     <td>
                         ${tuple.tupleType}

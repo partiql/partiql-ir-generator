@@ -28,14 +28,15 @@ data class CTypeDomain(
 )
 
 data class CElement(
-    val name: String,
+    val identifier: String,
+    val tag: String,
     val type: String,
     val isVariadic: Boolean,
     val isOptional: Boolean
 )
 
 data class CTuple(
-    val name: String,
+    val tag: String,
     val memberOfType: String?,
     val elements: List<CElement>,
     val arity: IntRange,
@@ -80,7 +81,7 @@ fun TypeDomain.toCTypeDomain(): CTypeDomain {
 
 private fun DataType.Tuple.toCTuple(memberOfType: String?) =
     CTuple(
-        name = this.tag,
+        tag = this.tag,
         memberOfType = memberOfType,
         elements = this.namedElements.map { it.toCElement() },
         arity = this.computeArity(),
@@ -95,7 +96,8 @@ private fun NamedElement.toCElement(): CElement {
     }
 
     return CElement(
-        name = this.tag,
+        identifier = this.identifier,
+        tag = this.tag,
         type = this.typeReference.typeName,
         isOptional = isOptional,
         isVariadic = isVariadic)

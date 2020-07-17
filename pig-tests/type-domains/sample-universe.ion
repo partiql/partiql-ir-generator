@@ -4,27 +4,27 @@
 (define toy_lang
  (domain
    (sum expr
-    (product lit (value ion))
-    (product variable (name symbol))
-    (product not (expr expr))
-    (product plus (operands (* expr 2)))
-    (product minus (operands (* expr 2)))
-    (product times (operands (* expr 2)))
-    (product divide (operands (* expr 2)))
-    (product modulo (operands (* expr 2)))
-    (product call (name symbol) (operands expr))
-    (product let (name symbol) (value expr) (body expr))
-    (product function (var_name symbol) (body expr)))))
+    (lit value::ion)
+    (variable name::symbol)
+    (not expr::expr)
+    (plus operands::(* expr 2))
+    (minus operands::(* expr 2))
+    (times operands::(* expr 2))
+    (divide operands::(* expr 2))
+    (modulo operands::(* expr 2))
+    (call name::symbol argument::expr)
+    (let name::symbol value::expr body::expr)
+    (function var_name::symbol body::expr))))
 
 // Define another type domain which extends "toy_lang" by removing named variables and adding DeBruijn indices:
-
 (define toy_lang_nameless
   (permute_domain toy_lang
     (with expr
       (exclude variable let)
       (include
-        (product variable (index int))
-        (product let (index int) (value expr) (body expr))))))
+        (variable index::int)
+        (let index::int value::expr body::expr)))))
+
 
 /*
     `test_domain` covers all of the following equivalence classes and is included to test the serializers and
@@ -52,60 +52,60 @@
 
  (define test_domain
     (domain
-        (product int_pair (first int) (second int))
-        (product symbol_pair (first symbol) (second symbol))
-        (product ion_pair (first ion) (second ion))
+        (product int_pair first::int second::int)
+        (product symbol_pair first::symbol second::symbol)
+        (product ion_pair first::ion second::ion)
 
-        (product int_symbol_pair (first int) (second symbol))
-        (product symbol_int_pair (first symbol) (second int))
-        (product ion_int_pair (first  ion) (second int))
-        (product ion_symbol_pair (first  ion) (second ion))
+        (product int_symbol_pair first::int second::symbol)
+        (product symbol_int_pair first::symbol second::int)
+        (product ion_int_pair first::ion second::int)
+        (product ion_symbol_pair first::ion second::ion)
 
-        (product int_pair_pair (first int_pair) (second int_pair))
-        (product symbol_pair_pair (first symbol_pair) (second symbol_pair))
-        (product ion_pair_pair (first ion_pair) (second ion_pair))
+        (product int_pair_pair first::int_pair second::int_pair)
+        (product symbol_pair_pair first::symbol_pair second::symbol_pair)
+        (product ion_pair_pair first::ion_pair second::ion_pair)
 
-        (product recursive_pair (first int) (second (? recursive_pair)))
+        (product recursive_pair first::int second::(? recursive_pair))
 
-        (sum answer (product no) (product yes))
+        (sum answer (no) (yes))
 
-        (product answer_pair (first answer) (second answer))
-        (product answer_int_pair (first answer) (second int))
-        (product int_answer_pair (first int) (second answer))
-        (product symbol_answer_pair (first symbol) (second answer))
-        (product answer_symbol_pair (first answer) (second symbol))
+        (product answer_pair first::answer second::answer)
+        (product answer_int_pair first::answer second::int)
+        (product int_answer_pair first::int second::answer)
+        (product symbol_answer_pair first::symbol second::answer)
+        (product answer_symbol_pair first::answer second::symbol)
 
-        (product variadic_min_0 (ints (* int 0 )))
-        (product variadic_min_1 (ints (* int 1 )))
-        (product element_variadic (name symbol) (ints (* int 0 )))
+        (product variadic_min_0 ints::(* int 0 ))
+        (product variadic_min_1 ints::(* int 1 ))
+        (product element_variadic name::symbol ints::(* int 0 ))
 
-        (product optional_1 (value (? int)))
-        (product optional_2 (first (? int)) (second (? int)))
+        (product optional_1 value::(? int))
+        (product optional_2 first::(? int) second::(? int))
 
         (record domain_level_record
             (some_field int)
             (another_field symbol)
             (optional_field (? int)))
 
-        (product product_with_record (value int) (dlr domain_level_record))
+        (product product_with_record value::int dlr::domain_level_record)
         (sum sum_with_record
-            (product variant_with_record (value int) (dlr domain_level_record)))
+            (variant_with_record value::int dlr::domain_level_record))
 
         (sum entity
             // Slugs are not uniquely identified.
-            (product slug)
+            (slug)
             // Androids are identified by serial number.
-            (product android (id int))
+            (android id::int)
 
             // Uniquely identifying humans a bit more is complex and requires a record.
-            (record human (first_name symbol)          // required
+            (human (first_name symbol)          // required
                    //TODO: variadic record fields are not currently supported in records.
                    // (middle_names (* symbol 0))  // variadic
                    (last_name symbol)           // required
                    (title (? symbol))           // optional
                    (parent (? entity))))        // recursive
 
-        (product entity_pair (first entity) (second entity))
+        (product entity_pair first::entity second::entity)
     ))
 
 
@@ -117,25 +117,26 @@
 (define multi_word_domain
     (domain
         (product aaa_aaa)
-        (product aaa_aab (d_field (? int)))
-        (product aaa_aac (d_field (? int)) (e_field (? symbol)))
-        (product aaa_aad (d_field (* int 0)))
-        (product aaa_aae (d_field (* int 2)))
+        (product aaa_aab d_field::(? int))
+        (product aaa_aac d_field::(? int) e_field::(? symbol))
+        (product aaa_aad d_field::(* int 0))
+        (product aaa_aae d_field::(* int 2))
 
-        (product aab_aaa (b_field int) (c_field symbol))
-        (product aab_aab (b_field int) (c_field symbol) (d_field (? int)))
-        (product aab_aac (b_field int) (c_field symbol) (d_field (? int)) (e_field (? symbol)))
-        (product aab_aad (b_field int) (c_field symbol) (d_field (* int 0)))
-        (product aab_aae (b_field int) (c_field symbol) (d_field (* int 2)))
+        (product aab_aaa b_field::int c_field::symbol)
+        (product aab_aab b_field::int c_field::symbol d_field::(? int))
+        (product aab_aac b_field::int c_field::symbol d_field::(? int) e_field::(? symbol))
+        (product aab_aad b_field::int c_field::symbol d_field::(* int 0))
+        (product aab_aae b_field::int c_field::symbol d_field::(* int 2))
 
         (sum sss_ttt
-            (product lll (u_field int))
-            (product mmm (v_field symbol)))
+            (lll u_field::int)
+            (mmm v_field::symbol))
 
-        (sum sss_ttu
-            (product nnn (u_field aaa_aaa))
-            (product ooo (v_field aaa_aab)))
-        ))
+        (record rrr
+            (a_field int)
+            bbb_field::(b_field int))
+
+))
 
 
 // This is an incomplete AST definition for PartiQL to show what a more complex domain definition will look like.
@@ -145,80 +146,79 @@
 (define partiql_basic
   (domain
     (sum projection
-      (product project_list (items (* project_item 1)))
-      (product project_value (value expr)))
+      (project_list items::(* project_item 1))
+      (project_value value::expr))
 
     (sum project_item
-      (product project_all)
-      (product project_expr (value expr) (as_alias (? symbol))))
+      (project_all)
+      (project_expr value::expr as_alias::(? symbol)))
 
     (sum join_type
-      (product inner)
-      (product left)
-      (product right)
-      (product outer))
+      (inner)
+      (left)
+      (right)
+      (outer))
 
     (sum from_source
-      (product scan (expr expr) (as_alias (? symbol)) (at_alias (? symbol)) (by_alias (? symbol)))
-      (product join (type join_type) (left from_source) (right from_source) (predicate (? expr))))
+      (scan expr::expr as_alias::(? symbol) at_alias::(? symbol) by_alias::(? symbol))
+      (join type::join_type left::from_source right::from_source predicate::(? expr)))
 
-    (product expr_pair (first expr) (second expr))
+    (product expr_pair first::expr second::expr)
 
-    (product group_by_item (value expr) (as_alias (? symbol)))
+    (product group_by_item value::expr as_alias::(? symbol))
 
     (product group_by_list
-      (items (* group_by_item 1)))
+      items::(* group_by_item 1))
 
     (product group_by
-      (items group_by_list)
-      (group_as_alias (? symbol)))  // group as alias
-
+      items::group_by_list
+      group_as_alias::(? symbol))  // group as alias
     (sum case_sensitivity
-      (product case_sensitive)
-      (product case_insensitive))
+      (case_sensitive)
+      (case_insensitive))
 
     (sum scope_qualifier
-      (product unqualified)
-      (product qualified))
+      (unqualified)
+      (qualified))
 
     (sum set_quantifier
-      (product all)
-      (product distinct))
+      (all)
+      (distinct))
 
     (sum path_element
-      (product path_expr (expr expr))
-      (product path_wildcard)
-      (product path_unpivot))
+      (path_expr expr::expr)
+      (path_wildcard)
+      (path_unpivot))
 
     (sum expr
       // Basic Expressions
-      (product lit (value ion))
-      (product id (name symbol) (case case_sensitivity) (scope_qualifier scope_qualifier))
-      (product parameter (index int))
-      (product not (expr expr))
-      (product plus (operands (* expr 2)))
-      (product minus (operands (* expr 2)))
-      (product times (operands (* expr 2)))
-      (product divide (operands (* expr 2)))
-      (product modulo (operands (* expr 2)))
-      (product concat (operands (* expr 2)))
+      (lit value::ion)
+      (id name::symbol case::case_sensitivity scope_qualifier::scope_qualifier)
+      (parameter index::int)
+      (not expr::expr)
+      (plus operands::(* expr 2))
+      (minus operands::(* expr 2))
+      (times operands::(* expr 2))
+      (divide operands::(* expr 2))
+      (modulo operands::(* expr 2))
+      (concat operands::(* expr 2))
 
-      (product like (value expr) (pattern expr) (escape expr))
-      (product between (value expr) (from expr) (to expr))
-      (product path (root expr) (elements (* path_element 1)))
-      (product call (name symbol) (args (* expr 1)))
-      (product call_agg (name symbol) (set_quantifier arg::expr))
+      (like left::expr right::expr escape::expr)
+      (between value::expr from::expr to::expr)
+      (path root::expr elements::(* path_element 1))
+      (call name::symbol args::(* expr 1))
+      (call_agg name::symbol set_quantifier::set_quantifier arg::expr)
 
      // Case Statements
-      (product simple_case (value expr) (branches (* expr_pair 1)))
-      (product searched_case (branches (* expr_pair 1)))
+      (simple_case value::expr branches::(* expr_pair 1))
+      (searched_case branches::(* expr_pair 1))
 
      // Value Constructors
-      (product struct (fields (* expr_pair 0)))
-      (product bag (values (* expr 0)))
-      (product list (values (* expr 0)))
+      (struct fields::(* expr_pair 0))
+      (bag values::(* expr 0))
+      (list values::(* expr 0))
 
-     (record select
+     (select
       (setq (? set_quantifier))
       (project projection)
       (from from_source)
@@ -228,3 +228,5 @@
       (limit (? expr))))       // limit
     ) // end domain
  ) // end define
+
+

@@ -29,7 +29,7 @@ class ToyLang private constructor() {
         fun lit(
             value: IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Lit =
             ToyLang.Expr.Lit(
                 value = value,
                 metas = metas)
@@ -38,7 +38,7 @@ class ToyLang private constructor() {
         fun variable(
             name: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Variable =
             ToyLang.Expr.Variable(
                 name = name.asPrimitive(),
                 metas = metas)
@@ -46,7 +46,7 @@ class ToyLang private constructor() {
         fun variable_(
             name: SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Variable =
             ToyLang.Expr.Variable(
                 name = name,
                 metas = metas)
@@ -55,7 +55,7 @@ class ToyLang private constructor() {
         fun not(
             expr: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Not =
             ToyLang.Expr.Not(
                 expr = expr,
                 metas = metas)
@@ -64,7 +64,7 @@ class ToyLang private constructor() {
         fun plus(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Plus =
             ToyLang.Expr.Plus(
                 operands = operands,
                 metas = metas)
@@ -74,7 +74,7 @@ class ToyLang private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Plus =
             ToyLang.Expr.Plus(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -83,7 +83,7 @@ class ToyLang private constructor() {
         fun minus(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Minus =
             ToyLang.Expr.Minus(
                 operands = operands,
                 metas = metas)
@@ -93,7 +93,7 @@ class ToyLang private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Minus =
             ToyLang.Expr.Minus(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -102,7 +102,7 @@ class ToyLang private constructor() {
         fun times(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Times =
             ToyLang.Expr.Times(
                 operands = operands,
                 metas = metas)
@@ -112,7 +112,7 @@ class ToyLang private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Times =
             ToyLang.Expr.Times(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -121,7 +121,7 @@ class ToyLang private constructor() {
         fun divide(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Divide =
             ToyLang.Expr.Divide(
                 operands = operands,
                 metas = metas)
@@ -131,7 +131,7 @@ class ToyLang private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Divide =
             ToyLang.Expr.Divide(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -140,7 +140,7 @@ class ToyLang private constructor() {
         fun modulo(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Modulo =
             ToyLang.Expr.Modulo(
                 operands = operands,
                 metas = metas)
@@ -150,7 +150,7 @@ class ToyLang private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Modulo =
             ToyLang.Expr.Modulo(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -158,22 +158,22 @@ class ToyLang private constructor() {
         
         fun call(
             name: String,
-            operands: Expr,
+            argument: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Call =
             ToyLang.Expr.Call(
                 name = name.asPrimitive(),
-                operands = operands,
+                argument = argument,
                 metas = metas)
         
         fun call_(
             name: SymbolPrimitive,
-            operands: Expr,
+            argument: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Call =
             ToyLang.Expr.Call(
                 name = name,
-                operands = operands,
+                argument = argument,
                 metas = metas)
         
         
@@ -182,7 +182,7 @@ class ToyLang private constructor() {
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Let =
             ToyLang.Expr.Let(
                 name = name.asPrimitive(),
                 value = value,
@@ -194,7 +194,7 @@ class ToyLang private constructor() {
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Let =
             ToyLang.Expr.Let(
                 name = name,
                 value = value,
@@ -206,7 +206,7 @@ class ToyLang private constructor() {
             varName: String,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Function =
             ToyLang.Expr.Function(
                 varName = varName.asPrimitive(),
                 body = body,
@@ -216,7 +216,7 @@ class ToyLang private constructor() {
             varName: SymbolPrimitive,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLang.Expr.Function =
             ToyLang.Expr.Function(
                 varName = varName,
                 body = body,
@@ -528,21 +528,21 @@ class ToyLang private constructor() {
     
         class Call(
             val name: SymbolPrimitive,
-            val operands: Expr,
+            val argument: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
             override fun withMeta(metaKey: String, metaValue: Any): Call =
                 Call(
                     name = name,
-                    operands = operands,
+                    argument = argument,
                     metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("call"),
                     name.toIonElement(),
-                    operands.toIonElement(),
+                    argument.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -554,13 +554,13 @@ class ToyLang private constructor() {
         
                 other as Call
                 if (name != other.name) return false
-                if (operands != other.operands) return false
+                if (argument != other.argument) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
                 var hc = name.hashCode()
-                hc = 31 * hc + operands.hashCode()
+                hc = 31 * hc + argument.hashCode()
                 hc
             }
         
@@ -727,10 +727,10 @@ class ToyLang private constructor() {
                 "call" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
                     val name = sexp.getRequired(0).toSymbolPrimitive()
-                    val operands = sexp.getRequired(1).transformExpect<Expr>()
+                    val argument = sexp.getRequired(1).transformExpect<Expr>()
                     ToyLang.Expr.Call(
                         name,
-                        operands,
+                        argument,
                         metas = sexp.metas)
                 }
                 "let" -> {
@@ -779,7 +779,7 @@ class ToyLangNameless private constructor() {
         fun lit(
             value: IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Lit =
             ToyLangNameless.Expr.Lit(
                 value = value,
                 metas = metas)
@@ -788,7 +788,7 @@ class ToyLangNameless private constructor() {
         fun not(
             expr: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Not =
             ToyLangNameless.Expr.Not(
                 expr = expr,
                 metas = metas)
@@ -797,7 +797,7 @@ class ToyLangNameless private constructor() {
         fun plus(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Plus =
             ToyLangNameless.Expr.Plus(
                 operands = operands,
                 metas = metas)
@@ -807,7 +807,7 @@ class ToyLangNameless private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Plus =
             ToyLangNameless.Expr.Plus(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -816,7 +816,7 @@ class ToyLangNameless private constructor() {
         fun minus(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Minus =
             ToyLangNameless.Expr.Minus(
                 operands = operands,
                 metas = metas)
@@ -826,7 +826,7 @@ class ToyLangNameless private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Minus =
             ToyLangNameless.Expr.Minus(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -835,7 +835,7 @@ class ToyLangNameless private constructor() {
         fun times(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Times =
             ToyLangNameless.Expr.Times(
                 operands = operands,
                 metas = metas)
@@ -845,7 +845,7 @@ class ToyLangNameless private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Times =
             ToyLangNameless.Expr.Times(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -854,7 +854,7 @@ class ToyLangNameless private constructor() {
         fun divide(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Divide =
             ToyLangNameless.Expr.Divide(
                 operands = operands,
                 metas = metas)
@@ -864,7 +864,7 @@ class ToyLangNameless private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Divide =
             ToyLangNameless.Expr.Divide(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -873,7 +873,7 @@ class ToyLangNameless private constructor() {
         fun modulo(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Modulo =
             ToyLangNameless.Expr.Modulo(
                 operands = operands,
                 metas = metas)
@@ -883,7 +883,7 @@ class ToyLangNameless private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Modulo =
             ToyLangNameless.Expr.Modulo(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -891,22 +891,22 @@ class ToyLangNameless private constructor() {
         
         fun call(
             name: String,
-            operands: Expr,
+            argument: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Call =
             ToyLangNameless.Expr.Call(
                 name = name.asPrimitive(),
-                operands = operands,
+                argument = argument,
                 metas = metas)
         
         fun call_(
             name: SymbolPrimitive,
-            operands: Expr,
+            argument: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Call =
             ToyLangNameless.Expr.Call(
                 name = name,
-                operands = operands,
+                argument = argument,
                 metas = metas)
         
         
@@ -914,7 +914,7 @@ class ToyLangNameless private constructor() {
             varName: String,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Function =
             ToyLangNameless.Expr.Function(
                 varName = varName.asPrimitive(),
                 body = body,
@@ -924,7 +924,7 @@ class ToyLangNameless private constructor() {
             varName: SymbolPrimitive,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Function =
             ToyLangNameless.Expr.Function(
                 varName = varName,
                 body = body,
@@ -934,7 +934,7 @@ class ToyLangNameless private constructor() {
         fun variable(
             index: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Variable =
             ToyLangNameless.Expr.Variable(
                 index = index.asPrimitive(),
                 metas = metas)
@@ -942,7 +942,7 @@ class ToyLangNameless private constructor() {
         fun variable_(
             index: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Variable =
             ToyLangNameless.Expr.Variable(
                 index = index,
                 metas = metas)
@@ -953,7 +953,7 @@ class ToyLangNameless private constructor() {
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Let =
             ToyLangNameless.Expr.Let(
                 index = index.asPrimitive(),
                 value = value,
@@ -965,7 +965,7 @@ class ToyLangNameless private constructor() {
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): ToyLangNameless.Expr.Let =
             ToyLangNameless.Expr.Let(
                 index = index,
                 value = value,
@@ -1242,21 +1242,21 @@ class ToyLangNameless private constructor() {
     
         class Call(
             val name: SymbolPrimitive,
-            val operands: Expr,
+            val argument: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
             override fun withMeta(metaKey: String, metaValue: Any): Call =
                 Call(
                     name = name,
-                    operands = operands,
+                    argument = argument,
                     metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
                     ionSymbol("call"),
                     name.toIonElement(),
-                    operands.toIonElement(),
+                    argument.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -1268,13 +1268,13 @@ class ToyLangNameless private constructor() {
         
                 other as Call
                 if (name != other.name) return false
-                if (operands != other.operands) return false
+                if (argument != other.argument) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
                 var hc = name.hashCode()
-                hc = 31 * hc + operands.hashCode()
+                hc = 31 * hc + argument.hashCode()
                 hc
             }
         
@@ -1470,10 +1470,10 @@ class ToyLangNameless private constructor() {
                 "call" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
                     val name = sexp.getRequired(0).toSymbolPrimitive()
-                    val operands = sexp.getRequired(1).transformExpect<Expr>()
+                    val argument = sexp.getRequired(1).transformExpect<Expr>()
                     ToyLangNameless.Expr.Call(
                         name,
-                        operands,
+                        argument,
                         metas = sexp.metas)
                 }
                 "function" -> {
@@ -1530,7 +1530,7 @@ class TestDomain private constructor() {
             first: Long,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): IntPair =
+        ): TestDomain.IntPair =
             TestDomain.IntPair(
                 first = first.asPrimitive(),
                 second = second.asPrimitive(),
@@ -1540,7 +1540,7 @@ class TestDomain private constructor() {
             first: LongPrimitive,
             second: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): IntPair =
+        ): TestDomain.IntPair =
             TestDomain.IntPair(
                 first = first,
                 second = second,
@@ -1551,7 +1551,7 @@ class TestDomain private constructor() {
             first: String,
             second: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): SymbolPair =
+        ): TestDomain.SymbolPair =
             TestDomain.SymbolPair(
                 first = first.asPrimitive(),
                 second = second.asPrimitive(),
@@ -1561,7 +1561,7 @@ class TestDomain private constructor() {
             first: SymbolPrimitive,
             second: SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): SymbolPair =
+        ): TestDomain.SymbolPair =
             TestDomain.SymbolPair(
                 first = first,
                 second = second,
@@ -1572,7 +1572,7 @@ class TestDomain private constructor() {
             first: IonElement,
             second: IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): IonPair =
+        ): TestDomain.IonPair =
             TestDomain.IonPair(
                 first = first,
                 second = second,
@@ -1583,7 +1583,7 @@ class TestDomain private constructor() {
             first: Long,
             second: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): IntSymbolPair =
+        ): TestDomain.IntSymbolPair =
             TestDomain.IntSymbolPair(
                 first = first.asPrimitive(),
                 second = second.asPrimitive(),
@@ -1593,7 +1593,7 @@ class TestDomain private constructor() {
             first: LongPrimitive,
             second: SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): IntSymbolPair =
+        ): TestDomain.IntSymbolPair =
             TestDomain.IntSymbolPair(
                 first = first,
                 second = second,
@@ -1604,7 +1604,7 @@ class TestDomain private constructor() {
             first: String,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): SymbolIntPair =
+        ): TestDomain.SymbolIntPair =
             TestDomain.SymbolIntPair(
                 first = first.asPrimitive(),
                 second = second.asPrimitive(),
@@ -1614,7 +1614,7 @@ class TestDomain private constructor() {
             first: SymbolPrimitive,
             second: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): SymbolIntPair =
+        ): TestDomain.SymbolIntPair =
             TestDomain.SymbolIntPair(
                 first = first,
                 second = second,
@@ -1622,33 +1622,33 @@ class TestDomain private constructor() {
         
         
         fun ionIntPair(
-            firs: IonElement,
+            first: IonElement,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): IonIntPair =
+        ): TestDomain.IonIntPair =
             TestDomain.IonIntPair(
-                firs = firs,
+                first = first,
                 second = second.asPrimitive(),
                 metas = metas)
         
         fun ionIntPair_(
-            firs: IonElement,
+            first: IonElement,
             second: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): IonIntPair =
+        ): TestDomain.IonIntPair =
             TestDomain.IonIntPair(
-                firs = firs,
+                first = first,
                 second = second,
                 metas = metas)
         
         
         fun ionSymbolPair(
-            firs: IonElement,
+            first: IonElement,
             second: IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): IonSymbolPair =
+        ): TestDomain.IonSymbolPair =
             TestDomain.IonSymbolPair(
-                firs = firs,
+                first = first,
                 second = second,
                 metas = metas)
         
@@ -1657,7 +1657,7 @@ class TestDomain private constructor() {
             first: IntPair,
             second: IntPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): IntPairPair =
+        ): TestDomain.IntPairPair =
             TestDomain.IntPairPair(
                 first = first,
                 second = second,
@@ -1668,7 +1668,7 @@ class TestDomain private constructor() {
             first: SymbolPair,
             second: SymbolPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): SymbolPairPair =
+        ): TestDomain.SymbolPairPair =
             TestDomain.SymbolPairPair(
                 first = first,
                 second = second,
@@ -1679,7 +1679,7 @@ class TestDomain private constructor() {
             first: IonPair,
             second: IonPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): IonPairPair =
+        ): TestDomain.IonPairPair =
             TestDomain.IonPairPair(
                 first = first,
                 second = second,
@@ -1690,7 +1690,7 @@ class TestDomain private constructor() {
             first: Long,
             second: RecursivePair? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): RecursivePair =
+        ): TestDomain.RecursivePair =
             TestDomain.RecursivePair(
                 first = first.asPrimitive(),
                 second = second,
@@ -1700,7 +1700,7 @@ class TestDomain private constructor() {
             first: LongPrimitive,
             second: RecursivePair? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): RecursivePair =
+        ): TestDomain.RecursivePair =
             TestDomain.RecursivePair(
                 first = first,
                 second = second,
@@ -1711,7 +1711,7 @@ class TestDomain private constructor() {
             first: Answer,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): AnswerPair =
+        ): TestDomain.AnswerPair =
             TestDomain.AnswerPair(
                 first = first,
                 second = second,
@@ -1722,7 +1722,7 @@ class TestDomain private constructor() {
             first: Answer,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): AnswerIntPair =
+        ): TestDomain.AnswerIntPair =
             TestDomain.AnswerIntPair(
                 first = first,
                 second = second.asPrimitive(),
@@ -1732,7 +1732,7 @@ class TestDomain private constructor() {
             first: Answer,
             second: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): AnswerIntPair =
+        ): TestDomain.AnswerIntPair =
             TestDomain.AnswerIntPair(
                 first = first,
                 second = second,
@@ -1743,7 +1743,7 @@ class TestDomain private constructor() {
             first: Long,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): IntAnswerPair =
+        ): TestDomain.IntAnswerPair =
             TestDomain.IntAnswerPair(
                 first = first.asPrimitive(),
                 second = second,
@@ -1753,7 +1753,7 @@ class TestDomain private constructor() {
             first: LongPrimitive,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): IntAnswerPair =
+        ): TestDomain.IntAnswerPair =
             TestDomain.IntAnswerPair(
                 first = first,
                 second = second,
@@ -1764,7 +1764,7 @@ class TestDomain private constructor() {
             first: String,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): SymbolAnswerPair =
+        ): TestDomain.SymbolAnswerPair =
             TestDomain.SymbolAnswerPair(
                 first = first.asPrimitive(),
                 second = second,
@@ -1774,7 +1774,7 @@ class TestDomain private constructor() {
             first: SymbolPrimitive,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): SymbolAnswerPair =
+        ): TestDomain.SymbolAnswerPair =
             TestDomain.SymbolAnswerPair(
                 first = first,
                 second = second,
@@ -1785,7 +1785,7 @@ class TestDomain private constructor() {
             first: Answer,
             second: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): AnswerSymbolPair =
+        ): TestDomain.AnswerSymbolPair =
             TestDomain.AnswerSymbolPair(
                 first = first,
                 second = second.asPrimitive(),
@@ -1795,7 +1795,7 @@ class TestDomain private constructor() {
             first: Answer,
             second: SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): AnswerSymbolPair =
+        ): TestDomain.AnswerSymbolPair =
             TestDomain.AnswerSymbolPair(
                 first = first,
                 second = second,
@@ -1805,7 +1805,7 @@ class TestDomain private constructor() {
         fun variadicMin0(
             ints: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): VariadicMin0 =
+        ): TestDomain.VariadicMin0 =
             TestDomain.VariadicMin0(
                 ints = ints.map { it.asPrimitive() },
                 metas = metas)
@@ -1813,7 +1813,7 @@ class TestDomain private constructor() {
         fun variadicMin0_(
             ints: kotlin.collections.List<LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): VariadicMin0 =
+        ): TestDomain.VariadicMin0 =
             TestDomain.VariadicMin0(
                 ints = ints,
                 metas = metas)
@@ -1821,7 +1821,7 @@ class TestDomain private constructor() {
         fun variadicMin0(
             vararg ints: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): VariadicMin0 =
+        ): TestDomain.VariadicMin0 =
             TestDomain.VariadicMin0(
                 ints = ints.map { it.asPrimitive() },
                 metas = metas)
@@ -1829,7 +1829,7 @@ class TestDomain private constructor() {
         fun variadicMin0_(
             vararg ints: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): VariadicMin0 =
+        ): TestDomain.VariadicMin0 =
             TestDomain.VariadicMin0(
                 ints = ints.toList(),
                 metas = metas)
@@ -1838,7 +1838,7 @@ class TestDomain private constructor() {
         fun variadicMin1(
             ints: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): VariadicMin1 =
+        ): TestDomain.VariadicMin1 =
             TestDomain.VariadicMin1(
                 ints = ints.map { it.asPrimitive() },
                 metas = metas)
@@ -1846,7 +1846,7 @@ class TestDomain private constructor() {
         fun variadicMin1_(
             ints: kotlin.collections.List<LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): VariadicMin1 =
+        ): TestDomain.VariadicMin1 =
             TestDomain.VariadicMin1(
                 ints = ints,
                 metas = metas)
@@ -1855,7 +1855,7 @@ class TestDomain private constructor() {
             ints0: Long,
             vararg ints: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): VariadicMin1 =
+        ): TestDomain.VariadicMin1 =
             TestDomain.VariadicMin1(
                 ints = listOfPrimitives(ints0) + ints.map { it.asPrimitive() },
                 metas = metas)
@@ -1864,7 +1864,7 @@ class TestDomain private constructor() {
             ints0: LongPrimitive,
             vararg ints: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): VariadicMin1 =
+        ): TestDomain.VariadicMin1 =
             TestDomain.VariadicMin1(
                 ints = listOfPrimitives(ints0) + ints.toList(),
                 metas = metas)
@@ -1874,7 +1874,7 @@ class TestDomain private constructor() {
             name: String,
             ints: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): ElementVariadic =
+        ): TestDomain.ElementVariadic =
             TestDomain.ElementVariadic(
                 name = name.asPrimitive(),
                 ints = ints.map { it.asPrimitive() },
@@ -1884,7 +1884,7 @@ class TestDomain private constructor() {
             name: SymbolPrimitive,
             ints: kotlin.collections.List<LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): ElementVariadic =
+        ): TestDomain.ElementVariadic =
             TestDomain.ElementVariadic(
                 name = name,
                 ints = ints,
@@ -1894,7 +1894,7 @@ class TestDomain private constructor() {
             name: String,
             vararg ints: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): ElementVariadic =
+        ): TestDomain.ElementVariadic =
             TestDomain.ElementVariadic(
                 name = name.asPrimitive(),
                 ints = ints.map { it.asPrimitive() },
@@ -1904,7 +1904,7 @@ class TestDomain private constructor() {
             name: SymbolPrimitive,
             vararg ints: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): ElementVariadic =
+        ): TestDomain.ElementVariadic =
             TestDomain.ElementVariadic(
                 name = name,
                 ints = ints.toList(),
@@ -1914,7 +1914,7 @@ class TestDomain private constructor() {
         fun optional1(
             value: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): Optional1 =
+        ): TestDomain.Optional1 =
             TestDomain.Optional1(
                 value = value?.asPrimitive(),
                 metas = metas)
@@ -1922,7 +1922,7 @@ class TestDomain private constructor() {
         fun optional1_(
             value: LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): Optional1 =
+        ): TestDomain.Optional1 =
             TestDomain.Optional1(
                 value = value,
                 metas = metas)
@@ -1932,7 +1932,7 @@ class TestDomain private constructor() {
             first: Long? = null,
             second: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): Optional2 =
+        ): TestDomain.Optional2 =
             TestDomain.Optional2(
                 first = first?.asPrimitive(),
                 second = second?.asPrimitive(),
@@ -1942,7 +1942,7 @@ class TestDomain private constructor() {
             first: LongPrimitive? = null,
             second: LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): Optional2 =
+        ): TestDomain.Optional2 =
             TestDomain.Optional2(
                 first = first,
                 second = second,
@@ -1954,7 +1954,7 @@ class TestDomain private constructor() {
             anotherField: String,
             optionalField: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainLevelRecord =
+        ): TestDomain.DomainLevelRecord =
             TestDomain.DomainLevelRecord(
                 someField = someField.asPrimitive(),
                 anotherField = anotherField.asPrimitive(),
@@ -1966,7 +1966,7 @@ class TestDomain private constructor() {
             anotherField: SymbolPrimitive,
             optionalField: LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainLevelRecord =
+        ): TestDomain.DomainLevelRecord =
             TestDomain.DomainLevelRecord(
                 someField = someField,
                 anotherField = anotherField,
@@ -1978,7 +1978,7 @@ class TestDomain private constructor() {
             value: Long,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
-        ): ProductWithRecord =
+        ): TestDomain.ProductWithRecord =
             TestDomain.ProductWithRecord(
                 value = value.asPrimitive(),
                 dlr = dlr,
@@ -1988,7 +1988,7 @@ class TestDomain private constructor() {
             value: LongPrimitive,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
-        ): ProductWithRecord =
+        ): TestDomain.ProductWithRecord =
             TestDomain.ProductWithRecord(
                 value = value,
                 dlr = dlr,
@@ -1999,7 +1999,7 @@ class TestDomain private constructor() {
             first: Entity,
             second: Entity,
             metas: MetaContainer = emptyMetaContainer()
-        ): EntityPair =
+        ): TestDomain.EntityPair =
             TestDomain.EntityPair(
                 first = first,
                 second = second,
@@ -2009,14 +2009,14 @@ class TestDomain private constructor() {
         // Variants for Sum: Answer 
         fun no(
             metas: MetaContainer = emptyMetaContainer()
-        ): Answer =
+        ): TestDomain.Answer.No =
             TestDomain.Answer.No(
                 metas = metas)
         
         
         fun yes(
             metas: MetaContainer = emptyMetaContainer()
-        ): Answer =
+        ): TestDomain.Answer.Yes =
             TestDomain.Answer.Yes(
                 metas = metas)
         
@@ -2026,7 +2026,7 @@ class TestDomain private constructor() {
             value: Long,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
-        ): SumWithRecord =
+        ): TestDomain.SumWithRecord.VariantWithRecord =
             TestDomain.SumWithRecord.VariantWithRecord(
                 value = value.asPrimitive(),
                 dlr = dlr,
@@ -2036,7 +2036,7 @@ class TestDomain private constructor() {
             value: LongPrimitive,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
-        ): SumWithRecord =
+        ): TestDomain.SumWithRecord.VariantWithRecord =
             TestDomain.SumWithRecord.VariantWithRecord(
                 value = value,
                 dlr = dlr,
@@ -2046,7 +2046,7 @@ class TestDomain private constructor() {
         // Variants for Sum: Entity 
         fun slug(
             metas: MetaContainer = emptyMetaContainer()
-        ): Entity =
+        ): TestDomain.Entity.Slug =
             TestDomain.Entity.Slug(
                 metas = metas)
         
@@ -2054,7 +2054,7 @@ class TestDomain private constructor() {
         fun android(
             id: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): Entity =
+        ): TestDomain.Entity.Android =
             TestDomain.Entity.Android(
                 id = id.asPrimitive(),
                 metas = metas)
@@ -2062,7 +2062,7 @@ class TestDomain private constructor() {
         fun android_(
             id: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): Entity =
+        ): TestDomain.Entity.Android =
             TestDomain.Entity.Android(
                 id = id,
                 metas = metas)
@@ -2074,7 +2074,7 @@ class TestDomain private constructor() {
             title: String? = null,
             parent: Entity? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): Entity =
+        ): TestDomain.Entity.Human =
             TestDomain.Entity.Human(
                 firstName = firstName.asPrimitive(),
                 lastName = lastName.asPrimitive(),
@@ -2088,7 +2088,7 @@ class TestDomain private constructor() {
             title: SymbolPrimitive? = null,
             parent: Entity? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): Entity =
+        ): TestDomain.Entity.Human =
             TestDomain.Entity.Human(
                 firstName = firstName,
                 lastName = lastName,
@@ -2314,21 +2314,21 @@ class TestDomain private constructor() {
     }
     
     class IonIntPair(
-        val firs: IonElement,
+        val first: IonElement,
         val second: LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
         override fun withMeta(metaKey: String, metaValue: Any): IonIntPair =
             IonIntPair(
-                firs = firs,
+                first = first,
                 second = second,
                 metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("ion_int_pair"),
-                firs.toIonElement(),
+                first.toIonElement(),
                 second.toIonElement(),
                 metas = metas)
             return elements
@@ -2340,13 +2340,13 @@ class TestDomain private constructor() {
             if (other.javaClass != IonIntPair::class.java) return false
     
             other as IonIntPair
-            if (firs != other.firs) return false
+            if (first != other.first) return false
             if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = firs.hashCode()
+            var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
         }
@@ -2355,21 +2355,21 @@ class TestDomain private constructor() {
     }
     
     class IonSymbolPair(
-        val firs: IonElement,
+        val first: IonElement,
         val second: IonElement,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
         override fun withMeta(metaKey: String, metaValue: Any): IonSymbolPair =
             IonSymbolPair(
-                firs = firs,
+                first = first,
                 second = second,
                 metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
                 ionSymbol("ion_symbol_pair"),
-                firs.toIonElement(),
+                first.toIonElement(),
                 second.toIonElement(),
                 metas = metas)
             return elements
@@ -2381,13 +2381,13 @@ class TestDomain private constructor() {
             if (other.javaClass != IonSymbolPair::class.java) return false
     
             other as IonSymbolPair
-            if (firs != other.firs) return false
+            if (first != other.first) return false
             if (second != other.second) return false
             return true
         }
     
         private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = firs.hashCode()
+            var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
         }
@@ -3366,19 +3366,19 @@ class TestDomain private constructor() {
                 }
                 "ion_int_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val firs = sexp.getRequiredIon(0)
+                    val first = sexp.getRequiredIon(0)
                     val second = sexp.getRequired(1).toLongPrimitive()
                     TestDomain.IonIntPair(
-                        firs,
+                        first,
                         second,
                         metas = sexp.metas)
                 }
                 "ion_symbol_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val firs = sexp.getRequiredIon(0)
+                    val first = sexp.getRequiredIon(0)
                     val second = sexp.getRequiredIon(1)
                     TestDomain.IonSymbolPair(
-                        firs,
+                        first,
                         second,
                         metas = sexp.metas)
                 }
@@ -3608,7 +3608,7 @@ class MultiWordDomain private constructor() {
                 // Tuples
         fun aaaAaa(
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAaa =
+        ): MultiWordDomain.AaaAaa =
             MultiWordDomain.AaaAaa(
                 metas = metas)
         
@@ -3616,7 +3616,7 @@ class MultiWordDomain private constructor() {
         fun aaaAab(
             dField: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAab =
+        ): MultiWordDomain.AaaAab =
             MultiWordDomain.AaaAab(
                 dField = dField?.asPrimitive(),
                 metas = metas)
@@ -3624,7 +3624,7 @@ class MultiWordDomain private constructor() {
         fun aaaAab_(
             dField: LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAab =
+        ): MultiWordDomain.AaaAab =
             MultiWordDomain.AaaAab(
                 dField = dField,
                 metas = metas)
@@ -3634,7 +3634,7 @@ class MultiWordDomain private constructor() {
             dField: Long? = null,
             eField: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAac =
+        ): MultiWordDomain.AaaAac =
             MultiWordDomain.AaaAac(
                 dField = dField?.asPrimitive(),
                 eField = eField?.asPrimitive(),
@@ -3644,7 +3644,7 @@ class MultiWordDomain private constructor() {
             dField: LongPrimitive? = null,
             eField: SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAac =
+        ): MultiWordDomain.AaaAac =
             MultiWordDomain.AaaAac(
                 dField = dField,
                 eField = eField,
@@ -3654,7 +3654,7 @@ class MultiWordDomain private constructor() {
         fun aaaAad(
             dField: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAad =
+        ): MultiWordDomain.AaaAad =
             MultiWordDomain.AaaAad(
                 dField = dField.map { it.asPrimitive() },
                 metas = metas)
@@ -3662,7 +3662,7 @@ class MultiWordDomain private constructor() {
         fun aaaAad_(
             dField: kotlin.collections.List<LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAad =
+        ): MultiWordDomain.AaaAad =
             MultiWordDomain.AaaAad(
                 dField = dField,
                 metas = metas)
@@ -3670,7 +3670,7 @@ class MultiWordDomain private constructor() {
         fun aaaAad(
             vararg dField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAad =
+        ): MultiWordDomain.AaaAad =
             MultiWordDomain.AaaAad(
                 dField = dField.map { it.asPrimitive() },
                 metas = metas)
@@ -3678,7 +3678,7 @@ class MultiWordDomain private constructor() {
         fun aaaAad_(
             vararg dField: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAad =
+        ): MultiWordDomain.AaaAad =
             MultiWordDomain.AaaAad(
                 dField = dField.toList(),
                 metas = metas)
@@ -3687,7 +3687,7 @@ class MultiWordDomain private constructor() {
         fun aaaAae(
             dField: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAae =
+        ): MultiWordDomain.AaaAae =
             MultiWordDomain.AaaAae(
                 dField = dField.map { it.asPrimitive() },
                 metas = metas)
@@ -3695,7 +3695,7 @@ class MultiWordDomain private constructor() {
         fun aaaAae_(
             dField: kotlin.collections.List<LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAae =
+        ): MultiWordDomain.AaaAae =
             MultiWordDomain.AaaAae(
                 dField = dField,
                 metas = metas)
@@ -3705,7 +3705,7 @@ class MultiWordDomain private constructor() {
             dField1: Long,
             vararg dField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAae =
+        ): MultiWordDomain.AaaAae =
             MultiWordDomain.AaaAae(
                 dField = listOfPrimitives(dField0, dField1) + dField.map { it.asPrimitive() },
                 metas = metas)
@@ -3715,7 +3715,7 @@ class MultiWordDomain private constructor() {
             dField1: LongPrimitive,
             vararg dField: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): AaaAae =
+        ): MultiWordDomain.AaaAae =
             MultiWordDomain.AaaAae(
                 dField = listOfPrimitives(dField0, dField1) + dField.toList(),
                 metas = metas)
@@ -3725,7 +3725,7 @@ class MultiWordDomain private constructor() {
             bField: Long,
             cField: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAaa =
+        ): MultiWordDomain.AabAaa =
             MultiWordDomain.AabAaa(
                 bField = bField.asPrimitive(),
                 cField = cField.asPrimitive(),
@@ -3735,7 +3735,7 @@ class MultiWordDomain private constructor() {
             bField: LongPrimitive,
             cField: SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAaa =
+        ): MultiWordDomain.AabAaa =
             MultiWordDomain.AabAaa(
                 bField = bField,
                 cField = cField,
@@ -3747,7 +3747,7 @@ class MultiWordDomain private constructor() {
             cField: String,
             dField: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAab =
+        ): MultiWordDomain.AabAab =
             MultiWordDomain.AabAab(
                 bField = bField.asPrimitive(),
                 cField = cField.asPrimitive(),
@@ -3759,7 +3759,7 @@ class MultiWordDomain private constructor() {
             cField: SymbolPrimitive,
             dField: LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAab =
+        ): MultiWordDomain.AabAab =
             MultiWordDomain.AabAab(
                 bField = bField,
                 cField = cField,
@@ -3773,7 +3773,7 @@ class MultiWordDomain private constructor() {
             dField: Long? = null,
             eField: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAac =
+        ): MultiWordDomain.AabAac =
             MultiWordDomain.AabAac(
                 bField = bField.asPrimitive(),
                 cField = cField.asPrimitive(),
@@ -3787,7 +3787,7 @@ class MultiWordDomain private constructor() {
             dField: LongPrimitive? = null,
             eField: SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAac =
+        ): MultiWordDomain.AabAac =
             MultiWordDomain.AabAac(
                 bField = bField,
                 cField = cField,
@@ -3801,7 +3801,7 @@ class MultiWordDomain private constructor() {
             cField: String,
             dField: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAad =
+        ): MultiWordDomain.AabAad =
             MultiWordDomain.AabAad(
                 bField = bField.asPrimitive(),
                 cField = cField.asPrimitive(),
@@ -3813,7 +3813,7 @@ class MultiWordDomain private constructor() {
             cField: SymbolPrimitive,
             dField: kotlin.collections.List<LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAad =
+        ): MultiWordDomain.AabAad =
             MultiWordDomain.AabAad(
                 bField = bField,
                 cField = cField,
@@ -3825,7 +3825,7 @@ class MultiWordDomain private constructor() {
             cField: String,
             vararg dField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAad =
+        ): MultiWordDomain.AabAad =
             MultiWordDomain.AabAad(
                 bField = bField.asPrimitive(),
                 cField = cField.asPrimitive(),
@@ -3837,7 +3837,7 @@ class MultiWordDomain private constructor() {
             cField: SymbolPrimitive,
             vararg dField: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAad =
+        ): MultiWordDomain.AabAad =
             MultiWordDomain.AabAad(
                 bField = bField,
                 cField = cField,
@@ -3850,7 +3850,7 @@ class MultiWordDomain private constructor() {
             cField: String,
             dField: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAae =
+        ): MultiWordDomain.AabAae =
             MultiWordDomain.AabAae(
                 bField = bField.asPrimitive(),
                 cField = cField.asPrimitive(),
@@ -3862,7 +3862,7 @@ class MultiWordDomain private constructor() {
             cField: SymbolPrimitive,
             dField: kotlin.collections.List<LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAae =
+        ): MultiWordDomain.AabAae =
             MultiWordDomain.AabAae(
                 bField = bField,
                 cField = cField,
@@ -3876,7 +3876,7 @@ class MultiWordDomain private constructor() {
             dField1: Long,
             vararg dField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAae =
+        ): MultiWordDomain.AabAae =
             MultiWordDomain.AabAae(
                 bField = bField.asPrimitive(),
                 cField = cField.asPrimitive(),
@@ -3890,7 +3890,7 @@ class MultiWordDomain private constructor() {
             dField1: LongPrimitive,
             vararg dField: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): AabAae =
+        ): MultiWordDomain.AabAae =
             MultiWordDomain.AabAae(
                 bField = bField,
                 cField = cField,
@@ -3898,11 +3898,32 @@ class MultiWordDomain private constructor() {
                 metas = metas)
         
         
+        fun rrr(
+            aField: Long,
+            bbbField: Long,
+            metas: MetaContainer = emptyMetaContainer()
+        ): MultiWordDomain.Rrr =
+            MultiWordDomain.Rrr(
+                aField = aField.asPrimitive(),
+                bbbField = bbbField.asPrimitive(),
+                metas = metas)
+        
+        fun rrr_(
+            aField: LongPrimitive,
+            bbbField: LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): MultiWordDomain.Rrr =
+            MultiWordDomain.Rrr(
+                aField = aField,
+                bbbField = bbbField,
+                metas = metas)
+        
+        
         // Variants for Sum: SssTtt 
         fun lll(
             uField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): SssTtt =
+        ): MultiWordDomain.SssTtt.Lll =
             MultiWordDomain.SssTtt.Lll(
                 uField = uField.asPrimitive(),
                 metas = metas)
@@ -3910,7 +3931,7 @@ class MultiWordDomain private constructor() {
         fun lll_(
             uField: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): SssTtt =
+        ): MultiWordDomain.SssTtt.Lll =
             MultiWordDomain.SssTtt.Lll(
                 uField = uField,
                 metas = metas)
@@ -3919,7 +3940,7 @@ class MultiWordDomain private constructor() {
         fun mmm(
             vField: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): SssTtt =
+        ): MultiWordDomain.SssTtt.Mmm =
             MultiWordDomain.SssTtt.Mmm(
                 vField = vField.asPrimitive(),
                 metas = metas)
@@ -3927,27 +3948,8 @@ class MultiWordDomain private constructor() {
         fun mmm_(
             vField: SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): SssTtt =
+        ): MultiWordDomain.SssTtt.Mmm =
             MultiWordDomain.SssTtt.Mmm(
-                vField = vField,
-                metas = metas)
-        
-        
-        // Variants for Sum: SssTtu 
-        fun nnn(
-            uField: AaaAaa,
-            metas: MetaContainer = emptyMetaContainer()
-        ): SssTtu =
-            MultiWordDomain.SssTtu.Nnn(
-                uField = uField,
-                metas = metas)
-        
-        
-        fun ooo(
-            vField: AaaAab,
-            metas: MetaContainer = emptyMetaContainer()
-        ): SssTtu =
-            MultiWordDomain.SssTtu.Ooo(
                 vField = vField,
                 metas = metas)
     }
@@ -4368,6 +4370,48 @@ class MultiWordDomain private constructor() {
         override fun hashCode(): Int = myHashCode
     }
     
+    class Rrr(
+        val aField: LongPrimitive,
+        val bbbField: LongPrimitive,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): MultiWordDomainNode() {
+    
+        override fun withMeta(metaKey: String, metaValue: Any): Rrr =
+            Rrr(
+                aField = aField,
+                bbbField = bbbField,
+                metas = metas + metaContainerOf(metaKey to metaValue))
+    
+        override fun toIonElement(): SexpElement {
+            val elements = listOfNotNull(
+                ionSymbol("rrr"),
+                aField?.let { ionSexpOf(ionSymbol("a_field"), it.toIonElement()) },
+                bbbField?.let { ionSexpOf(ionSymbol("b_field"), it.toIonElement()) }
+            )
+    
+            return ionSexpOf(elements, metas = metas)
+        }
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != Rrr::class.java) return false
+    
+            other as Rrr
+            if (aField != other.aField) return false
+            if (bbbField != other.bbbField) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            var hc = aField.hashCode()
+            hc = 31 * hc + bbbField.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
     
     /////////////////////////////////////////////////////////////////////////////
     // Sum Types
@@ -4435,82 +4479,6 @@ class MultiWordDomain private constructor() {
                 if (other.javaClass != Mmm::class.java) return false
         
                 other as Mmm
-                if (vField != other.vField) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = vField.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-    }
-    
-    sealed class SssTtu : MultiWordDomainNode() {
-    
-        class Nnn(
-            val uField: AaaAaa,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): SssTtu() {
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Nnn =
-                Nnn(
-                    uField = uField,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("nnn"),
-                    uField.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Nnn::class.java) return false
-        
-                other as Nnn
-                if (uField != other.uField) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = uField.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class Ooo(
-            val vField: AaaAab,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): SssTtu() {
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Ooo =
-                Ooo(
-                    vField = vField,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("ooo"),
-                    vField.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Ooo::class.java) return false
-        
-                other as Ooo
                 if (vField != other.vField) return false
                 return true
             }
@@ -4627,6 +4595,16 @@ class MultiWordDomain private constructor() {
                         dField,
                         metas = sexp.metas)
                 }
+                "rrr" -> {
+                    val ir = sexp.transformToIntermediateRecord()
+            
+                    val aField = ir.processRequiredField("a_field") { it.toLongPrimitive() }
+                    val bbbField = ir.processRequiredField("bbb_field") { it.toLongPrimitive() }
+            
+                    ir.malformedIfAnyUnprocessedFieldsRemain()
+            
+                    Rrr(aField, bbbField, metas = sexp.metas)
+                }
                 //////////////////////////////////////
                 // Variants for Sum Type 'SssTtt'
                 //////////////////////////////////////
@@ -4641,23 +4619,6 @@ class MultiWordDomain private constructor() {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
                     val vField = sexp.getRequired(0).toSymbolPrimitive()
                     MultiWordDomain.SssTtt.Mmm(
-                        vField,
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'SssTtu'
-                //////////////////////////////////////
-                "nnn" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val uField = sexp.getRequired(0).transformExpect<AaaAaa>()
-                    MultiWordDomain.SssTtu.Nnn(
-                        uField,
-                        metas = sexp.metas)
-                }
-                "ooo" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val vField = sexp.getRequired(0).transformExpect<AaaAab>()
-                    MultiWordDomain.SssTtu.Ooo(
                         vField,
                         metas = sexp.metas)
                 }
@@ -4688,7 +4649,7 @@ class PartiqlBasic private constructor() {
             first: Expr,
             second: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ExprPair =
+        ): PartiqlBasic.ExprPair =
             PartiqlBasic.ExprPair(
                 first = first,
                 second = second,
@@ -4699,7 +4660,7 @@ class PartiqlBasic private constructor() {
             value: Expr,
             asAlias: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): GroupByItem =
+        ): PartiqlBasic.GroupByItem =
             PartiqlBasic.GroupByItem(
                 value = value,
                 asAlias = asAlias?.asPrimitive(),
@@ -4709,7 +4670,7 @@ class PartiqlBasic private constructor() {
             value: Expr,
             asAlias: SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): GroupByItem =
+        ): PartiqlBasic.GroupByItem =
             PartiqlBasic.GroupByItem(
                 value = value,
                 asAlias = asAlias,
@@ -4719,7 +4680,7 @@ class PartiqlBasic private constructor() {
         fun groupByList(
             items: kotlin.collections.List<GroupByItem>,
             metas: MetaContainer = emptyMetaContainer()
-        ): GroupByList =
+        ): PartiqlBasic.GroupByList =
             PartiqlBasic.GroupByList(
                 items = items,
                 metas = metas)
@@ -4728,7 +4689,7 @@ class PartiqlBasic private constructor() {
             items0: GroupByItem,
             vararg items: GroupByItem,
             metas: MetaContainer = emptyMetaContainer()
-        ): GroupByList =
+        ): PartiqlBasic.GroupByList =
             PartiqlBasic.GroupByList(
                 items = listOf(items0) + items.toList(),
                 metas = metas)
@@ -4738,7 +4699,7 @@ class PartiqlBasic private constructor() {
             items: GroupByList,
             groupAsAlias: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): GroupBy =
+        ): PartiqlBasic.GroupBy =
             PartiqlBasic.GroupBy(
                 items = items,
                 groupAsAlias = groupAsAlias?.asPrimitive(),
@@ -4748,7 +4709,7 @@ class PartiqlBasic private constructor() {
             items: GroupByList,
             groupAsAlias: SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): GroupBy =
+        ): PartiqlBasic.GroupBy =
             PartiqlBasic.GroupBy(
                 items = items,
                 groupAsAlias = groupAsAlias,
@@ -4759,7 +4720,7 @@ class PartiqlBasic private constructor() {
         fun projectList(
             items: kotlin.collections.List<ProjectItem>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Projection =
+        ): PartiqlBasic.Projection.ProjectList =
             PartiqlBasic.Projection.ProjectList(
                 items = items,
                 metas = metas)
@@ -4768,7 +4729,7 @@ class PartiqlBasic private constructor() {
             items0: ProjectItem,
             vararg items: ProjectItem,
             metas: MetaContainer = emptyMetaContainer()
-        ): Projection =
+        ): PartiqlBasic.Projection.ProjectList =
             PartiqlBasic.Projection.ProjectList(
                 items = listOf(items0) + items.toList(),
                 metas = metas)
@@ -4777,7 +4738,7 @@ class PartiqlBasic private constructor() {
         fun projectValue(
             value: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Projection =
+        ): PartiqlBasic.Projection.ProjectValue =
             PartiqlBasic.Projection.ProjectValue(
                 value = value,
                 metas = metas)
@@ -4786,7 +4747,7 @@ class PartiqlBasic private constructor() {
         // Variants for Sum: ProjectItem 
         fun projectAll(
             metas: MetaContainer = emptyMetaContainer()
-        ): ProjectItem =
+        ): PartiqlBasic.ProjectItem.ProjectAll =
             PartiqlBasic.ProjectItem.ProjectAll(
                 metas = metas)
         
@@ -4795,7 +4756,7 @@ class PartiqlBasic private constructor() {
             value: Expr,
             asAlias: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): ProjectItem =
+        ): PartiqlBasic.ProjectItem.ProjectExpr =
             PartiqlBasic.ProjectItem.ProjectExpr(
                 value = value,
                 asAlias = asAlias?.asPrimitive(),
@@ -4805,7 +4766,7 @@ class PartiqlBasic private constructor() {
             value: Expr,
             asAlias: SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): ProjectItem =
+        ): PartiqlBasic.ProjectItem.ProjectExpr =
             PartiqlBasic.ProjectItem.ProjectExpr(
                 value = value,
                 asAlias = asAlias,
@@ -4815,28 +4776,28 @@ class PartiqlBasic private constructor() {
         // Variants for Sum: JoinType 
         fun inner(
             metas: MetaContainer = emptyMetaContainer()
-        ): JoinType =
+        ): PartiqlBasic.JoinType.Inner =
             PartiqlBasic.JoinType.Inner(
                 metas = metas)
         
         
         fun left(
             metas: MetaContainer = emptyMetaContainer()
-        ): JoinType =
+        ): PartiqlBasic.JoinType.Left =
             PartiqlBasic.JoinType.Left(
                 metas = metas)
         
         
         fun right(
             metas: MetaContainer = emptyMetaContainer()
-        ): JoinType =
+        ): PartiqlBasic.JoinType.Right =
             PartiqlBasic.JoinType.Right(
                 metas = metas)
         
         
         fun outer(
             metas: MetaContainer = emptyMetaContainer()
-        ): JoinType =
+        ): PartiqlBasic.JoinType.Outer =
             PartiqlBasic.JoinType.Outer(
                 metas = metas)
         
@@ -4848,7 +4809,7 @@ class PartiqlBasic private constructor() {
             atAlias: String? = null,
             byAlias: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): FromSource =
+        ): PartiqlBasic.FromSource.Scan =
             PartiqlBasic.FromSource.Scan(
                 expr = expr,
                 asAlias = asAlias?.asPrimitive(),
@@ -4862,7 +4823,7 @@ class PartiqlBasic private constructor() {
             atAlias: SymbolPrimitive? = null,
             byAlias: SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): FromSource =
+        ): PartiqlBasic.FromSource.Scan =
             PartiqlBasic.FromSource.Scan(
                 expr = expr,
                 asAlias = asAlias,
@@ -4877,7 +4838,7 @@ class PartiqlBasic private constructor() {
             right: FromSource,
             predicate: Expr? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): FromSource =
+        ): PartiqlBasic.FromSource.Join =
             PartiqlBasic.FromSource.Join(
                 type = type,
                 left = left,
@@ -4889,14 +4850,14 @@ class PartiqlBasic private constructor() {
         // Variants for Sum: CaseSensitivity 
         fun caseSensitive(
             metas: MetaContainer = emptyMetaContainer()
-        ): CaseSensitivity =
+        ): PartiqlBasic.CaseSensitivity.CaseSensitive =
             PartiqlBasic.CaseSensitivity.CaseSensitive(
                 metas = metas)
         
         
         fun caseInsensitive(
             metas: MetaContainer = emptyMetaContainer()
-        ): CaseSensitivity =
+        ): PartiqlBasic.CaseSensitivity.CaseInsensitive =
             PartiqlBasic.CaseSensitivity.CaseInsensitive(
                 metas = metas)
         
@@ -4904,14 +4865,14 @@ class PartiqlBasic private constructor() {
         // Variants for Sum: ScopeQualifier 
         fun unqualified(
             metas: MetaContainer = emptyMetaContainer()
-        ): ScopeQualifier =
+        ): PartiqlBasic.ScopeQualifier.Unqualified =
             PartiqlBasic.ScopeQualifier.Unqualified(
                 metas = metas)
         
         
         fun qualified(
             metas: MetaContainer = emptyMetaContainer()
-        ): ScopeQualifier =
+        ): PartiqlBasic.ScopeQualifier.Qualified =
             PartiqlBasic.ScopeQualifier.Qualified(
                 metas = metas)
         
@@ -4919,14 +4880,14 @@ class PartiqlBasic private constructor() {
         // Variants for Sum: SetQuantifier 
         fun all(
             metas: MetaContainer = emptyMetaContainer()
-        ): SetQuantifier =
+        ): PartiqlBasic.SetQuantifier.All =
             PartiqlBasic.SetQuantifier.All(
                 metas = metas)
         
         
         fun distinct(
             metas: MetaContainer = emptyMetaContainer()
-        ): SetQuantifier =
+        ): PartiqlBasic.SetQuantifier.Distinct =
             PartiqlBasic.SetQuantifier.Distinct(
                 metas = metas)
         
@@ -4935,7 +4896,7 @@ class PartiqlBasic private constructor() {
         fun pathExpr(
             expr: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PathElement =
+        ): PartiqlBasic.PathElement.PathExpr =
             PartiqlBasic.PathElement.PathExpr(
                 expr = expr,
                 metas = metas)
@@ -4943,14 +4904,14 @@ class PartiqlBasic private constructor() {
         
         fun pathWildcard(
             metas: MetaContainer = emptyMetaContainer()
-        ): PathElement =
+        ): PartiqlBasic.PathElement.PathWildcard =
             PartiqlBasic.PathElement.PathWildcard(
                 metas = metas)
         
         
         fun pathUnpivot(
             metas: MetaContainer = emptyMetaContainer()
-        ): PathElement =
+        ): PartiqlBasic.PathElement.PathUnpivot =
             PartiqlBasic.PathElement.PathUnpivot(
                 metas = metas)
         
@@ -4959,7 +4920,7 @@ class PartiqlBasic private constructor() {
         fun lit(
             value: IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Lit =
             PartiqlBasic.Expr.Lit(
                 value = value,
                 metas = metas)
@@ -4970,7 +4931,7 @@ class PartiqlBasic private constructor() {
             case: CaseSensitivity,
             scopeQualifier: ScopeQualifier,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Id =
             PartiqlBasic.Expr.Id(
                 name = name.asPrimitive(),
                 case = case,
@@ -4982,7 +4943,7 @@ class PartiqlBasic private constructor() {
             case: CaseSensitivity,
             scopeQualifier: ScopeQualifier,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Id =
             PartiqlBasic.Expr.Id(
                 name = name,
                 case = case,
@@ -4993,7 +4954,7 @@ class PartiqlBasic private constructor() {
         fun parameter(
             index: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Parameter =
             PartiqlBasic.Expr.Parameter(
                 index = index.asPrimitive(),
                 metas = metas)
@@ -5001,7 +4962,7 @@ class PartiqlBasic private constructor() {
         fun parameter_(
             index: LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Parameter =
             PartiqlBasic.Expr.Parameter(
                 index = index,
                 metas = metas)
@@ -5010,7 +4971,7 @@ class PartiqlBasic private constructor() {
         fun not(
             expr: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Not =
             PartiqlBasic.Expr.Not(
                 expr = expr,
                 metas = metas)
@@ -5019,7 +4980,7 @@ class PartiqlBasic private constructor() {
         fun plus(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Plus =
             PartiqlBasic.Expr.Plus(
                 operands = operands,
                 metas = metas)
@@ -5029,7 +4990,7 @@ class PartiqlBasic private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Plus =
             PartiqlBasic.Expr.Plus(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -5038,7 +4999,7 @@ class PartiqlBasic private constructor() {
         fun minus(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Minus =
             PartiqlBasic.Expr.Minus(
                 operands = operands,
                 metas = metas)
@@ -5048,7 +5009,7 @@ class PartiqlBasic private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Minus =
             PartiqlBasic.Expr.Minus(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -5057,7 +5018,7 @@ class PartiqlBasic private constructor() {
         fun times(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Times =
             PartiqlBasic.Expr.Times(
                 operands = operands,
                 metas = metas)
@@ -5067,7 +5028,7 @@ class PartiqlBasic private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Times =
             PartiqlBasic.Expr.Times(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -5076,7 +5037,7 @@ class PartiqlBasic private constructor() {
         fun divide(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Divide =
             PartiqlBasic.Expr.Divide(
                 operands = operands,
                 metas = metas)
@@ -5086,7 +5047,7 @@ class PartiqlBasic private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Divide =
             PartiqlBasic.Expr.Divide(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -5095,7 +5056,7 @@ class PartiqlBasic private constructor() {
         fun modulo(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Modulo =
             PartiqlBasic.Expr.Modulo(
                 operands = operands,
                 metas = metas)
@@ -5105,7 +5066,7 @@ class PartiqlBasic private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Modulo =
             PartiqlBasic.Expr.Modulo(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -5114,7 +5075,7 @@ class PartiqlBasic private constructor() {
         fun concat(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Concat =
             PartiqlBasic.Expr.Concat(
                 operands = operands,
                 metas = metas)
@@ -5124,7 +5085,7 @@ class PartiqlBasic private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Concat =
             PartiqlBasic.Expr.Concat(
                 operands = listOf(operands0, operands1) + operands.toList(),
                 metas = metas)
@@ -5135,7 +5096,7 @@ class PartiqlBasic private constructor() {
             right: Expr,
             escape: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Like =
             PartiqlBasic.Expr.Like(
                 left = left,
                 right = right,
@@ -5148,7 +5109,7 @@ class PartiqlBasic private constructor() {
             from: Expr,
             to: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Between =
             PartiqlBasic.Expr.Between(
                 value = value,
                 from = from,
@@ -5160,7 +5121,7 @@ class PartiqlBasic private constructor() {
             root: Expr,
             elements: kotlin.collections.List<PathElement>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Path =
             PartiqlBasic.Expr.Path(
                 root = root,
                 elements = elements,
@@ -5171,7 +5132,7 @@ class PartiqlBasic private constructor() {
             elements0: PathElement,
             vararg elements: PathElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Path =
             PartiqlBasic.Expr.Path(
                 root = root,
                 elements = listOf(elements0) + elements.toList(),
@@ -5182,7 +5143,7 @@ class PartiqlBasic private constructor() {
             name: String,
             args: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Call =
             PartiqlBasic.Expr.Call(
                 name = name.asPrimitive(),
                 args = args,
@@ -5192,7 +5153,7 @@ class PartiqlBasic private constructor() {
             name: SymbolPrimitive,
             args: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Call =
             PartiqlBasic.Expr.Call(
                 name = name,
                 args = args,
@@ -5203,7 +5164,7 @@ class PartiqlBasic private constructor() {
             args0: Expr,
             vararg args: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Call =
             PartiqlBasic.Expr.Call(
                 name = name.asPrimitive(),
                 args = listOf(args0) + args.toList(),
@@ -5214,7 +5175,7 @@ class PartiqlBasic private constructor() {
             args0: Expr,
             vararg args: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Call =
             PartiqlBasic.Expr.Call(
                 name = name,
                 args = listOf(args0) + args.toList(),
@@ -5223,22 +5184,26 @@ class PartiqlBasic private constructor() {
         
         fun callAgg(
             name: String,
-            setQuantifier: Expr,
+            setQuantifier: SetQuantifier,
+            arg: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.CallAgg =
             PartiqlBasic.Expr.CallAgg(
                 name = name.asPrimitive(),
                 setQuantifier = setQuantifier,
+                arg = arg,
                 metas = metas)
         
         fun callAgg_(
             name: SymbolPrimitive,
-            setQuantifier: Expr,
+            setQuantifier: SetQuantifier,
+            arg: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.CallAgg =
             PartiqlBasic.Expr.CallAgg(
                 name = name,
                 setQuantifier = setQuantifier,
+                arg = arg,
                 metas = metas)
         
         
@@ -5246,7 +5211,7 @@ class PartiqlBasic private constructor() {
             value: Expr,
             branches: kotlin.collections.List<ExprPair>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.SimpleCase =
             PartiqlBasic.Expr.SimpleCase(
                 value = value,
                 branches = branches,
@@ -5257,7 +5222,7 @@ class PartiqlBasic private constructor() {
             branches0: ExprPair,
             vararg branches: ExprPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.SimpleCase =
             PartiqlBasic.Expr.SimpleCase(
                 value = value,
                 branches = listOf(branches0) + branches.toList(),
@@ -5267,7 +5232,7 @@ class PartiqlBasic private constructor() {
         fun searchedCase(
             branches: kotlin.collections.List<ExprPair>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.SearchedCase =
             PartiqlBasic.Expr.SearchedCase(
                 branches = branches,
                 metas = metas)
@@ -5276,7 +5241,7 @@ class PartiqlBasic private constructor() {
             branches0: ExprPair,
             vararg branches: ExprPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.SearchedCase =
             PartiqlBasic.Expr.SearchedCase(
                 branches = listOf(branches0) + branches.toList(),
                 metas = metas)
@@ -5285,7 +5250,7 @@ class PartiqlBasic private constructor() {
         fun struct(
             fields: kotlin.collections.List<ExprPair>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Struct =
             PartiqlBasic.Expr.Struct(
                 fields = fields,
                 metas = metas)
@@ -5293,7 +5258,7 @@ class PartiqlBasic private constructor() {
         fun struct(
             vararg fields: ExprPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Struct =
             PartiqlBasic.Expr.Struct(
                 fields = fields.toList(),
                 metas = metas)
@@ -5302,7 +5267,7 @@ class PartiqlBasic private constructor() {
         fun bag(
             values: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Bag =
             PartiqlBasic.Expr.Bag(
                 values = values,
                 metas = metas)
@@ -5310,7 +5275,7 @@ class PartiqlBasic private constructor() {
         fun bag(
             vararg values: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Bag =
             PartiqlBasic.Expr.Bag(
                 values = values.toList(),
                 metas = metas)
@@ -5319,7 +5284,7 @@ class PartiqlBasic private constructor() {
         fun list(
             values: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.List =
             PartiqlBasic.Expr.List(
                 values = values,
                 metas = metas)
@@ -5327,7 +5292,7 @@ class PartiqlBasic private constructor() {
         fun list(
             vararg values: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.List =
             PartiqlBasic.Expr.List(
                 values = values.toList(),
                 metas = metas)
@@ -5342,7 +5307,7 @@ class PartiqlBasic private constructor() {
             having: Expr? = null,
             limit: Expr? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): Expr =
+        ): PartiqlBasic.Expr.Select =
             PartiqlBasic.Expr.Select(
                 setq = setq,
                 project = project,
@@ -6698,7 +6663,8 @@ class PartiqlBasic private constructor() {
     
         class CallAgg(
             val name: SymbolPrimitive,
-            val setQuantifier: Expr,
+            val setQuantifier: SetQuantifier,
+            val arg: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
@@ -6706,6 +6672,7 @@ class PartiqlBasic private constructor() {
                 CallAgg(
                     name = name,
                     setQuantifier = setQuantifier,
+                    arg = arg,
                     metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
@@ -6713,6 +6680,7 @@ class PartiqlBasic private constructor() {
                     ionSymbol("call_agg"),
                     name.toIonElement(),
                     setQuantifier.toIonElement(),
+                    arg.toIonElement(),
                     metas = metas)
                 return elements
             }
@@ -6725,12 +6693,14 @@ class PartiqlBasic private constructor() {
                 other as CallAgg
                 if (name != other.name) return false
                 if (setQuantifier != other.setQuantifier) return false
+                if (arg != other.arg) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
                 var hc = name.hashCode()
                 hc = 31 * hc + setQuantifier.hashCode()
+                hc = 31 * hc + arg.hashCode()
                 hc
             }
         
@@ -7300,12 +7270,14 @@ class PartiqlBasic private constructor() {
                         metas = sexp.metas)
                 }
                 "call_agg" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
+                    sexp.requireArityOrMalformed(IntRange(3, 3))
                     val name = sexp.getRequired(0).toSymbolPrimitive()
-                    val setQuantifier = sexp.getRequired(1).transformExpect<Expr>()
+                    val setQuantifier = sexp.getRequired(1).transformExpect<SetQuantifier>()
+                    val arg = sexp.getRequired(2).transformExpect<Expr>()
                     PartiqlBasic.Expr.CallAgg(
                         name,
                         setQuantifier,
+                        arg,
                         metas = sexp.metas)
                 }
                 "simple_case" -> {

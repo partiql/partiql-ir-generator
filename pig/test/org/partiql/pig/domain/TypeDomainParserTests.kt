@@ -33,8 +33,8 @@ class TypeDomainParserTests {
             """
                 (define test_domain 
                     (domain 
-                        (product foo (a string) (b (* int 2)))
-                        (product bar (a bat) (b (? baz)) (c (* blargh 10)))))
+                        (product foo a::string b::(* int 2))
+                        (product bar a::bat b::(? baz) c::(* blargh 10))))
             """)
 
     @Test
@@ -43,7 +43,8 @@ class TypeDomainParserTests {
                 (define test_domain 
                     (domain 
                         (record foo (bat int) (blorg (? int)))
-                        (record bar (bloo int) (blat (* int 1)))))
+                        (record bar (bloo int) (blat (* int 1)))
+                        (record bat xx::(x int) yy::(y int))))
             """)
 
     @Test
@@ -53,18 +54,18 @@ class TypeDomainParserTests {
                 (define some_domain
                     (domain 
                         (sum test_sum
-                        // Product with no elements
-                        (product vacuum)
-                        
-                        // Product with one element
-                        (product lonely (single int))
-                        
-                        // Product with two elements
-                        (product company (id int) (name symbol))
-                        
-                        // Record with three elements
-                        (record crowd (first int) (second symbol) (third ion))
-                        )))
+                            // Product with no elements
+                            (vacuum)
+                            
+                            // Product with one element
+                            (lonely single::int)
+                            
+                            // Product with two elements
+                            (company id::int name::symbol)
+                            
+                            // Record with three elements
+                            (crowd first::int second::symbol third::ion)
+                            )))
             """)
 
 
@@ -75,11 +76,11 @@ class TypeDomainParserTests {
                     (permute_domain some_domain
                         (exclude excluded_type)
                         (include 
-                            (product included_product (a int)))
+                            (product included_product a::int))
                         (with altered_sum
                             (exclude removed_variant)
                             (include
-                                (product added_variant (a int) (b int))))))
+                                (added_variant a::int b::int)))))
             """)
 
     private fun runTestCase(tc: String) {

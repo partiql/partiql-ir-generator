@@ -40,7 +40,7 @@ class CreateCustomFreeMarkerGlobalsTest {
                                 tag = "foo",
                                 tupleType = TupleType.PRODUCT,
                                 namedElements = listOf(
-                                    NamedElement("bat", TypeRef("int", Arity.Required, em), em)),
+                                    NamedElement("bat", "baz", TypeRef("int", Arity.Required, em), em)),
                                 metas = em),
                             DataType.Sum(
                                 "some_sum",
@@ -49,7 +49,7 @@ class CreateCustomFreeMarkerGlobalsTest {
                                         tag = "bar",
                                         tupleType = TupleType.PRODUCT,
                                         namedElements = listOf(
-                                            NamedElement("bloo", TypeRef("int", Arity.Required, em), em)),
+                                            NamedElement("bloo", "blar", TypeRef("int", Arity.Required, em), em)),
                                         metas = em)),
                                 metas = em)))))
 
@@ -65,11 +65,12 @@ class CreateCustomFreeMarkerGlobalsTest {
                         name = "test_domain",
                         tuples = listOf(
                             CTuple(
-                                name = "foo",
+                                tag = "foo",
                                 tupleType = TupleType.PRODUCT,
                                 elements = listOf(
                                     CElement(
-                                        name = "bat",
+                                        identifier = "bat",
+                                        tag = "baz",
                                         type = "int",
                                         isVariadic = false,
                                         isOptional = false
@@ -81,11 +82,12 @@ class CreateCustomFreeMarkerGlobalsTest {
                                 name = "some_sum",
                                 variants= listOf(
                                     CTuple(
-                                        name="bar",
+                                        tag ="bar",
                                         memberOfType="some_sum",
                                         elements=listOf(
                                                 CElement(
-                                                    name="bloo",
+                                                    identifier="bloo",
+                                                    tag="blar",
                                                     type="int",
                                                     isVariadic=false,
                                                     isOptional=false)),

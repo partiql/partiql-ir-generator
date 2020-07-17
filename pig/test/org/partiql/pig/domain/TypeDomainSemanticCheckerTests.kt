@@ -34,8 +34,12 @@ class TypeDomainSemanticCheckerTests {
     fun perumteErrorsTest(tc: TestCase) = runTest(tc)
 
     @ParameterizedTest
-    @MethodSource("parametersForNameErrorsTest")
-    fun nameErrorsTest(tc: TestCase) = runTest(tc)
+    @MethodSource("parametersForNameErrorsTest1")
+    fun nameErrorsTest1(tc: TestCase) = runTest(tc)
+
+    @ParameterizedTest
+    @MethodSource("parametersForNameErrorsTest2")
+    fun nameErrorsTest2(tc: TestCase) = runTest(tc)
 
     private fun runTest(tc: TestCase) {
         val u = parseTypeUniverse(tc.typeUniverseText)
@@ -59,22 +63,22 @@ class TypeDomainSemanticCheckerTests {
                      makeErr(1, 29, SemanticErrorContext.EmptySumType("empty_sum"))),
 
             // Product element arity ordering
-            TestCase("(define some_domain (domain (product some_product (a (? int)) (b int))))",
-                     makeErr(1, 63, SemanticErrorContext.RequiredElementAfterOptional)),
+            TestCase("(define some_domain (domain (product some_product x::(? int) y::int)))",
+                     makeErr(1, 62, SemanticErrorContext.RequiredElementAfterOptional)),
 
-            TestCase("(define some_domain (domain (product some_product (a (* int 1)) (b int))))",
-                makeErr(1, 65, SemanticErrorContext.RequiredElementAfterVariadic)),
+            TestCase("(define some_domain (domain (product some_product x::(? int) y::(* int 1))))",
+                     makeErr(1, 62, SemanticErrorContext.ProductCannotHaveBothOptionalAndVariadicElements)),
 
-            TestCase("(define some_domain (domain (product some_product (a (? int)) (b (* int 1)))))",
-                     makeErr(1, 63, SemanticErrorContext.ProductCannotHaveBothOptionalAndVariadicElements)),
+            TestCase("(define some_domain (domain (product some_product x::(* int 1) y::int)))",
+                     makeErr(1, 64, SemanticErrorContext.RequiredElementAfterVariadic)),
 
-            TestCase("(define some_domain (domain (product some_product (a (* int 1)) (b (? int)))))",
-                     makeErr(1, 65, SemanticErrorContext.OptionalElementAfterVariadic)),
+            TestCase("(define some_domain (domain (product some_product x::(* int 1) y::(? int))))",
+                     makeErr(1, 64, SemanticErrorContext.OptionalElementAfterVariadic)),
 
-            TestCase("(define some_domain (domain (product some_product (a (* int 1)) (b (* int 1)))))",
-                     makeErr(1, 65, SemanticErrorContext.MoreThanOneVariadicElement)),
+            TestCase("(define some_domain (domain (product some_product x::(* int 1) y::(* int 1))))",
+                     makeErr(1, 64, SemanticErrorContext.MoreThanOneVariadicElement)),
 
-            TestCase("(define some_domain (domain (product some_product (a (? ion)))))",
+            TestCase("(define some_domain (domain (product some_product x::(? ion))))",
                      makeErr(1, 51, SemanticErrorContext.OptionalIonTypeElement)))
 
         @JvmStatic
@@ -89,87 +93,110 @@ class TypeDomainSemanticCheckerTests {
             TestCase("(define some_domain (domain)) (define some_permuted_domain (permute_domain some_domain (with nonexistent)))",
                      makeErr(1, 88, SemanticErrorContext.CannotPermuteNonExistentSum("nonexistent", "some_permuted_domain", "some_domain"))),
 
-            TestCase("(define some_domain (domain (sum some_sum (product a (x int))))) (define some_permuted_domain (permute_domain some_domain (with some_sum (exclude nonexistent))))",
-                     makeErr(1, 123, SemanticErrorContext.CannotRemoveNonExistentSumVariant(sumTypeName = "some_sum", variantName = "nonexistent"))),
+            TestCase("(define some_domain (domain (sum some_sum (a x::int)))) (define some_permuted_domain (permute_domain some_domain (with some_sum (exclude nonexistent))))",
+                     makeErr(1, 114, SemanticErrorContext.CannotRemoveNonExistentSumVariant(sumTypeName = "some_sum", variantName = "nonexistent"))),
 
             TestCase("(define some_domain (domain)) (define some_domain (permute_domain some_domain (with int)))",
                      makeErr(1, 79, SemanticErrorContext.CannotPermuteNonSumType("int"))),
 
-            TestCase("(define some_domain (domain (product foo (x int)))) (define some_domain (permute_domain some_domain (with foo)))",
-                     makeErr(1, 101, SemanticErrorContext.CannotPermuteNonSumType("foo"))),
+            TestCase("(define some_domain (domain (product x::foo y::int))) (define some_domain (permute_domain some_domain (with foo)))",
+                     makeErr(1, 103, SemanticErrorContext.CannotPermuteNonSumType("foo"))),
 
             TestCase("(define some_domain (domain)) (define permuted_domain (permute_domain some_domain (exclude int)))",
                      makeErr(1, 55, SemanticErrorContext.CannotRemoveBuiltinType("int"))),
 
-            TestCase("(define some_domain (domain (product some_product (x undefined))))",
-                     makeErr(1, 54, SemanticErrorContext.UndefinedType("undefined"))),
+            TestCase("(define some_domain (domain (product some_product x::undefined)))",
+                     makeErr(1, 51, SemanticErrorContext.UndefinedType("undefined"))),
 
             // Excluding the only variant from a sum should result in the EmptySumType error
-            TestCase("(define some_domain (domain (sum non_empty_sum (product a (x int))))) (define another_domain (permute_domain some_domain (with non_empty_sum (exclude a))))",
-                     makeErr(1, 94, SemanticErrorContext.EmptySumType("non_empty_sum"))))
+            TestCase("(define some_domain (domain (sum non_empty_sum (a x::int)))) (define another_domain (permute_domain some_domain (with non_empty_sum (exclude a))))",
+                     makeErr(1, 85, SemanticErrorContext.EmptySumType("non_empty_sum"))))
 
         @JvmStatic
         @Suppress("unused")
-        fun parametersForNameErrorsTest() = listOf(
-            // Variant name used in place of type name (in same sum)
-            TestCase("(define some_domain (domain (sum some_sum (product a_variant)) (product b_variant (a a_variant))))",
-                     makeErr(1, 86, SemanticErrorContext.NotATypeName("a_variant"))),
+        fun parametersForNameErrorsTest1() = listOf(
+            // Variant tag used in place of type tag (in same sum)
+            TestCase("(define some_domain (domain (sum some_sum (a_variant) (b_variant x::a_variant))))",
+                     makeErr(1, 66, SemanticErrorContext.NotATypeName("a_variant"))),
 
-            // Variant name used in place of type name (in a different sum)
-            TestCase("(define some_domain (domain (sum some_sum (product a_variant)) (sum another_sum (product b_variant (x a_variant)))))",
-                     makeErr(1, 103, SemanticErrorContext.NotATypeName("a_variant"))),
+            // Variant tag used in place of type name (in a different sum)
+            TestCase("(define some_domain (domain (sum some_sum (a_variant)) (sum another_sum (b_variant x::a_variant))))",
+                     makeErr(1, 84, SemanticErrorContext.NotATypeName("a_variant"))),
 
-            // Field name used in place of type name (in same sum)
-            TestCase("(define some_domain (domain (sum some_sum (product a_variant (a_field int)) (product b_variant (x a_field)))))",
-                     makeErr(1, 99, SemanticErrorContext.UndefinedType("a_field"))),
-            
+            // Field tag used in place of type name (in same sum)
+            TestCase("(define some_domain (domain (sum some_sum (a_variant (a_field int)) (b_variant x::a_field))))",
+                     makeErr(1, 80, SemanticErrorContext.UndefinedType("a_field"))),
+
+            // Variant identifier used in place of type name (in a different sum)
+            TestCase("(define some_domain (domain (sum some_sum av::(a_variant)) (sum another_sum (b_variant x::av))))",
+                     makeErr(1, 88, SemanticErrorContext.UndefinedType("av"))),
+
+            // Field identifier used in place of type name (in same sum)
+            TestCase("(define some_domain (domain (sum some_sum (a_variant af::(a_field int)) (b_variant x::af))))",
+                     makeErr(1, 84, SemanticErrorContext.UndefinedType("af"))),
+
             // Duplicate domain name
             TestCase("(define foo (domain)) (define foo (permute_domain foo))",
                      makeErr(1, 35, SemanticErrorContext.DuplicateTypeDomainName("foo"))),
 
-            // Duplicate product name
-            TestCase("(define some_domain (domain (product some_product (x int)) (product some_product)))",
-                     makeErr(1, 60, SemanticErrorContext.NameAlreadyUsed("some_product", "some_domain"))),
+            // Duplicate product tag
+            TestCase("(define some_domain (domain (product some_product x::int) (product some_product)))",
+                     makeErr(1, 59, SemanticErrorContext.NameAlreadyUsed("some_product", "some_domain"))),
 
-            // Duplicate sum name
-            TestCase("(define some_domain (domain (sum dup_sum (product variant)) (sum dup_sum (product variant))))",
-                     makeErr(1, 61, SemanticErrorContext.NameAlreadyUsed("dup_sum", "some_domain"))),
+            // Duplicate sum tag
+            TestCase("(define some_domain (domain (sum dup_sum (variant)) (sum dup_sum (variant))))",
+                     makeErr(1, 53, SemanticErrorContext.NameAlreadyUsed("dup_sum", "some_domain"))),
 
             // Duplicate sum has same name as product
-            TestCase("(define some_domain (domain (sum dup_tag (product variant)) (product dup_tag (n int))))",
-                     makeErr(1, 61, SemanticErrorContext.NameAlreadyUsed("dup_tag", "some_domain"))),
-
-            // Duplicate product has same name as sum
+            TestCase("(define some_domain (domain (sum dup_tag (variant)) (product dup_tag x::int)))",
+                     makeErr(1, 53, SemanticErrorContext.NameAlreadyUsed("dup_tag", "some_domain")))
+        )
+        @JvmStatic
+        @Suppress("unused")
+        fun parametersForNameErrorsTest2() = listOf(
+            // Duplicate product has same tag as sum
             TestCase("(define some_domain (domain (product dup_tag) (sum dup_tag)))",
                      makeErr(1, 47, SemanticErrorContext.NameAlreadyUsed("dup_tag", "some_domain"))),
 
             // Duplicate sum variant (same sum)
-            TestCase("(define some_domain (domain (sum some_sum (product a (x int)) (product a (y int)))))",
-                     makeErr(1, 63, SemanticErrorContext.NameAlreadyUsed("a", "some_domain"))),
+            TestCase("(define some_domain (domain (sum some_sum (a x::int) (a y::int))))",
+                     makeErr(1, 54, SemanticErrorContext.NameAlreadyUsed("a", "some_domain"))),
 
             // Duplicate sum variant (different sums)
-            TestCase("(define some_domain (domain (sum some_sum (product dup_variant (x int))) (sum another_sum (product dup_variant (y int)))))",
-                     makeErr(1, 91, SemanticErrorContext.NameAlreadyUsed("dup_variant", "some_domain"))),
+            TestCase("(define some_domain (domain (sum some_sum (dup_variant x::int)) (sum another_sum (dup_variant y::int))))",
+                     makeErr(1, 82, SemanticErrorContext.NameAlreadyUsed("dup_variant", "some_domain"))),
 
-            // Sum variant uses same name as sum
-            TestCase("(define some_domain (domain (sum dup_tag (product dup_tag))))",
+            // Sum variant uses same tag as sum
+            TestCase("(define some_domain (domain (sum dup_tag (dup_tag))))",
                      makeErr(1, 42, SemanticErrorContext.NameAlreadyUsed("dup_tag", "some_domain"))),
 
-            // Sum variant uses same name as other type in same domain
-            TestCase("(define some_domain (domain (product some_product) (sum some_sum (product some_product))))",
+            // Sum variant uses same tag as other type in same domain
+            TestCase("(define some_domain (domain (product some_product) (sum some_sum (some_product))))",
                      makeErr(1, 66, SemanticErrorContext.NameAlreadyUsed("some_product", "some_domain"))),
 
-            // Duplicate record element name within same sum variant record
-            TestCase("(define some_domain (domain (sum some_sum (record a_variant (some_field int) (some_field int)))))",
-                     makeErr(1, 78, SemanticErrorContext.DuplicateRecordElementName("some_field"))),
+            // Duplicate record element tag within same sum variant record
+            TestCase("(define some_domain (domain (sum some_sum (a_variant (some_field int) (some_field int)))))",
+                     makeErr(1, 71, SemanticErrorContext.DuplicateRecordElementTag("some_field"))),
 
-            // Duplicate record element name
+            // Duplicate record element tag within same record type
             TestCase("(define some_domain (domain (record some_record (some_field int) (some_field int))))",
-                     makeErr(1, 66, SemanticErrorContext.DuplicateRecordElementName("some_field"))),
+                     makeErr(1, 66, SemanticErrorContext.DuplicateRecordElementTag("some_field"))),
 
-            // Duplicate product element name
-            TestCase("(define some_domain (domain (product some_product (some_field int) (some_field int))))",
-                     makeErr(1, 68, SemanticErrorContext.DuplicateRecordElementName("some_field"))),
+            // Duplicate product element tag
+            TestCase("(define some_domain (domain (product some_product some_field::int some_field::int)))",
+                     makeErr(1, 67, SemanticErrorContext.DuplicateElementIdentifier("some_field"))),
+
+            // Duplicate product element identifier
+            TestCase("(define some_domain (domain (product some_product some_field::int some_field::int)))",
+                     makeErr(1, 67, SemanticErrorContext.DuplicateElementIdentifier("some_field"))),
+
+            // Duplicate record element identifier (duplicates other identifier)
+            TestCase("(define some_domain (domain (record some_record x::(x int) x::(y int))))",
+                     makeErr(1, 60, SemanticErrorContext.DuplicateElementIdentifier("x"))),
+
+            // Duplicate record element identifier (duplicates other tag)
+            TestCase("(define some_domain (domain (record some_record (a int) a::(c int))))",
+                     makeErr(1, 57, SemanticErrorContext.DuplicateElementIdentifier("a"))),
 
             // Record with no fields
             TestCase("(define some_domain (domain (record some_record)))",
