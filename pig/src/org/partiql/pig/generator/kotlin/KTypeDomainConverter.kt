@@ -29,14 +29,14 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
     private val defaultBaseClass get() = "${typeDomain.tag}Node"
 
     fun convert(): KTypeDomain {
-        val ktProducts = mutableListOf<KTuple>()
+        val ktTuples = mutableListOf<KTuple>()
         val ktSums = mutableListOf<KSum>()
 
         typeDomain.types.forEach {
             when(it) {
                 DataType.Int, DataType.Symbol, DataType.Ion -> { /* intentionally blank */ }
                 is DataType.Tuple ->
-                    ktProducts.add(
+                    ktTuples.add(
                         it.toKProduct(
                             superClass = defaultBaseClass.snakeToPascalCase(),
                             constructorName = it.tag.snakeToPascalCase()))
@@ -54,7 +54,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             }
         }
 
-        return KTypeDomain(typeDomain.tag.snakeToPascalCase(), typeDomain.tag, ktProducts, ktSums)
+        return KTypeDomain(typeDomain.tag.snakeToPascalCase(), typeDomain.tag, ktTuples, ktSums)
     }
 
     private fun DataType.Tuple.toKProduct(superClass: String, constructorName: String): KTuple {
@@ -122,7 +122,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                 .map {
                     KParameter(
                         kotlinName =  it.identifier.snakeToCamelCase(),
-                        type = it.typeReference.toKotlinTypeName(useKotlinPrimitives),
+                        type = it.typeReference.getQualifiedTypeName(useKotlinPrimitives),
                         defaultValue = if (it.typeReference.arity is Arity.Optional) "null" else null,
                         isVariadic = false)
                 },
@@ -213,17 +213,17 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
      * This computes an complete list of "expanded" variadic parameters for a builder function.
      *
      * "Expansion" here refers adding one argument per required position in a variadic element. For example, the type
-     * definition `(product foo int (* symbol 2))` should generate a builder function with 4 total parameters:
+     * definition `(product foo::foo bar::int bat::(* symbol 2))` should generate a builder function with 4 total
+     * parameters:
      *
      * ```Kotlin
      *     fun foo(
-     *        int0: Long,
-     *        symbol1_required_0: String,
-     *        symbol1_required_1: String,
-     *        vararg symbol1: String
+     *        bar: Long,
+     *        bat1: String,
+     *        bat2: String,
+     *        vararg bat: String
      *     ) = ...
      * ```
-     * // TODO: update the above
      *
      * This provides a way of enforcing the minimum arity of variadic fields of at Kotlin compile-time when
      * using a generated builder.
@@ -235,7 +235,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                     listOf(
                         KParameter(
                             kotlinName = element.identifier.snakeToCamelCase(),
-                            type = element.typeReference.toKotlinTypeName(primitive),
+                            type = element.typeReference.getQualifiedTypeName(primitive),
                             defaultValue = if(arity is Arity.Optional) "null" else null,
                             isVariadic = false))
                 }
@@ -244,7 +244,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                         IntRange(0, arity.minimumArity - 1).map { paramIndex ->
                             KParameter(
                                 kotlinName = "${element.identifier.snakeToCamelCase()}$paramIndex",
-                                type = element.typeReference.toBaseKotlinTypeName(primitive),
+                                type = element.typeReference.getBaseKotlinTypeName(primitive),
                                 defaultValue = null,
                                 isVariadic = false)
                         }
@@ -252,7 +252,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                     val variadicParameter =
                         KParameter(
                             kotlinName = element.identifier.snakeToCamelCase(),
-                            type = element.typeReference.toBaseKotlinTypeName(primitive),
+                            type = element.typeReference.getBaseKotlinTypeName(primitive),
                             defaultValue = null,
                             isVariadic = true)
 
@@ -287,8 +287,8 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             }
         }
 
-    private fun computeProperties(tuple: DataType.Tuple): List<KProperty> {
-        val properties = tuple.namedElements.mapIndexed { ordinal, element ->
+    private fun computeProperties(tuple: DataType.Tuple): List<KProperty> =
+        tuple.namedElements.mapIndexed { ordinal, element ->
             val deserExpr = computeTransformExpr(tuple, element, ordinal)
             val (isVariadic, isNullable) = when (element.typeReference.arity) {
                 is Arity.Required -> false to false
@@ -297,29 +297,25 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             }
             KProperty(
                 kotlinName = element.identifier.snakeToCamelCase(),
-                tag = element.tag, // TODO: use tag
-                type = element.typeReference.toKotlinTypeName(useKotlinPrimitives = false),
+                tag = element.tag,
+                type = element.typeReference.getQualifiedTypeName(useKotlinPrimitives = false),
                 isVariadic = isVariadic,
                 isNullable = isNullable,
-                transformExpr = deserExpr)
+                transformExpr = deserExpr,
+                rawTypeName = element.typeReference.rawTypeName)
         }
-        return properties
-    }
 
-    private fun createExpectCast(typeRef: TypeRef): String {
-        val dataType = typeDomain.resolveTypeRef(typeRef)
-        val expectExpr = when (dataType) {
+    private fun createExpectCast(typeRef: TypeRef): String =
+        when (typeDomain.resolveTypeRef(typeRef)) {
             DataType.Ion -> ""
             DataType.Int -> ".toLongPrimitive()"
             DataType.Symbol -> ".toSymbolPrimitive()"
             is DataType.Tuple, is DataType.Sum ->
                 ".transformExpect<${typeRef.typeName.snakeToPascalCase()}>()"
         }
-        return expectExpr
-    }
 
-    fun TypeRef.toKotlinTypeName(useKotlinPrimitives: Boolean): String =
-        toBaseKotlinTypeName(useKotlinPrimitives).let {
+    private fun TypeRef.getQualifiedTypeName(useKotlinPrimitives: Boolean): String =
+        getBaseKotlinTypeName(useKotlinPrimitives).let {
             when(this.arity) {
                 Arity.Required -> it
                 Arity.Optional -> "$it?"
@@ -327,12 +323,23 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             }
         }
 
-    private fun TypeRef.toBaseKotlinTypeName(kotlinPrimitives: Boolean): String {
+   private fun TypeRef.getBaseKotlinTypeName(kotlinPrimitives: Boolean): String {
         return when (typeName) {
-            "ion" -> "IonElement"
-            "int" -> if (kotlinPrimitives) "Long" else "LongPrimitive"
-            "symbol" -> if (kotlinPrimitives) "String" else "SymbolPrimitive"
+            "ion" -> "com.amazon.ionelement.api.IonElement"
+            "int" -> if (kotlinPrimitives) "Long" else "org.partiql.pig.runtime.LongPrimitive"
+            "symbol" -> if (kotlinPrimitives) "String" else "org.partiql.pig.runtime.SymbolPrimitive"
             else -> this.typeName.snakeToPascalCase()
         }
     }
+
+
+    private val TypeRef.rawTypeName: String
+        get() {
+            return when (typeName) {
+                "ion" -> "IonElement"
+                "int" -> "LongPrimitive"
+                "symbol" -> "SymbolPrimitive"
+                else -> this.typeName.snakeToPascalCase()
+            }
+        }
 }

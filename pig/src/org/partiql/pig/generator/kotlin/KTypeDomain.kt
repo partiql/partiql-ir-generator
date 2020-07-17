@@ -44,7 +44,8 @@ data class KProperty(
     val type: String,
     val isVariadic: Boolean,
     val isNullable: Boolean,
-    val transformExpr: String
+    val transformExpr: String,
+    val rawTypeName: String
 )
 
 data class KParameter(

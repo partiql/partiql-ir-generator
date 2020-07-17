@@ -1,4 +1,4 @@
-[#ftl]
+[#ftl output_format="plainText"]
 [#-- @ftlvariable name="universe" type="org.partiql.pig.generator.kotlin.KTypeUniverse" --]
 [#-- @ftlvariable name="namespace" type="java.lang.String" --]
 [#-- @ftlvariable name="generatedDate" type="java.time.OffsetDateTime" --]
@@ -13,6 +13,8 @@ https://freemarker.apache.org/docs/index.html
 https://freemarker.apache.org/docs/dgui_misc_whitespace.html
 --]
 [#-- Generates a parameter list not including (). --]
+
+
 [#macro parameter_list params]
 [#list params as param]
 [#if param.variadic]vararg [/#if]${param.kotlinName}: ${param.type}[#if param.defaultValue??] = ${param.defaultValue}[/#if],
@@ -237,9 +239,9 @@ private class Transformer : IonElementTransformerBase<${domain.kotlinName}Node>(
             //////////////////////////////////////
             // Tuple Types
             //////////////////////////////////////
-[#list domain.tuples as p]
+[#list domain.tuples as t]
 [@indent count = 8]
-[@transformer_case p domain.kotlinName /]
+[@transformer_case t domain.kotlinName /]
 [/@indent]
 [/#list]
 [/#if]
@@ -257,6 +259,8 @@ private class Transformer : IonElementTransformerBase<${domain.kotlinName}Node>(
         }
     }
 }
+
+[#include "kotlin-visitor.ftl"]
 
 [/@indent]
 }
