@@ -260,7 +260,7 @@ private class Transformer : IonElementTransformerBase<${domain.kotlinName}Node>(
     }
 }
 
-[#include "kotlin-inspecting-visitor.ftl"]
+[#include "kotlin-visitor.ftl"]
 
 [/@indent]
 }

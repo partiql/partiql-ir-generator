@@ -759,7 +759,7 @@ class ToyLang private constructor() {
     }
     
     
-    open class InspectingVisitor : InspectingDomainVisitorBase() {
+    open class Visitor : DomainVisitorBase() {
         ////////////////////////////////////////////////////////////////////////////
         // Visit Functions
         ////////////////////////////////////////////////////////////////////////////
@@ -1627,7 +1627,7 @@ class ToyLangNameless private constructor() {
     }
     
     
-    open class InspectingVisitor : InspectingDomainVisitorBase() {
+    open class Visitor : DomainVisitorBase() {
         ////////////////////////////////////////////////////////////////////////////
         // Visit Functions
         ////////////////////////////////////////////////////////////////////////////
@@ -4116,7 +4116,7 @@ class TestDomain private constructor() {
     }
     
     
-    open class InspectingVisitor : InspectingDomainVisitorBase() {
+    open class Visitor : DomainVisitorBase() {
         ////////////////////////////////////////////////////////////////////////////
         // Visit Functions
         ////////////////////////////////////////////////////////////////////////////
@@ -5501,7 +5501,7 @@ class MultiWordDomain private constructor() {
     }
     
     
-    open class InspectingVisitor : InspectingDomainVisitorBase() {
+    open class Visitor : DomainVisitorBase() {
         ////////////////////////////////////////////////////////////////////////////
         // Visit Functions
         ////////////////////////////////////////////////////////////////////////////
@@ -8347,7 +8347,7 @@ class PartiqlBasic private constructor() {
     }
     
     
-    open class InspectingVisitor : InspectingDomainVisitorBase() {
+    open class Visitor : DomainVisitorBase() {
         ////////////////////////////////////////////////////////////////////////////
         // Visit Functions
         ////////////////////////////////////////////////////////////////////////////

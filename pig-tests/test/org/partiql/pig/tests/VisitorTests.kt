@@ -23,9 +23,9 @@ import org.partiql.pig.tests.generated.TestDomain
 import kotlin.test.assertEquals
 
 const val NUMBER_KEY = "number"
-class InspectingVisitorTests {
+class VisitorTests {
 
-    class DummyVisitor : TestDomain.InspectingVisitor() {
+    class DummyVisitor : TestDomain.Visitor() {
 
         // The best way I have found to test this type of visitor is to observe
         // these side effects.  Normally, if you wanted to extract information
