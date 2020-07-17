@@ -759,6 +759,7 @@ class ToyLang private constructor() {
     }
     
     
+    
     open class InspectingVisitor : InspectingDomainVisitorBase() {
         //////////////////////////////////////
         // Sum Type: Expr
@@ -1622,6 +1623,7 @@ class ToyLangNameless private constructor() {
             }
         }
     }
+    
     
     
     open class InspectingVisitor : InspectingDomainVisitorBase() {
@@ -4110,6 +4112,7 @@ class TestDomain private constructor() {
     }
     
     
+    
     open class InspectingVisitor : InspectingDomainVisitorBase() {
         //////////////////////////////////////
         // Tuple Types
@@ -5490,6 +5493,7 @@ class MultiWordDomain private constructor() {
             }
         }
     }
+    
     
     
     open class InspectingVisitor : InspectingDomainVisitorBase() {
@@ -8333,6 +8337,7 @@ class PartiqlBasic private constructor() {
             }
         }
     }
+    
     
     
     open class InspectingVisitor : InspectingDomainVisitorBase() {
