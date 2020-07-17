@@ -22,7 +22,7 @@ import org.partiql.pig.runtime.SymbolPrimitive
 import org.partiql.pig.tests.generated.TestDomain
 import kotlin.test.assertEquals
 
-const val NUMBER_KEY = "number"
+private const val NUMBER_KEY = "number"
 class InspectingVisitorTests {
 
     class DummyVisitor : TestDomain.InspectingVisitor() {
