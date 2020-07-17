@@ -362,11 +362,7 @@ a single Ion annotation that prefixes the element definition.  For example, give
     last_name::(l symbol))
 ```
 
-Note that identifiers only need to be specified if the name of an element in the generated code should be different
-than in its s-expression representation.  If unspecified (as is 'mi' element above), element's identifier defaults 
-to the tag.
-
-An example s-expression representation would be
+An example s-expression representation would be:
 
 ```
 (person (f James) (mi T) (l Kirk))
@@ -382,8 +378,12 @@ class Person(
 ): ...
 ```
 
-Note that the second property has the `mi` name which was used because the identifier was not specified for the `mi`
+That the second property has the `mi` name which was used because the identifier was not specified for the `mi`
 field in the record definition. 
+
+Note that identifiers only need to be specified if the name of an element in the generated code should be different
+than the tag s-expression representation.  If unspecified (as is 'mi' element above), element's identifier defaults 
+to the tag.
 
 Unlike record elements, product element defintions must include identifiers. 
 
