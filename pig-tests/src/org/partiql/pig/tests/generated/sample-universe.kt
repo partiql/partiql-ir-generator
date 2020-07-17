@@ -759,11 +759,7 @@ class ToyLang private constructor() {
     }
     
     
-    open class Visitor : DomainVisitorBase() {
-        ////////////////////////////////////////////////////////////////////////////
-        // Visit Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
+    open class InspectingVisitor : InspectingDomainVisitorBase() {
         //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
@@ -779,16 +775,17 @@ class ToyLang private constructor() {
         open fun visitExprCall(node: ToyLang.Expr.Call) { }
         open fun visitExprLet(node: ToyLang.Expr.Let) { }
         open fun visitExprFunction(node: ToyLang.Expr.Function) { }
+    }
     
-        ////////////////////////////////////////////////////////////////////////////
-        // Walk Functions
-        ////////////////////////////////////////////////////////////////////////////
+    open class InspectingWalker(
+        visitor: ToyLang.InspectingVisitor
+    ) : InspectingDomainWalkerBase<InspectingVisitor>(visitor) {
     
         //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
         open fun walkExpr(node: ToyLang.Expr) {
-            visitExpr(node)
+            visitor.visitExpr(node)
             when(node) {
                 is ToyLang.Expr.Lit -> walkExprLit(node)
                 is ToyLang.Expr.Variable -> walkExprVariable(node)
@@ -805,62 +802,62 @@ class ToyLang private constructor() {
         }
     
         open fun walkExprLit(node: ToyLang.Expr.Lit) {
-            visitExprLit(node)
+            visitor.visitExprLit(node)
             walkIonElement(node.value)
             walkMetas(node.metas)
         }
     
         open fun walkExprVariable(node: ToyLang.Expr.Variable) {
-            visitExprVariable(node)
+            visitor.visitExprVariable(node)
             walkSymbolPrimitive(node.name)
             walkMetas(node.metas)
         }
     
         open fun walkExprNot(node: ToyLang.Expr.Not) {
-            visitExprNot(node)
+            visitor.visitExprNot(node)
             walkExpr(node.expr)
             walkMetas(node.metas)
         }
     
         open fun walkExprPlus(node: ToyLang.Expr.Plus) {
-            visitExprPlus(node)
+            visitor.visitExprPlus(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprMinus(node: ToyLang.Expr.Minus) {
-            visitExprMinus(node)
+            visitor.visitExprMinus(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprTimes(node: ToyLang.Expr.Times) {
-            visitExprTimes(node)
+            visitor.visitExprTimes(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprDivide(node: ToyLang.Expr.Divide) {
-            visitExprDivide(node)
+            visitor.visitExprDivide(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprModulo(node: ToyLang.Expr.Modulo) {
-            visitExprModulo(node)
+            visitor.visitExprModulo(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprCall(node: ToyLang.Expr.Call) {
-            visitExprCall(node)
+            visitor.visitExprCall(node)
             walkSymbolPrimitive(node.name)
             walkExpr(node.argument)
             walkMetas(node.metas)
         }
     
         open fun walkExprLet(node: ToyLang.Expr.Let) {
-            visitExprLet(node)
+            visitor.visitExprLet(node)
             walkSymbolPrimitive(node.name)
             walkExpr(node.value)
             walkExpr(node.body)
@@ -868,7 +865,7 @@ class ToyLang private constructor() {
         }
     
         open fun walkExprFunction(node: ToyLang.Expr.Function) {
-            visitExprFunction(node)
+            visitor.visitExprFunction(node)
             walkSymbolPrimitive(node.varName)
             walkExpr(node.body)
             walkMetas(node.metas)
@@ -1763,11 +1760,7 @@ class ToyLangNameless private constructor() {
     }
     
     
-    open class Visitor : DomainVisitorBase() {
-        ////////////////////////////////////////////////////////////////////////////
-        // Visit Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
+    open class InspectingVisitor : InspectingDomainVisitorBase() {
         //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
@@ -1783,16 +1776,17 @@ class ToyLangNameless private constructor() {
         open fun visitExprFunction(node: ToyLangNameless.Expr.Function) { }
         open fun visitExprVariable(node: ToyLangNameless.Expr.Variable) { }
         open fun visitExprLet(node: ToyLangNameless.Expr.Let) { }
+    }
     
-        ////////////////////////////////////////////////////////////////////////////
-        // Walk Functions
-        ////////////////////////////////////////////////////////////////////////////
+    open class InspectingWalker(
+        visitor: ToyLangNameless.InspectingVisitor
+    ) : InspectingDomainWalkerBase<InspectingVisitor>(visitor) {
     
         //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
         open fun walkExpr(node: ToyLangNameless.Expr) {
-            visitExpr(node)
+            visitor.visitExpr(node)
             when(node) {
                 is ToyLangNameless.Expr.Lit -> walkExprLit(node)
                 is ToyLangNameless.Expr.Not -> walkExprNot(node)
@@ -1809,69 +1803,69 @@ class ToyLangNameless private constructor() {
         }
     
         open fun walkExprLit(node: ToyLangNameless.Expr.Lit) {
-            visitExprLit(node)
+            visitor.visitExprLit(node)
             walkIonElement(node.value)
             walkMetas(node.metas)
         }
     
         open fun walkExprNot(node: ToyLangNameless.Expr.Not) {
-            visitExprNot(node)
+            visitor.visitExprNot(node)
             walkExpr(node.expr)
             walkMetas(node.metas)
         }
     
         open fun walkExprPlus(node: ToyLangNameless.Expr.Plus) {
-            visitExprPlus(node)
+            visitor.visitExprPlus(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprMinus(node: ToyLangNameless.Expr.Minus) {
-            visitExprMinus(node)
+            visitor.visitExprMinus(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprTimes(node: ToyLangNameless.Expr.Times) {
-            visitExprTimes(node)
+            visitor.visitExprTimes(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprDivide(node: ToyLangNameless.Expr.Divide) {
-            visitExprDivide(node)
+            visitor.visitExprDivide(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprModulo(node: ToyLangNameless.Expr.Modulo) {
-            visitExprModulo(node)
+            visitor.visitExprModulo(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprCall(node: ToyLangNameless.Expr.Call) {
-            visitExprCall(node)
+            visitor.visitExprCall(node)
             walkSymbolPrimitive(node.name)
             walkExpr(node.argument)
             walkMetas(node.metas)
         }
     
         open fun walkExprFunction(node: ToyLangNameless.Expr.Function) {
-            visitExprFunction(node)
+            visitor.visitExprFunction(node)
             walkSymbolPrimitive(node.varName)
             walkExpr(node.body)
             walkMetas(node.metas)
         }
     
         open fun walkExprVariable(node: ToyLangNameless.Expr.Variable) {
-            visitExprVariable(node)
+            visitor.visitExprVariable(node)
             walkLongPrimitive(node.index)
             walkMetas(node.metas)
         }
     
         open fun walkExprLet(node: ToyLangNameless.Expr.Let) {
-            visitExprLet(node)
+            visitor.visitExprLet(node)
             walkLongPrimitive(node.index)
             walkExpr(node.value)
             walkExpr(node.body)
@@ -4388,11 +4382,7 @@ class TestDomain private constructor() {
     }
     
     
-    open class Visitor : DomainVisitorBase() {
-        ////////////////////////////////////////////////////////////////////////////
-        // Visit Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
+    open class InspectingVisitor : InspectingDomainVisitorBase() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
@@ -4446,160 +4436,161 @@ class TestDomain private constructor() {
         open fun visitEntitySlug(node: TestDomain.Entity.Slug) { }
         open fun visitEntityAndroid(node: TestDomain.Entity.Android) { }
         open fun visitEntityHuman(node: TestDomain.Entity.Human) { }
+    }
     
-        ////////////////////////////////////////////////////////////////////////////
-        // Walk Functions
-        ////////////////////////////////////////////////////////////////////////////
+    open class InspectingWalker(
+        visitor: TestDomain.InspectingVisitor
+    ) : InspectingDomainWalkerBase<InspectingVisitor>(visitor) {
     
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
         open fun walkIntPair(node: TestDomain.IntPair) {
-            visitIntPair(node)
+            visitor.visitIntPair(node)
             walkLongPrimitive(node.first)
             walkLongPrimitive(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkSymbolPair(node: TestDomain.SymbolPair) {
-            visitSymbolPair(node)
+            visitor.visitSymbolPair(node)
             walkSymbolPrimitive(node.first)
             walkSymbolPrimitive(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkIonPair(node: TestDomain.IonPair) {
-            visitIonPair(node)
+            visitor.visitIonPair(node)
             walkIonElement(node.first)
             walkIonElement(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkIntSymbolPair(node: TestDomain.IntSymbolPair) {
-            visitIntSymbolPair(node)
+            visitor.visitIntSymbolPair(node)
             walkLongPrimitive(node.first)
             walkSymbolPrimitive(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkSymbolIntPair(node: TestDomain.SymbolIntPair) {
-            visitSymbolIntPair(node)
+            visitor.visitSymbolIntPair(node)
             walkSymbolPrimitive(node.first)
             walkLongPrimitive(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkIonIntPair(node: TestDomain.IonIntPair) {
-            visitIonIntPair(node)
+            visitor.visitIonIntPair(node)
             walkIonElement(node.first)
             walkLongPrimitive(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkIonSymbolPair(node: TestDomain.IonSymbolPair) {
-            visitIonSymbolPair(node)
+            visitor.visitIonSymbolPair(node)
             walkIonElement(node.first)
             walkIonElement(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkIntPairPair(node: TestDomain.IntPairPair) {
-            visitIntPairPair(node)
+            visitor.visitIntPairPair(node)
             walkIntPair(node.first)
             walkIntPair(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkSymbolPairPair(node: TestDomain.SymbolPairPair) {
-            visitSymbolPairPair(node)
+            visitor.visitSymbolPairPair(node)
             walkSymbolPair(node.first)
             walkSymbolPair(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkIonPairPair(node: TestDomain.IonPairPair) {
-            visitIonPairPair(node)
+            visitor.visitIonPairPair(node)
             walkIonPair(node.first)
             walkIonPair(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkRecursivePair(node: TestDomain.RecursivePair) {
-            visitRecursivePair(node)
+            visitor.visitRecursivePair(node)
             walkLongPrimitive(node.first)
             node.second?.let { walkRecursivePair(it) }
             walkMetas(node.metas)
         }
     
         open fun walkAnswerPair(node: TestDomain.AnswerPair) {
-            visitAnswerPair(node)
+            visitor.visitAnswerPair(node)
             walkAnswer(node.first)
             walkAnswer(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkAnswerIntPair(node: TestDomain.AnswerIntPair) {
-            visitAnswerIntPair(node)
+            visitor.visitAnswerIntPair(node)
             walkAnswer(node.first)
             walkLongPrimitive(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkIntAnswerPair(node: TestDomain.IntAnswerPair) {
-            visitIntAnswerPair(node)
+            visitor.visitIntAnswerPair(node)
             walkLongPrimitive(node.first)
             walkAnswer(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkSymbolAnswerPair(node: TestDomain.SymbolAnswerPair) {
-            visitSymbolAnswerPair(node)
+            visitor.visitSymbolAnswerPair(node)
             walkSymbolPrimitive(node.first)
             walkAnswer(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkAnswerSymbolPair(node: TestDomain.AnswerSymbolPair) {
-            visitAnswerSymbolPair(node)
+            visitor.visitAnswerSymbolPair(node)
             walkAnswer(node.first)
             walkSymbolPrimitive(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkVariadicMin0(node: TestDomain.VariadicMin0) {
-            visitVariadicMin0(node)
+            visitor.visitVariadicMin0(node)
             node.ints.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
     
         open fun walkVariadicMin1(node: TestDomain.VariadicMin1) {
-            visitVariadicMin1(node)
+            visitor.visitVariadicMin1(node)
             node.ints.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
     
         open fun walkElementVariadic(node: TestDomain.ElementVariadic) {
-            visitElementVariadic(node)
+            visitor.visitElementVariadic(node)
             walkSymbolPrimitive(node.name)
             node.ints.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
     
         open fun walkOptional1(node: TestDomain.Optional1) {
-            visitOptional1(node)
+            visitor.visitOptional1(node)
             node.value?.let { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
     
         open fun walkOptional2(node: TestDomain.Optional2) {
-            visitOptional2(node)
+            visitor.visitOptional2(node)
             node.first?.let { walkLongPrimitive(it) }
             node.second?.let { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
     
         open fun walkDomainLevelRecord(node: TestDomain.DomainLevelRecord) {
-            visitDomainLevelRecord(node)
+            visitor.visitDomainLevelRecord(node)
             walkLongPrimitive(node.someField)
             walkSymbolPrimitive(node.anotherField)
             node.optionalField?.let { walkLongPrimitive(it) }
@@ -4607,14 +4598,14 @@ class TestDomain private constructor() {
         }
     
         open fun walkProductWithRecord(node: TestDomain.ProductWithRecord) {
-            visitProductWithRecord(node)
+            visitor.visitProductWithRecord(node)
             walkLongPrimitive(node.value)
             walkDomainLevelRecord(node.dlr)
             walkMetas(node.metas)
         }
     
         open fun walkTestSumTriplet(node: TestDomain.TestSumTriplet) {
-            visitTestSumTriplet(node)
+            visitor.visitTestSumTriplet(node)
             walkTestSum(node.a)
             walkTestSum(node.b)
             walkTestSum(node.c)
@@ -4622,7 +4613,7 @@ class TestDomain private constructor() {
         }
     
         open fun walkEntityPair(node: TestDomain.EntityPair) {
-            visitEntityPair(node)
+            visitor.visitEntityPair(node)
             walkEntity(node.first)
             walkEntity(node.second)
             walkMetas(node.metas)
@@ -4632,7 +4623,7 @@ class TestDomain private constructor() {
         // Sum Type: Answer
         //////////////////////////////////////
         open fun walkAnswer(node: TestDomain.Answer) {
-            visitAnswer(node)
+            visitor.visitAnswer(node)
             when(node) {
                 is TestDomain.Answer.No -> walkAnswerNo(node)
                 is TestDomain.Answer.Yes -> walkAnswerYes(node)
@@ -4640,12 +4631,12 @@ class TestDomain private constructor() {
         }
     
         open fun walkAnswerNo(node: TestDomain.Answer.No) {
-            visitAnswerNo(node)
+            visitor.visitAnswerNo(node)
             walkMetas(node.metas)
         }
     
         open fun walkAnswerYes(node: TestDomain.Answer.Yes) {
-            visitAnswerYes(node)
+            visitor.visitAnswerYes(node)
             walkMetas(node.metas)
         }
     
@@ -4653,14 +4644,14 @@ class TestDomain private constructor() {
         // Sum Type: SumWithRecord
         //////////////////////////////////////
         open fun walkSumWithRecord(node: TestDomain.SumWithRecord) {
-            visitSumWithRecord(node)
+            visitor.visitSumWithRecord(node)
             when(node) {
                 is TestDomain.SumWithRecord.VariantWithRecord -> walkSumWithRecordVariantWithRecord(node)
             }
         }
     
         open fun walkSumWithRecordVariantWithRecord(node: TestDomain.SumWithRecord.VariantWithRecord) {
-            visitSumWithRecordVariantWithRecord(node)
+            visitor.visitSumWithRecordVariantWithRecord(node)
             walkLongPrimitive(node.value)
             walkDomainLevelRecord(node.dlr)
             walkMetas(node.metas)
@@ -4670,7 +4661,7 @@ class TestDomain private constructor() {
         // Sum Type: TestSum
         //////////////////////////////////////
         open fun walkTestSum(node: TestDomain.TestSum) {
-            visitTestSum(node)
+            visitor.visitTestSum(node)
             when(node) {
                 is TestDomain.TestSum.One -> walkTestSumOne(node)
                 is TestDomain.TestSum.Two -> walkTestSumTwo(node)
@@ -4679,20 +4670,20 @@ class TestDomain private constructor() {
         }
     
         open fun walkTestSumOne(node: TestDomain.TestSum.One) {
-            visitTestSumOne(node)
+            visitor.visitTestSumOne(node)
             walkLongPrimitive(node.a)
             walkMetas(node.metas)
         }
     
         open fun walkTestSumTwo(node: TestDomain.TestSum.Two) {
-            visitTestSumTwo(node)
+            visitor.visitTestSumTwo(node)
             walkLongPrimitive(node.a)
             walkLongPrimitive(node.b)
             walkMetas(node.metas)
         }
     
         open fun walkTestSumThree(node: TestDomain.TestSum.Three) {
-            visitTestSumThree(node)
+            visitor.visitTestSumThree(node)
             walkLongPrimitive(node.a)
             walkLongPrimitive(node.b)
             walkLongPrimitive(node.c)
@@ -4703,7 +4694,7 @@ class TestDomain private constructor() {
         // Sum Type: Entity
         //////////////////////////////////////
         open fun walkEntity(node: TestDomain.Entity) {
-            visitEntity(node)
+            visitor.visitEntity(node)
             when(node) {
                 is TestDomain.Entity.Slug -> walkEntitySlug(node)
                 is TestDomain.Entity.Android -> walkEntityAndroid(node)
@@ -4712,18 +4703,18 @@ class TestDomain private constructor() {
         }
     
         open fun walkEntitySlug(node: TestDomain.Entity.Slug) {
-            visitEntitySlug(node)
+            visitor.visitEntitySlug(node)
             walkMetas(node.metas)
         }
     
         open fun walkEntityAndroid(node: TestDomain.Entity.Android) {
-            visitEntityAndroid(node)
+            visitor.visitEntityAndroid(node)
             walkLongPrimitive(node.id)
             walkMetas(node.metas)
         }
     
         open fun walkEntityHuman(node: TestDomain.Entity.Human) {
-            visitEntityHuman(node)
+            visitor.visitEntityHuman(node)
             walkSymbolPrimitive(node.firstName)
             walkSymbolPrimitive(node.lastName)
             node.title?.let { walkSymbolPrimitive(it) }
@@ -6183,11 +6174,7 @@ class MultiWordDomain private constructor() {
     }
     
     
-    open class Visitor : DomainVisitorBase() {
-        ////////////////////////////////////////////////////////////////////////////
-        // Visit Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
+    open class InspectingVisitor : InspectingDomainVisitorBase() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
@@ -6208,53 +6195,54 @@ class MultiWordDomain private constructor() {
         open fun visitSssTtt(node: MultiWordDomain.SssTtt) { }
         open fun visitSssTttLll(node: MultiWordDomain.SssTtt.Lll) { }
         open fun visitSssTttMmm(node: MultiWordDomain.SssTtt.Mmm) { }
+    }
     
-        ////////////////////////////////////////////////////////////////////////////
-        // Walk Functions
-        ////////////////////////////////////////////////////////////////////////////
+    open class InspectingWalker(
+        visitor: MultiWordDomain.InspectingVisitor
+    ) : InspectingDomainWalkerBase<InspectingVisitor>(visitor) {
     
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
         open fun walkAaaAaa(node: MultiWordDomain.AaaAaa) {
-            visitAaaAaa(node)
+            visitor.visitAaaAaa(node)
             walkMetas(node.metas)
         }
     
         open fun walkAaaAab(node: MultiWordDomain.AaaAab) {
-            visitAaaAab(node)
+            visitor.visitAaaAab(node)
             node.dField?.let { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
     
         open fun walkAaaAac(node: MultiWordDomain.AaaAac) {
-            visitAaaAac(node)
+            visitor.visitAaaAac(node)
             node.dField?.let { walkLongPrimitive(it) }
             node.eField?.let { walkSymbolPrimitive(it) }
             walkMetas(node.metas)
         }
     
         open fun walkAaaAad(node: MultiWordDomain.AaaAad) {
-            visitAaaAad(node)
+            visitor.visitAaaAad(node)
             node.dField.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
     
         open fun walkAaaAae(node: MultiWordDomain.AaaAae) {
-            visitAaaAae(node)
+            visitor.visitAaaAae(node)
             node.dField.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
     
         open fun walkAabAaa(node: MultiWordDomain.AabAaa) {
-            visitAabAaa(node)
+            visitor.visitAabAaa(node)
             walkLongPrimitive(node.bField)
             walkSymbolPrimitive(node.cField)
             walkMetas(node.metas)
         }
     
         open fun walkAabAab(node: MultiWordDomain.AabAab) {
-            visitAabAab(node)
+            visitor.visitAabAab(node)
             walkLongPrimitive(node.bField)
             walkSymbolPrimitive(node.cField)
             node.dField?.let { walkLongPrimitive(it) }
@@ -6262,7 +6250,7 @@ class MultiWordDomain private constructor() {
         }
     
         open fun walkAabAac(node: MultiWordDomain.AabAac) {
-            visitAabAac(node)
+            visitor.visitAabAac(node)
             walkLongPrimitive(node.bField)
             walkSymbolPrimitive(node.cField)
             node.dField?.let { walkLongPrimitive(it) }
@@ -6271,7 +6259,7 @@ class MultiWordDomain private constructor() {
         }
     
         open fun walkAabAad(node: MultiWordDomain.AabAad) {
-            visitAabAad(node)
+            visitor.visitAabAad(node)
             walkLongPrimitive(node.bField)
             walkSymbolPrimitive(node.cField)
             node.dField.map { walkLongPrimitive(it) }
@@ -6279,7 +6267,7 @@ class MultiWordDomain private constructor() {
         }
     
         open fun walkAabAae(node: MultiWordDomain.AabAae) {
-            visitAabAae(node)
+            visitor.visitAabAae(node)
             walkLongPrimitive(node.bField)
             walkSymbolPrimitive(node.cField)
             node.dField.map { walkLongPrimitive(it) }
@@ -6287,7 +6275,7 @@ class MultiWordDomain private constructor() {
         }
     
         open fun walkRrr(node: MultiWordDomain.Rrr) {
-            visitRrr(node)
+            visitor.visitRrr(node)
             walkLongPrimitive(node.aField)
             walkLongPrimitive(node.bbbField)
             walkMetas(node.metas)
@@ -6297,7 +6285,7 @@ class MultiWordDomain private constructor() {
         // Sum Type: SssTtt
         //////////////////////////////////////
         open fun walkSssTtt(node: MultiWordDomain.SssTtt) {
-            visitSssTtt(node)
+            visitor.visitSssTtt(node)
             when(node) {
                 is MultiWordDomain.SssTtt.Lll -> walkSssTttLll(node)
                 is MultiWordDomain.SssTtt.Mmm -> walkSssTttMmm(node)
@@ -6305,13 +6293,13 @@ class MultiWordDomain private constructor() {
         }
     
         open fun walkSssTttLll(node: MultiWordDomain.SssTtt.Lll) {
-            visitSssTttLll(node)
+            visitor.visitSssTttLll(node)
             walkLongPrimitive(node.uField)
             walkMetas(node.metas)
         }
     
         open fun walkSssTttMmm(node: MultiWordDomain.SssTtt.Mmm) {
-            visitSssTttMmm(node)
+            visitor.visitSssTttMmm(node)
             walkSymbolPrimitive(node.vField)
             walkMetas(node.metas)
         }
@@ -9187,11 +9175,7 @@ class PartiqlBasic private constructor() {
     }
     
     
-    open class Visitor : DomainVisitorBase() {
-        ////////////////////////////////////////////////////////////////////////////
-        // Visit Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
+    open class InspectingVisitor : InspectingDomainVisitorBase() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
@@ -9275,36 +9259,37 @@ class PartiqlBasic private constructor() {
         open fun visitExprBag(node: PartiqlBasic.Expr.Bag) { }
         open fun visitExprList(node: PartiqlBasic.Expr.List) { }
         open fun visitExprSelect(node: PartiqlBasic.Expr.Select) { }
+    }
     
-        ////////////////////////////////////////////////////////////////////////////
-        // Walk Functions
-        ////////////////////////////////////////////////////////////////////////////
+    open class InspectingWalker(
+        visitor: PartiqlBasic.InspectingVisitor
+    ) : InspectingDomainWalkerBase<InspectingVisitor>(visitor) {
     
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
         open fun walkExprPair(node: PartiqlBasic.ExprPair) {
-            visitExprPair(node)
+            visitor.visitExprPair(node)
             walkExpr(node.first)
             walkExpr(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkGroupByItem(node: PartiqlBasic.GroupByItem) {
-            visitGroupByItem(node)
+            visitor.visitGroupByItem(node)
             walkExpr(node.value)
             node.asAlias?.let { walkSymbolPrimitive(it) }
             walkMetas(node.metas)
         }
     
         open fun walkGroupByList(node: PartiqlBasic.GroupByList) {
-            visitGroupByList(node)
+            visitor.visitGroupByList(node)
             node.items.map { walkGroupByItem(it) }
             walkMetas(node.metas)
         }
     
         open fun walkGroupBy(node: PartiqlBasic.GroupBy) {
-            visitGroupBy(node)
+            visitor.visitGroupBy(node)
             walkGroupByList(node.items)
             node.groupAsAlias?.let { walkSymbolPrimitive(it) }
             walkMetas(node.metas)
@@ -9314,7 +9299,7 @@ class PartiqlBasic private constructor() {
         // Sum Type: Projection
         //////////////////////////////////////
         open fun walkProjection(node: PartiqlBasic.Projection) {
-            visitProjection(node)
+            visitor.visitProjection(node)
             when(node) {
                 is PartiqlBasic.Projection.ProjectList -> walkProjectionProjectList(node)
                 is PartiqlBasic.Projection.ProjectValue -> walkProjectionProjectValue(node)
@@ -9322,13 +9307,13 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkProjectionProjectList(node: PartiqlBasic.Projection.ProjectList) {
-            visitProjectionProjectList(node)
+            visitor.visitProjectionProjectList(node)
             node.items.map { walkProjectItem(it) }
             walkMetas(node.metas)
         }
     
         open fun walkProjectionProjectValue(node: PartiqlBasic.Projection.ProjectValue) {
-            visitProjectionProjectValue(node)
+            visitor.visitProjectionProjectValue(node)
             walkExpr(node.value)
             walkMetas(node.metas)
         }
@@ -9337,7 +9322,7 @@ class PartiqlBasic private constructor() {
         // Sum Type: ProjectItem
         //////////////////////////////////////
         open fun walkProjectItem(node: PartiqlBasic.ProjectItem) {
-            visitProjectItem(node)
+            visitor.visitProjectItem(node)
             when(node) {
                 is PartiqlBasic.ProjectItem.ProjectAll -> walkProjectItemProjectAll(node)
                 is PartiqlBasic.ProjectItem.ProjectExpr -> walkProjectItemProjectExpr(node)
@@ -9345,12 +9330,12 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkProjectItemProjectAll(node: PartiqlBasic.ProjectItem.ProjectAll) {
-            visitProjectItemProjectAll(node)
+            visitor.visitProjectItemProjectAll(node)
             walkMetas(node.metas)
         }
     
         open fun walkProjectItemProjectExpr(node: PartiqlBasic.ProjectItem.ProjectExpr) {
-            visitProjectItemProjectExpr(node)
+            visitor.visitProjectItemProjectExpr(node)
             walkExpr(node.value)
             node.asAlias?.let { walkSymbolPrimitive(it) }
             walkMetas(node.metas)
@@ -9360,7 +9345,7 @@ class PartiqlBasic private constructor() {
         // Sum Type: JoinType
         //////////////////////////////////////
         open fun walkJoinType(node: PartiqlBasic.JoinType) {
-            visitJoinType(node)
+            visitor.visitJoinType(node)
             when(node) {
                 is PartiqlBasic.JoinType.Inner -> walkJoinTypeInner(node)
                 is PartiqlBasic.JoinType.Left -> walkJoinTypeLeft(node)
@@ -9370,22 +9355,22 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkJoinTypeInner(node: PartiqlBasic.JoinType.Inner) {
-            visitJoinTypeInner(node)
+            visitor.visitJoinTypeInner(node)
             walkMetas(node.metas)
         }
     
         open fun walkJoinTypeLeft(node: PartiqlBasic.JoinType.Left) {
-            visitJoinTypeLeft(node)
+            visitor.visitJoinTypeLeft(node)
             walkMetas(node.metas)
         }
     
         open fun walkJoinTypeRight(node: PartiqlBasic.JoinType.Right) {
-            visitJoinTypeRight(node)
+            visitor.visitJoinTypeRight(node)
             walkMetas(node.metas)
         }
     
         open fun walkJoinTypeOuter(node: PartiqlBasic.JoinType.Outer) {
-            visitJoinTypeOuter(node)
+            visitor.visitJoinTypeOuter(node)
             walkMetas(node.metas)
         }
     
@@ -9393,7 +9378,7 @@ class PartiqlBasic private constructor() {
         // Sum Type: FromSource
         //////////////////////////////////////
         open fun walkFromSource(node: PartiqlBasic.FromSource) {
-            visitFromSource(node)
+            visitor.visitFromSource(node)
             when(node) {
                 is PartiqlBasic.FromSource.Scan -> walkFromSourceScan(node)
                 is PartiqlBasic.FromSource.Join -> walkFromSourceJoin(node)
@@ -9401,7 +9386,7 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkFromSourceScan(node: PartiqlBasic.FromSource.Scan) {
-            visitFromSourceScan(node)
+            visitor.visitFromSourceScan(node)
             walkExpr(node.expr)
             node.asAlias?.let { walkSymbolPrimitive(it) }
             node.atAlias?.let { walkSymbolPrimitive(it) }
@@ -9410,7 +9395,7 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkFromSourceJoin(node: PartiqlBasic.FromSource.Join) {
-            visitFromSourceJoin(node)
+            visitor.visitFromSourceJoin(node)
             walkJoinType(node.type)
             walkFromSource(node.left)
             walkFromSource(node.right)
@@ -9422,7 +9407,7 @@ class PartiqlBasic private constructor() {
         // Sum Type: CaseSensitivity
         //////////////////////////////////////
         open fun walkCaseSensitivity(node: PartiqlBasic.CaseSensitivity) {
-            visitCaseSensitivity(node)
+            visitor.visitCaseSensitivity(node)
             when(node) {
                 is PartiqlBasic.CaseSensitivity.CaseSensitive -> walkCaseSensitivityCaseSensitive(node)
                 is PartiqlBasic.CaseSensitivity.CaseInsensitive -> walkCaseSensitivityCaseInsensitive(node)
@@ -9430,12 +9415,12 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkCaseSensitivityCaseSensitive(node: PartiqlBasic.CaseSensitivity.CaseSensitive) {
-            visitCaseSensitivityCaseSensitive(node)
+            visitor.visitCaseSensitivityCaseSensitive(node)
             walkMetas(node.metas)
         }
     
         open fun walkCaseSensitivityCaseInsensitive(node: PartiqlBasic.CaseSensitivity.CaseInsensitive) {
-            visitCaseSensitivityCaseInsensitive(node)
+            visitor.visitCaseSensitivityCaseInsensitive(node)
             walkMetas(node.metas)
         }
     
@@ -9443,7 +9428,7 @@ class PartiqlBasic private constructor() {
         // Sum Type: ScopeQualifier
         //////////////////////////////////////
         open fun walkScopeQualifier(node: PartiqlBasic.ScopeQualifier) {
-            visitScopeQualifier(node)
+            visitor.visitScopeQualifier(node)
             when(node) {
                 is PartiqlBasic.ScopeQualifier.Unqualified -> walkScopeQualifierUnqualified(node)
                 is PartiqlBasic.ScopeQualifier.Qualified -> walkScopeQualifierQualified(node)
@@ -9451,12 +9436,12 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkScopeQualifierUnqualified(node: PartiqlBasic.ScopeQualifier.Unqualified) {
-            visitScopeQualifierUnqualified(node)
+            visitor.visitScopeQualifierUnqualified(node)
             walkMetas(node.metas)
         }
     
         open fun walkScopeQualifierQualified(node: PartiqlBasic.ScopeQualifier.Qualified) {
-            visitScopeQualifierQualified(node)
+            visitor.visitScopeQualifierQualified(node)
             walkMetas(node.metas)
         }
     
@@ -9464,7 +9449,7 @@ class PartiqlBasic private constructor() {
         // Sum Type: SetQuantifier
         //////////////////////////////////////
         open fun walkSetQuantifier(node: PartiqlBasic.SetQuantifier) {
-            visitSetQuantifier(node)
+            visitor.visitSetQuantifier(node)
             when(node) {
                 is PartiqlBasic.SetQuantifier.All -> walkSetQuantifierAll(node)
                 is PartiqlBasic.SetQuantifier.Distinct -> walkSetQuantifierDistinct(node)
@@ -9472,12 +9457,12 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkSetQuantifierAll(node: PartiqlBasic.SetQuantifier.All) {
-            visitSetQuantifierAll(node)
+            visitor.visitSetQuantifierAll(node)
             walkMetas(node.metas)
         }
     
         open fun walkSetQuantifierDistinct(node: PartiqlBasic.SetQuantifier.Distinct) {
-            visitSetQuantifierDistinct(node)
+            visitor.visitSetQuantifierDistinct(node)
             walkMetas(node.metas)
         }
     
@@ -9485,7 +9470,7 @@ class PartiqlBasic private constructor() {
         // Sum Type: PathElement
         //////////////////////////////////////
         open fun walkPathElement(node: PartiqlBasic.PathElement) {
-            visitPathElement(node)
+            visitor.visitPathElement(node)
             when(node) {
                 is PartiqlBasic.PathElement.PathExpr -> walkPathElementPathExpr(node)
                 is PartiqlBasic.PathElement.PathWildcard -> walkPathElementPathWildcard(node)
@@ -9494,18 +9479,18 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkPathElementPathExpr(node: PartiqlBasic.PathElement.PathExpr) {
-            visitPathElementPathExpr(node)
+            visitor.visitPathElementPathExpr(node)
             walkExpr(node.expr)
             walkMetas(node.metas)
         }
     
         open fun walkPathElementPathWildcard(node: PartiqlBasic.PathElement.PathWildcard) {
-            visitPathElementPathWildcard(node)
+            visitor.visitPathElementPathWildcard(node)
             walkMetas(node.metas)
         }
     
         open fun walkPathElementPathUnpivot(node: PartiqlBasic.PathElement.PathUnpivot) {
-            visitPathElementPathUnpivot(node)
+            visitor.visitPathElementPathUnpivot(node)
             walkMetas(node.metas)
         }
     
@@ -9513,7 +9498,7 @@ class PartiqlBasic private constructor() {
         // Sum Type: Expr
         //////////////////////////////////////
         open fun walkExpr(node: PartiqlBasic.Expr) {
-            visitExpr(node)
+            visitor.visitExpr(node)
             when(node) {
                 is PartiqlBasic.Expr.Lit -> walkExprLit(node)
                 is PartiqlBasic.Expr.Id -> walkExprId(node)
@@ -9540,13 +9525,13 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkExprLit(node: PartiqlBasic.Expr.Lit) {
-            visitExprLit(node)
+            visitor.visitExprLit(node)
             walkIonElement(node.value)
             walkMetas(node.metas)
         }
     
         open fun walkExprId(node: PartiqlBasic.Expr.Id) {
-            visitExprId(node)
+            visitor.visitExprId(node)
             walkSymbolPrimitive(node.name)
             walkCaseSensitivity(node.case)
             walkScopeQualifier(node.scopeQualifier)
@@ -9554,55 +9539,55 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkExprParameter(node: PartiqlBasic.Expr.Parameter) {
-            visitExprParameter(node)
+            visitor.visitExprParameter(node)
             walkLongPrimitive(node.index)
             walkMetas(node.metas)
         }
     
         open fun walkExprNot(node: PartiqlBasic.Expr.Not) {
-            visitExprNot(node)
+            visitor.visitExprNot(node)
             walkExpr(node.expr)
             walkMetas(node.metas)
         }
     
         open fun walkExprPlus(node: PartiqlBasic.Expr.Plus) {
-            visitExprPlus(node)
+            visitor.visitExprPlus(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprMinus(node: PartiqlBasic.Expr.Minus) {
-            visitExprMinus(node)
+            visitor.visitExprMinus(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprTimes(node: PartiqlBasic.Expr.Times) {
-            visitExprTimes(node)
+            visitor.visitExprTimes(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprDivide(node: PartiqlBasic.Expr.Divide) {
-            visitExprDivide(node)
+            visitor.visitExprDivide(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprModulo(node: PartiqlBasic.Expr.Modulo) {
-            visitExprModulo(node)
+            visitor.visitExprModulo(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprConcat(node: PartiqlBasic.Expr.Concat) {
-            visitExprConcat(node)
+            visitor.visitExprConcat(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprLike(node: PartiqlBasic.Expr.Like) {
-            visitExprLike(node)
+            visitor.visitExprLike(node)
             walkExpr(node.left)
             walkExpr(node.right)
             walkExpr(node.escape)
@@ -9610,7 +9595,7 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkExprBetween(node: PartiqlBasic.Expr.Between) {
-            visitExprBetween(node)
+            visitor.visitExprBetween(node)
             walkExpr(node.value)
             walkExpr(node.from)
             walkExpr(node.to)
@@ -9618,21 +9603,21 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkExprPath(node: PartiqlBasic.Expr.Path) {
-            visitExprPath(node)
+            visitor.visitExprPath(node)
             walkExpr(node.root)
             node.elements.map { walkPathElement(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprCall(node: PartiqlBasic.Expr.Call) {
-            visitExprCall(node)
+            visitor.visitExprCall(node)
             walkSymbolPrimitive(node.name)
             node.args.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprCallAgg(node: PartiqlBasic.Expr.CallAgg) {
-            visitExprCallAgg(node)
+            visitor.visitExprCallAgg(node)
             walkSymbolPrimitive(node.name)
             walkSetQuantifier(node.setQuantifier)
             walkExpr(node.arg)
@@ -9640,38 +9625,38 @@ class PartiqlBasic private constructor() {
         }
     
         open fun walkExprSimpleCase(node: PartiqlBasic.Expr.SimpleCase) {
-            visitExprSimpleCase(node)
+            visitor.visitExprSimpleCase(node)
             walkExpr(node.value)
             node.branches.map { walkExprPair(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprSearchedCase(node: PartiqlBasic.Expr.SearchedCase) {
-            visitExprSearchedCase(node)
+            visitor.visitExprSearchedCase(node)
             node.branches.map { walkExprPair(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprStruct(node: PartiqlBasic.Expr.Struct) {
-            visitExprStruct(node)
+            visitor.visitExprStruct(node)
             node.fields.map { walkExprPair(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprBag(node: PartiqlBasic.Expr.Bag) {
-            visitExprBag(node)
+            visitor.visitExprBag(node)
             node.values.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprList(node: PartiqlBasic.Expr.List) {
-            visitExprList(node)
+            visitor.visitExprList(node)
             node.values.map { walkExpr(it) }
             walkMetas(node.metas)
         }
     
         open fun walkExprSelect(node: PartiqlBasic.Expr.Select) {
-            visitExprSelect(node)
+            visitor.visitExprSelect(node)
             node.setq?.let { walkSetQuantifier(it) }
             walkProjection(node.project)
             walkFromSource(node.from)

@@ -261,7 +261,7 @@ private class Transformer : IonElementTransformerBase<${domain.kotlinName}Node>(
 }
 
 [#include "kotlin-visitor.ftl"]
-[#include "kotlin-folding-visitor.ftl"]
+[#include "kotlin-visitor-fold.ftl"]
 
 [/@indent]
 }
