@@ -18,23 +18,21 @@ package org.partiql.pig.runtime
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
 
-open class InspectingDomainVisitorBase {
+open class FoldingDomainVisitorBase<T> {
 
-    open fun visitLongPrimitive(node: LongPrimitive) {
+    open fun visitLongPrimitive(node: LongPrimitive, accumulator: T): T =
         // default does nothing
-    }
+        accumulator
 
-    open fun visitSymbolPrimitive(node: SymbolPrimitive) {
+    open fun visitSymbolPrimitive(node: SymbolPrimitive, accumulator: T): T =
         // default does nothing
-    }
+        accumulator
 
-    open fun visitIonElement(node: IonElement) {
+    open fun visitIonElement(node: IonElement, accumulator: T): T =
         // default does nothing
-    }
+        accumulator
 
-    open fun visitMetas(node: MetaContainer) {
-        // default does nothing.
-    }
+    open fun visitMetas(node: MetaContainer, accumulator: T): T =
+        // default does nothing
+        accumulator
 }
-
-

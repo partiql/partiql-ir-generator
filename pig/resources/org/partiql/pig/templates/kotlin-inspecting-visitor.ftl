@@ -1,7 +1,5 @@
-[#ftl output_format="Text"]
+[#ftl output_format="plainText"]
 [#-- @ftlvariable name="universe" type="org.partiql.pig.generator.kotlin.KTypeUniverse" --]
-
-
 [#--------------------------------------------------------------
     InspectingVisitor/InspectingWalker
 
@@ -10,7 +8,6 @@
   on interfaces, which is why this is an open class instead
   of an interface.
 ----------------------------------------------------------------]
-
 open class InspectingVisitor : InspectingDomainVisitorBase() {
     [#list domain.tuples]
     //////////////////////////////////////

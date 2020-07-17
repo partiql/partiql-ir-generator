@@ -1,4 +1,4 @@
-[#ftl output_format="Text"]
+[#ftl output_format="plainText"]
 [#-- @ftlvariable name="universe" type="org.partiql.pig.generator.kotlin.KTypeUniverse" --]
 [#-- @ftlvariable name="namespace" type="java.lang.String" --]
 [#-- @ftlvariable name="generatedDate" type="java.time.OffsetDateTime" --]
@@ -262,6 +262,7 @@ private class Transformer : IonElementTransformerBase<${domain.kotlinName}Node>(
 
 
 [#include "kotlin-inspecting-visitor.ftl"]
+[#include "kotlin-folding-visitor.ftl"]
 
 [/@indent]
 }
