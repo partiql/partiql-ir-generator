@@ -17,8 +17,9 @@ to simply as "domain".
 - `permuted domain`: A type domain that permutes a copy of another domain by removing types, adding types or altering 
 sum types, creating a new, independent domain. 
 - `data type`: All of Ion's data types plus sum and product types which are composed of other data types.
-- `product type`: also known as n-tuple.  Similar to an array, but the elements of the product types may have. 
-different data types.  In this respect it is also similar to a struct in C, but the members do not have names. 
+- `product` : also known as n-tuple.  Similar to an array, but the elements of the product types may have. 
+different data types.  The s-expression representations of products do not have names, however names are
+required for code generation of target languages that do not have native support for unnamed tuples.  
 - `sum type`: a.k.a. [tagged union](https://en.wikipedia.org/wiki/Tagged_union).
 - `record`: a product or variant with named elements.
 - `variant`: An element of a sum type which consists of a name and zero or more types.
@@ -67,33 +68,30 @@ transformation code.
 ### Example Type Universe
 
 ```
-// Define type domain for a language named "toy".  
-// Toy has literals, variables, basic arithmetic and functions that accept a single argument.
+// This is an AST (abstract syntax tree) for a simple hypothetical programming language named "Toy".
+// Toy has literals, variables, basic arithmetic and functions that accept a single argument. 
 
 (define toy_lang
-    (domain 
+    (domain
         (sum expr
-            (product lit (value ion))
-            (product variable (name symbol))
-            (product not (expr expr))
-            (product plus (operands (* expr 2)))
-            (product minus (operands (* expr 2)))
-            (product times (operands (* expr 2)))
-            (product divide (operands (* expr 2)))
-            (product modulo (operands (* expr 2)))
-            (product call (func expr) (arg expr))
-            (product let (name symbol) (value expr) (body expr))
-            (product function (arg_name symbol) (body (expr))))
+            (lit value::ion)
+            (variable name::symbol)
+            (not expr::expr)
+            (apply op operands::(* expr 2))
+            (call name::symbol argument::expr)
+            (let name::symbol value::expr body::expr)
+            (function var_name::symbol body::expr))
+        (sum op (plus) (minus) (times) (divide))
+))
 
 // Define another type domain which is the same as "toy_lang" but replaces variable names with DeBruijn indices:
-
 (define toy_lang_nameless
-    (permute_domain toy_lang
-        (with expr
-            (exclude variable let)
-            (include 
-                (product variable (index int))
-                (product let (index int) (value expr) (body expr))))))
+  (permute_domain toy_lang
+    (with expr
+      (exclude variable let)
+      (include
+        (variable index::int)
+        (let index::int value::expr body::expr)))))
 ```
 
 ### Generated Kotlin Domain Model Sample
@@ -175,14 +173,20 @@ type_universe ::= '(' 'define' symbol <domain_definition> ')'...
 // Domain
 domain_definition ::= <domain> | <permute_domain>
 domain ::= '(' 'domain' <type_definition>... ')'
-type_definition ::= <tuple> | <sum>
+type_definition ::= <product_definition> | <sum_definition> | <record_definition>
 
-// Tuples
-tuple ::= '(' ('product' | 'record') symbol <tuple_element>...')'
-tuple_element ::= '(' symbol <type_ref> ')'
+// Product
+product_definition ::= '(' 'product' <product_body>')'
+product_body ::= symbol ( symbol::<type_ref> )...
+
+// Record
+record_definition ::= '(' 'record' <record_body> ')'
+record_body ::= symbol ('(' symbol ( [symbol::]<field_definition> )... ')')
+field_definition ::= '(' symbol <type_ref> ')'
 
 // Sum
-sum ::= '(' 'sum' symbol <tuple>...')'
+sum_definition ::= '(' 'sum' symbol <variant_definition>...')'
+variant_definition ::= '(' symbol (<product_body> | <record_body>) ')'
 
 // Domain permutation
 permute_domain ::=
@@ -199,7 +203,7 @@ with ::=
     '(' 'with' symbol 
         (
               '(' 'exclude' symbol... ')' 
-            | '(' 'include' ( '(' <tuple> ')' )... ')' 
+            | '(' 'include' ( '(' <product_body> ')' )... ')' 
         )...
     ')'
 
@@ -210,7 +214,6 @@ type_ref ::= ion_type
            | '(' '*' symbol int ')'
     
 ion_type ::= 'int' | 'symbol' | 'bool' | 'ion'     
-
 ```
 
 #### PIG Phases
@@ -219,7 +222,7 @@ The processing phases of PIG are:
 
 - Parsing of type universe Ion file into an `IonElement`.
 - Transformation to target language neutral domain objects (`TypeUniverse`, et al)
-- Check for errors in type domain (undefined names, etc)
+- Check for errors in type domain (undefined or duplicate names, etc)
 - Apply all permutations to domains by cloning the domain being permuted while applying the `include` and 
 `exclude` entries.
 - Conversion to target language specific domain objects (`KotlinTypeUniverse`, et al)
@@ -323,7 +326,7 @@ An example of a sum variant record:
         ...
         (sum expr
             ...
-            (record select
+            (select
                 (project projection)
                 (from from_source)
                 (where (? expr))
@@ -333,6 +336,61 @@ An example of a sum variant record:
             ...)
         ...)))
 ```
+
+##### Naming Conventions
+
+All nameable components (type domains, types, elements, etc) of a type universe file should be named using the  
+[`snake_case`](https://en.wikipedia.org/wiki/Snake_case) naming convention.
+
+The language target may convert this to another naming convention.  For instance, the Kotlin target converts
+`snake_case` to [`camelCase` or `PascalCase`](https://en.wikipedia.org/wiki/Camel_case) as appropriate to 
+the context in order to provide an idiomatic API to the generated code.
+
+Future language targets may perform similar conversions.
+
+##### Element Naming
+
+Two types of names exist for the elements of products and records: *identifiers* and *tags*.  Tags are used
+by records as a field key in the s-expression representation of a record, while identifiers are used in the 
+generated code of both records and products.  For both records and products: an identifier can be specified with 
+a single Ion annotation that prefixes the element definition.  For example, given following type definitions:
+
+```
+(record person
+    first_name::(f symbol)
+    (mi (? symbol)) 
+    last_name::(l symbol))
+```
+
+An example s-expression representation would be:
+
+```
+(person (f James) (mi T) (l Kirk))
+```
+
+While the generated Kotlin class is:
+
+```Kotlin
+class Person(
+    val firstName: SymbolPrimitive,
+    val mi: SymbolPrimitive?,
+    val lastName: SymbolPrimitive
+): ...
+```
+
+That the second property has the `mi` name which was used because the identifier was not specified for the `mi`
+field in the record definition. 
+
+Note that identifiers only need to be specified if the name of an element in the generated code should be different
+than the tag s-expression representation.  If unspecified (as is 'mi' element above), element's identifier defaults 
+to the tag.
+
+Unlike record elements, product element defintions must include identifiers. 
+
+```      
+(product int_pair first::int second::int)
+```
+
 
 #### Using PIG In Your Project
 

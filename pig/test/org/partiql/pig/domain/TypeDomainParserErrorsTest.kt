@@ -71,6 +71,10 @@ class TypeDomainParserErrorsTest {
                 makeErr(1, 22, ParserErrorContext.InvalidDomainLevelTag("bad_tag"))),
 
             TestCase(
+                "(define huh (domain (product one::huh two::int three::(bad_tag))))",
+                makeErr(1, 56, ParserErrorContext.ExpectedTypeReferenceArityTag("bad_tag"))),
+
+            TestCase(
                 "(define huh (permute_domain huh (bad_tag)))",
                 makeErr(1, 33, ParserErrorContext.InvalidPermutedDomainTag("bad_tag"))),
 
@@ -79,12 +83,12 @@ class TypeDomainParserErrorsTest {
                 makeErr(1, 43, ParserErrorContext.InvalidWithSumTag("bad_tag"))),
 
             TestCase(
-                "(define huh (domain (product huh (a (? )))))",
+                "(define huh (domain (product x::huh y::(? ))))",
                 makeErr(1, 37, ParserErrorContext.InvalidArityForTag(IntRange(1, 1), "?", 0))),
 
             TestCase(
-                "(define huh (domain (product huh (a (? one two)))))",
-                makeErr(1, 37, ParserErrorContext.InvalidArityForTag(IntRange(1, 1), "?", 2))),
+                "(define huh (domain (product huh x::(? o::one t::two))))",
+                makeErr(1, 34, ParserErrorContext.InvalidArityForTag(IntRange(1, 1), "?", 2))),
 
             TestCase(
                 "(define huh (domain (record foo (name_field_with_too_few_elements))))",
@@ -95,8 +99,12 @@ class TypeDomainParserErrorsTest {
                 makeErr(1, 33, ParserErrorContext.InvalidArity(2, 3))),
 
             TestCase( // Covers first place in parser this can be thrown
-                "(define huh (domain (product huh (blargh 42))))",
-                makeErr(1, 42, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT)))
+                "(define huh (domain (product huh x::42)))",
+                makeErr(1, 34, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT))),
+
+            TestCase( // Covers second place in parser this can be thrown
+                "(define huh (domain (product huh x::int y::42)))",
+                makeErr(1, 41, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT)))
         )
     }
 }

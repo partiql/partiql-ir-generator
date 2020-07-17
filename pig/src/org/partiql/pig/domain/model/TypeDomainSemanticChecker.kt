@@ -54,10 +54,9 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
                 semanticError(dataType.metas, SemanticErrorContext.NameAlreadyUsed(dataType.tag, typeDomain.tag))
             }
 
+
             when (dataType) {
-                is DataType.Tuple -> {
-                    collectRecordNames(dataType)
-                }
+                is DataType.Tuple -> checkElementNames(dataType)
                 is DataType.Sum -> {
                     dataType.variants.forEach { variant ->
                         // Check that the variant name isn't already used.
@@ -65,10 +64,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
                             semanticError(variant.metas, SemanticErrorContext.NameAlreadyUsed(variant.tag, typeDomain.tag))
                         }
 
-                        when(variant.tupleType) {
-                            TupleType.PRODUCT -> { /* products to not define additional names */ }
-                            TupleType.RECORD ->  collectRecordNames(variant)
-                        }
+                        checkElementNames(variant)
                     }
                 }
                 DataType.Ion,
@@ -80,13 +76,32 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
         }
     }
 
-    private fun collectRecordNames(variant: DataType.Tuple) {
-        val elementNames = mutableSetOf<String>()
+    private fun checkElementNames(dataType: DataType.Tuple) {
+        when (dataType.tupleType) {
+            TupleType.PRODUCT -> { /* */ }
+            TupleType.RECORD -> checkRecordElementTags(dataType)
+        }
+
+        // Check for duplicate identifiers of all TupleTypes
+        checkTupleElementIdentifiers(dataType)
+    }
+
+    private fun checkTupleElementIdentifiers(variant: DataType.Tuple) {
+        val elementIdentifiers = mutableSetOf<String>()
         variant.namedElements.forEach {
-            // Check that the element name hasn't already been used.
             when {
-                !elementNames.contains(it.tag) -> elementNames.add(it.tag)
-                else -> semanticError(it.metas, SemanticErrorContext.DuplicateRecordElementName(it.tag))
+                !elementIdentifiers.contains(it.identifier) -> elementIdentifiers.add(it.identifier)
+                else -> semanticError(it.metas, SemanticErrorContext.DuplicateElementIdentifier(it.identifier))
+            }
+        }
+    }
+
+    private fun checkRecordElementTags(variant: DataType.Tuple) {
+        val elementTags = mutableSetOf<String>()
+        variant.namedElements.forEach {
+            when {
+                !elementTags.contains(it.tag) -> elementTags.add(it.tag)
+                else -> semanticError(it.metas, SemanticErrorContext.DuplicateRecordElementTag(it.tag))
             }
         }
     }

@@ -71,6 +71,12 @@ sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
 
     data class InvalidArityForTag(val expectedCount: IntRange, val tag: String, val actualCount: Int)
         : ParserErrorContext({ "$expectedCount argument(s) were required to '$tag', but $actualCount was/were supplied."})
+
+    object MissingElementIdentifierAnnotation
+        : ParserErrorContext({ "Element is missing required name annotation"})
+
+    object MultipleElementIdentifierAnnotations
+        : ParserErrorContext({ "Element has multiple name annotations"})
 }
 
 

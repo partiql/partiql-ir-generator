@@ -121,7 +121,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             parameters = tuple.namedElements
                 .map {
                     KParameter(
-                        kotlinName =  it.tag.snakeToCamelCase(),
+                        kotlinName =  it.identifier.snakeToCamelCase(),
                         type = it.typeReference.toKotlinTypeName(useKotlinPrimitives),
                         defaultValue = if (it.typeReference.arity is Arity.Optional) "null" else null,
                         isVariadic = false)
@@ -136,7 +136,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
         element: NamedElement,
         useKotlinPrimitives: Boolean
     ): KConstructorArgument {
-        val elementKotlinName = element.tag.snakeToCamelCase()
+        val elementKotlinName = element.identifier.snakeToCamelCase()
         val argumentExpr = when {
             isKotlinPrimitive(element) && useKotlinPrimitives ->
                 when (element.typeReference.arity) {
@@ -162,11 +162,10 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             parameters = computeExpandedVariadicBuilderFunctionParameters(tuple, useKotlinPrimitives),
             constructorArguments = tuple.namedElements.map { element ->
                 val elementIsKotlinPrimitive = isKotlinPrimitive(element)
-                val elementKotlinName = element.tag.snakeToCamelCase()
+                val elementKotlinName = element.identifier.snakeToCamelCase()
                 when (element.typeReference.arity) {
                     is Arity.Required, Arity.Optional -> {
                         KConstructorArgument(
-                            // TODO: missing test case
                             kotlinName = elementKotlinName,
                             value = elementKotlinName + when {
                                 elementIsKotlinPrimitive && useKotlinPrimitives -> ".asPrimitive()"
@@ -234,9 +233,8 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             when (val arity = element.typeReference.arity) {
                 is Arity.Required, is Arity.Optional -> {
                     listOf(
-                        // TODO: missing test case
                         KParameter(
-                            kotlinName = element.tag.snakeToCamelCase(),
+                            kotlinName = element.identifier.snakeToCamelCase(),
                             type = element.typeReference.toKotlinTypeName(primitive),
                             defaultValue = if(arity is Arity.Optional) "null" else null,
                             isVariadic = false))
@@ -245,7 +243,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                     val requiredParameters =
                         IntRange(0, arity.minimumArity - 1).map { paramIndex ->
                             KParameter(
-                                kotlinName = "${element.tag.snakeToCamelCase()}$paramIndex",
+                                kotlinName = "${element.identifier.snakeToCamelCase()}$paramIndex",
                                 type = element.typeReference.toBaseKotlinTypeName(primitive),
                                 defaultValue = null,
                                 isVariadic = false)
@@ -253,7 +251,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
 
                     val variadicParameter =
                         KParameter(
-                            kotlinName = element.tag.snakeToCamelCase(),
+                            kotlinName = element.identifier.snakeToCamelCase(),
                             type = element.typeReference.toBaseKotlinTypeName(primitive),
                             defaultValue = null,
                             isVariadic = true)
@@ -272,7 +270,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                     is Arity.Optional -> "processOptionalField"
                     is Arity.Variadic -> TODO("Variadic elements in records not yet supported")
                 }
-                "ir.${processFuncName}(\"${element.tag}\") { it$expectCast }"
+                "ir.${processFuncName}(\"${element.identifier}\") { it$expectCast }"
             }
             TupleType.PRODUCT -> {
                 val expectCast = createExpectCast(element.typeReference)
@@ -298,8 +296,8 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                 is Arity.Variadic -> true to false
             }
             KProperty(
-                kotlinName = element.tag.snakeToCamelCase(),
-                tag = element.tag,
+                kotlinName = element.identifier.snakeToCamelCase(),
+                tag = element.tag, // TODO: use tag
                 type = element.typeReference.toKotlinTypeName(useKotlinPrimitives = false),
                 isVariadic = isVariadic,
                 isNullable = isNullable,

@@ -98,14 +98,14 @@ class ${t.kotlinName}(
 [/#macro]
 
 [#--Emits builder functions that wraps the constructors of domain type. --]
-[#macro builder_constructor_fun t ret_type ret_value_cons]
+[#macro builder_constructor_fun t return_type]
 [#list t.builderFunctions as bf]
 fun ${bf.kotlinName}(
     [@indent count=4]
         [@parameter_list bf.parameters/]
     [/@indent]
-): ${ret_type} =
-    ${ret_value_cons}(
+): ${return_type} =
+    ${return_type}(
     [#list bf.constructorArguments as p]
         ${p.kotlinName} = ${p.value},
     [/#list]
@@ -150,7 +150,7 @@ object builder {
         [#if domain.tuples?size > 0]
         // Tuples
         [#list domain.tuples as tuple]
-        [@builder_constructor_fun tuple tuple.kotlinName "${domain.kotlinName}.${tuple.kotlinName}"/]
+        [@builder_constructor_fun tuple "${domain.kotlinName}.${tuple.kotlinName}"/]
 
         [/#list]
         [/#if]
@@ -158,7 +158,7 @@ object builder {
         [#-- Not sure why the [#lt] below is needed to emit the correct indentation. --]
         // Variants for Sum: ${s.kotlinName} [#lt]
         [#list s.variants as tuple]
-        [@builder_constructor_fun tuple s.kotlinName "${domain.kotlinName}.${s.kotlinName}.${tuple.kotlinName}"/]
+        [@builder_constructor_fun tuple "${domain.kotlinName}.${s.kotlinName}.${tuple.kotlinName}"/]
 
         [/#list]
         [/#list]
