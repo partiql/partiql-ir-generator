@@ -18,29 +18,45 @@ package org.partiql.pig.runtime
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
 
-open class FoldingDomainWalkerBase<V: FoldingDomainVisitorBase<T>, T>(
-    protected val visitor: V
-) {
+open class DomanVisitorFoldBase<T> {
+
+    protected open fun visitLongPrimitive(node: LongPrimitive, accumulator: T): T =
+        // default does nothing
+        accumulator
+
+    protected open fun visitSymbolPrimitive(node: SymbolPrimitive, accumulator: T): T =
+        // default does nothing
+        accumulator
+
+    protected open fun visitIonElement(node: IonElement, accumulator: T): T =
+        // default does nothing
+        accumulator
+
+    protected open fun visitMetas(node: MetaContainer, accumulator: T): T =
+        // default does nothing
+        accumulator
+
+    ///////////////////////////////////////////////////////
+
     open fun walkLongPrimitive(node: LongPrimitive, accumulator: T): T {
         var current = accumulator
-        current = visitor.visitLongPrimitive(node, current)
+        current = visitLongPrimitive(node, current)
         return walkMetas(node.metas, current)
     }
 
     open fun walkSymbolPrimitive(node: SymbolPrimitive, accumulator: T): T {
         var current = accumulator
-        current = visitor.visitSymbolPrimitive(node, current)
+        current = visitSymbolPrimitive(node, current)
         return walkMetas(node.metas, current)
     }
 
     open fun walkIonElement(node: IonElement, accumulator: T): T {
         var current = accumulator
-        current = visitor.visitIonElement(node, current)
+        current = visitIonElement(node, current)
         return walkMetas(node.metas, current)
     }
 
     open fun walkMetas(node: MetaContainer, accumulator: T): T {
-        return visitor.visitMetas(node, accumulator)
+        return visitMetas(node, accumulator)
     }
 }
-

@@ -22,8 +22,9 @@ import org.partiql.pig.tests.generated.TestDomain
 import kotlin.test.assertEquals
 
 private const val NUMBER_KEY = "number"
-class FoldingVisitorTests {
-    class DummyVisitor : TestDomain.FoldingVisitor<Long>() {
+
+class VisitorFoldTests {
+    class DummyVisitor : TestDomain.VisitorFold<Long>() {
         override fun visitLongPrimitive(node: LongPrimitive, accumulator: Long): Long = accumulator + node.value
         override fun visitMetas(node: MetaContainer, accumulator: Long) =
             when {
@@ -33,7 +34,7 @@ class FoldingVisitorTests {
         }
 
     // Because the folding walker & visitor are stateless, the same instances may be reused for all tests
-    private val foldingWalker = TestDomain.FoldingWalker(DummyVisitor())
+    private val visitorFold = DummyVisitor()
 
     @Test
     fun visitProducts() {
@@ -41,7 +42,7 @@ class FoldingVisitorTests {
             intPairPair(intPair(1, 2), intPair(3, 4))
         }.withMeta(NUMBER_KEY, 5)
 
-        val result = foldingWalker.walkIntPairPair(node, 0)
+        val result = visitorFold.walkIntPairPair(node, 0)
         assertEquals(15, result)
     }
 
@@ -51,7 +52,7 @@ class FoldingVisitorTests {
             domainLevelRecord(someField = 2, anotherField = "hi", optionalField = 3)
         }.withMeta("number", 4)
 
-        val result = foldingWalker.walkDomainLevelRecord(node, 0)
+        val result = visitorFold.walkDomainLevelRecord(node, 0)
         assertEquals(9, result)
     }
 
@@ -64,7 +65,7 @@ class FoldingVisitorTests {
                 three(4, 5, 6)
             ).withMeta(NUMBER_KEY, 7)
         }
-        val result = foldingWalker.walkTestSumTriplet(node, 0)
+        val result = visitorFold.walkTestSumTriplet(node, 0)
         assertEquals(28, result)
     }
 
@@ -72,17 +73,17 @@ class FoldingVisitorTests {
     fun visitProductsWithVariadicElements() {
         // No elements, but one meta
         val node1 = TestDomain.build { variadicMin0() }.withMeta(NUMBER_KEY, 1)
-        val result1 = foldingWalker.walkVariadicMin0(node1, 0)
+        val result1 = visitorFold.walkVariadicMin0(node1, 0)
         assertEquals(1, result1)
 
         // One element, and one meta.
         val node2 = TestDomain.build { variadicMin0(42) }.withMeta(NUMBER_KEY, 43)
-        val result2 = foldingWalker.walkVariadicMin0(node2, 0)
+        val result2 = visitorFold.walkVariadicMin0(node2, 0)
         assertEquals(85, result2)
 
         // Four elements and one meta.
         val node3 = TestDomain.build { variadicMin0(1, 2, 3, 4) }.withMeta(NUMBER_KEY, 5)
-        val result3 = foldingWalker.walkVariadicMin0(node3, 0)
+        val result3 = visitorFold.walkVariadicMin0(node3, 0)
         assertEquals(15, result3)
     }
 }

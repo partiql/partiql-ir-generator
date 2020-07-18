@@ -1,15 +1,6 @@
 [#ftl output_format="plainText"]
 [#-- @ftlvariable name="universe" type="org.partiql.pig.generator.kotlin.KTypeUniverse" --]
 
-[#--------------------------------------------------------------
-    InspectingVisitor/InspectingWalker
-
-  Note that https://youtrack.jetbrains.com/issue/KT-4779
-  prevents Java from seeing default visitor implementations
-  on interfaces, which is why this is an open class instead
-  of an interface.
-----------------------------------------------------------------]
-
 [#macro tuple_walker_body t visitSuffix]
     [@indent count=4]
     visit${visitSuffix}(node)
@@ -43,9 +34,9 @@ open class Visitor : DomainVisitorBase() {
     //////////////////////////////////////
     // Sum Type: ${s.kotlinName}
     //////////////////////////////////////
-    open fun visit${s.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}) { }
+    open protected fun visit${s.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}) { }
 [#list s.variants as t]
-    open fun visit${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}) { }
+    open protected fun visit${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}) { }
 [/#list]
     [/#list]
 
