@@ -20,19 +20,19 @@ import com.amazon.ionelement.api.MetaContainer
 
 open class DomainVisitorBase {
 
-    open fun visitLongPrimitive(node: LongPrimitive) {
+    protected open fun visitLongPrimitive(node: LongPrimitive) {
         // default does nothing
     }
 
-    open fun visitSymbolPrimitive(node: SymbolPrimitive) {
+    protected open fun visitSymbolPrimitive(node: SymbolPrimitive) {
         // default does nothing
     }
 
-    open fun visitIonElement(node: IonElement) {
+    protected open fun visitIonElement(node: IonElement) {
         // default does nothing
     }
 
-    open fun visitMetas(node: MetaContainer) {
+    protected open fun visitMetas(node: MetaContainer) {
         // default does nothing.
     }
 

@@ -18,37 +18,23 @@ package org.partiql.pig.tests
 import com.amazon.ionelement.api.MetaContainer
 import org.junit.jupiter.api.Test
 import org.partiql.pig.runtime.LongPrimitive
-import org.partiql.pig.runtime.SymbolPrimitive
 import org.partiql.pig.tests.generated.TestDomain
 import kotlin.test.assertEquals
 
 private const val NUMBER_KEY = "number"
 
-class VisitorTests {
-
-    class DummyVisitor : TestDomain.Visitor() {
-
-        // The best way I have found to test this type of visitor is to observe
-        // these side effects.  Normally, if you wanted to extract information
-        // from a tree you'd use [TestDomain.FoldingVisitor] instead.
-
-        var numberAccumulator: Long = 0
-        var stringAccumulator: String = ""
-
-        override fun visitLongPrimitive(node: LongPrimitive) {
-            numberAccumulator += node.value
-        }
-
-        override fun visitSymbolPrimitive(node: SymbolPrimitive) {
-            stringAccumulator += node.text
-        }
-
-        override fun visitMetas(node: MetaContainer) {
-            if(node.containsKey(NUMBER_KEY)) {
-                numberAccumulator += node[NUMBER_KEY] as Int
+class VisitorFoldTests {
+    class DummyVisitor : TestDomain.VisitorFold<Long>() {
+        override fun visitLongPrimitive(node: LongPrimitive, accumulator: Long): Long = accumulator + node.value
+        override fun visitMetas(node: MetaContainer, accumulator: Long) =
+            when {
+                node.containsKey(NUMBER_KEY) -> accumulator + node[NUMBER_KEY] as Int
+                else -> accumulator
             }
         }
-    }
+
+    // Because the folding walker & visitor are stateless, the same instances may be reused for all tests
+    private val visitorFold = DummyVisitor()
 
     @Test
     fun visitProducts() {
@@ -56,9 +42,8 @@ class VisitorTests {
             intPairPair(intPair(1, 2), intPair(3, 4))
         }.withMeta(NUMBER_KEY, 5)
 
-        val visitor = DummyVisitor()
-        visitor.walkIntPairPair(node)
-        assertEquals(15, visitor.numberAccumulator)
+        val result = visitorFold.walkIntPairPair(node, 0)
+        assertEquals(15, result)
     }
 
     @Test
@@ -67,11 +52,8 @@ class VisitorTests {
             domainLevelRecord(someField = 2, anotherField = "hi", optionalField = 3)
         }.withMeta("number", 4)
 
-        val visitor = DummyVisitor()
-        visitor.walkDomainLevelRecord(node)
-
-        assertEquals(9, visitor.numberAccumulator)
-        assertEquals("hi", visitor.stringAccumulator)
+        val result = visitorFold.walkDomainLevelRecord(node, 0)
+        assertEquals(9, result)
     }
 
     @Test
@@ -83,31 +65,26 @@ class VisitorTests {
                 three(4, 5, 6)
             ).withMeta(NUMBER_KEY, 7)
         }
-
-        val visitor = DummyVisitor()
-        visitor.walkTestSumTriplet(node)
-
-        assertEquals(28, visitor.numberAccumulator)
+        val result = visitorFold.walkTestSumTriplet(node, 0)
+        assertEquals(28, result)
     }
 
     @Test
     fun visitProductsWithVariadicElements() {
-        // No elements
+        // No elements, but one meta
         val node1 = TestDomain.build { variadicMin0() }.withMeta(NUMBER_KEY, 1)
-        val visitor1 = DummyVisitor()
-        visitor1.walkVariadicMin0(node1)
-        assertEquals(1, visitor1.numberAccumulator)
+        val result1 = visitorFold.walkVariadicMin0(node1, 0)
+        assertEquals(1, result1)
 
-        // One element
+        // One element, and one meta.
         val node2 = TestDomain.build { variadicMin0(42) }.withMeta(NUMBER_KEY, 43)
-        val visitor2 = DummyVisitor()
-        visitor2.walkVariadicMin0(node2)
-        assertEquals(85, visitor2.numberAccumulator)
+        val result2 = visitorFold.walkVariadicMin0(node2, 0)
+        assertEquals(85, result2)
 
-        // Four elements.
+        // Four elements and one meta.
         val node3 = TestDomain.build { variadicMin0(1, 2, 3, 4) }.withMeta(NUMBER_KEY, 5)
-        val visitor3 = DummyVisitor()
-        visitor3.walkVariadicMin0(node3)
-        assertEquals(15, visitor3.numberAccumulator)
+        val result3 = visitorFold.walkVariadicMin0(node3, 0)
+        assertEquals(15, result3)
     }
 }
+

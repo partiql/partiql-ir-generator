@@ -3,21 +3,24 @@
 
 [#macro tuple_walker_body t visitSuffix]
     [@indent count=4]
-    visit${visitSuffix}(node)
+    var current = accumulator
+    current = visit${visitSuffix}(node, current)
         [#list t.properties as p]
             [#if p.variadic]
-    node.${p.kotlinName}.map { walk${p.rawTypeName}(it) }
+    node.${p.kotlinName}.map { current = walk${p.rawTypeName}(it, current) }
             [#elseif p.nullable]
-    node.${p.kotlinName}?.let { walk${p.rawTypeName}(it) }
+    node.${p.kotlinName}?.let { current = walk${p.rawTypeName}(it, current) }
             [#else]
-    walk${p.rawTypeName}(node.${p.kotlinName})
+    current = walk${p.rawTypeName}(node.${p.kotlinName}, current)
             [/#if]
         [/#list]
-    walkMetas(node.metas)
+    current = walkMetas(node.metas, current)
+    return current
     [/@indent]
 [/#macro]
 
-open class Visitor : DomainVisitorBase() {
+
+open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
     ////////////////////////////////////////////////////////////////////////////
     // Visit Functions
     ////////////////////////////////////////////////////////////////////////////
@@ -26,18 +29,18 @@ open class Visitor : DomainVisitorBase() {
     //////////////////////////////////////
     // Tuple Types
     //////////////////////////////////////
-    [#items as t]
-    open fun visit${t.kotlinName}(node: ${domain.kotlinName}.${t.kotlinName}) { }
-    [/#items]
+        [#items as t]
+    open protected fun visit${t.kotlinName}(node: ${domain.kotlinName}.${t.kotlinName}, accumulator: T): T = accumulator
+        [/#items]
     [/#list]
     [#list domain.sums as s]
     //////////////////////////////////////
     // Sum Type: ${s.kotlinName}
     //////////////////////////////////////
-    open protected fun visit${s.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}) { }
-[#list s.variants as t]
-    open protected fun visit${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}) { }
-[/#list]
+    open protected fun visit${s.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}, accumulator: T): T = accumulator
+        [#list s.variants as t]
+    open protected fun visit${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}, accumulator: T): T = accumulator
+        [/#list]
     [/#list]
 
     ////////////////////////////////////////////////////////////////////////////
@@ -49,30 +52,30 @@ open class Visitor : DomainVisitorBase() {
     // Tuple Types
     //////////////////////////////////////
     [#items as t]
-    open fun walk${t.kotlinName}(node: ${domain.kotlinName}.${t.kotlinName}) {
+    open fun walk${t.kotlinName}(node: ${domain.kotlinName}.${t.kotlinName}, accumulator: T): T {
         [@tuple_walker_body t t.kotlinName/][#t]
     }
 
-    [/#items]
+        [/#items]
     [/#list]
     [#list domain.sums as s]
     //////////////////////////////////////
     // Sum Type: ${s.kotlinName}
     //////////////////////////////////////
-    open fun walk${s.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}) {
-        visit${s.kotlinName}(node)
-        when(node) {
+    open fun walk${s.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}, accumulator: T): T {
+        val current = visit${s.kotlinName}(node, accumulator)
+        return when(node) {
         [#list s.variants as v]
-            is ${domain.kotlinName}.${s.kotlinName}.${v.kotlinName} -> walk${s.kotlinName}${v.kotlinName}(node)
+            is ${domain.kotlinName}.${s.kotlinName}.${v.kotlinName} -> walk${s.kotlinName}${v.kotlinName}(node, current)
         [/#list]
         }
     }
 
-[#list s.variants as t]
-    open fun walk${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}) {
+        [#list s.variants as t]
+    open fun walk${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}, accumulator: T): T {
         [@tuple_walker_body t "${s.kotlinName}${t.kotlinName}"/]
     }
 
-[/#list]
-[/#list]
+        [/#list]
+    [/#list]
 }
