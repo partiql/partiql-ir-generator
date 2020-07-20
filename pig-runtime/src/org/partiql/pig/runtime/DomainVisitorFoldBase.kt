@@ -18,7 +18,7 @@ package org.partiql.pig.runtime
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
 
-open class DomanVisitorFoldBase<T> {
+open class DomainVisitorFoldBase<T> {
 
     protected open fun visitLongPrimitive(node: LongPrimitive, accumulator: T): T =
         // default does nothing

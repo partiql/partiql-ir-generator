@@ -877,7 +877,7 @@ class ToyLang private constructor() {
     }
     
     
-    open class VisitorFold<T> : DomanVisitorFoldBase<T>() {
+    open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
         ////////////////////////////////////////////////////////////////////////////
         // Visit Functions
         ////////////////////////////////////////////////////////////////////////////
@@ -1885,7 +1885,7 @@ class ToyLangNameless private constructor() {
     }
     
     
-    open class VisitorFold<T> : DomanVisitorFoldBase<T>() {
+    open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
         ////////////////////////////////////////////////////////////////////////////
         // Visit Functions
         ////////////////////////////////////////////////////////////////////////////
@@ -4742,7 +4742,7 @@ class TestDomain private constructor() {
     }
     
     
-    open class VisitorFold<T> : DomanVisitorFoldBase<T>() {
+    open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
         ////////////////////////////////////////////////////////////////////////////
         // Visit Functions
         ////////////////////////////////////////////////////////////////////////////
@@ -6331,7 +6331,7 @@ class MultiWordDomain private constructor() {
     }
     
     
-    open class VisitorFold<T> : DomanVisitorFoldBase<T>() {
+    open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
         ////////////////////////////////////////////////////////////////////////////
         // Visit Functions
         ////////////////////////////////////////////////////////////////////////////
@@ -9701,7 +9701,7 @@ class PartiqlBasic private constructor() {
     }
     
     
-    open class VisitorFold<T> : DomanVisitorFoldBase<T>() {
+    open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
         ////////////////////////////////////////////////////////////////////////////
         // Visit Functions
         ////////////////////////////////////////////////////////////////////////////
