@@ -34,9 +34,9 @@ open class Visitor : DomainVisitorBase() {
     //////////////////////////////////////
     // Sum Type: ${s.kotlinName}
     //////////////////////////////////////
-    open protected fun visit${s.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}) { }
+    protected open fun visit${s.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}) { }
 [#list s.variants as t]
-    open protected fun visit${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}) { }
+    protected open fun visit${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}) { }
 [/#list]
     [/#list]
 

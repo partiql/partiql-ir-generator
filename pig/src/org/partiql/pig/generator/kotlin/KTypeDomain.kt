@@ -37,11 +37,14 @@ data class KTypeDomain(
 )
 
 data class KProperty(
-    /** The name of the property in the generated Kotlin code. .*/
+    /** The name of the property in the generated Kotlin code, in `camelCase`. */
     val kotlinName: String,
-    /** The name of the property s-exp representation and as defined in the type universe.. */
+    /** The name of the property in the generated Kotlin code, in `PascalCase`. */
+    val kotlinNamePascalCased: String,
+    /** The name of the property s-exp representation and as defined in the type universe. */
     val tag: String,
-    val type: String,
+    /** The qualified Kotlin type name... */
+    val kotlinTypeName: String,
     val isVariadic: Boolean,
     val isNullable: Boolean,
     val transformExpr: String,
@@ -50,7 +53,7 @@ data class KProperty(
 
 data class KParameter(
     val kotlinName: String,
-    val type: String,
+    val kotlinType: String,
     val defaultValue: String?,
     val isVariadic: Boolean
 )
@@ -72,11 +75,14 @@ data class KTuple(
     val kotlinName: String,
     /** The name of the tuple in the s-exp representation and as defined in the type universe. */
     val tag: String,
+    /** The name of the constructor class, fully qualified. */
     val constructorName: String,
     val superClass: String,
     val properties: List<KProperty>,
     val arity: IntRange,
     val builderFunctions: List<KBuilderFunction>,
+    /** The base name of the builder function. */
+    val builderName: String,
     val isRecord: Boolean,
     val hasVariadicElement: Boolean
 )

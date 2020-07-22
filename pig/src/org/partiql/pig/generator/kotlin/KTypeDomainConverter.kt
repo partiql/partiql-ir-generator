@@ -64,6 +64,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             superClass = superClass,
             constructorName = constructorName,
             properties = computeProperties(this),
+            builderName = this.tag.snakeToCamelCase() + "_",
             arity = computeArity(),
             builderFunctions = computeBuilderFunctions(tuple = this),
             isRecord = when (this.tupleType) {
@@ -122,7 +123,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                 .map {
                     KParameter(
                         kotlinName =  it.identifier.snakeToCamelCase(),
-                        type = it.typeReference.getQualifiedTypeName(useKotlinPrimitives),
+                        kotlinType = it.typeReference.getQualifiedTypeName(useKotlinPrimitives),
                         defaultValue = if (it.typeReference.arity is Arity.Optional) "null" else null,
                         isVariadic = false)
                 },
@@ -235,7 +236,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                     listOf(
                         KParameter(
                             kotlinName = element.identifier.snakeToCamelCase(),
-                            type = element.typeReference.getQualifiedTypeName(primitive),
+                            kotlinType = element.typeReference.getQualifiedTypeName(primitive),
                             defaultValue = if(arity is Arity.Optional) "null" else null,
                             isVariadic = false))
                 }
@@ -244,7 +245,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                         IntRange(0, arity.minimumArity - 1).map { paramIndex ->
                             KParameter(
                                 kotlinName = "${element.identifier.snakeToCamelCase()}$paramIndex",
-                                type = element.typeReference.getBaseKotlinTypeName(primitive),
+                                kotlinType = element.typeReference.getBaseKotlinTypeName(primitive),
                                 defaultValue = null,
                                 isVariadic = false)
                         }
@@ -252,7 +253,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                     val variadicParameter =
                         KParameter(
                             kotlinName = element.identifier.snakeToCamelCase(),
-                            type = element.typeReference.getBaseKotlinTypeName(primitive),
+                            kotlinType = element.typeReference.getBaseKotlinTypeName(primitive),
                             defaultValue = null,
                             isVariadic = true)
 
@@ -297,8 +298,9 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             }
             KProperty(
                 kotlinName = element.identifier.snakeToCamelCase(),
+                kotlinNamePascalCased = element.identifier.snakeToPascalCase(),
                 tag = element.tag,
-                type = element.typeReference.getQualifiedTypeName(useKotlinPrimitives = false),
+                kotlinTypeName = element.typeReference.getQualifiedTypeName(useKotlinPrimitives = false),
                 isVariadic = isVariadic,
                 isNullable = isNullable,
                 transformExpr = deserExpr,
