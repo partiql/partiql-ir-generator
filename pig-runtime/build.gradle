@@ -113,11 +113,11 @@ publishing {
 }
 
 signing {
-    // Allow publishing to maven local even if we don't have the signing keys
-    // This works because when not required, the signing task will be skipped
-    // if signing.keyId, signing.password, signing.secretKeyRingFile, etc are
-    // not present in gradle.properties.
-    required { !gradle.taskGraph.hasTask(":lang:publishToMavenLocal") }
-
+    required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
     sign publishing.publications.maven
 }
+
+tasks.withType(Sign) {
+    onlyIf { isReleaseVersion }
+}
+
