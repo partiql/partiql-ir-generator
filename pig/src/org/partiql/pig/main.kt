@@ -19,8 +19,7 @@ import com.amazon.ion.system.IonReaderBuilder
 import org.partiql.pig.cmdline.Command
 import org.partiql.pig.cmdline.CommandLineParser
 import org.partiql.pig.cmdline.TargetLanguage
-import org.partiql.pig.domain.PigException
-import org.partiql.pig.domain.model.TypeDomain
+import org.partiql.pig.errors.PigException
 import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.generator.custom.applyCustomTemplate
@@ -35,6 +34,9 @@ import kotlin.system.exitProcess
  fun progress(msg: String) =
     println("pig: ${msg}")
 
+/**
+ * Entry point for when pig is being invoked from the command-line.
+ */
 fun main(args: Array<String>) {
     val cmdParser = CommandLineParser()
 
@@ -44,27 +46,32 @@ fun main(args: Array<String>) {
             System.err.println(command.message)
         }
         is Command.Generate -> {
-            generateCode(command)
+            try {
+                generateCode(command)
+            } catch (e: PigException) {
+                System.err.println("pig: ${e.error.location}: ${e.error.context.message}\n${e.stackTrace}")
+                exitProcess(-1)
+            }
         }
     }
 }
 
+/**
+ * Gradle projects such as the PartiQL reference implementation take a dependency on this project
+ * in their `buildSrc` directory and can then use this entry point to generate code direclty without
+ * having to `exec` pig as a separate process.
+ */
 fun generateCode(command: Command.Generate) {
     progress("universe file: ${command.typeUniverseFile}")
     progress("output file  : ${command.outputFile}")
 
-    val allTypeDomains: List<TypeDomain> = try {
-        progress("parsing the universe...")
-        val typeUniverse: TypeUniverse = FileInputStream(command.typeUniverseFile).use { inputStream ->
-            IonReaderBuilder.standard().build(inputStream).use { ionReader -> parseTypeUniverse(ionReader) }
-        }
-
-        progress("permuting domains...")
-        typeUniverse.computeTypeDomains()
-    } catch (e: PigException) {
-        System.err.println("pig: ${e.error.location}: ${e.error.context.message}\n${e.stackTrace}")
-        exitProcess(-1)
+    progress("parsing the universe...")
+    val typeUniverse: TypeUniverse = FileInputStream(command.typeUniverseFile).use { inputStream ->
+        IonReaderBuilder.standard().build(inputStream).use { ionReader -> parseTypeUniverse(ionReader) }
     }
+
+    progress("permuting domains...")
+    val allTypeDomains =typeUniverse.computeTypeDomains()
 
     PrintWriter(command.outputFile).use { printWriter ->
         when (command.target) {

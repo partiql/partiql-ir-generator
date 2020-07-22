@@ -18,7 +18,7 @@ package org.partiql.pig.domain.model
 import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.location
-import org.partiql.pig.domain.PigException
+import org.partiql.pig.errors.PigException
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
 

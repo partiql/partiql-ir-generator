@@ -25,6 +25,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.partiql.pig.domain.parser.ParserErrorContext
 import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.errors.PigError
+import org.partiql.pig.errors.PigException
 
 class TypeDomainParserErrorsTest {
 
@@ -41,7 +42,7 @@ class TypeDomainParserErrorsTest {
 
         // This is mainly to improve code coverage but also ensures the
         // message formatting function doesn't throw
-        assertNotNull(tc.expectedError.message)
+        assertNotNull(tc.expectedError.toString())
     }
 
     companion object {
