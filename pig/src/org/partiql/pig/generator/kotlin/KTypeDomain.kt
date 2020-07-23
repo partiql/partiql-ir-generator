@@ -39,8 +39,6 @@ data class KTypeDomain(
 data class KProperty(
     /** The name of the property in the generated Kotlin code, in `camelCase`. */
     val kotlinName: String,
-    /** The name of the property in the generated Kotlin code, in `PascalCase`. */
-    val kotlinNamePascalCased: String,
     /** The name of the property s-exp representation and as defined in the type universe. */
     val tag: String,
     /** The qualified Kotlin type name... */

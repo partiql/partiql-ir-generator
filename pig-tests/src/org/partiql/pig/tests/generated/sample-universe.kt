@@ -1039,8 +1039,8 @@ class ToyLang private constructor() {
             }
         // Variant ExprLit
         open fun transformExprLit(node: ToyLang.Expr.Lit): ToyLang.Expr.Lit {
-            val new_value = transformExprLitValue(node)
-            val new_metas = transformExprLitMetas(node)
+            val new_value = transformExprLit_value(node)
+            val new_metas = transformExprLit_metas(node)
             return build {
                 Expr.Lit(
                     value = new_value,
@@ -1049,16 +1049,16 @@ class ToyLang private constructor() {
             }
         }
     
-        open fun transformExprLitValue(node: Expr.Lit) =
+        open fun transformExprLit_value(node: Expr.Lit) =
             transformIonElement(node.value)
-        open fun transformExprLitMetas(node: Expr.Lit) =
+        open fun transformExprLit_metas(node: Expr.Lit) =
             transformMetas(node.metas)
     
     
         // Variant ExprVariable
         open fun transformExprVariable(node: ToyLang.Expr.Variable): ToyLang.Expr.Variable {
-            val new_name = transformExprVariableName(node)
-            val new_metas = transformExprVariableMetas(node)
+            val new_name = transformExprVariable_name(node)
+            val new_metas = transformExprVariable_metas(node)
             return build {
                 Expr.Variable(
                     name = new_name,
@@ -1067,16 +1067,16 @@ class ToyLang private constructor() {
             }
         }
     
-        open fun transformExprVariableName(node: Expr.Variable) =
+        open fun transformExprVariable_name(node: Expr.Variable) =
             transformSymbolPrimitive(node.name)
-        open fun transformExprVariableMetas(node: Expr.Variable) =
+        open fun transformExprVariable_metas(node: Expr.Variable) =
             transformMetas(node.metas)
     
     
         // Variant ExprNot
         open fun transformExprNot(node: ToyLang.Expr.Not): ToyLang.Expr.Not {
-            val new_expr = transformExprNotExpr(node)
-            val new_metas = transformExprNotMetas(node)
+            val new_expr = transformExprNot_expr(node)
+            val new_metas = transformExprNot_metas(node)
             return build {
                 Expr.Not(
                     expr = new_expr,
@@ -1085,16 +1085,16 @@ class ToyLang private constructor() {
             }
         }
     
-        open fun transformExprNotExpr(node: Expr.Not) =
+        open fun transformExprNot_expr(node: Expr.Not) =
             transformExpr(node.expr)
-        open fun transformExprNotMetas(node: Expr.Not) =
+        open fun transformExprNot_metas(node: Expr.Not) =
             transformMetas(node.metas)
     
     
         // Variant ExprPlus
         open fun transformExprPlus(node: ToyLang.Expr.Plus): ToyLang.Expr.Plus {
-            val new_operands = transformExprPlusOperands(node)
-            val new_metas = transformExprPlusMetas(node)
+            val new_operands = transformExprPlus_operands(node)
+            val new_metas = transformExprPlus_metas(node)
             return build {
                 Expr.Plus(
                     operands = new_operands,
@@ -1103,16 +1103,16 @@ class ToyLang private constructor() {
             }
         }
     
-        open fun transformExprPlusOperands(node: Expr.Plus) =
+        open fun transformExprPlus_operands(node: Expr.Plus) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprPlusMetas(node: Expr.Plus) =
+        open fun transformExprPlus_metas(node: Expr.Plus) =
             transformMetas(node.metas)
     
     
         // Variant ExprMinus
         open fun transformExprMinus(node: ToyLang.Expr.Minus): ToyLang.Expr.Minus {
-            val new_operands = transformExprMinusOperands(node)
-            val new_metas = transformExprMinusMetas(node)
+            val new_operands = transformExprMinus_operands(node)
+            val new_metas = transformExprMinus_metas(node)
             return build {
                 Expr.Minus(
                     operands = new_operands,
@@ -1121,16 +1121,16 @@ class ToyLang private constructor() {
             }
         }
     
-        open fun transformExprMinusOperands(node: Expr.Minus) =
+        open fun transformExprMinus_operands(node: Expr.Minus) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprMinusMetas(node: Expr.Minus) =
+        open fun transformExprMinus_metas(node: Expr.Minus) =
             transformMetas(node.metas)
     
     
         // Variant ExprTimes
         open fun transformExprTimes(node: ToyLang.Expr.Times): ToyLang.Expr.Times {
-            val new_operands = transformExprTimesOperands(node)
-            val new_metas = transformExprTimesMetas(node)
+            val new_operands = transformExprTimes_operands(node)
+            val new_metas = transformExprTimes_metas(node)
             return build {
                 Expr.Times(
                     operands = new_operands,
@@ -1139,16 +1139,16 @@ class ToyLang private constructor() {
             }
         }
     
-        open fun transformExprTimesOperands(node: Expr.Times) =
+        open fun transformExprTimes_operands(node: Expr.Times) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprTimesMetas(node: Expr.Times) =
+        open fun transformExprTimes_metas(node: Expr.Times) =
             transformMetas(node.metas)
     
     
         // Variant ExprDivide
         open fun transformExprDivide(node: ToyLang.Expr.Divide): ToyLang.Expr.Divide {
-            val new_operands = transformExprDivideOperands(node)
-            val new_metas = transformExprDivideMetas(node)
+            val new_operands = transformExprDivide_operands(node)
+            val new_metas = transformExprDivide_metas(node)
             return build {
                 Expr.Divide(
                     operands = new_operands,
@@ -1157,16 +1157,16 @@ class ToyLang private constructor() {
             }
         }
     
-        open fun transformExprDivideOperands(node: Expr.Divide) =
+        open fun transformExprDivide_operands(node: Expr.Divide) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprDivideMetas(node: Expr.Divide) =
+        open fun transformExprDivide_metas(node: Expr.Divide) =
             transformMetas(node.metas)
     
     
         // Variant ExprModulo
         open fun transformExprModulo(node: ToyLang.Expr.Modulo): ToyLang.Expr.Modulo {
-            val new_operands = transformExprModuloOperands(node)
-            val new_metas = transformExprModuloMetas(node)
+            val new_operands = transformExprModulo_operands(node)
+            val new_metas = transformExprModulo_metas(node)
             return build {
                 Expr.Modulo(
                     operands = new_operands,
@@ -1175,17 +1175,17 @@ class ToyLang private constructor() {
             }
         }
     
-        open fun transformExprModuloOperands(node: Expr.Modulo) =
+        open fun transformExprModulo_operands(node: Expr.Modulo) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprModuloMetas(node: Expr.Modulo) =
+        open fun transformExprModulo_metas(node: Expr.Modulo) =
             transformMetas(node.metas)
     
     
         // Variant ExprCall
         open fun transformExprCall(node: ToyLang.Expr.Call): ToyLang.Expr.Call {
-            val new_name = transformExprCallName(node)
-            val new_argument = transformExprCallArgument(node)
-            val new_metas = transformExprCallMetas(node)
+            val new_name = transformExprCall_name(node)
+            val new_argument = transformExprCall_argument(node)
+            val new_metas = transformExprCall_metas(node)
             return build {
                 Expr.Call(
                     name = new_name,
@@ -1195,20 +1195,20 @@ class ToyLang private constructor() {
             }
         }
     
-        open fun transformExprCallName(node: Expr.Call) =
+        open fun transformExprCall_name(node: Expr.Call) =
             transformSymbolPrimitive(node.name)
-        open fun transformExprCallArgument(node: Expr.Call) =
+        open fun transformExprCall_argument(node: Expr.Call) =
             transformExpr(node.argument)
-        open fun transformExprCallMetas(node: Expr.Call) =
+        open fun transformExprCall_metas(node: Expr.Call) =
             transformMetas(node.metas)
     
     
         // Variant ExprLet
         open fun transformExprLet(node: ToyLang.Expr.Let): ToyLang.Expr.Let {
-            val new_name = transformExprLetName(node)
-            val new_value = transformExprLetValue(node)
-            val new_body = transformExprLetBody(node)
-            val new_metas = transformExprLetMetas(node)
+            val new_name = transformExprLet_name(node)
+            val new_value = transformExprLet_value(node)
+            val new_body = transformExprLet_body(node)
+            val new_metas = transformExprLet_metas(node)
             return build {
                 Expr.Let(
                     name = new_name,
@@ -1219,21 +1219,21 @@ class ToyLang private constructor() {
             }
         }
     
-        open fun transformExprLetName(node: Expr.Let) =
+        open fun transformExprLet_name(node: Expr.Let) =
             transformSymbolPrimitive(node.name)
-        open fun transformExprLetValue(node: Expr.Let) =
+        open fun transformExprLet_value(node: Expr.Let) =
             transformExpr(node.value)
-        open fun transformExprLetBody(node: Expr.Let) =
+        open fun transformExprLet_body(node: Expr.Let) =
             transformExpr(node.body)
-        open fun transformExprLetMetas(node: Expr.Let) =
+        open fun transformExprLet_metas(node: Expr.Let) =
             transformMetas(node.metas)
     
     
         // Variant ExprFunction
         open fun transformExprFunction(node: ToyLang.Expr.Function): ToyLang.Expr.Function {
-            val new_varName = transformExprFunctionVarName(node)
-            val new_body = transformExprFunctionBody(node)
-            val new_metas = transformExprFunctionMetas(node)
+            val new_varName = transformExprFunction_varName(node)
+            val new_body = transformExprFunction_body(node)
+            val new_metas = transformExprFunction_metas(node)
             return build {
                 Expr.Function(
                     varName = new_varName,
@@ -1243,11 +1243,11 @@ class ToyLang private constructor() {
             }
         }
     
-        open fun transformExprFunctionVarName(node: Expr.Function) =
+        open fun transformExprFunction_varName(node: Expr.Function) =
             transformSymbolPrimitive(node.varName)
-        open fun transformExprFunctionBody(node: Expr.Function) =
+        open fun transformExprFunction_body(node: Expr.Function) =
             transformExpr(node.body)
-        open fun transformExprFunctionMetas(node: Expr.Function) =
+        open fun transformExprFunction_metas(node: Expr.Function) =
             transformMetas(node.metas)
     
     
@@ -2282,8 +2282,8 @@ class ToyLangNameless private constructor() {
             }
         // Variant ExprLit
         open fun transformExprLit(node: ToyLangNameless.Expr.Lit): ToyLangNameless.Expr.Lit {
-            val new_value = transformExprLitValue(node)
-            val new_metas = transformExprLitMetas(node)
+            val new_value = transformExprLit_value(node)
+            val new_metas = transformExprLit_metas(node)
             return build {
                 Expr.Lit(
                     value = new_value,
@@ -2292,16 +2292,16 @@ class ToyLangNameless private constructor() {
             }
         }
     
-        open fun transformExprLitValue(node: Expr.Lit) =
+        open fun transformExprLit_value(node: Expr.Lit) =
             transformIonElement(node.value)
-        open fun transformExprLitMetas(node: Expr.Lit) =
+        open fun transformExprLit_metas(node: Expr.Lit) =
             transformMetas(node.metas)
     
     
         // Variant ExprNot
         open fun transformExprNot(node: ToyLangNameless.Expr.Not): ToyLangNameless.Expr.Not {
-            val new_expr = transformExprNotExpr(node)
-            val new_metas = transformExprNotMetas(node)
+            val new_expr = transformExprNot_expr(node)
+            val new_metas = transformExprNot_metas(node)
             return build {
                 Expr.Not(
                     expr = new_expr,
@@ -2310,16 +2310,16 @@ class ToyLangNameless private constructor() {
             }
         }
     
-        open fun transformExprNotExpr(node: Expr.Not) =
+        open fun transformExprNot_expr(node: Expr.Not) =
             transformExpr(node.expr)
-        open fun transformExprNotMetas(node: Expr.Not) =
+        open fun transformExprNot_metas(node: Expr.Not) =
             transformMetas(node.metas)
     
     
         // Variant ExprPlus
         open fun transformExprPlus(node: ToyLangNameless.Expr.Plus): ToyLangNameless.Expr.Plus {
-            val new_operands = transformExprPlusOperands(node)
-            val new_metas = transformExprPlusMetas(node)
+            val new_operands = transformExprPlus_operands(node)
+            val new_metas = transformExprPlus_metas(node)
             return build {
                 Expr.Plus(
                     operands = new_operands,
@@ -2328,16 +2328,16 @@ class ToyLangNameless private constructor() {
             }
         }
     
-        open fun transformExprPlusOperands(node: Expr.Plus) =
+        open fun transformExprPlus_operands(node: Expr.Plus) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprPlusMetas(node: Expr.Plus) =
+        open fun transformExprPlus_metas(node: Expr.Plus) =
             transformMetas(node.metas)
     
     
         // Variant ExprMinus
         open fun transformExprMinus(node: ToyLangNameless.Expr.Minus): ToyLangNameless.Expr.Minus {
-            val new_operands = transformExprMinusOperands(node)
-            val new_metas = transformExprMinusMetas(node)
+            val new_operands = transformExprMinus_operands(node)
+            val new_metas = transformExprMinus_metas(node)
             return build {
                 Expr.Minus(
                     operands = new_operands,
@@ -2346,16 +2346,16 @@ class ToyLangNameless private constructor() {
             }
         }
     
-        open fun transformExprMinusOperands(node: Expr.Minus) =
+        open fun transformExprMinus_operands(node: Expr.Minus) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprMinusMetas(node: Expr.Minus) =
+        open fun transformExprMinus_metas(node: Expr.Minus) =
             transformMetas(node.metas)
     
     
         // Variant ExprTimes
         open fun transformExprTimes(node: ToyLangNameless.Expr.Times): ToyLangNameless.Expr.Times {
-            val new_operands = transformExprTimesOperands(node)
-            val new_metas = transformExprTimesMetas(node)
+            val new_operands = transformExprTimes_operands(node)
+            val new_metas = transformExprTimes_metas(node)
             return build {
                 Expr.Times(
                     operands = new_operands,
@@ -2364,16 +2364,16 @@ class ToyLangNameless private constructor() {
             }
         }
     
-        open fun transformExprTimesOperands(node: Expr.Times) =
+        open fun transformExprTimes_operands(node: Expr.Times) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprTimesMetas(node: Expr.Times) =
+        open fun transformExprTimes_metas(node: Expr.Times) =
             transformMetas(node.metas)
     
     
         // Variant ExprDivide
         open fun transformExprDivide(node: ToyLangNameless.Expr.Divide): ToyLangNameless.Expr.Divide {
-            val new_operands = transformExprDivideOperands(node)
-            val new_metas = transformExprDivideMetas(node)
+            val new_operands = transformExprDivide_operands(node)
+            val new_metas = transformExprDivide_metas(node)
             return build {
                 Expr.Divide(
                     operands = new_operands,
@@ -2382,16 +2382,16 @@ class ToyLangNameless private constructor() {
             }
         }
     
-        open fun transformExprDivideOperands(node: Expr.Divide) =
+        open fun transformExprDivide_operands(node: Expr.Divide) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprDivideMetas(node: Expr.Divide) =
+        open fun transformExprDivide_metas(node: Expr.Divide) =
             transformMetas(node.metas)
     
     
         // Variant ExprModulo
         open fun transformExprModulo(node: ToyLangNameless.Expr.Modulo): ToyLangNameless.Expr.Modulo {
-            val new_operands = transformExprModuloOperands(node)
-            val new_metas = transformExprModuloMetas(node)
+            val new_operands = transformExprModulo_operands(node)
+            val new_metas = transformExprModulo_metas(node)
             return build {
                 Expr.Modulo(
                     operands = new_operands,
@@ -2400,17 +2400,17 @@ class ToyLangNameless private constructor() {
             }
         }
     
-        open fun transformExprModuloOperands(node: Expr.Modulo) =
+        open fun transformExprModulo_operands(node: Expr.Modulo) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprModuloMetas(node: Expr.Modulo) =
+        open fun transformExprModulo_metas(node: Expr.Modulo) =
             transformMetas(node.metas)
     
     
         // Variant ExprCall
         open fun transformExprCall(node: ToyLangNameless.Expr.Call): ToyLangNameless.Expr.Call {
-            val new_name = transformExprCallName(node)
-            val new_argument = transformExprCallArgument(node)
-            val new_metas = transformExprCallMetas(node)
+            val new_name = transformExprCall_name(node)
+            val new_argument = transformExprCall_argument(node)
+            val new_metas = transformExprCall_metas(node)
             return build {
                 Expr.Call(
                     name = new_name,
@@ -2420,19 +2420,19 @@ class ToyLangNameless private constructor() {
             }
         }
     
-        open fun transformExprCallName(node: Expr.Call) =
+        open fun transformExprCall_name(node: Expr.Call) =
             transformSymbolPrimitive(node.name)
-        open fun transformExprCallArgument(node: Expr.Call) =
+        open fun transformExprCall_argument(node: Expr.Call) =
             transformExpr(node.argument)
-        open fun transformExprCallMetas(node: Expr.Call) =
+        open fun transformExprCall_metas(node: Expr.Call) =
             transformMetas(node.metas)
     
     
         // Variant ExprFunction
         open fun transformExprFunction(node: ToyLangNameless.Expr.Function): ToyLangNameless.Expr.Function {
-            val new_varName = transformExprFunctionVarName(node)
-            val new_body = transformExprFunctionBody(node)
-            val new_metas = transformExprFunctionMetas(node)
+            val new_varName = transformExprFunction_varName(node)
+            val new_body = transformExprFunction_body(node)
+            val new_metas = transformExprFunction_metas(node)
             return build {
                 Expr.Function(
                     varName = new_varName,
@@ -2442,18 +2442,18 @@ class ToyLangNameless private constructor() {
             }
         }
     
-        open fun transformExprFunctionVarName(node: Expr.Function) =
+        open fun transformExprFunction_varName(node: Expr.Function) =
             transformSymbolPrimitive(node.varName)
-        open fun transformExprFunctionBody(node: Expr.Function) =
+        open fun transformExprFunction_body(node: Expr.Function) =
             transformExpr(node.body)
-        open fun transformExprFunctionMetas(node: Expr.Function) =
+        open fun transformExprFunction_metas(node: Expr.Function) =
             transformMetas(node.metas)
     
     
         // Variant ExprVariable
         open fun transformExprVariable(node: ToyLangNameless.Expr.Variable): ToyLangNameless.Expr.Variable {
-            val new_index = transformExprVariableIndex(node)
-            val new_metas = transformExprVariableMetas(node)
+            val new_index = transformExprVariable_index(node)
+            val new_metas = transformExprVariable_metas(node)
             return build {
                 Expr.Variable(
                     index = new_index,
@@ -2462,18 +2462,18 @@ class ToyLangNameless private constructor() {
             }
         }
     
-        open fun transformExprVariableIndex(node: Expr.Variable) =
+        open fun transformExprVariable_index(node: Expr.Variable) =
             transformLongPrimitive(node.index)
-        open fun transformExprVariableMetas(node: Expr.Variable) =
+        open fun transformExprVariable_metas(node: Expr.Variable) =
             transformMetas(node.metas)
     
     
         // Variant ExprLet
         open fun transformExprLet(node: ToyLangNameless.Expr.Let): ToyLangNameless.Expr.Let {
-            val new_index = transformExprLetIndex(node)
-            val new_value = transformExprLetValue(node)
-            val new_body = transformExprLetBody(node)
-            val new_metas = transformExprLetMetas(node)
+            val new_index = transformExprLet_index(node)
+            val new_value = transformExprLet_value(node)
+            val new_body = transformExprLet_body(node)
+            val new_metas = transformExprLet_metas(node)
             return build {
                 Expr.Let(
                     index = new_index,
@@ -2484,13 +2484,13 @@ class ToyLangNameless private constructor() {
             }
         }
     
-        open fun transformExprLetIndex(node: Expr.Let) =
+        open fun transformExprLet_index(node: Expr.Let) =
             transformLongPrimitive(node.index)
-        open fun transformExprLetValue(node: Expr.Let) =
+        open fun transformExprLet_value(node: Expr.Let) =
             transformExpr(node.value)
-        open fun transformExprLetBody(node: Expr.Let) =
+        open fun transformExprLet_body(node: Expr.Let) =
             transformExpr(node.body)
-        open fun transformExprLetMetas(node: Expr.Let) =
+        open fun transformExprLet_metas(node: Expr.Let) =
             transformMetas(node.metas)
     
     
@@ -5634,9 +5634,9 @@ class TestDomain private constructor() {
         //////////////////////////////////////
         // Tuple IntPair
         open fun transformIntPair(node: IntPair): IntPair {
-            val new_first = transformIntPairFirst(node)
-            val new_second = transformIntPairSecond(node)
-            val new_metas = transformIntPairMetas(node)
+            val new_first = transformIntPair_first(node)
+            val new_second = transformIntPair_second(node)
+            val new_metas = transformIntPair_metas(node)
             return build {
                 IntPair(
                     first = new_first,
@@ -5645,18 +5645,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformIntPairFirst(node: IntPair) =
+        open fun transformIntPair_first(node: IntPair) =
             transformLongPrimitive(node.first)
-        open fun transformIntPairSecond(node: IntPair) =
+        open fun transformIntPair_second(node: IntPair) =
             transformLongPrimitive(node.second)
-        open fun transformIntPairMetas(node: IntPair) =
+        open fun transformIntPair_metas(node: IntPair) =
             transformMetas(node.metas)
     
         // Tuple SymbolPair
         open fun transformSymbolPair(node: SymbolPair): SymbolPair {
-            val new_first = transformSymbolPairFirst(node)
-            val new_second = transformSymbolPairSecond(node)
-            val new_metas = transformSymbolPairMetas(node)
+            val new_first = transformSymbolPair_first(node)
+            val new_second = transformSymbolPair_second(node)
+            val new_metas = transformSymbolPair_metas(node)
             return build {
                 SymbolPair(
                     first = new_first,
@@ -5665,18 +5665,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformSymbolPairFirst(node: SymbolPair) =
+        open fun transformSymbolPair_first(node: SymbolPair) =
             transformSymbolPrimitive(node.first)
-        open fun transformSymbolPairSecond(node: SymbolPair) =
+        open fun transformSymbolPair_second(node: SymbolPair) =
             transformSymbolPrimitive(node.second)
-        open fun transformSymbolPairMetas(node: SymbolPair) =
+        open fun transformSymbolPair_metas(node: SymbolPair) =
             transformMetas(node.metas)
     
         // Tuple IonPair
         open fun transformIonPair(node: IonPair): IonPair {
-            val new_first = transformIonPairFirst(node)
-            val new_second = transformIonPairSecond(node)
-            val new_metas = transformIonPairMetas(node)
+            val new_first = transformIonPair_first(node)
+            val new_second = transformIonPair_second(node)
+            val new_metas = transformIonPair_metas(node)
             return build {
                 IonPair(
                     first = new_first,
@@ -5685,18 +5685,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformIonPairFirst(node: IonPair) =
+        open fun transformIonPair_first(node: IonPair) =
             transformIonElement(node.first)
-        open fun transformIonPairSecond(node: IonPair) =
+        open fun transformIonPair_second(node: IonPair) =
             transformIonElement(node.second)
-        open fun transformIonPairMetas(node: IonPair) =
+        open fun transformIonPair_metas(node: IonPair) =
             transformMetas(node.metas)
     
         // Tuple IntSymbolPair
         open fun transformIntSymbolPair(node: IntSymbolPair): IntSymbolPair {
-            val new_first = transformIntSymbolPairFirst(node)
-            val new_second = transformIntSymbolPairSecond(node)
-            val new_metas = transformIntSymbolPairMetas(node)
+            val new_first = transformIntSymbolPair_first(node)
+            val new_second = transformIntSymbolPair_second(node)
+            val new_metas = transformIntSymbolPair_metas(node)
             return build {
                 IntSymbolPair(
                     first = new_first,
@@ -5705,18 +5705,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformIntSymbolPairFirst(node: IntSymbolPair) =
+        open fun transformIntSymbolPair_first(node: IntSymbolPair) =
             transformLongPrimitive(node.first)
-        open fun transformIntSymbolPairSecond(node: IntSymbolPair) =
+        open fun transformIntSymbolPair_second(node: IntSymbolPair) =
             transformSymbolPrimitive(node.second)
-        open fun transformIntSymbolPairMetas(node: IntSymbolPair) =
+        open fun transformIntSymbolPair_metas(node: IntSymbolPair) =
             transformMetas(node.metas)
     
         // Tuple SymbolIntPair
         open fun transformSymbolIntPair(node: SymbolIntPair): SymbolIntPair {
-            val new_first = transformSymbolIntPairFirst(node)
-            val new_second = transformSymbolIntPairSecond(node)
-            val new_metas = transformSymbolIntPairMetas(node)
+            val new_first = transformSymbolIntPair_first(node)
+            val new_second = transformSymbolIntPair_second(node)
+            val new_metas = transformSymbolIntPair_metas(node)
             return build {
                 SymbolIntPair(
                     first = new_first,
@@ -5725,18 +5725,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformSymbolIntPairFirst(node: SymbolIntPair) =
+        open fun transformSymbolIntPair_first(node: SymbolIntPair) =
             transformSymbolPrimitive(node.first)
-        open fun transformSymbolIntPairSecond(node: SymbolIntPair) =
+        open fun transformSymbolIntPair_second(node: SymbolIntPair) =
             transformLongPrimitive(node.second)
-        open fun transformSymbolIntPairMetas(node: SymbolIntPair) =
+        open fun transformSymbolIntPair_metas(node: SymbolIntPair) =
             transformMetas(node.metas)
     
         // Tuple IonIntPair
         open fun transformIonIntPair(node: IonIntPair): IonIntPair {
-            val new_first = transformIonIntPairFirst(node)
-            val new_second = transformIonIntPairSecond(node)
-            val new_metas = transformIonIntPairMetas(node)
+            val new_first = transformIonIntPair_first(node)
+            val new_second = transformIonIntPair_second(node)
+            val new_metas = transformIonIntPair_metas(node)
             return build {
                 IonIntPair(
                     first = new_first,
@@ -5745,18 +5745,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformIonIntPairFirst(node: IonIntPair) =
+        open fun transformIonIntPair_first(node: IonIntPair) =
             transformIonElement(node.first)
-        open fun transformIonIntPairSecond(node: IonIntPair) =
+        open fun transformIonIntPair_second(node: IonIntPair) =
             transformLongPrimitive(node.second)
-        open fun transformIonIntPairMetas(node: IonIntPair) =
+        open fun transformIonIntPair_metas(node: IonIntPair) =
             transformMetas(node.metas)
     
         // Tuple IonSymbolPair
         open fun transformIonSymbolPair(node: IonSymbolPair): IonSymbolPair {
-            val new_first = transformIonSymbolPairFirst(node)
-            val new_second = transformIonSymbolPairSecond(node)
-            val new_metas = transformIonSymbolPairMetas(node)
+            val new_first = transformIonSymbolPair_first(node)
+            val new_second = transformIonSymbolPair_second(node)
+            val new_metas = transformIonSymbolPair_metas(node)
             return build {
                 IonSymbolPair(
                     first = new_first,
@@ -5765,18 +5765,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformIonSymbolPairFirst(node: IonSymbolPair) =
+        open fun transformIonSymbolPair_first(node: IonSymbolPair) =
             transformIonElement(node.first)
-        open fun transformIonSymbolPairSecond(node: IonSymbolPair) =
+        open fun transformIonSymbolPair_second(node: IonSymbolPair) =
             transformIonElement(node.second)
-        open fun transformIonSymbolPairMetas(node: IonSymbolPair) =
+        open fun transformIonSymbolPair_metas(node: IonSymbolPair) =
             transformMetas(node.metas)
     
         // Tuple IntPairPair
         open fun transformIntPairPair(node: IntPairPair): IntPairPair {
-            val new_first = transformIntPairPairFirst(node)
-            val new_second = transformIntPairPairSecond(node)
-            val new_metas = transformIntPairPairMetas(node)
+            val new_first = transformIntPairPair_first(node)
+            val new_second = transformIntPairPair_second(node)
+            val new_metas = transformIntPairPair_metas(node)
             return build {
                 IntPairPair(
                     first = new_first,
@@ -5785,18 +5785,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformIntPairPairFirst(node: IntPairPair) =
+        open fun transformIntPairPair_first(node: IntPairPair) =
             transformIntPair(node.first)
-        open fun transformIntPairPairSecond(node: IntPairPair) =
+        open fun transformIntPairPair_second(node: IntPairPair) =
             transformIntPair(node.second)
-        open fun transformIntPairPairMetas(node: IntPairPair) =
+        open fun transformIntPairPair_metas(node: IntPairPair) =
             transformMetas(node.metas)
     
         // Tuple SymbolPairPair
         open fun transformSymbolPairPair(node: SymbolPairPair): SymbolPairPair {
-            val new_first = transformSymbolPairPairFirst(node)
-            val new_second = transformSymbolPairPairSecond(node)
-            val new_metas = transformSymbolPairPairMetas(node)
+            val new_first = transformSymbolPairPair_first(node)
+            val new_second = transformSymbolPairPair_second(node)
+            val new_metas = transformSymbolPairPair_metas(node)
             return build {
                 SymbolPairPair(
                     first = new_first,
@@ -5805,18 +5805,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformSymbolPairPairFirst(node: SymbolPairPair) =
+        open fun transformSymbolPairPair_first(node: SymbolPairPair) =
             transformSymbolPair(node.first)
-        open fun transformSymbolPairPairSecond(node: SymbolPairPair) =
+        open fun transformSymbolPairPair_second(node: SymbolPairPair) =
             transformSymbolPair(node.second)
-        open fun transformSymbolPairPairMetas(node: SymbolPairPair) =
+        open fun transformSymbolPairPair_metas(node: SymbolPairPair) =
             transformMetas(node.metas)
     
         // Tuple IonPairPair
         open fun transformIonPairPair(node: IonPairPair): IonPairPair {
-            val new_first = transformIonPairPairFirst(node)
-            val new_second = transformIonPairPairSecond(node)
-            val new_metas = transformIonPairPairMetas(node)
+            val new_first = transformIonPairPair_first(node)
+            val new_second = transformIonPairPair_second(node)
+            val new_metas = transformIonPairPair_metas(node)
             return build {
                 IonPairPair(
                     first = new_first,
@@ -5825,18 +5825,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformIonPairPairFirst(node: IonPairPair) =
+        open fun transformIonPairPair_first(node: IonPairPair) =
             transformIonPair(node.first)
-        open fun transformIonPairPairSecond(node: IonPairPair) =
+        open fun transformIonPairPair_second(node: IonPairPair) =
             transformIonPair(node.second)
-        open fun transformIonPairPairMetas(node: IonPairPair) =
+        open fun transformIonPairPair_metas(node: IonPairPair) =
             transformMetas(node.metas)
     
         // Tuple RecursivePair
         open fun transformRecursivePair(node: RecursivePair): RecursivePair {
-            val new_first = transformRecursivePairFirst(node)
-            val new_second = transformRecursivePairSecond(node)
-            val new_metas = transformRecursivePairMetas(node)
+            val new_first = transformRecursivePair_first(node)
+            val new_second = transformRecursivePair_second(node)
+            val new_metas = transformRecursivePair_metas(node)
             return build {
                 RecursivePair(
                     first = new_first,
@@ -5845,18 +5845,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformRecursivePairFirst(node: RecursivePair) =
+        open fun transformRecursivePair_first(node: RecursivePair) =
             transformLongPrimitive(node.first)
-        open fun transformRecursivePairSecond(node: RecursivePair) =
+        open fun transformRecursivePair_second(node: RecursivePair) =
             node.second?.let { transformRecursivePair(it) }
-        open fun transformRecursivePairMetas(node: RecursivePair) =
+        open fun transformRecursivePair_metas(node: RecursivePair) =
             transformMetas(node.metas)
     
         // Tuple AnswerPair
         open fun transformAnswerPair(node: AnswerPair): AnswerPair {
-            val new_first = transformAnswerPairFirst(node)
-            val new_second = transformAnswerPairSecond(node)
-            val new_metas = transformAnswerPairMetas(node)
+            val new_first = transformAnswerPair_first(node)
+            val new_second = transformAnswerPair_second(node)
+            val new_metas = transformAnswerPair_metas(node)
             return build {
                 AnswerPair(
                     first = new_first,
@@ -5865,18 +5865,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformAnswerPairFirst(node: AnswerPair) =
+        open fun transformAnswerPair_first(node: AnswerPair) =
             transformAnswer(node.first)
-        open fun transformAnswerPairSecond(node: AnswerPair) =
+        open fun transformAnswerPair_second(node: AnswerPair) =
             transformAnswer(node.second)
-        open fun transformAnswerPairMetas(node: AnswerPair) =
+        open fun transformAnswerPair_metas(node: AnswerPair) =
             transformMetas(node.metas)
     
         // Tuple AnswerIntPair
         open fun transformAnswerIntPair(node: AnswerIntPair): AnswerIntPair {
-            val new_first = transformAnswerIntPairFirst(node)
-            val new_second = transformAnswerIntPairSecond(node)
-            val new_metas = transformAnswerIntPairMetas(node)
+            val new_first = transformAnswerIntPair_first(node)
+            val new_second = transformAnswerIntPair_second(node)
+            val new_metas = transformAnswerIntPair_metas(node)
             return build {
                 AnswerIntPair(
                     first = new_first,
@@ -5885,18 +5885,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformAnswerIntPairFirst(node: AnswerIntPair) =
+        open fun transformAnswerIntPair_first(node: AnswerIntPair) =
             transformAnswer(node.first)
-        open fun transformAnswerIntPairSecond(node: AnswerIntPair) =
+        open fun transformAnswerIntPair_second(node: AnswerIntPair) =
             transformLongPrimitive(node.second)
-        open fun transformAnswerIntPairMetas(node: AnswerIntPair) =
+        open fun transformAnswerIntPair_metas(node: AnswerIntPair) =
             transformMetas(node.metas)
     
         // Tuple IntAnswerPair
         open fun transformIntAnswerPair(node: IntAnswerPair): IntAnswerPair {
-            val new_first = transformIntAnswerPairFirst(node)
-            val new_second = transformIntAnswerPairSecond(node)
-            val new_metas = transformIntAnswerPairMetas(node)
+            val new_first = transformIntAnswerPair_first(node)
+            val new_second = transformIntAnswerPair_second(node)
+            val new_metas = transformIntAnswerPair_metas(node)
             return build {
                 IntAnswerPair(
                     first = new_first,
@@ -5905,18 +5905,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformIntAnswerPairFirst(node: IntAnswerPair) =
+        open fun transformIntAnswerPair_first(node: IntAnswerPair) =
             transformLongPrimitive(node.first)
-        open fun transformIntAnswerPairSecond(node: IntAnswerPair) =
+        open fun transformIntAnswerPair_second(node: IntAnswerPair) =
             transformAnswer(node.second)
-        open fun transformIntAnswerPairMetas(node: IntAnswerPair) =
+        open fun transformIntAnswerPair_metas(node: IntAnswerPair) =
             transformMetas(node.metas)
     
         // Tuple SymbolAnswerPair
         open fun transformSymbolAnswerPair(node: SymbolAnswerPair): SymbolAnswerPair {
-            val new_first = transformSymbolAnswerPairFirst(node)
-            val new_second = transformSymbolAnswerPairSecond(node)
-            val new_metas = transformSymbolAnswerPairMetas(node)
+            val new_first = transformSymbolAnswerPair_first(node)
+            val new_second = transformSymbolAnswerPair_second(node)
+            val new_metas = transformSymbolAnswerPair_metas(node)
             return build {
                 SymbolAnswerPair(
                     first = new_first,
@@ -5925,18 +5925,18 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformSymbolAnswerPairFirst(node: SymbolAnswerPair) =
+        open fun transformSymbolAnswerPair_first(node: SymbolAnswerPair) =
             transformSymbolPrimitive(node.first)
-        open fun transformSymbolAnswerPairSecond(node: SymbolAnswerPair) =
+        open fun transformSymbolAnswerPair_second(node: SymbolAnswerPair) =
             transformAnswer(node.second)
-        open fun transformSymbolAnswerPairMetas(node: SymbolAnswerPair) =
+        open fun transformSymbolAnswerPair_metas(node: SymbolAnswerPair) =
             transformMetas(node.metas)
     
         // Tuple AnswerSymbolPair
         open fun transformAnswerSymbolPair(node: AnswerSymbolPair): AnswerSymbolPair {
-            val new_first = transformAnswerSymbolPairFirst(node)
-            val new_second = transformAnswerSymbolPairSecond(node)
-            val new_metas = transformAnswerSymbolPairMetas(node)
+            val new_first = transformAnswerSymbolPair_first(node)
+            val new_second = transformAnswerSymbolPair_second(node)
+            val new_metas = transformAnswerSymbolPair_metas(node)
             return build {
                 AnswerSymbolPair(
                     first = new_first,
@@ -5945,17 +5945,17 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformAnswerSymbolPairFirst(node: AnswerSymbolPair) =
+        open fun transformAnswerSymbolPair_first(node: AnswerSymbolPair) =
             transformAnswer(node.first)
-        open fun transformAnswerSymbolPairSecond(node: AnswerSymbolPair) =
+        open fun transformAnswerSymbolPair_second(node: AnswerSymbolPair) =
             transformSymbolPrimitive(node.second)
-        open fun transformAnswerSymbolPairMetas(node: AnswerSymbolPair) =
+        open fun transformAnswerSymbolPair_metas(node: AnswerSymbolPair) =
             transformMetas(node.metas)
     
         // Tuple VariadicMin0
         open fun transformVariadicMin0(node: VariadicMin0): VariadicMin0 {
-            val new_ints = transformVariadicMin0Ints(node)
-            val new_metas = transformVariadicMin0Metas(node)
+            val new_ints = transformVariadicMin0_ints(node)
+            val new_metas = transformVariadicMin0_metas(node)
             return build {
                 VariadicMin0(
                     ints = new_ints,
@@ -5963,15 +5963,15 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformVariadicMin0Ints(node: VariadicMin0) =
+        open fun transformVariadicMin0_ints(node: VariadicMin0) =
             node.ints.map { transformLongPrimitive(it) }
-        open fun transformVariadicMin0Metas(node: VariadicMin0) =
+        open fun transformVariadicMin0_metas(node: VariadicMin0) =
             transformMetas(node.metas)
     
         // Tuple VariadicMin1
         open fun transformVariadicMin1(node: VariadicMin1): VariadicMin1 {
-            val new_ints = transformVariadicMin1Ints(node)
-            val new_metas = transformVariadicMin1Metas(node)
+            val new_ints = transformVariadicMin1_ints(node)
+            val new_metas = transformVariadicMin1_metas(node)
             return build {
                 VariadicMin1(
                     ints = new_ints,
@@ -5979,16 +5979,16 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformVariadicMin1Ints(node: VariadicMin1) =
+        open fun transformVariadicMin1_ints(node: VariadicMin1) =
             node.ints.map { transformLongPrimitive(it) }
-        open fun transformVariadicMin1Metas(node: VariadicMin1) =
+        open fun transformVariadicMin1_metas(node: VariadicMin1) =
             transformMetas(node.metas)
     
         // Tuple ElementVariadic
         open fun transformElementVariadic(node: ElementVariadic): ElementVariadic {
-            val new_name = transformElementVariadicName(node)
-            val new_ints = transformElementVariadicInts(node)
-            val new_metas = transformElementVariadicMetas(node)
+            val new_name = transformElementVariadic_name(node)
+            val new_ints = transformElementVariadic_ints(node)
+            val new_metas = transformElementVariadic_metas(node)
             return build {
                 ElementVariadic(
                     name = new_name,
@@ -5997,17 +5997,17 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformElementVariadicName(node: ElementVariadic) =
+        open fun transformElementVariadic_name(node: ElementVariadic) =
             transformSymbolPrimitive(node.name)
-        open fun transformElementVariadicInts(node: ElementVariadic) =
+        open fun transformElementVariadic_ints(node: ElementVariadic) =
             node.ints.map { transformLongPrimitive(it) }
-        open fun transformElementVariadicMetas(node: ElementVariadic) =
+        open fun transformElementVariadic_metas(node: ElementVariadic) =
             transformMetas(node.metas)
     
         // Tuple Optional1
         open fun transformOptional1(node: Optional1): Optional1 {
-            val new_value = transformOptional1Value(node)
-            val new_metas = transformOptional1Metas(node)
+            val new_value = transformOptional1_value(node)
+            val new_metas = transformOptional1_metas(node)
             return build {
                 Optional1(
                     value = new_value,
@@ -6015,16 +6015,16 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformOptional1Value(node: Optional1) =
+        open fun transformOptional1_value(node: Optional1) =
             node.value?.let { transformLongPrimitive(it) }
-        open fun transformOptional1Metas(node: Optional1) =
+        open fun transformOptional1_metas(node: Optional1) =
             transformMetas(node.metas)
     
         // Tuple Optional2
         open fun transformOptional2(node: Optional2): Optional2 {
-            val new_first = transformOptional2First(node)
-            val new_second = transformOptional2Second(node)
-            val new_metas = transformOptional2Metas(node)
+            val new_first = transformOptional2_first(node)
+            val new_second = transformOptional2_second(node)
+            val new_metas = transformOptional2_metas(node)
             return build {
                 Optional2(
                     first = new_first,
@@ -6033,19 +6033,19 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformOptional2First(node: Optional2) =
+        open fun transformOptional2_first(node: Optional2) =
             node.first?.let { transformLongPrimitive(it) }
-        open fun transformOptional2Second(node: Optional2) =
+        open fun transformOptional2_second(node: Optional2) =
             node.second?.let { transformLongPrimitive(it) }
-        open fun transformOptional2Metas(node: Optional2) =
+        open fun transformOptional2_metas(node: Optional2) =
             transformMetas(node.metas)
     
         // Tuple DomainLevelRecord
         open fun transformDomainLevelRecord(node: DomainLevelRecord): DomainLevelRecord {
-            val new_someField = transformDomainLevelRecordSomeField(node)
-            val new_anotherField = transformDomainLevelRecordAnotherField(node)
-            val new_optionalField = transformDomainLevelRecordOptionalField(node)
-            val new_metas = transformDomainLevelRecordMetas(node)
+            val new_someField = transformDomainLevelRecord_someField(node)
+            val new_anotherField = transformDomainLevelRecord_anotherField(node)
+            val new_optionalField = transformDomainLevelRecord_optionalField(node)
+            val new_metas = transformDomainLevelRecord_metas(node)
             return build {
                 DomainLevelRecord(
                     someField = new_someField,
@@ -6055,20 +6055,20 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformDomainLevelRecordSomeField(node: DomainLevelRecord) =
+        open fun transformDomainLevelRecord_someField(node: DomainLevelRecord) =
             transformLongPrimitive(node.someField)
-        open fun transformDomainLevelRecordAnotherField(node: DomainLevelRecord) =
+        open fun transformDomainLevelRecord_anotherField(node: DomainLevelRecord) =
             transformSymbolPrimitive(node.anotherField)
-        open fun transformDomainLevelRecordOptionalField(node: DomainLevelRecord) =
+        open fun transformDomainLevelRecord_optionalField(node: DomainLevelRecord) =
             node.optionalField?.let { transformLongPrimitive(it) }
-        open fun transformDomainLevelRecordMetas(node: DomainLevelRecord) =
+        open fun transformDomainLevelRecord_metas(node: DomainLevelRecord) =
             transformMetas(node.metas)
     
         // Tuple ProductWithRecord
         open fun transformProductWithRecord(node: ProductWithRecord): ProductWithRecord {
-            val new_value = transformProductWithRecordValue(node)
-            val new_dlr = transformProductWithRecordDlr(node)
-            val new_metas = transformProductWithRecordMetas(node)
+            val new_value = transformProductWithRecord_value(node)
+            val new_dlr = transformProductWithRecord_dlr(node)
+            val new_metas = transformProductWithRecord_metas(node)
             return build {
                 ProductWithRecord(
                     value = new_value,
@@ -6077,19 +6077,19 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformProductWithRecordValue(node: ProductWithRecord) =
+        open fun transformProductWithRecord_value(node: ProductWithRecord) =
             transformLongPrimitive(node.value)
-        open fun transformProductWithRecordDlr(node: ProductWithRecord) =
+        open fun transformProductWithRecord_dlr(node: ProductWithRecord) =
             transformDomainLevelRecord(node.dlr)
-        open fun transformProductWithRecordMetas(node: ProductWithRecord) =
+        open fun transformProductWithRecord_metas(node: ProductWithRecord) =
             transformMetas(node.metas)
     
         // Tuple TestSumTriplet
         open fun transformTestSumTriplet(node: TestSumTriplet): TestSumTriplet {
-            val new_a = transformTestSumTripletA(node)
-            val new_b = transformTestSumTripletB(node)
-            val new_c = transformTestSumTripletC(node)
-            val new_metas = transformTestSumTripletMetas(node)
+            val new_a = transformTestSumTriplet_a(node)
+            val new_b = transformTestSumTriplet_b(node)
+            val new_c = transformTestSumTriplet_c(node)
+            val new_metas = transformTestSumTriplet_metas(node)
             return build {
                 TestSumTriplet(
                     a = new_a,
@@ -6099,20 +6099,20 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformTestSumTripletA(node: TestSumTriplet) =
+        open fun transformTestSumTriplet_a(node: TestSumTriplet) =
             transformTestSum(node.a)
-        open fun transformTestSumTripletB(node: TestSumTriplet) =
+        open fun transformTestSumTriplet_b(node: TestSumTriplet) =
             transformTestSum(node.b)
-        open fun transformTestSumTripletC(node: TestSumTriplet) =
+        open fun transformTestSumTriplet_c(node: TestSumTriplet) =
             transformTestSum(node.c)
-        open fun transformTestSumTripletMetas(node: TestSumTriplet) =
+        open fun transformTestSumTriplet_metas(node: TestSumTriplet) =
             transformMetas(node.metas)
     
         // Tuple EntityPair
         open fun transformEntityPair(node: EntityPair): EntityPair {
-            val new_first = transformEntityPairFirst(node)
-            val new_second = transformEntityPairSecond(node)
-            val new_metas = transformEntityPairMetas(node)
+            val new_first = transformEntityPair_first(node)
+            val new_second = transformEntityPair_second(node)
+            val new_metas = transformEntityPair_metas(node)
             return build {
                 EntityPair(
                     first = new_first,
@@ -6121,11 +6121,11 @@ class TestDomain private constructor() {
                 )
             }
         }
-        open fun transformEntityPairFirst(node: EntityPair) =
+        open fun transformEntityPair_first(node: EntityPair) =
             transformEntity(node.first)
-        open fun transformEntityPairSecond(node: EntityPair) =
+        open fun transformEntityPair_second(node: EntityPair) =
             transformEntity(node.second)
-        open fun transformEntityPairMetas(node: EntityPair) =
+        open fun transformEntityPair_metas(node: EntityPair) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
@@ -6138,7 +6138,7 @@ class TestDomain private constructor() {
             }
         // Variant AnswerNo
         open fun transformAnswerNo(node: TestDomain.Answer.No): TestDomain.Answer.No {
-            val new_metas = transformAnswerNoMetas(node)
+            val new_metas = transformAnswerNo_metas(node)
             return build {
                 Answer.No(
                     metas = new_metas
@@ -6146,13 +6146,13 @@ class TestDomain private constructor() {
             }
         }
     
-        open fun transformAnswerNoMetas(node: Answer.No) =
+        open fun transformAnswerNo_metas(node: Answer.No) =
             transformMetas(node.metas)
     
     
         // Variant AnswerYes
         open fun transformAnswerYes(node: TestDomain.Answer.Yes): TestDomain.Answer.Yes {
-            val new_metas = transformAnswerYesMetas(node)
+            val new_metas = transformAnswerYes_metas(node)
             return build {
                 Answer.Yes(
                     metas = new_metas
@@ -6160,7 +6160,7 @@ class TestDomain private constructor() {
             }
         }
     
-        open fun transformAnswerYesMetas(node: Answer.Yes) =
+        open fun transformAnswerYes_metas(node: Answer.Yes) =
             transformMetas(node.metas)
     
     
@@ -6173,9 +6173,9 @@ class TestDomain private constructor() {
             }
         // Variant SumWithRecordVariantWithRecord
         open fun transformSumWithRecordVariantWithRecord(node: TestDomain.SumWithRecord.VariantWithRecord): TestDomain.SumWithRecord.VariantWithRecord {
-            val new_value = transformSumWithRecordVariantWithRecordValue(node)
-            val new_dlr = transformSumWithRecordVariantWithRecordDlr(node)
-            val new_metas = transformSumWithRecordVariantWithRecordMetas(node)
+            val new_value = transformSumWithRecordVariantWithRecord_value(node)
+            val new_dlr = transformSumWithRecordVariantWithRecord_dlr(node)
+            val new_metas = transformSumWithRecordVariantWithRecord_metas(node)
             return build {
                 SumWithRecord.VariantWithRecord(
                     value = new_value,
@@ -6185,11 +6185,11 @@ class TestDomain private constructor() {
             }
         }
     
-        open fun transformSumWithRecordVariantWithRecordValue(node: SumWithRecord.VariantWithRecord) =
+        open fun transformSumWithRecordVariantWithRecord_value(node: SumWithRecord.VariantWithRecord) =
             transformLongPrimitive(node.value)
-        open fun transformSumWithRecordVariantWithRecordDlr(node: SumWithRecord.VariantWithRecord) =
+        open fun transformSumWithRecordVariantWithRecord_dlr(node: SumWithRecord.VariantWithRecord) =
             transformDomainLevelRecord(node.dlr)
-        open fun transformSumWithRecordVariantWithRecordMetas(node: SumWithRecord.VariantWithRecord) =
+        open fun transformSumWithRecordVariantWithRecord_metas(node: SumWithRecord.VariantWithRecord) =
             transformMetas(node.metas)
     
     
@@ -6204,8 +6204,8 @@ class TestDomain private constructor() {
             }
         // Variant TestSumOne
         open fun transformTestSumOne(node: TestDomain.TestSum.One): TestDomain.TestSum.One {
-            val new_a = transformTestSumOneA(node)
-            val new_metas = transformTestSumOneMetas(node)
+            val new_a = transformTestSumOne_a(node)
+            val new_metas = transformTestSumOne_metas(node)
             return build {
                 TestSum.One(
                     a = new_a,
@@ -6214,17 +6214,17 @@ class TestDomain private constructor() {
             }
         }
     
-        open fun transformTestSumOneA(node: TestSum.One) =
+        open fun transformTestSumOne_a(node: TestSum.One) =
             transformLongPrimitive(node.a)
-        open fun transformTestSumOneMetas(node: TestSum.One) =
+        open fun transformTestSumOne_metas(node: TestSum.One) =
             transformMetas(node.metas)
     
     
         // Variant TestSumTwo
         open fun transformTestSumTwo(node: TestDomain.TestSum.Two): TestDomain.TestSum.Two {
-            val new_a = transformTestSumTwoA(node)
-            val new_b = transformTestSumTwoB(node)
-            val new_metas = transformTestSumTwoMetas(node)
+            val new_a = transformTestSumTwo_a(node)
+            val new_b = transformTestSumTwo_b(node)
+            val new_metas = transformTestSumTwo_metas(node)
             return build {
                 TestSum.Two(
                     a = new_a,
@@ -6234,20 +6234,20 @@ class TestDomain private constructor() {
             }
         }
     
-        open fun transformTestSumTwoA(node: TestSum.Two) =
+        open fun transformTestSumTwo_a(node: TestSum.Two) =
             transformLongPrimitive(node.a)
-        open fun transformTestSumTwoB(node: TestSum.Two) =
+        open fun transformTestSumTwo_b(node: TestSum.Two) =
             transformLongPrimitive(node.b)
-        open fun transformTestSumTwoMetas(node: TestSum.Two) =
+        open fun transformTestSumTwo_metas(node: TestSum.Two) =
             transformMetas(node.metas)
     
     
         // Variant TestSumThree
         open fun transformTestSumThree(node: TestDomain.TestSum.Three): TestDomain.TestSum.Three {
-            val new_a = transformTestSumThreeA(node)
-            val new_b = transformTestSumThreeB(node)
-            val new_c = transformTestSumThreeC(node)
-            val new_metas = transformTestSumThreeMetas(node)
+            val new_a = transformTestSumThree_a(node)
+            val new_b = transformTestSumThree_b(node)
+            val new_c = transformTestSumThree_c(node)
+            val new_metas = transformTestSumThree_metas(node)
             return build {
                 TestSum.Three(
                     a = new_a,
@@ -6258,13 +6258,13 @@ class TestDomain private constructor() {
             }
         }
     
-        open fun transformTestSumThreeA(node: TestSum.Three) =
+        open fun transformTestSumThree_a(node: TestSum.Three) =
             transformLongPrimitive(node.a)
-        open fun transformTestSumThreeB(node: TestSum.Three) =
+        open fun transformTestSumThree_b(node: TestSum.Three) =
             transformLongPrimitive(node.b)
-        open fun transformTestSumThreeC(node: TestSum.Three) =
+        open fun transformTestSumThree_c(node: TestSum.Three) =
             transformLongPrimitive(node.c)
-        open fun transformTestSumThreeMetas(node: TestSum.Three) =
+        open fun transformTestSumThree_metas(node: TestSum.Three) =
             transformMetas(node.metas)
     
     
@@ -6279,7 +6279,7 @@ class TestDomain private constructor() {
             }
         // Variant EntitySlug
         open fun transformEntitySlug(node: TestDomain.Entity.Slug): TestDomain.Entity.Slug {
-            val new_metas = transformEntitySlugMetas(node)
+            val new_metas = transformEntitySlug_metas(node)
             return build {
                 Entity.Slug(
                     metas = new_metas
@@ -6287,14 +6287,14 @@ class TestDomain private constructor() {
             }
         }
     
-        open fun transformEntitySlugMetas(node: Entity.Slug) =
+        open fun transformEntitySlug_metas(node: Entity.Slug) =
             transformMetas(node.metas)
     
     
         // Variant EntityAndroid
         open fun transformEntityAndroid(node: TestDomain.Entity.Android): TestDomain.Entity.Android {
-            val new_id = transformEntityAndroidId(node)
-            val new_metas = transformEntityAndroidMetas(node)
+            val new_id = transformEntityAndroid_id(node)
+            val new_metas = transformEntityAndroid_metas(node)
             return build {
                 Entity.Android(
                     id = new_id,
@@ -6303,19 +6303,19 @@ class TestDomain private constructor() {
             }
         }
     
-        open fun transformEntityAndroidId(node: Entity.Android) =
+        open fun transformEntityAndroid_id(node: Entity.Android) =
             transformLongPrimitive(node.id)
-        open fun transformEntityAndroidMetas(node: Entity.Android) =
+        open fun transformEntityAndroid_metas(node: Entity.Android) =
             transformMetas(node.metas)
     
     
         // Variant EntityHuman
         open fun transformEntityHuman(node: TestDomain.Entity.Human): TestDomain.Entity.Human {
-            val new_firstName = transformEntityHumanFirstName(node)
-            val new_lastName = transformEntityHumanLastName(node)
-            val new_title = transformEntityHumanTitle(node)
-            val new_parent = transformEntityHumanParent(node)
-            val new_metas = transformEntityHumanMetas(node)
+            val new_firstName = transformEntityHuman_firstName(node)
+            val new_lastName = transformEntityHuman_lastName(node)
+            val new_title = transformEntityHuman_title(node)
+            val new_parent = transformEntityHuman_parent(node)
+            val new_metas = transformEntityHuman_metas(node)
             return build {
                 Entity.Human(
                     firstName = new_firstName,
@@ -6327,15 +6327,15 @@ class TestDomain private constructor() {
             }
         }
     
-        open fun transformEntityHumanFirstName(node: Entity.Human) =
+        open fun transformEntityHuman_firstName(node: Entity.Human) =
             transformSymbolPrimitive(node.firstName)
-        open fun transformEntityHumanLastName(node: Entity.Human) =
+        open fun transformEntityHuman_lastName(node: Entity.Human) =
             transformSymbolPrimitive(node.lastName)
-        open fun transformEntityHumanTitle(node: Entity.Human) =
+        open fun transformEntityHuman_title(node: Entity.Human) =
             node.title?.let { transformSymbolPrimitive(it) }
-        open fun transformEntityHumanParent(node: Entity.Human) =
+        open fun transformEntityHuman_parent(node: Entity.Human) =
             node.parent?.let { transformEntity(it) }
-        open fun transformEntityHumanMetas(node: Entity.Human) =
+        open fun transformEntityHuman_metas(node: Entity.Human) =
             transformMetas(node.metas)
     
     
@@ -7685,20 +7685,20 @@ class MultiWordDomain private constructor() {
         //////////////////////////////////////
         // Tuple AaaAaa
         open fun transformAaaAaa(node: AaaAaa): AaaAaa {
-            val new_metas = transformAaaAaaMetas(node)
+            val new_metas = transformAaaAaa_metas(node)
             return build {
                 AaaAaa(
                     metas = new_metas
                 )
             }
         }
-        open fun transformAaaAaaMetas(node: AaaAaa) =
+        open fun transformAaaAaa_metas(node: AaaAaa) =
             transformMetas(node.metas)
     
         // Tuple AaaAab
         open fun transformAaaAab(node: AaaAab): AaaAab {
-            val new_dField = transformAaaAabDField(node)
-            val new_metas = transformAaaAabMetas(node)
+            val new_dField = transformAaaAab_dField(node)
+            val new_metas = transformAaaAab_metas(node)
             return build {
                 AaaAab(
                     dField = new_dField,
@@ -7706,16 +7706,16 @@ class MultiWordDomain private constructor() {
                 )
             }
         }
-        open fun transformAaaAabDField(node: AaaAab) =
+        open fun transformAaaAab_dField(node: AaaAab) =
             node.dField?.let { transformLongPrimitive(it) }
-        open fun transformAaaAabMetas(node: AaaAab) =
+        open fun transformAaaAab_metas(node: AaaAab) =
             transformMetas(node.metas)
     
         // Tuple AaaAac
         open fun transformAaaAac(node: AaaAac): AaaAac {
-            val new_dField = transformAaaAacDField(node)
-            val new_eField = transformAaaAacEField(node)
-            val new_metas = transformAaaAacMetas(node)
+            val new_dField = transformAaaAac_dField(node)
+            val new_eField = transformAaaAac_eField(node)
+            val new_metas = transformAaaAac_metas(node)
             return build {
                 AaaAac(
                     dField = new_dField,
@@ -7724,17 +7724,17 @@ class MultiWordDomain private constructor() {
                 )
             }
         }
-        open fun transformAaaAacDField(node: AaaAac) =
+        open fun transformAaaAac_dField(node: AaaAac) =
             node.dField?.let { transformLongPrimitive(it) }
-        open fun transformAaaAacEField(node: AaaAac) =
+        open fun transformAaaAac_eField(node: AaaAac) =
             node.eField?.let { transformSymbolPrimitive(it) }
-        open fun transformAaaAacMetas(node: AaaAac) =
+        open fun transformAaaAac_metas(node: AaaAac) =
             transformMetas(node.metas)
     
         // Tuple AaaAad
         open fun transformAaaAad(node: AaaAad): AaaAad {
-            val new_dField = transformAaaAadDField(node)
-            val new_metas = transformAaaAadMetas(node)
+            val new_dField = transformAaaAad_dField(node)
+            val new_metas = transformAaaAad_metas(node)
             return build {
                 AaaAad(
                     dField = new_dField,
@@ -7742,15 +7742,15 @@ class MultiWordDomain private constructor() {
                 )
             }
         }
-        open fun transformAaaAadDField(node: AaaAad) =
+        open fun transformAaaAad_dField(node: AaaAad) =
             node.dField.map { transformLongPrimitive(it) }
-        open fun transformAaaAadMetas(node: AaaAad) =
+        open fun transformAaaAad_metas(node: AaaAad) =
             transformMetas(node.metas)
     
         // Tuple AaaAae
         open fun transformAaaAae(node: AaaAae): AaaAae {
-            val new_dField = transformAaaAaeDField(node)
-            val new_metas = transformAaaAaeMetas(node)
+            val new_dField = transformAaaAae_dField(node)
+            val new_metas = transformAaaAae_metas(node)
             return build {
                 AaaAae(
                     dField = new_dField,
@@ -7758,16 +7758,16 @@ class MultiWordDomain private constructor() {
                 )
             }
         }
-        open fun transformAaaAaeDField(node: AaaAae) =
+        open fun transformAaaAae_dField(node: AaaAae) =
             node.dField.map { transformLongPrimitive(it) }
-        open fun transformAaaAaeMetas(node: AaaAae) =
+        open fun transformAaaAae_metas(node: AaaAae) =
             transformMetas(node.metas)
     
         // Tuple AabAaa
         open fun transformAabAaa(node: AabAaa): AabAaa {
-            val new_bField = transformAabAaaBField(node)
-            val new_cField = transformAabAaaCField(node)
-            val new_metas = transformAabAaaMetas(node)
+            val new_bField = transformAabAaa_bField(node)
+            val new_cField = transformAabAaa_cField(node)
+            val new_metas = transformAabAaa_metas(node)
             return build {
                 AabAaa(
                     bField = new_bField,
@@ -7776,19 +7776,19 @@ class MultiWordDomain private constructor() {
                 )
             }
         }
-        open fun transformAabAaaBField(node: AabAaa) =
+        open fun transformAabAaa_bField(node: AabAaa) =
             transformLongPrimitive(node.bField)
-        open fun transformAabAaaCField(node: AabAaa) =
+        open fun transformAabAaa_cField(node: AabAaa) =
             transformSymbolPrimitive(node.cField)
-        open fun transformAabAaaMetas(node: AabAaa) =
+        open fun transformAabAaa_metas(node: AabAaa) =
             transformMetas(node.metas)
     
         // Tuple AabAab
         open fun transformAabAab(node: AabAab): AabAab {
-            val new_bField = transformAabAabBField(node)
-            val new_cField = transformAabAabCField(node)
-            val new_dField = transformAabAabDField(node)
-            val new_metas = transformAabAabMetas(node)
+            val new_bField = transformAabAab_bField(node)
+            val new_cField = transformAabAab_cField(node)
+            val new_dField = transformAabAab_dField(node)
+            val new_metas = transformAabAab_metas(node)
             return build {
                 AabAab(
                     bField = new_bField,
@@ -7798,22 +7798,22 @@ class MultiWordDomain private constructor() {
                 )
             }
         }
-        open fun transformAabAabBField(node: AabAab) =
+        open fun transformAabAab_bField(node: AabAab) =
             transformLongPrimitive(node.bField)
-        open fun transformAabAabCField(node: AabAab) =
+        open fun transformAabAab_cField(node: AabAab) =
             transformSymbolPrimitive(node.cField)
-        open fun transformAabAabDField(node: AabAab) =
+        open fun transformAabAab_dField(node: AabAab) =
             node.dField?.let { transformLongPrimitive(it) }
-        open fun transformAabAabMetas(node: AabAab) =
+        open fun transformAabAab_metas(node: AabAab) =
             transformMetas(node.metas)
     
         // Tuple AabAac
         open fun transformAabAac(node: AabAac): AabAac {
-            val new_bField = transformAabAacBField(node)
-            val new_cField = transformAabAacCField(node)
-            val new_dField = transformAabAacDField(node)
-            val new_eField = transformAabAacEField(node)
-            val new_metas = transformAabAacMetas(node)
+            val new_bField = transformAabAac_bField(node)
+            val new_cField = transformAabAac_cField(node)
+            val new_dField = transformAabAac_dField(node)
+            val new_eField = transformAabAac_eField(node)
+            val new_metas = transformAabAac_metas(node)
             return build {
                 AabAac(
                     bField = new_bField,
@@ -7824,23 +7824,23 @@ class MultiWordDomain private constructor() {
                 )
             }
         }
-        open fun transformAabAacBField(node: AabAac) =
+        open fun transformAabAac_bField(node: AabAac) =
             transformLongPrimitive(node.bField)
-        open fun transformAabAacCField(node: AabAac) =
+        open fun transformAabAac_cField(node: AabAac) =
             transformSymbolPrimitive(node.cField)
-        open fun transformAabAacDField(node: AabAac) =
+        open fun transformAabAac_dField(node: AabAac) =
             node.dField?.let { transformLongPrimitive(it) }
-        open fun transformAabAacEField(node: AabAac) =
+        open fun transformAabAac_eField(node: AabAac) =
             node.eField?.let { transformSymbolPrimitive(it) }
-        open fun transformAabAacMetas(node: AabAac) =
+        open fun transformAabAac_metas(node: AabAac) =
             transformMetas(node.metas)
     
         // Tuple AabAad
         open fun transformAabAad(node: AabAad): AabAad {
-            val new_bField = transformAabAadBField(node)
-            val new_cField = transformAabAadCField(node)
-            val new_dField = transformAabAadDField(node)
-            val new_metas = transformAabAadMetas(node)
+            val new_bField = transformAabAad_bField(node)
+            val new_cField = transformAabAad_cField(node)
+            val new_dField = transformAabAad_dField(node)
+            val new_metas = transformAabAad_metas(node)
             return build {
                 AabAad(
                     bField = new_bField,
@@ -7850,21 +7850,21 @@ class MultiWordDomain private constructor() {
                 )
             }
         }
-        open fun transformAabAadBField(node: AabAad) =
+        open fun transformAabAad_bField(node: AabAad) =
             transformLongPrimitive(node.bField)
-        open fun transformAabAadCField(node: AabAad) =
+        open fun transformAabAad_cField(node: AabAad) =
             transformSymbolPrimitive(node.cField)
-        open fun transformAabAadDField(node: AabAad) =
+        open fun transformAabAad_dField(node: AabAad) =
             node.dField.map { transformLongPrimitive(it) }
-        open fun transformAabAadMetas(node: AabAad) =
+        open fun transformAabAad_metas(node: AabAad) =
             transformMetas(node.metas)
     
         // Tuple AabAae
         open fun transformAabAae(node: AabAae): AabAae {
-            val new_bField = transformAabAaeBField(node)
-            val new_cField = transformAabAaeCField(node)
-            val new_dField = transformAabAaeDField(node)
-            val new_metas = transformAabAaeMetas(node)
+            val new_bField = transformAabAae_bField(node)
+            val new_cField = transformAabAae_cField(node)
+            val new_dField = transformAabAae_dField(node)
+            val new_metas = transformAabAae_metas(node)
             return build {
                 AabAae(
                     bField = new_bField,
@@ -7874,20 +7874,20 @@ class MultiWordDomain private constructor() {
                 )
             }
         }
-        open fun transformAabAaeBField(node: AabAae) =
+        open fun transformAabAae_bField(node: AabAae) =
             transformLongPrimitive(node.bField)
-        open fun transformAabAaeCField(node: AabAae) =
+        open fun transformAabAae_cField(node: AabAae) =
             transformSymbolPrimitive(node.cField)
-        open fun transformAabAaeDField(node: AabAae) =
+        open fun transformAabAae_dField(node: AabAae) =
             node.dField.map { transformLongPrimitive(it) }
-        open fun transformAabAaeMetas(node: AabAae) =
+        open fun transformAabAae_metas(node: AabAae) =
             transformMetas(node.metas)
     
         // Tuple Rrr
         open fun transformRrr(node: Rrr): Rrr {
-            val new_aField = transformRrrAField(node)
-            val new_bbbField = transformRrrBbbField(node)
-            val new_metas = transformRrrMetas(node)
+            val new_aField = transformRrr_aField(node)
+            val new_bbbField = transformRrr_bbbField(node)
+            val new_metas = transformRrr_metas(node)
             return build {
                 Rrr(
                     aField = new_aField,
@@ -7896,11 +7896,11 @@ class MultiWordDomain private constructor() {
                 )
             }
         }
-        open fun transformRrrAField(node: Rrr) =
+        open fun transformRrr_aField(node: Rrr) =
             transformLongPrimitive(node.aField)
-        open fun transformRrrBbbField(node: Rrr) =
+        open fun transformRrr_bbbField(node: Rrr) =
             transformLongPrimitive(node.bbbField)
-        open fun transformRrrMetas(node: Rrr) =
+        open fun transformRrr_metas(node: Rrr) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
@@ -7913,8 +7913,8 @@ class MultiWordDomain private constructor() {
             }
         // Variant SssTttLll
         open fun transformSssTttLll(node: MultiWordDomain.SssTtt.Lll): MultiWordDomain.SssTtt.Lll {
-            val new_uField = transformSssTttLllUField(node)
-            val new_metas = transformSssTttLllMetas(node)
+            val new_uField = transformSssTttLll_uField(node)
+            val new_metas = transformSssTttLll_metas(node)
             return build {
                 SssTtt.Lll(
                     uField = new_uField,
@@ -7923,16 +7923,16 @@ class MultiWordDomain private constructor() {
             }
         }
     
-        open fun transformSssTttLllUField(node: SssTtt.Lll) =
+        open fun transformSssTttLll_uField(node: SssTtt.Lll) =
             transformLongPrimitive(node.uField)
-        open fun transformSssTttLllMetas(node: SssTtt.Lll) =
+        open fun transformSssTttLll_metas(node: SssTtt.Lll) =
             transformMetas(node.metas)
     
     
         // Variant SssTttMmm
         open fun transformSssTttMmm(node: MultiWordDomain.SssTtt.Mmm): MultiWordDomain.SssTtt.Mmm {
-            val new_vField = transformSssTttMmmVField(node)
-            val new_metas = transformSssTttMmmMetas(node)
+            val new_vField = transformSssTttMmm_vField(node)
+            val new_metas = transformSssTttMmm_metas(node)
             return build {
                 SssTtt.Mmm(
                     vField = new_vField,
@@ -7941,9 +7941,9 @@ class MultiWordDomain private constructor() {
             }
         }
     
-        open fun transformSssTttMmmVField(node: SssTtt.Mmm) =
+        open fun transformSssTttMmm_vField(node: SssTtt.Mmm) =
             transformSymbolPrimitive(node.vField)
-        open fun transformSssTttMmmMetas(node: SssTtt.Mmm) =
+        open fun transformSssTttMmm_metas(node: SssTtt.Mmm) =
             transformMetas(node.metas)
     
     
@@ -11750,9 +11750,9 @@ class PartiqlBasic private constructor() {
         //////////////////////////////////////
         // Tuple ExprPair
         open fun transformExprPair(node: ExprPair): ExprPair {
-            val new_first = transformExprPairFirst(node)
-            val new_second = transformExprPairSecond(node)
-            val new_metas = transformExprPairMetas(node)
+            val new_first = transformExprPair_first(node)
+            val new_second = transformExprPair_second(node)
+            val new_metas = transformExprPair_metas(node)
             return build {
                 ExprPair(
                     first = new_first,
@@ -11761,18 +11761,18 @@ class PartiqlBasic private constructor() {
                 )
             }
         }
-        open fun transformExprPairFirst(node: ExprPair) =
+        open fun transformExprPair_first(node: ExprPair) =
             transformExpr(node.first)
-        open fun transformExprPairSecond(node: ExprPair) =
+        open fun transformExprPair_second(node: ExprPair) =
             transformExpr(node.second)
-        open fun transformExprPairMetas(node: ExprPair) =
+        open fun transformExprPair_metas(node: ExprPair) =
             transformMetas(node.metas)
     
         // Tuple GroupByItem
         open fun transformGroupByItem(node: GroupByItem): GroupByItem {
-            val new_value = transformGroupByItemValue(node)
-            val new_asAlias = transformGroupByItemAsAlias(node)
-            val new_metas = transformGroupByItemMetas(node)
+            val new_value = transformGroupByItem_value(node)
+            val new_asAlias = transformGroupByItem_asAlias(node)
+            val new_metas = transformGroupByItem_metas(node)
             return build {
                 GroupByItem(
                     value = new_value,
@@ -11781,17 +11781,17 @@ class PartiqlBasic private constructor() {
                 )
             }
         }
-        open fun transformGroupByItemValue(node: GroupByItem) =
+        open fun transformGroupByItem_value(node: GroupByItem) =
             transformExpr(node.value)
-        open fun transformGroupByItemAsAlias(node: GroupByItem) =
+        open fun transformGroupByItem_asAlias(node: GroupByItem) =
             node.asAlias?.let { transformSymbolPrimitive(it) }
-        open fun transformGroupByItemMetas(node: GroupByItem) =
+        open fun transformGroupByItem_metas(node: GroupByItem) =
             transformMetas(node.metas)
     
         // Tuple GroupByList
         open fun transformGroupByList(node: GroupByList): GroupByList {
-            val new_items = transformGroupByListItems(node)
-            val new_metas = transformGroupByListMetas(node)
+            val new_items = transformGroupByList_items(node)
+            val new_metas = transformGroupByList_metas(node)
             return build {
                 GroupByList(
                     items = new_items,
@@ -11799,16 +11799,16 @@ class PartiqlBasic private constructor() {
                 )
             }
         }
-        open fun transformGroupByListItems(node: GroupByList) =
+        open fun transformGroupByList_items(node: GroupByList) =
             node.items.map { transformGroupByItem(it) }
-        open fun transformGroupByListMetas(node: GroupByList) =
+        open fun transformGroupByList_metas(node: GroupByList) =
             transformMetas(node.metas)
     
         // Tuple GroupBy
         open fun transformGroupBy(node: GroupBy): GroupBy {
-            val new_items = transformGroupByItems(node)
-            val new_groupAsAlias = transformGroupByGroupAsAlias(node)
-            val new_metas = transformGroupByMetas(node)
+            val new_items = transformGroupBy_items(node)
+            val new_groupAsAlias = transformGroupBy_groupAsAlias(node)
+            val new_metas = transformGroupBy_metas(node)
             return build {
                 GroupBy(
                     items = new_items,
@@ -11817,11 +11817,11 @@ class PartiqlBasic private constructor() {
                 )
             }
         }
-        open fun transformGroupByItems(node: GroupBy) =
+        open fun transformGroupBy_items(node: GroupBy) =
             transformGroupByList(node.items)
-        open fun transformGroupByGroupAsAlias(node: GroupBy) =
+        open fun transformGroupBy_groupAsAlias(node: GroupBy) =
             node.groupAsAlias?.let { transformSymbolPrimitive(it) }
-        open fun transformGroupByMetas(node: GroupBy) =
+        open fun transformGroupBy_metas(node: GroupBy) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
@@ -11834,8 +11834,8 @@ class PartiqlBasic private constructor() {
             }
         // Variant ProjectionProjectList
         open fun transformProjectionProjectList(node: PartiqlBasic.Projection.ProjectList): PartiqlBasic.Projection.ProjectList {
-            val new_items = transformProjectionProjectListItems(node)
-            val new_metas = transformProjectionProjectListMetas(node)
+            val new_items = transformProjectionProjectList_items(node)
+            val new_metas = transformProjectionProjectList_metas(node)
             return build {
                 Projection.ProjectList(
                     items = new_items,
@@ -11844,16 +11844,16 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformProjectionProjectListItems(node: Projection.ProjectList) =
+        open fun transformProjectionProjectList_items(node: Projection.ProjectList) =
             node.items.map { transformProjectItem(it) }
-        open fun transformProjectionProjectListMetas(node: Projection.ProjectList) =
+        open fun transformProjectionProjectList_metas(node: Projection.ProjectList) =
             transformMetas(node.metas)
     
     
         // Variant ProjectionProjectValue
         open fun transformProjectionProjectValue(node: PartiqlBasic.Projection.ProjectValue): PartiqlBasic.Projection.ProjectValue {
-            val new_value = transformProjectionProjectValueValue(node)
-            val new_metas = transformProjectionProjectValueMetas(node)
+            val new_value = transformProjectionProjectValue_value(node)
+            val new_metas = transformProjectionProjectValue_metas(node)
             return build {
                 Projection.ProjectValue(
                     value = new_value,
@@ -11862,9 +11862,9 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformProjectionProjectValueValue(node: Projection.ProjectValue) =
+        open fun transformProjectionProjectValue_value(node: Projection.ProjectValue) =
             transformExpr(node.value)
-        open fun transformProjectionProjectValueMetas(node: Projection.ProjectValue) =
+        open fun transformProjectionProjectValue_metas(node: Projection.ProjectValue) =
             transformMetas(node.metas)
     
     
@@ -11878,7 +11878,7 @@ class PartiqlBasic private constructor() {
             }
         // Variant ProjectItemProjectAll
         open fun transformProjectItemProjectAll(node: PartiqlBasic.ProjectItem.ProjectAll): PartiqlBasic.ProjectItem.ProjectAll {
-            val new_metas = transformProjectItemProjectAllMetas(node)
+            val new_metas = transformProjectItemProjectAll_metas(node)
             return build {
                 ProjectItem.ProjectAll(
                     metas = new_metas
@@ -11886,15 +11886,15 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformProjectItemProjectAllMetas(node: ProjectItem.ProjectAll) =
+        open fun transformProjectItemProjectAll_metas(node: ProjectItem.ProjectAll) =
             transformMetas(node.metas)
     
     
         // Variant ProjectItemProjectExpr
         open fun transformProjectItemProjectExpr(node: PartiqlBasic.ProjectItem.ProjectExpr): PartiqlBasic.ProjectItem.ProjectExpr {
-            val new_value = transformProjectItemProjectExprValue(node)
-            val new_asAlias = transformProjectItemProjectExprAsAlias(node)
-            val new_metas = transformProjectItemProjectExprMetas(node)
+            val new_value = transformProjectItemProjectExpr_value(node)
+            val new_asAlias = transformProjectItemProjectExpr_asAlias(node)
+            val new_metas = transformProjectItemProjectExpr_metas(node)
             return build {
                 ProjectItem.ProjectExpr(
                     value = new_value,
@@ -11904,11 +11904,11 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformProjectItemProjectExprValue(node: ProjectItem.ProjectExpr) =
+        open fun transformProjectItemProjectExpr_value(node: ProjectItem.ProjectExpr) =
             transformExpr(node.value)
-        open fun transformProjectItemProjectExprAsAlias(node: ProjectItem.ProjectExpr) =
+        open fun transformProjectItemProjectExpr_asAlias(node: ProjectItem.ProjectExpr) =
             node.asAlias?.let { transformSymbolPrimitive(it) }
-        open fun transformProjectItemProjectExprMetas(node: ProjectItem.ProjectExpr) =
+        open fun transformProjectItemProjectExpr_metas(node: ProjectItem.ProjectExpr) =
             transformMetas(node.metas)
     
     
@@ -11924,7 +11924,7 @@ class PartiqlBasic private constructor() {
             }
         // Variant JoinTypeInner
         open fun transformJoinTypeInner(node: PartiqlBasic.JoinType.Inner): PartiqlBasic.JoinType.Inner {
-            val new_metas = transformJoinTypeInnerMetas(node)
+            val new_metas = transformJoinTypeInner_metas(node)
             return build {
                 JoinType.Inner(
                     metas = new_metas
@@ -11932,13 +11932,13 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformJoinTypeInnerMetas(node: JoinType.Inner) =
+        open fun transformJoinTypeInner_metas(node: JoinType.Inner) =
             transformMetas(node.metas)
     
     
         // Variant JoinTypeLeft
         open fun transformJoinTypeLeft(node: PartiqlBasic.JoinType.Left): PartiqlBasic.JoinType.Left {
-            val new_metas = transformJoinTypeLeftMetas(node)
+            val new_metas = transformJoinTypeLeft_metas(node)
             return build {
                 JoinType.Left(
                     metas = new_metas
@@ -11946,13 +11946,13 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformJoinTypeLeftMetas(node: JoinType.Left) =
+        open fun transformJoinTypeLeft_metas(node: JoinType.Left) =
             transformMetas(node.metas)
     
     
         // Variant JoinTypeRight
         open fun transformJoinTypeRight(node: PartiqlBasic.JoinType.Right): PartiqlBasic.JoinType.Right {
-            val new_metas = transformJoinTypeRightMetas(node)
+            val new_metas = transformJoinTypeRight_metas(node)
             return build {
                 JoinType.Right(
                     metas = new_metas
@@ -11960,13 +11960,13 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformJoinTypeRightMetas(node: JoinType.Right) =
+        open fun transformJoinTypeRight_metas(node: JoinType.Right) =
             transformMetas(node.metas)
     
     
         // Variant JoinTypeOuter
         open fun transformJoinTypeOuter(node: PartiqlBasic.JoinType.Outer): PartiqlBasic.JoinType.Outer {
-            val new_metas = transformJoinTypeOuterMetas(node)
+            val new_metas = transformJoinTypeOuter_metas(node)
             return build {
                 JoinType.Outer(
                     metas = new_metas
@@ -11974,7 +11974,7 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformJoinTypeOuterMetas(node: JoinType.Outer) =
+        open fun transformJoinTypeOuter_metas(node: JoinType.Outer) =
             transformMetas(node.metas)
     
     
@@ -11988,11 +11988,11 @@ class PartiqlBasic private constructor() {
             }
         // Variant FromSourceScan
         open fun transformFromSourceScan(node: PartiqlBasic.FromSource.Scan): PartiqlBasic.FromSource.Scan {
-            val new_expr = transformFromSourceScanExpr(node)
-            val new_asAlias = transformFromSourceScanAsAlias(node)
-            val new_atAlias = transformFromSourceScanAtAlias(node)
-            val new_byAlias = transformFromSourceScanByAlias(node)
-            val new_metas = transformFromSourceScanMetas(node)
+            val new_expr = transformFromSourceScan_expr(node)
+            val new_asAlias = transformFromSourceScan_asAlias(node)
+            val new_atAlias = transformFromSourceScan_atAlias(node)
+            val new_byAlias = transformFromSourceScan_byAlias(node)
+            val new_metas = transformFromSourceScan_metas(node)
             return build {
                 FromSource.Scan(
                     expr = new_expr,
@@ -12004,25 +12004,25 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformFromSourceScanExpr(node: FromSource.Scan) =
+        open fun transformFromSourceScan_expr(node: FromSource.Scan) =
             transformExpr(node.expr)
-        open fun transformFromSourceScanAsAlias(node: FromSource.Scan) =
+        open fun transformFromSourceScan_asAlias(node: FromSource.Scan) =
             node.asAlias?.let { transformSymbolPrimitive(it) }
-        open fun transformFromSourceScanAtAlias(node: FromSource.Scan) =
+        open fun transformFromSourceScan_atAlias(node: FromSource.Scan) =
             node.atAlias?.let { transformSymbolPrimitive(it) }
-        open fun transformFromSourceScanByAlias(node: FromSource.Scan) =
+        open fun transformFromSourceScan_byAlias(node: FromSource.Scan) =
             node.byAlias?.let { transformSymbolPrimitive(it) }
-        open fun transformFromSourceScanMetas(node: FromSource.Scan) =
+        open fun transformFromSourceScan_metas(node: FromSource.Scan) =
             transformMetas(node.metas)
     
     
         // Variant FromSourceJoin
         open fun transformFromSourceJoin(node: PartiqlBasic.FromSource.Join): PartiqlBasic.FromSource.Join {
-            val new_type = transformFromSourceJoinType(node)
-            val new_left = transformFromSourceJoinLeft(node)
-            val new_right = transformFromSourceJoinRight(node)
-            val new_predicate = transformFromSourceJoinPredicate(node)
-            val new_metas = transformFromSourceJoinMetas(node)
+            val new_type = transformFromSourceJoin_type(node)
+            val new_left = transformFromSourceJoin_left(node)
+            val new_right = transformFromSourceJoin_right(node)
+            val new_predicate = transformFromSourceJoin_predicate(node)
+            val new_metas = transformFromSourceJoin_metas(node)
             return build {
                 FromSource.Join(
                     type = new_type,
@@ -12034,15 +12034,15 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformFromSourceJoinType(node: FromSource.Join) =
+        open fun transformFromSourceJoin_type(node: FromSource.Join) =
             transformJoinType(node.type)
-        open fun transformFromSourceJoinLeft(node: FromSource.Join) =
+        open fun transformFromSourceJoin_left(node: FromSource.Join) =
             transformFromSource(node.left)
-        open fun transformFromSourceJoinRight(node: FromSource.Join) =
+        open fun transformFromSourceJoin_right(node: FromSource.Join) =
             transformFromSource(node.right)
-        open fun transformFromSourceJoinPredicate(node: FromSource.Join) =
+        open fun transformFromSourceJoin_predicate(node: FromSource.Join) =
             node.predicate?.let { transformExpr(it) }
-        open fun transformFromSourceJoinMetas(node: FromSource.Join) =
+        open fun transformFromSourceJoin_metas(node: FromSource.Join) =
             transformMetas(node.metas)
     
     
@@ -12056,7 +12056,7 @@ class PartiqlBasic private constructor() {
             }
         // Variant CaseSensitivityCaseSensitive
         open fun transformCaseSensitivityCaseSensitive(node: PartiqlBasic.CaseSensitivity.CaseSensitive): PartiqlBasic.CaseSensitivity.CaseSensitive {
-            val new_metas = transformCaseSensitivityCaseSensitiveMetas(node)
+            val new_metas = transformCaseSensitivityCaseSensitive_metas(node)
             return build {
                 CaseSensitivity.CaseSensitive(
                     metas = new_metas
@@ -12064,13 +12064,13 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformCaseSensitivityCaseSensitiveMetas(node: CaseSensitivity.CaseSensitive) =
+        open fun transformCaseSensitivityCaseSensitive_metas(node: CaseSensitivity.CaseSensitive) =
             transformMetas(node.metas)
     
     
         // Variant CaseSensitivityCaseInsensitive
         open fun transformCaseSensitivityCaseInsensitive(node: PartiqlBasic.CaseSensitivity.CaseInsensitive): PartiqlBasic.CaseSensitivity.CaseInsensitive {
-            val new_metas = transformCaseSensitivityCaseInsensitiveMetas(node)
+            val new_metas = transformCaseSensitivityCaseInsensitive_metas(node)
             return build {
                 CaseSensitivity.CaseInsensitive(
                     metas = new_metas
@@ -12078,7 +12078,7 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformCaseSensitivityCaseInsensitiveMetas(node: CaseSensitivity.CaseInsensitive) =
+        open fun transformCaseSensitivityCaseInsensitive_metas(node: CaseSensitivity.CaseInsensitive) =
             transformMetas(node.metas)
     
     
@@ -12092,7 +12092,7 @@ class PartiqlBasic private constructor() {
             }
         // Variant ScopeQualifierUnqualified
         open fun transformScopeQualifierUnqualified(node: PartiqlBasic.ScopeQualifier.Unqualified): PartiqlBasic.ScopeQualifier.Unqualified {
-            val new_metas = transformScopeQualifierUnqualifiedMetas(node)
+            val new_metas = transformScopeQualifierUnqualified_metas(node)
             return build {
                 ScopeQualifier.Unqualified(
                     metas = new_metas
@@ -12100,13 +12100,13 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformScopeQualifierUnqualifiedMetas(node: ScopeQualifier.Unqualified) =
+        open fun transformScopeQualifierUnqualified_metas(node: ScopeQualifier.Unqualified) =
             transformMetas(node.metas)
     
     
         // Variant ScopeQualifierQualified
         open fun transformScopeQualifierQualified(node: PartiqlBasic.ScopeQualifier.Qualified): PartiqlBasic.ScopeQualifier.Qualified {
-            val new_metas = transformScopeQualifierQualifiedMetas(node)
+            val new_metas = transformScopeQualifierQualified_metas(node)
             return build {
                 ScopeQualifier.Qualified(
                     metas = new_metas
@@ -12114,7 +12114,7 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformScopeQualifierQualifiedMetas(node: ScopeQualifier.Qualified) =
+        open fun transformScopeQualifierQualified_metas(node: ScopeQualifier.Qualified) =
             transformMetas(node.metas)
     
     
@@ -12128,7 +12128,7 @@ class PartiqlBasic private constructor() {
             }
         // Variant SetQuantifierAll
         open fun transformSetQuantifierAll(node: PartiqlBasic.SetQuantifier.All): PartiqlBasic.SetQuantifier.All {
-            val new_metas = transformSetQuantifierAllMetas(node)
+            val new_metas = transformSetQuantifierAll_metas(node)
             return build {
                 SetQuantifier.All(
                     metas = new_metas
@@ -12136,13 +12136,13 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformSetQuantifierAllMetas(node: SetQuantifier.All) =
+        open fun transformSetQuantifierAll_metas(node: SetQuantifier.All) =
             transformMetas(node.metas)
     
     
         // Variant SetQuantifierDistinct
         open fun transformSetQuantifierDistinct(node: PartiqlBasic.SetQuantifier.Distinct): PartiqlBasic.SetQuantifier.Distinct {
-            val new_metas = transformSetQuantifierDistinctMetas(node)
+            val new_metas = transformSetQuantifierDistinct_metas(node)
             return build {
                 SetQuantifier.Distinct(
                     metas = new_metas
@@ -12150,7 +12150,7 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformSetQuantifierDistinctMetas(node: SetQuantifier.Distinct) =
+        open fun transformSetQuantifierDistinct_metas(node: SetQuantifier.Distinct) =
             transformMetas(node.metas)
     
     
@@ -12165,8 +12165,8 @@ class PartiqlBasic private constructor() {
             }
         // Variant PathElementPathExpr
         open fun transformPathElementPathExpr(node: PartiqlBasic.PathElement.PathExpr): PartiqlBasic.PathElement.PathExpr {
-            val new_expr = transformPathElementPathExprExpr(node)
-            val new_metas = transformPathElementPathExprMetas(node)
+            val new_expr = transformPathElementPathExpr_expr(node)
+            val new_metas = transformPathElementPathExpr_metas(node)
             return build {
                 PathElement.PathExpr(
                     expr = new_expr,
@@ -12175,15 +12175,15 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformPathElementPathExprExpr(node: PathElement.PathExpr) =
+        open fun transformPathElementPathExpr_expr(node: PathElement.PathExpr) =
             transformExpr(node.expr)
-        open fun transformPathElementPathExprMetas(node: PathElement.PathExpr) =
+        open fun transformPathElementPathExpr_metas(node: PathElement.PathExpr) =
             transformMetas(node.metas)
     
     
         // Variant PathElementPathWildcard
         open fun transformPathElementPathWildcard(node: PartiqlBasic.PathElement.PathWildcard): PartiqlBasic.PathElement.PathWildcard {
-            val new_metas = transformPathElementPathWildcardMetas(node)
+            val new_metas = transformPathElementPathWildcard_metas(node)
             return build {
                 PathElement.PathWildcard(
                     metas = new_metas
@@ -12191,13 +12191,13 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformPathElementPathWildcardMetas(node: PathElement.PathWildcard) =
+        open fun transformPathElementPathWildcard_metas(node: PathElement.PathWildcard) =
             transformMetas(node.metas)
     
     
         // Variant PathElementPathUnpivot
         open fun transformPathElementPathUnpivot(node: PartiqlBasic.PathElement.PathUnpivot): PartiqlBasic.PathElement.PathUnpivot {
-            val new_metas = transformPathElementPathUnpivotMetas(node)
+            val new_metas = transformPathElementPathUnpivot_metas(node)
             return build {
                 PathElement.PathUnpivot(
                     metas = new_metas
@@ -12205,7 +12205,7 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformPathElementPathUnpivotMetas(node: PathElement.PathUnpivot) =
+        open fun transformPathElementPathUnpivot_metas(node: PathElement.PathUnpivot) =
             transformMetas(node.metas)
     
     
@@ -12238,8 +12238,8 @@ class PartiqlBasic private constructor() {
             }
         // Variant ExprLit
         open fun transformExprLit(node: PartiqlBasic.Expr.Lit): PartiqlBasic.Expr.Lit {
-            val new_value = transformExprLitValue(node)
-            val new_metas = transformExprLitMetas(node)
+            val new_value = transformExprLit_value(node)
+            val new_metas = transformExprLit_metas(node)
             return build {
                 Expr.Lit(
                     value = new_value,
@@ -12248,18 +12248,18 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprLitValue(node: Expr.Lit) =
+        open fun transformExprLit_value(node: Expr.Lit) =
             transformIonElement(node.value)
-        open fun transformExprLitMetas(node: Expr.Lit) =
+        open fun transformExprLit_metas(node: Expr.Lit) =
             transformMetas(node.metas)
     
     
         // Variant ExprId
         open fun transformExprId(node: PartiqlBasic.Expr.Id): PartiqlBasic.Expr.Id {
-            val new_name = transformExprIdName(node)
-            val new_case = transformExprIdCase(node)
-            val new_scopeQualifier = transformExprIdScopeQualifier(node)
-            val new_metas = transformExprIdMetas(node)
+            val new_name = transformExprId_name(node)
+            val new_case = transformExprId_case(node)
+            val new_scopeQualifier = transformExprId_scopeQualifier(node)
+            val new_metas = transformExprId_metas(node)
             return build {
                 Expr.Id(
                     name = new_name,
@@ -12270,20 +12270,20 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprIdName(node: Expr.Id) =
+        open fun transformExprId_name(node: Expr.Id) =
             transformSymbolPrimitive(node.name)
-        open fun transformExprIdCase(node: Expr.Id) =
+        open fun transformExprId_case(node: Expr.Id) =
             transformCaseSensitivity(node.case)
-        open fun transformExprIdScopeQualifier(node: Expr.Id) =
+        open fun transformExprId_scopeQualifier(node: Expr.Id) =
             transformScopeQualifier(node.scopeQualifier)
-        open fun transformExprIdMetas(node: Expr.Id) =
+        open fun transformExprId_metas(node: Expr.Id) =
             transformMetas(node.metas)
     
     
         // Variant ExprParameter
         open fun transformExprParameter(node: PartiqlBasic.Expr.Parameter): PartiqlBasic.Expr.Parameter {
-            val new_index = transformExprParameterIndex(node)
-            val new_metas = transformExprParameterMetas(node)
+            val new_index = transformExprParameter_index(node)
+            val new_metas = transformExprParameter_metas(node)
             return build {
                 Expr.Parameter(
                     index = new_index,
@@ -12292,16 +12292,16 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprParameterIndex(node: Expr.Parameter) =
+        open fun transformExprParameter_index(node: Expr.Parameter) =
             transformLongPrimitive(node.index)
-        open fun transformExprParameterMetas(node: Expr.Parameter) =
+        open fun transformExprParameter_metas(node: Expr.Parameter) =
             transformMetas(node.metas)
     
     
         // Variant ExprNot
         open fun transformExprNot(node: PartiqlBasic.Expr.Not): PartiqlBasic.Expr.Not {
-            val new_expr = transformExprNotExpr(node)
-            val new_metas = transformExprNotMetas(node)
+            val new_expr = transformExprNot_expr(node)
+            val new_metas = transformExprNot_metas(node)
             return build {
                 Expr.Not(
                     expr = new_expr,
@@ -12310,16 +12310,16 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprNotExpr(node: Expr.Not) =
+        open fun transformExprNot_expr(node: Expr.Not) =
             transformExpr(node.expr)
-        open fun transformExprNotMetas(node: Expr.Not) =
+        open fun transformExprNot_metas(node: Expr.Not) =
             transformMetas(node.metas)
     
     
         // Variant ExprPlus
         open fun transformExprPlus(node: PartiqlBasic.Expr.Plus): PartiqlBasic.Expr.Plus {
-            val new_operands = transformExprPlusOperands(node)
-            val new_metas = transformExprPlusMetas(node)
+            val new_operands = transformExprPlus_operands(node)
+            val new_metas = transformExprPlus_metas(node)
             return build {
                 Expr.Plus(
                     operands = new_operands,
@@ -12328,16 +12328,16 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprPlusOperands(node: Expr.Plus) =
+        open fun transformExprPlus_operands(node: Expr.Plus) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprPlusMetas(node: Expr.Plus) =
+        open fun transformExprPlus_metas(node: Expr.Plus) =
             transformMetas(node.metas)
     
     
         // Variant ExprMinus
         open fun transformExprMinus(node: PartiqlBasic.Expr.Minus): PartiqlBasic.Expr.Minus {
-            val new_operands = transformExprMinusOperands(node)
-            val new_metas = transformExprMinusMetas(node)
+            val new_operands = transformExprMinus_operands(node)
+            val new_metas = transformExprMinus_metas(node)
             return build {
                 Expr.Minus(
                     operands = new_operands,
@@ -12346,16 +12346,16 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprMinusOperands(node: Expr.Minus) =
+        open fun transformExprMinus_operands(node: Expr.Minus) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprMinusMetas(node: Expr.Minus) =
+        open fun transformExprMinus_metas(node: Expr.Minus) =
             transformMetas(node.metas)
     
     
         // Variant ExprTimes
         open fun transformExprTimes(node: PartiqlBasic.Expr.Times): PartiqlBasic.Expr.Times {
-            val new_operands = transformExprTimesOperands(node)
-            val new_metas = transformExprTimesMetas(node)
+            val new_operands = transformExprTimes_operands(node)
+            val new_metas = transformExprTimes_metas(node)
             return build {
                 Expr.Times(
                     operands = new_operands,
@@ -12364,16 +12364,16 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprTimesOperands(node: Expr.Times) =
+        open fun transformExprTimes_operands(node: Expr.Times) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprTimesMetas(node: Expr.Times) =
+        open fun transformExprTimes_metas(node: Expr.Times) =
             transformMetas(node.metas)
     
     
         // Variant ExprDivide
         open fun transformExprDivide(node: PartiqlBasic.Expr.Divide): PartiqlBasic.Expr.Divide {
-            val new_operands = transformExprDivideOperands(node)
-            val new_metas = transformExprDivideMetas(node)
+            val new_operands = transformExprDivide_operands(node)
+            val new_metas = transformExprDivide_metas(node)
             return build {
                 Expr.Divide(
                     operands = new_operands,
@@ -12382,16 +12382,16 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprDivideOperands(node: Expr.Divide) =
+        open fun transformExprDivide_operands(node: Expr.Divide) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprDivideMetas(node: Expr.Divide) =
+        open fun transformExprDivide_metas(node: Expr.Divide) =
             transformMetas(node.metas)
     
     
         // Variant ExprModulo
         open fun transformExprModulo(node: PartiqlBasic.Expr.Modulo): PartiqlBasic.Expr.Modulo {
-            val new_operands = transformExprModuloOperands(node)
-            val new_metas = transformExprModuloMetas(node)
+            val new_operands = transformExprModulo_operands(node)
+            val new_metas = transformExprModulo_metas(node)
             return build {
                 Expr.Modulo(
                     operands = new_operands,
@@ -12400,16 +12400,16 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprModuloOperands(node: Expr.Modulo) =
+        open fun transformExprModulo_operands(node: Expr.Modulo) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprModuloMetas(node: Expr.Modulo) =
+        open fun transformExprModulo_metas(node: Expr.Modulo) =
             transformMetas(node.metas)
     
     
         // Variant ExprConcat
         open fun transformExprConcat(node: PartiqlBasic.Expr.Concat): PartiqlBasic.Expr.Concat {
-            val new_operands = transformExprConcatOperands(node)
-            val new_metas = transformExprConcatMetas(node)
+            val new_operands = transformExprConcat_operands(node)
+            val new_metas = transformExprConcat_metas(node)
             return build {
                 Expr.Concat(
                     operands = new_operands,
@@ -12418,18 +12418,18 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprConcatOperands(node: Expr.Concat) =
+        open fun transformExprConcat_operands(node: Expr.Concat) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprConcatMetas(node: Expr.Concat) =
+        open fun transformExprConcat_metas(node: Expr.Concat) =
             transformMetas(node.metas)
     
     
         // Variant ExprLike
         open fun transformExprLike(node: PartiqlBasic.Expr.Like): PartiqlBasic.Expr.Like {
-            val new_left = transformExprLikeLeft(node)
-            val new_right = transformExprLikeRight(node)
-            val new_escape = transformExprLikeEscape(node)
-            val new_metas = transformExprLikeMetas(node)
+            val new_left = transformExprLike_left(node)
+            val new_right = transformExprLike_right(node)
+            val new_escape = transformExprLike_escape(node)
+            val new_metas = transformExprLike_metas(node)
             return build {
                 Expr.Like(
                     left = new_left,
@@ -12440,22 +12440,22 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprLikeLeft(node: Expr.Like) =
+        open fun transformExprLike_left(node: Expr.Like) =
             transformExpr(node.left)
-        open fun transformExprLikeRight(node: Expr.Like) =
+        open fun transformExprLike_right(node: Expr.Like) =
             transformExpr(node.right)
-        open fun transformExprLikeEscape(node: Expr.Like) =
+        open fun transformExprLike_escape(node: Expr.Like) =
             transformExpr(node.escape)
-        open fun transformExprLikeMetas(node: Expr.Like) =
+        open fun transformExprLike_metas(node: Expr.Like) =
             transformMetas(node.metas)
     
     
         // Variant ExprBetween
         open fun transformExprBetween(node: PartiqlBasic.Expr.Between): PartiqlBasic.Expr.Between {
-            val new_value = transformExprBetweenValue(node)
-            val new_from = transformExprBetweenFrom(node)
-            val new_to = transformExprBetweenTo(node)
-            val new_metas = transformExprBetweenMetas(node)
+            val new_value = transformExprBetween_value(node)
+            val new_from = transformExprBetween_from(node)
+            val new_to = transformExprBetween_to(node)
+            val new_metas = transformExprBetween_metas(node)
             return build {
                 Expr.Between(
                     value = new_value,
@@ -12466,21 +12466,21 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprBetweenValue(node: Expr.Between) =
+        open fun transformExprBetween_value(node: Expr.Between) =
             transformExpr(node.value)
-        open fun transformExprBetweenFrom(node: Expr.Between) =
+        open fun transformExprBetween_from(node: Expr.Between) =
             transformExpr(node.from)
-        open fun transformExprBetweenTo(node: Expr.Between) =
+        open fun transformExprBetween_to(node: Expr.Between) =
             transformExpr(node.to)
-        open fun transformExprBetweenMetas(node: Expr.Between) =
+        open fun transformExprBetween_metas(node: Expr.Between) =
             transformMetas(node.metas)
     
     
         // Variant ExprPath
         open fun transformExprPath(node: PartiqlBasic.Expr.Path): PartiqlBasic.Expr.Path {
-            val new_root = transformExprPathRoot(node)
-            val new_elements = transformExprPathElements(node)
-            val new_metas = transformExprPathMetas(node)
+            val new_root = transformExprPath_root(node)
+            val new_elements = transformExprPath_elements(node)
+            val new_metas = transformExprPath_metas(node)
             return build {
                 Expr.Path(
                     root = new_root,
@@ -12490,19 +12490,19 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprPathRoot(node: Expr.Path) =
+        open fun transformExprPath_root(node: Expr.Path) =
             transformExpr(node.root)
-        open fun transformExprPathElements(node: Expr.Path) =
+        open fun transformExprPath_elements(node: Expr.Path) =
             node.elements.map { transformPathElement(it) }
-        open fun transformExprPathMetas(node: Expr.Path) =
+        open fun transformExprPath_metas(node: Expr.Path) =
             transformMetas(node.metas)
     
     
         // Variant ExprCall
         open fun transformExprCall(node: PartiqlBasic.Expr.Call): PartiqlBasic.Expr.Call {
-            val new_name = transformExprCallName(node)
-            val new_args = transformExprCallArgs(node)
-            val new_metas = transformExprCallMetas(node)
+            val new_name = transformExprCall_name(node)
+            val new_args = transformExprCall_args(node)
+            val new_metas = transformExprCall_metas(node)
             return build {
                 Expr.Call(
                     name = new_name,
@@ -12512,20 +12512,20 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprCallName(node: Expr.Call) =
+        open fun transformExprCall_name(node: Expr.Call) =
             transformSymbolPrimitive(node.name)
-        open fun transformExprCallArgs(node: Expr.Call) =
+        open fun transformExprCall_args(node: Expr.Call) =
             node.args.map { transformExpr(it) }
-        open fun transformExprCallMetas(node: Expr.Call) =
+        open fun transformExprCall_metas(node: Expr.Call) =
             transformMetas(node.metas)
     
     
         // Variant ExprCallAgg
         open fun transformExprCallAgg(node: PartiqlBasic.Expr.CallAgg): PartiqlBasic.Expr.CallAgg {
-            val new_name = transformExprCallAggName(node)
-            val new_setQuantifier = transformExprCallAggSetQuantifier(node)
-            val new_arg = transformExprCallAggArg(node)
-            val new_metas = transformExprCallAggMetas(node)
+            val new_name = transformExprCallAgg_name(node)
+            val new_setQuantifier = transformExprCallAgg_setQuantifier(node)
+            val new_arg = transformExprCallAgg_arg(node)
+            val new_metas = transformExprCallAgg_metas(node)
             return build {
                 Expr.CallAgg(
                     name = new_name,
@@ -12536,21 +12536,21 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprCallAggName(node: Expr.CallAgg) =
+        open fun transformExprCallAgg_name(node: Expr.CallAgg) =
             transformSymbolPrimitive(node.name)
-        open fun transformExprCallAggSetQuantifier(node: Expr.CallAgg) =
+        open fun transformExprCallAgg_setQuantifier(node: Expr.CallAgg) =
             transformSetQuantifier(node.setQuantifier)
-        open fun transformExprCallAggArg(node: Expr.CallAgg) =
+        open fun transformExprCallAgg_arg(node: Expr.CallAgg) =
             transformExpr(node.arg)
-        open fun transformExprCallAggMetas(node: Expr.CallAgg) =
+        open fun transformExprCallAgg_metas(node: Expr.CallAgg) =
             transformMetas(node.metas)
     
     
         // Variant ExprSimpleCase
         open fun transformExprSimpleCase(node: PartiqlBasic.Expr.SimpleCase): PartiqlBasic.Expr.SimpleCase {
-            val new_value = transformExprSimpleCaseValue(node)
-            val new_branches = transformExprSimpleCaseBranches(node)
-            val new_metas = transformExprSimpleCaseMetas(node)
+            val new_value = transformExprSimpleCase_value(node)
+            val new_branches = transformExprSimpleCase_branches(node)
+            val new_metas = transformExprSimpleCase_metas(node)
             return build {
                 Expr.SimpleCase(
                     value = new_value,
@@ -12560,18 +12560,18 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprSimpleCaseValue(node: Expr.SimpleCase) =
+        open fun transformExprSimpleCase_value(node: Expr.SimpleCase) =
             transformExpr(node.value)
-        open fun transformExprSimpleCaseBranches(node: Expr.SimpleCase) =
+        open fun transformExprSimpleCase_branches(node: Expr.SimpleCase) =
             node.branches.map { transformExprPair(it) }
-        open fun transformExprSimpleCaseMetas(node: Expr.SimpleCase) =
+        open fun transformExprSimpleCase_metas(node: Expr.SimpleCase) =
             transformMetas(node.metas)
     
     
         // Variant ExprSearchedCase
         open fun transformExprSearchedCase(node: PartiqlBasic.Expr.SearchedCase): PartiqlBasic.Expr.SearchedCase {
-            val new_branches = transformExprSearchedCaseBranches(node)
-            val new_metas = transformExprSearchedCaseMetas(node)
+            val new_branches = transformExprSearchedCase_branches(node)
+            val new_metas = transformExprSearchedCase_metas(node)
             return build {
                 Expr.SearchedCase(
                     branches = new_branches,
@@ -12580,16 +12580,16 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprSearchedCaseBranches(node: Expr.SearchedCase) =
+        open fun transformExprSearchedCase_branches(node: Expr.SearchedCase) =
             node.branches.map { transformExprPair(it) }
-        open fun transformExprSearchedCaseMetas(node: Expr.SearchedCase) =
+        open fun transformExprSearchedCase_metas(node: Expr.SearchedCase) =
             transformMetas(node.metas)
     
     
         // Variant ExprStruct
         open fun transformExprStruct(node: PartiqlBasic.Expr.Struct): PartiqlBasic.Expr.Struct {
-            val new_fields = transformExprStructFields(node)
-            val new_metas = transformExprStructMetas(node)
+            val new_fields = transformExprStruct_fields(node)
+            val new_metas = transformExprStruct_metas(node)
             return build {
                 Expr.Struct(
                     fields = new_fields,
@@ -12598,16 +12598,16 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprStructFields(node: Expr.Struct) =
+        open fun transformExprStruct_fields(node: Expr.Struct) =
             node.fields.map { transformExprPair(it) }
-        open fun transformExprStructMetas(node: Expr.Struct) =
+        open fun transformExprStruct_metas(node: Expr.Struct) =
             transformMetas(node.metas)
     
     
         // Variant ExprBag
         open fun transformExprBag(node: PartiqlBasic.Expr.Bag): PartiqlBasic.Expr.Bag {
-            val new_values = transformExprBagValues(node)
-            val new_metas = transformExprBagMetas(node)
+            val new_values = transformExprBag_values(node)
+            val new_metas = transformExprBag_metas(node)
             return build {
                 Expr.Bag(
                     values = new_values,
@@ -12616,16 +12616,16 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprBagValues(node: Expr.Bag) =
+        open fun transformExprBag_values(node: Expr.Bag) =
             node.values.map { transformExpr(it) }
-        open fun transformExprBagMetas(node: Expr.Bag) =
+        open fun transformExprBag_metas(node: Expr.Bag) =
             transformMetas(node.metas)
     
     
         // Variant ExprList
         open fun transformExprList(node: PartiqlBasic.Expr.List): PartiqlBasic.Expr.List {
-            val new_values = transformExprListValues(node)
-            val new_metas = transformExprListMetas(node)
+            val new_values = transformExprList_values(node)
+            val new_metas = transformExprList_metas(node)
             return build {
                 Expr.List(
                     values = new_values,
@@ -12634,22 +12634,22 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprListValues(node: Expr.List) =
+        open fun transformExprList_values(node: Expr.List) =
             node.values.map { transformExpr(it) }
-        open fun transformExprListMetas(node: Expr.List) =
+        open fun transformExprList_metas(node: Expr.List) =
             transformMetas(node.metas)
     
     
         // Variant ExprSelect
         open fun transformExprSelect(node: PartiqlBasic.Expr.Select): PartiqlBasic.Expr.Select {
-            val new_setq = transformExprSelectSetq(node)
-            val new_project = transformExprSelectProject(node)
-            val new_from = transformExprSelectFrom(node)
-            val new_where = transformExprSelectWhere(node)
-            val new_group = transformExprSelectGroup(node)
-            val new_having = transformExprSelectHaving(node)
-            val new_limit = transformExprSelectLimit(node)
-            val new_metas = transformExprSelectMetas(node)
+            val new_setq = transformExprSelect_setq(node)
+            val new_project = transformExprSelect_project(node)
+            val new_from = transformExprSelect_from(node)
+            val new_where = transformExprSelect_where(node)
+            val new_group = transformExprSelect_group(node)
+            val new_having = transformExprSelect_having(node)
+            val new_limit = transformExprSelect_limit(node)
+            val new_metas = transformExprSelect_metas(node)
             return build {
                 Expr.Select(
                     setq = new_setq,
@@ -12664,21 +12664,21 @@ class PartiqlBasic private constructor() {
             }
         }
     
-        open fun transformExprSelectSetq(node: Expr.Select) =
+        open fun transformExprSelect_setq(node: Expr.Select) =
             node.setq?.let { transformSetQuantifier(it) }
-        open fun transformExprSelectProject(node: Expr.Select) =
+        open fun transformExprSelect_project(node: Expr.Select) =
             transformProjection(node.project)
-        open fun transformExprSelectFrom(node: Expr.Select) =
+        open fun transformExprSelect_from(node: Expr.Select) =
             transformFromSource(node.from)
-        open fun transformExprSelectWhere(node: Expr.Select) =
+        open fun transformExprSelect_where(node: Expr.Select) =
             node.where?.let { transformExpr(it) }
-        open fun transformExprSelectGroup(node: Expr.Select) =
+        open fun transformExprSelect_group(node: Expr.Select) =
             node.group?.let { transformGroupBy(it) }
-        open fun transformExprSelectHaving(node: Expr.Select) =
+        open fun transformExprSelect_having(node: Expr.Select) =
             node.having?.let { transformExpr(it) }
-        open fun transformExprSelectLimit(node: Expr.Select) =
+        open fun transformExprSelect_limit(node: Expr.Select) =
             node.limit?.let { transformExpr(it) }
-        open fun transformExprSelectMetas(node: Expr.Select) =
+        open fun transformExprSelect_metas(node: Expr.Select) =
             transformMetas(node.metas)
     
     

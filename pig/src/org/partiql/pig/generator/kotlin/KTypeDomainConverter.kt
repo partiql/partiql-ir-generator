@@ -298,7 +298,6 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             }
             KProperty(
                 kotlinName = element.identifier.snakeToCamelCase(),
-                kotlinNamePascalCased = element.identifier.snakeToPascalCase(),
                 tag = element.tag,
                 kotlinTypeName = element.typeReference.getQualifiedTypeName(useKotlinPrimitives = false),
                 isVariadic = isVariadic,
