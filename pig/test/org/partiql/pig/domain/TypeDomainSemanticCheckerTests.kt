@@ -22,6 +22,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.partiql.pig.domain.model.SemanticErrorContext
 import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.errors.PigError
+import org.partiql.pig.errors.PigException
 
 class TypeDomainSemanticCheckerTests {
 

@@ -20,7 +20,7 @@ import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.location
 import com.amazon.ionelement.api.ElementType
 import com.amazon.ionelement.api.IonElementException
-import org.partiql.pig.domain.PigException
+import org.partiql.pig.errors.PigException
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
 

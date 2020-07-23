@@ -30,6 +30,6 @@ interface ErrorContext {
 }
 
 data class PigError(val location: IonLocation?, val context: ErrorContext) {
-    val message: String get() = "${locationToString(location)}: $${context}"
+    override fun toString(): String = "${locationToString(location)}: ${context.message}"
 }
 

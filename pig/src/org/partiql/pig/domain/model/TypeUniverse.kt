@@ -15,7 +15,7 @@
 
 package org.partiql.pig.domain.model
 
-import org.partiql.pig.domain.PigException
+import org.partiql.pig.errors.PigException
 
 data class TypeUniverse(val statements: List<Statement>) {
 
