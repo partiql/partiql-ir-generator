@@ -139,8 +139,8 @@ class ${domain.kotlinName} private constructor() {
 // Builder
 /////////////////////////////////////////////////////////////////////////////
 companion object {
-    fun <T: ${domain.kotlinName}Node> build(block: builder.() -> T) =
-        builder.block()
+    fun <T: ${domain.kotlinName}Node> build(block: Builder.() -> T) =
+        Builder.block()
 
     fun transform(element: AnyElement): ${domain.kotlinName}Node =
         transform(element.asSexp())
@@ -149,7 +149,7 @@ companion object {
         Transformer().transform(element)
 }
 
-object builder {
+object Builder {
     [@indent count = 4]
         [#if domain.tuples?size > 0]
         // Tuples
