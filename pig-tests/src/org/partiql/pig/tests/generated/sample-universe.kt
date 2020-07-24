@@ -16,8 +16,8 @@ class ToyLang private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
-        fun <T: ToyLangNode> build(block: builder.() -> T) =
-            builder.block()
+        fun <T: ToyLangNode> build(block: Builder.() -> T) =
+            Builder.block()
     
         fun transform(element: AnyElement): ToyLangNode =
             transform(element.asSexp())
@@ -26,7 +26,7 @@ class ToyLang private constructor() {
             Transformer().transform(element)
     }
     
-    object builder {
+    object Builder {
         // Variants for Sum: Expr 
         fun lit(
             value: com.amazon.ionelement.api.IonElement,
@@ -1259,8 +1259,8 @@ class ToyLangNameless private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
-        fun <T: ToyLangNamelessNode> build(block: builder.() -> T) =
-            builder.block()
+        fun <T: ToyLangNamelessNode> build(block: Builder.() -> T) =
+            Builder.block()
     
         fun transform(element: AnyElement): ToyLangNamelessNode =
             transform(element.asSexp())
@@ -1269,7 +1269,7 @@ class ToyLangNameless private constructor() {
             Transformer().transform(element)
     }
     
-    object builder {
+    object Builder {
         // Variants for Sum: Expr 
         fun lit(
             value: com.amazon.ionelement.api.IonElement,
@@ -2502,8 +2502,8 @@ class TestDomain private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
-        fun <T: TestDomainNode> build(block: builder.() -> T) =
-            builder.block()
+        fun <T: TestDomainNode> build(block: Builder.() -> T) =
+            Builder.block()
     
         fun transform(element: AnyElement): TestDomainNode =
             transform(element.asSexp())
@@ -2512,7 +2512,7 @@ class TestDomain private constructor() {
             Transformer().transform(element)
     }
     
-    object builder {
+    object Builder {
                 // Tuples
         fun intPair(
             first: Long,
@@ -6347,8 +6347,8 @@ class MultiWordDomain private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
-        fun <T: MultiWordDomainNode> build(block: builder.() -> T) =
-            builder.block()
+        fun <T: MultiWordDomainNode> build(block: Builder.() -> T) =
+            Builder.block()
     
         fun transform(element: AnyElement): MultiWordDomainNode =
             transform(element.asSexp())
@@ -6357,7 +6357,7 @@ class MultiWordDomain private constructor() {
             Transformer().transform(element)
     }
     
-    object builder {
+    object Builder {
                 // Tuples
         fun aaaAaa(
             metas: MetaContainer = emptyMetaContainer()
@@ -7955,8 +7955,8 @@ class PartiqlBasic private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
-        fun <T: PartiqlBasicNode> build(block: builder.() -> T) =
-            builder.block()
+        fun <T: PartiqlBasicNode> build(block: Builder.() -> T) =
+            Builder.block()
     
         fun transform(element: AnyElement): PartiqlBasicNode =
             transform(element.asSexp())
@@ -7965,7 +7965,7 @@ class PartiqlBasic private constructor() {
             Transformer().transform(element)
     }
     
-    object builder {
+    object Builder {
                 // Tuples
         fun exprPair(
             first: Expr,
