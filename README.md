@@ -251,7 +251,7 @@ we can expect that needs will arise for other types at a later date.
 | `int`        | `Int`        |
 | `symbol`     | `String`     |
 | `bool`       | `Boolean`    |
-| `ion`        | `IonElement` |
+| `ion`        | `AnyElement` |
 
 ##### Arity
 

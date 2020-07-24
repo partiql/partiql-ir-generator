@@ -326,7 +326,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
 
    private fun TypeRef.getBaseKotlinTypeName(kotlinPrimitives: Boolean): String {
         return when (typeName) {
-            "ion" -> "com.amazon.ionelement.api.IonElement"
+            "ion" -> "com.amazon.ionelement.api.AnyElement"
             "int" -> if (kotlinPrimitives) "Long" else "org.partiql.pig.runtime.LongPrimitive"
             "symbol" -> if (kotlinPrimitives) "String" else "org.partiql.pig.runtime.SymbolPrimitive"
             else -> this.typeName.snakeToPascalCase()
@@ -337,7 +337,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
     private val TypeRef.rawTypeName: String
         get() {
             return when (typeName) {
-                "ion" -> "IonElement"
+                "ion" -> "AnyElement"
                 "int" -> "LongPrimitive"
                 "symbol" -> "SymbolPrimitive"
                 else -> this.typeName.snakeToPascalCase()

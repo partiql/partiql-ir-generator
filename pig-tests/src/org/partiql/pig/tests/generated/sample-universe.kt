@@ -29,7 +29,7 @@ class ToyLang private constructor() {
     object builder {
         // Variants for Sum: Expr 
         fun lit(
-            value: com.amazon.ionelement.api.IonElement,
+            value: com.amazon.ionelement.api.AnyElement,
             metas: MetaContainer = emptyMetaContainer()
         ): ToyLang.Expr.Lit =
             ToyLang.Expr.Lit(
@@ -241,7 +241,7 @@ class ToyLang private constructor() {
     sealed class Expr : ToyLangNode() {
     
         class Lit(
-            val value: com.amazon.ionelement.api.IonElement,
+            val value: com.amazon.ionelement.api.AnyElement,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
@@ -808,7 +808,7 @@ class ToyLang private constructor() {
     
         open fun walkExprLit(node: ToyLang.Expr.Lit) {
             visitExprLit(node)
-            walkIonElement(node.value)
+            walkAnyElement(node.value)
             walkMetas(node.metas)
         }
     
@@ -927,7 +927,7 @@ class ToyLang private constructor() {
         open fun walkExprLit(node: ToyLang.Expr.Lit, accumulator: T): T {
             var current = accumulator
             current = visitExprLit(node, current)
-            current = walkIonElement(node.value, current)
+            current = walkAnyElement(node.value, current)
             current = walkMetas(node.metas, current)
             return current
         }
@@ -1050,7 +1050,7 @@ class ToyLang private constructor() {
         }
     
         open fun transformExprLit_value(node: Expr.Lit) =
-            transformIonElement(node.value)
+            transformAnyElement(node.value)
         open fun transformExprLit_metas(node: Expr.Lit) =
             transformMetas(node.metas)
     
@@ -1272,7 +1272,7 @@ class ToyLangNameless private constructor() {
     object builder {
         // Variants for Sum: Expr 
         fun lit(
-            value: com.amazon.ionelement.api.IonElement,
+            value: com.amazon.ionelement.api.AnyElement,
             metas: MetaContainer = emptyMetaContainer()
         ): ToyLangNameless.Expr.Lit =
             ToyLangNameless.Expr.Lit(
@@ -1484,7 +1484,7 @@ class ToyLangNameless private constructor() {
     sealed class Expr : ToyLangNamelessNode() {
     
         class Lit(
-            val value: com.amazon.ionelement.api.IonElement,
+            val value: com.amazon.ionelement.api.AnyElement,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
@@ -2051,7 +2051,7 @@ class ToyLangNameless private constructor() {
     
         open fun walkExprLit(node: ToyLangNameless.Expr.Lit) {
             visitExprLit(node)
-            walkIonElement(node.value)
+            walkAnyElement(node.value)
             walkMetas(node.metas)
         }
     
@@ -2170,7 +2170,7 @@ class ToyLangNameless private constructor() {
         open fun walkExprLit(node: ToyLangNameless.Expr.Lit, accumulator: T): T {
             var current = accumulator
             current = visitExprLit(node, current)
-            current = walkIonElement(node.value, current)
+            current = walkAnyElement(node.value, current)
             current = walkMetas(node.metas, current)
             return current
         }
@@ -2293,7 +2293,7 @@ class ToyLangNameless private constructor() {
         }
     
         open fun transformExprLit_value(node: Expr.Lit) =
-            transformIonElement(node.value)
+            transformAnyElement(node.value)
         open fun transformExprLit_metas(node: Expr.Lit) =
             transformMetas(node.metas)
     
@@ -2557,8 +2557,8 @@ class TestDomain private constructor() {
         
         
         fun ionPair(
-            first: com.amazon.ionelement.api.IonElement,
-            second: com.amazon.ionelement.api.IonElement,
+            first: com.amazon.ionelement.api.AnyElement,
+            second: com.amazon.ionelement.api.AnyElement,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonPair =
             TestDomain.IonPair(
@@ -2610,7 +2610,7 @@ class TestDomain private constructor() {
         
         
         fun ionIntPair(
-            first: com.amazon.ionelement.api.IonElement,
+            first: com.amazon.ionelement.api.AnyElement,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonIntPair =
@@ -2620,7 +2620,7 @@ class TestDomain private constructor() {
                 metas = metas)
         
         fun ionIntPair_(
-            first: com.amazon.ionelement.api.IonElement,
+            first: com.amazon.ionelement.api.AnyElement,
             second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonIntPair =
@@ -2631,8 +2631,8 @@ class TestDomain private constructor() {
         
         
         fun ionSymbolPair(
-            first: com.amazon.ionelement.api.IonElement,
-            second: com.amazon.ionelement.api.IonElement,
+            first: com.amazon.ionelement.api.AnyElement,
+            second: com.amazon.ionelement.api.AnyElement,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonSymbolPair =
             TestDomain.IonSymbolPair(
@@ -3256,8 +3256,8 @@ class TestDomain private constructor() {
     }
     
     class IonPair(
-        val first: com.amazon.ionelement.api.IonElement,
-        val second: com.amazon.ionelement.api.IonElement,
+        val first: com.amazon.ionelement.api.AnyElement,
+        val second: com.amazon.ionelement.api.AnyElement,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -3379,7 +3379,7 @@ class TestDomain private constructor() {
     }
     
     class IonIntPair(
-        val first: com.amazon.ionelement.api.IonElement,
+        val first: com.amazon.ionelement.api.AnyElement,
         val second: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
@@ -3420,8 +3420,8 @@ class TestDomain private constructor() {
     }
     
     class IonSymbolPair(
-        val first: com.amazon.ionelement.api.IonElement,
-        val second: com.amazon.ionelement.api.IonElement,
+        val first: com.amazon.ionelement.api.AnyElement,
+        val second: com.amazon.ionelement.api.AnyElement,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
@@ -4950,8 +4950,8 @@ class TestDomain private constructor() {
     
         open fun walkIonPair(node: TestDomain.IonPair) {
             visitIonPair(node)
-            walkIonElement(node.first)
-            walkIonElement(node.second)
+            walkAnyElement(node.first)
+            walkAnyElement(node.second)
             walkMetas(node.metas)
         }
     
@@ -4971,15 +4971,15 @@ class TestDomain private constructor() {
     
         open fun walkIonIntPair(node: TestDomain.IonIntPair) {
             visitIonIntPair(node)
-            walkIonElement(node.first)
+            walkAnyElement(node.first)
             walkLongPrimitive(node.second)
             walkMetas(node.metas)
         }
     
         open fun walkIonSymbolPair(node: TestDomain.IonSymbolPair) {
             visitIonSymbolPair(node)
-            walkIonElement(node.first)
-            walkIonElement(node.second)
+            walkAnyElement(node.first)
+            walkAnyElement(node.second)
             walkMetas(node.metas)
         }
     
@@ -5301,8 +5301,8 @@ class TestDomain private constructor() {
         open fun walkIonPair(node: TestDomain.IonPair, accumulator: T): T {
             var current = accumulator
             current = visitIonPair(node, current)
-            current = walkIonElement(node.first, current)
-            current = walkIonElement(node.second, current)
+            current = walkAnyElement(node.first, current)
+            current = walkAnyElement(node.second, current)
             current = walkMetas(node.metas, current)
             return current
         }
@@ -5328,7 +5328,7 @@ class TestDomain private constructor() {
         open fun walkIonIntPair(node: TestDomain.IonIntPair, accumulator: T): T {
             var current = accumulator
             current = visitIonIntPair(node, current)
-            current = walkIonElement(node.first, current)
+            current = walkAnyElement(node.first, current)
             current = walkLongPrimitive(node.second, current)
             current = walkMetas(node.metas, current)
             return current
@@ -5337,8 +5337,8 @@ class TestDomain private constructor() {
         open fun walkIonSymbolPair(node: TestDomain.IonSymbolPair, accumulator: T): T {
             var current = accumulator
             current = visitIonSymbolPair(node, current)
-            current = walkIonElement(node.first, current)
-            current = walkIonElement(node.second, current)
+            current = walkAnyElement(node.first, current)
+            current = walkAnyElement(node.second, current)
             current = walkMetas(node.metas, current)
             return current
         }
@@ -5686,9 +5686,9 @@ class TestDomain private constructor() {
             }
         }
         open fun transformIonPair_first(node: IonPair) =
-            transformIonElement(node.first)
+            transformAnyElement(node.first)
         open fun transformIonPair_second(node: IonPair) =
-            transformIonElement(node.second)
+            transformAnyElement(node.second)
         open fun transformIonPair_metas(node: IonPair) =
             transformMetas(node.metas)
     
@@ -5746,7 +5746,7 @@ class TestDomain private constructor() {
             }
         }
         open fun transformIonIntPair_first(node: IonIntPair) =
-            transformIonElement(node.first)
+            transformAnyElement(node.first)
         open fun transformIonIntPair_second(node: IonIntPair) =
             transformLongPrimitive(node.second)
         open fun transformIonIntPair_metas(node: IonIntPair) =
@@ -5766,9 +5766,9 @@ class TestDomain private constructor() {
             }
         }
         open fun transformIonSymbolPair_first(node: IonSymbolPair) =
-            transformIonElement(node.first)
+            transformAnyElement(node.first)
         open fun transformIonSymbolPair_second(node: IonSymbolPair) =
-            transformIonElement(node.second)
+            transformAnyElement(node.second)
         open fun transformIonSymbolPair_metas(node: IonSymbolPair) =
             transformMetas(node.metas)
     
@@ -8240,7 +8240,7 @@ class PartiqlBasic private constructor() {
         
         // Variants for Sum: Expr 
         fun lit(
-            value: com.amazon.ionelement.api.IonElement,
+            value: com.amazon.ionelement.api.AnyElement,
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Lit =
             PartiqlBasic.Expr.Lit(
@@ -9440,7 +9440,7 @@ class PartiqlBasic private constructor() {
     sealed class Expr : PartiqlBasicNode() {
     
         class Lit(
-            val value: com.amazon.ionelement.api.IonElement,
+            val value: com.amazon.ionelement.api.AnyElement,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
@@ -11014,7 +11014,7 @@ class PartiqlBasic private constructor() {
     
         open fun walkExprLit(node: PartiqlBasic.Expr.Lit) {
             visitExprLit(node)
-            walkIonElement(node.value)
+            walkAnyElement(node.value)
             walkMetas(node.metas)
         }
     
@@ -11559,7 +11559,7 @@ class PartiqlBasic private constructor() {
         open fun walkExprLit(node: PartiqlBasic.Expr.Lit, accumulator: T): T {
             var current = accumulator
             current = visitExprLit(node, current)
-            current = walkIonElement(node.value, current)
+            current = walkAnyElement(node.value, current)
             current = walkMetas(node.metas, current)
             return current
         }
@@ -12249,7 +12249,7 @@ class PartiqlBasic private constructor() {
         }
     
         open fun transformExprLit_value(node: Expr.Lit) =
-            transformIonElement(node.value)
+            transformAnyElement(node.value)
         open fun transformExprLit_metas(node: Expr.Lit) =
             transformMetas(node.metas)
     
