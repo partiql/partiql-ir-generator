@@ -64,7 +64,6 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             superClass = superClass,
             constructorName = constructorName,
             properties = computeProperties(this),
-            builderName = this.tag.snakeToCamelCase() + "_",
             arity = computeArity(),
             builderFunctions = computeBuilderFunctions(tuple = this),
             isRecord = when (this.tupleType) {
