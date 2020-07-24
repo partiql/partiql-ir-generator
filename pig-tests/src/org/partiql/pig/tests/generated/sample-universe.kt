@@ -16,8 +16,8 @@ class ToyLang private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
-        fun <T: ToyLangNode> build(block: builder.() -> T) =
-            builder.block()
+        fun <T: ToyLangNode> build(block: Builder.() -> T) =
+            Builder.block()
     
         fun transform(element: AnyElement): ToyLangNode =
             transform(element.asSexp())
@@ -26,7 +26,7 @@ class ToyLang private constructor() {
             Transformer().transform(element)
     }
     
-    object builder {
+    object Builder {
         // Variants for Sum: Expr 
         /**
          * Creates an instance of [ToyLang.Expr.Lit].
@@ -1335,8 +1335,8 @@ class ToyLangNameless private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
-        fun <T: ToyLangNamelessNode> build(block: builder.() -> T) =
-            builder.block()
+        fun <T: ToyLangNamelessNode> build(block: Builder.() -> T) =
+            Builder.block()
     
         fun transform(element: AnyElement): ToyLangNamelessNode =
             transform(element.asSexp())
@@ -1345,7 +1345,7 @@ class ToyLangNameless private constructor() {
             Transformer().transform(element)
     }
     
-    object builder {
+    object Builder {
         // Variants for Sum: Expr 
         /**
          * Creates an instance of [ToyLangNameless.Expr.Lit].
@@ -2654,8 +2654,8 @@ class TestDomain private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
-        fun <T: TestDomainNode> build(block: builder.() -> T) =
-            builder.block()
+        fun <T: TestDomainNode> build(block: Builder.() -> T) =
+            Builder.block()
     
         fun transform(element: AnyElement): TestDomainNode =
             transform(element.asSexp())
@@ -2664,7 +2664,7 @@ class TestDomain private constructor() {
             Transformer().transform(element)
     }
     
-    object builder {
+    object Builder {
                 // Tuples
         /**
          * Creates an instance of [TestDomain.IntPair].
@@ -6792,8 +6792,8 @@ class MultiWordDomain private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
-        fun <T: MultiWordDomainNode> build(block: builder.() -> T) =
-            builder.block()
+        fun <T: MultiWordDomainNode> build(block: Builder.() -> T) =
+            Builder.block()
     
         fun transform(element: AnyElement): MultiWordDomainNode =
             transform(element.asSexp())
@@ -6802,7 +6802,7 @@ class MultiWordDomain private constructor() {
             Transformer().transform(element)
     }
     
-    object builder {
+    object Builder {
                 // Tuples
         /**
          * Creates an instance of [MultiWordDomain.AaaAaa].
@@ -8563,8 +8563,8 @@ class PartiqlBasic private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
-        fun <T: PartiqlBasicNode> build(block: builder.() -> T) =
-            builder.block()
+        fun <T: PartiqlBasicNode> build(block: Builder.() -> T) =
+            Builder.block()
     
         fun transform(element: AnyElement): PartiqlBasicNode =
             transform(element.asSexp())
@@ -8573,7 +8573,7 @@ class PartiqlBasic private constructor() {
             Transformer().transform(element)
     }
     
-    object builder {
+    object Builder {
                 // Tuples
         /**
          * Creates an instance of [PartiqlBasic.ExprPair].
