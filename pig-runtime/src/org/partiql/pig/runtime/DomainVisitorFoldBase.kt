@@ -15,7 +15,7 @@
 
 package org.partiql.pig.runtime
 
-import com.amazon.ionelement.api.IonElement
+import com.amazon.ionelement.api.AnyElement
 import com.amazon.ionelement.api.MetaContainer
 
 open class DomainVisitorFoldBase<T> {
@@ -28,7 +28,7 @@ open class DomainVisitorFoldBase<T> {
         // default does nothing
         accumulator
 
-    protected open fun visitIonElement(node: IonElement, accumulator: T): T =
+    protected open fun visitAnyElement(node: AnyElement, accumulator: T): T =
         // default does nothing
         accumulator
 
@@ -50,9 +50,9 @@ open class DomainVisitorFoldBase<T> {
         return walkMetas(node.metas, current)
     }
 
-    open fun walkIonElement(node: IonElement, accumulator: T): T {
+    open fun walkAnyElement(node: AnyElement, accumulator: T): T {
         var current = accumulator
-        current = visitIonElement(node, current)
+        current = visitAnyElement(node, current)
         return walkMetas(node.metas, current)
     }
 

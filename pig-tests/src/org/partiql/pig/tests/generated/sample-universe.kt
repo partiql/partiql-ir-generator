@@ -29,11 +29,11 @@ class ToyLang private constructor() {
     object Builder {
         // Variants for Sum: Expr 
         fun lit(
-            value: com.amazon.ionelement.api.AnyElement,
+            value: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): ToyLang.Expr.Lit =
             ToyLang.Expr.Lit(
-                value = value,
+                value = value.asAnyElement(),
                 metas = metas)
         
         
@@ -1272,11 +1272,11 @@ class ToyLangNameless private constructor() {
     object Builder {
         // Variants for Sum: Expr 
         fun lit(
-            value: com.amazon.ionelement.api.AnyElement,
+            value: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): ToyLangNameless.Expr.Lit =
             ToyLangNameless.Expr.Lit(
-                value = value,
+                value = value.asAnyElement(),
                 metas = metas)
         
         
@@ -2557,13 +2557,13 @@ class TestDomain private constructor() {
         
         
         fun ionPair(
-            first: com.amazon.ionelement.api.AnyElement,
-            second: com.amazon.ionelement.api.AnyElement,
+            first: com.amazon.ionelement.api.IonElement,
+            second: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonPair =
             TestDomain.IonPair(
-                first = first,
-                second = second,
+                first = first.asAnyElement(),
+                second = second.asAnyElement(),
                 metas = metas)
         
         
@@ -2610,34 +2610,34 @@ class TestDomain private constructor() {
         
         
         fun ionIntPair(
-            first: com.amazon.ionelement.api.AnyElement,
+            first: com.amazon.ionelement.api.IonElement,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonIntPair =
             TestDomain.IonIntPair(
-                first = first,
+                first = first.asAnyElement(),
                 second = second.asPrimitive(),
                 metas = metas)
         
         fun ionIntPair_(
-            first: com.amazon.ionelement.api.AnyElement,
+            first: com.amazon.ionelement.api.IonElement,
             second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonIntPair =
             TestDomain.IonIntPair(
-                first = first,
+                first = first.asAnyElement(),
                 second = second,
                 metas = metas)
         
         
         fun ionSymbolPair(
-            first: com.amazon.ionelement.api.AnyElement,
-            second: com.amazon.ionelement.api.AnyElement,
+            first: com.amazon.ionelement.api.IonElement,
+            second: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonSymbolPair =
             TestDomain.IonSymbolPair(
-                first = first,
-                second = second,
+                first = first.asAnyElement(),
+                second = second.asAnyElement(),
                 metas = metas)
         
         
@@ -8240,11 +8240,11 @@ class PartiqlBasic private constructor() {
         
         // Variants for Sum: Expr 
         fun lit(
-            value: com.amazon.ionelement.api.AnyElement,
+            value: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Lit =
             PartiqlBasic.Expr.Lit(
-                value = value,
+                value = value.asAnyElement(),
                 metas = metas)
         
         

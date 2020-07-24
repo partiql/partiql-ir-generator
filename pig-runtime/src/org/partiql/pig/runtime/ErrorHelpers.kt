@@ -68,7 +68,7 @@ fun SexpElement.getRequired(i: Int): AnyElement {
  * for required arguments. But when getting a required Ion-type argument, IonNull
  * is considered a valid value and returned as it is.
  */
-fun SexpElement.getRequiredIon(i: Int): IonElement {
+fun SexpElement.getRequiredIon(i: Int): AnyElement {
     argIndexInBoundOrMalformed(i)
     return this.values[i + 1]
 }
