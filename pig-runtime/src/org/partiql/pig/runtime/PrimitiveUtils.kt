@@ -16,59 +16,9 @@
 package org.partiql.pig.runtime
 
 import com.amazon.ionelement.api.AnyElement
-import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.emptyMetaContainer
-import com.amazon.ionelement.api.ionInt
-import com.amazon.ionelement.api.ionSymbol
-import com.amazon.ionelement.api.metaContainerOf
-import com.amazon.ionelement.api.withMetas
 
-class LongPrimitive(val value: Long, override val metas: MetaContainer) : DomainNode {
-    override fun withMeta(metaKey: String, metaValue: Any): LongPrimitive =
-        LongPrimitive(this.value, metas + metaContainerOf(metaKey to metaValue))
-
-    override fun toIonElement(): IonElement = ionInt(value).withMetas(metas)
-    override fun toString(): String = value.toString()
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as LongPrimitive
-
-        if (value != other.value) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return value.hashCode()
-    }
-}
-
-class SymbolPrimitive(val text: String, override val metas: MetaContainer) : DomainNode {
-    override fun withMeta(metaKey: String, metaValue: Any): SymbolPrimitive =
-        SymbolPrimitive(text, metas + metaContainerOf(metaKey to metaValue))
-
-    override fun toIonElement(): IonElement = ionSymbol(text).withMetas(metas)
-    override fun toString(): String = text
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as SymbolPrimitive
-
-        if (text != other.text) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return text.hashCode()
-    }
-}
 
 fun AnyElement.toLongPrimitive() =
     LongPrimitive(this.longValue, this.metas)
