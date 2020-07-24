@@ -102,6 +102,15 @@ class ${t.kotlinName}(
 [#--Emits builder functions that wraps the constructors of domain type. --]
 [#macro builder_constructor_fun t return_type]
 [#list t.builderFunctions as bf]
+/**
+ * Creates an instance of [${return_type}].
+[#if bf.kotlinName?ends_with("_")]
+ *
+ * Use this variant when metas must be passed to primitive child elements.
+ *
+ * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+[/#if]
+ */
 fun ${bf.kotlinName}(
     [@indent count=4]
         [@parameter_list bf.parameters/]
