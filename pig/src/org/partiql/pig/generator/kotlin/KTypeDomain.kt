@@ -79,8 +79,6 @@ data class KTuple(
     val properties: List<KProperty>,
     val arity: IntRange,
     val builderFunctions: List<KBuilderFunction>,
-    /** The base name of the builder function. */
-    val builderName: String,
     val isRecord: Boolean,
     val hasVariadicElement: Boolean
 )
