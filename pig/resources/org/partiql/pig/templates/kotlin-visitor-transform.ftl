@@ -3,9 +3,9 @@
 
 [#macro transform_fun_body domain t transformFuncName]
     [#list t.properties as p]
-        val new_${p.kotlinName} = transform${transformFuncName}${p.kotlinNamePascalCased}(node)
+        val new_${p.kotlinName} = transform${transformFuncName}_${p.kotlinName}(node)
     [/#list]
-        val new_metas = transform${transformFuncName}Metas(node)
+        val new_metas = transform${transformFuncName}_metas(node)
         return build {
             ${t.constructorName}(
                 [#list t.properties as p]
@@ -19,7 +19,7 @@
 [#macro trasnform_property_functions t sumName]
 [#assign qualifed_name][#if sumName?has_content]${sumName}.[/#if]${t.kotlinName}[/#assign]
 [#list t.properties as p]
-    open fun transform${sumName}${t.kotlinName}${p.kotlinNamePascalCased}(node: ${qualifed_name}) =
+    open fun transform${sumName}${t.kotlinName}_${p.kotlinName}(node: ${qualifed_name}) =
         [#if p.variadic]
         node.${p.kotlinName}.map { transform${p.rawTypeName}(it) }
         [#elseif p.nullable]
@@ -28,7 +28,7 @@
         transform${p.rawTypeName}(node.${p.kotlinName})
         [/#if]
 [/#list]
-    open fun transform${sumName}${t.kotlinName}Metas(node: ${qualifed_name}) =
+    open fun transform${sumName}${t.kotlinName}_metas(node: ${qualifed_name}) =
         transformMetas(node.metas)
 
 [/#macro]

@@ -31,7 +31,7 @@ class VisitorTransformTests {
     /** The outermost visitor simply establishes the root [ScopeTracker] and recurses into it. */
     class VariableResolver : ToyLang.VisitorTransform() {
 
-        override fun transformExprLetBody(node: ToyLang.Expr.Let): ToyLang.Expr =
+        override fun transformExprLet_body(node: ToyLang.Expr.Let): ToyLang.Expr =
             ScopeTracker(name = node.name.text, index = 0, parent = null)
                 .transformExpr(node.body)
 
@@ -47,7 +47,7 @@ class VisitorTransformTests {
                 node.withMeta(INDEX_META_KEY, findIndex(node.name.text))
 
             /** Replaces the default behavior of [demo_ast_.VisitorBase] with a *nested* [ScopeTracker] visitor. */
-            override fun transformExprLetBody(node: ToyLang.Expr.Let): ToyLang.Expr =
+            override fun transformExprLet_body(node: ToyLang.Expr.Let): ToyLang.Expr =
                 createNested(node.name.text)
                     .transformExpr(node.body)
 
@@ -159,10 +159,10 @@ class VisitorTransformTests {
     }
 
     private val nameMangler = object : TestDomain.VisitorTransform() {
-        override fun transformEntityHumanFirstName(node: TestDomain.Entity.Human): SymbolPrimitive =
+        override fun transformEntityHuman_firstName(node: TestDomain.Entity.Human): SymbolPrimitive =
             SymbolPrimitive(node.firstName.text + "_mangled", node.firstName.metas)
 
-        override fun transformEntityHumanLastName(node: TestDomain.Entity.Human): SymbolPrimitive =
+        override fun transformEntityHuman_lastName(node: TestDomain.Entity.Human): SymbolPrimitive =
             SymbolPrimitive(node.lastName.text + "_mangled", node.lastName.metas)
     }
 
