@@ -108,7 +108,7 @@ class ${t.kotlinName}(
  *
  * Use this variant when metas must be passed to primitive child elements.
  *
- * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+ * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
 [/#if]
  */
 fun ${bf.kotlinName}(

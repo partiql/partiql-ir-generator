@@ -56,7 +56,7 @@ class ToyLang private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variable_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
@@ -222,7 +222,7 @@ class ToyLang private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun call_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
@@ -255,7 +255,7 @@ class ToyLang private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun let_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
@@ -288,7 +288,7 @@ class ToyLang private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun function_(
             varName: org.partiql.pig.runtime.SymbolPrimitive,
@@ -1514,7 +1514,7 @@ class ToyLangNameless private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun call_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
@@ -1545,7 +1545,7 @@ class ToyLangNameless private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun function_(
             varName: org.partiql.pig.runtime.SymbolPrimitive,
@@ -1574,7 +1574,7 @@ class ToyLangNameless private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variable_(
             index: org.partiql.pig.runtime.LongPrimitive,
@@ -1605,7 +1605,7 @@ class ToyLangNameless private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun let_(
             index: org.partiql.pig.runtime.LongPrimitive,
@@ -2684,7 +2684,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun intPair_(
             first: org.partiql.pig.runtime.LongPrimitive,
@@ -2715,7 +2715,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun symbolPair_(
             first: org.partiql.pig.runtime.SymbolPrimitive,
@@ -2760,7 +2760,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun intSymbolPair_(
             first: org.partiql.pig.runtime.LongPrimitive,
@@ -2791,7 +2791,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun symbolIntPair_(
             first: org.partiql.pig.runtime.SymbolPrimitive,
@@ -2822,7 +2822,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun ionIntPair_(
             first: com.amazon.ionelement.api.IonElement,
@@ -2909,7 +2909,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun recursivePair_(
             first: org.partiql.pig.runtime.LongPrimitive,
@@ -2954,7 +2954,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun answerIntPair_(
             first: Answer,
@@ -2985,7 +2985,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun intAnswerPair_(
             first: org.partiql.pig.runtime.LongPrimitive,
@@ -3016,7 +3016,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun symbolAnswerPair_(
             first: org.partiql.pig.runtime.SymbolPrimitive,
@@ -3047,7 +3047,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun answerSymbolPair_(
             first: Answer,
@@ -3076,7 +3076,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variadicMin0_(
             ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
@@ -3102,7 +3102,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variadicMin0_(
             vararg ints: org.partiql.pig.runtime.LongPrimitive,
@@ -3129,7 +3129,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variadicMin1_(
             ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
@@ -3156,7 +3156,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variadicMin1_(
             ints0: org.partiql.pig.runtime.LongPrimitive,
@@ -3186,7 +3186,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun elementVariadic_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
@@ -3216,7 +3216,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun elementVariadic_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
@@ -3245,7 +3245,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun optional1_(
             value: org.partiql.pig.runtime.LongPrimitive? = null,
@@ -3274,7 +3274,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun optional2_(
             first: org.partiql.pig.runtime.LongPrimitive? = null,
@@ -3307,7 +3307,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun domainLevelRecord_(
             someField: org.partiql.pig.runtime.LongPrimitive,
@@ -3340,7 +3340,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun productWithRecord_(
             value: org.partiql.pig.runtime.LongPrimitive,
@@ -3423,7 +3423,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variantWithRecord_(
             value: org.partiql.pig.runtime.LongPrimitive,
@@ -3453,7 +3453,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun one_(
             a: org.partiql.pig.runtime.LongPrimitive,
@@ -3482,7 +3482,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun two_(
             a: org.partiql.pig.runtime.LongPrimitive,
@@ -3515,7 +3515,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun three_(
             a: org.partiql.pig.runtime.LongPrimitive,
@@ -3557,7 +3557,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun android_(
             id: org.partiql.pig.runtime.LongPrimitive,
@@ -3590,7 +3590,7 @@ class TestDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun human_(
             firstName: org.partiql.pig.runtime.SymbolPrimitive,
@@ -6830,7 +6830,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAab_(
             dField: org.partiql.pig.runtime.LongPrimitive? = null,
@@ -6859,7 +6859,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAac_(
             dField: org.partiql.pig.runtime.LongPrimitive? = null,
@@ -6888,7 +6888,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAad_(
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
@@ -6914,7 +6914,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAad_(
             vararg dField: org.partiql.pig.runtime.LongPrimitive,
@@ -6941,7 +6941,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAae_(
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
@@ -6969,7 +6969,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAae_(
             dField0: org.partiql.pig.runtime.LongPrimitive,
@@ -7000,7 +7000,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAaa_(
             bField: org.partiql.pig.runtime.LongPrimitive,
@@ -7033,7 +7033,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAab_(
             bField: org.partiql.pig.runtime.LongPrimitive,
@@ -7070,7 +7070,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAac_(
             bField: org.partiql.pig.runtime.LongPrimitive,
@@ -7107,7 +7107,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAad_(
             bField: org.partiql.pig.runtime.LongPrimitive,
@@ -7141,7 +7141,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAad_(
             bField: org.partiql.pig.runtime.LongPrimitive,
@@ -7176,7 +7176,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAae_(
             bField: org.partiql.pig.runtime.LongPrimitive,
@@ -7212,7 +7212,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAae_(
             bField: org.partiql.pig.runtime.LongPrimitive,
@@ -7247,7 +7247,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun rrr_(
             aField: org.partiql.pig.runtime.LongPrimitive,
@@ -7277,7 +7277,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun lll_(
             uField: org.partiql.pig.runtime.LongPrimitive,
@@ -7304,7 +7304,7 @@ class MultiWordDomain private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun mmm_(
             vField: org.partiql.pig.runtime.SymbolPrimitive,
@@ -8607,7 +8607,7 @@ class PartiqlBasic private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun groupByItem_(
             value: Expr,
@@ -8662,7 +8662,7 @@ class PartiqlBasic private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun groupBy_(
             items: GroupByList,
@@ -8741,7 +8741,7 @@ class PartiqlBasic private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun projectExpr_(
             value: Expr,
@@ -8818,7 +8818,7 @@ class PartiqlBasic private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun scan_(
             expr: Expr,
@@ -8982,7 +8982,7 @@ class PartiqlBasic private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun id_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
@@ -9013,7 +9013,7 @@ class PartiqlBasic private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun parameter_(
             index: org.partiql.pig.runtime.LongPrimitive,
@@ -9264,7 +9264,7 @@ class PartiqlBasic private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun call_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
@@ -9295,7 +9295,7 @@ class PartiqlBasic private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun call_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
@@ -9329,7 +9329,7 @@ class PartiqlBasic private constructor() {
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities nullable arguments.)
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun callAgg_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
