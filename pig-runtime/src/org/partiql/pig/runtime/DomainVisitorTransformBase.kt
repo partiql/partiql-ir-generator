@@ -15,7 +15,7 @@
 
 package org.partiql.pig.runtime
 
-import com.amazon.ionelement.api.IonElement
+import com.amazon.ionelement.api.AnyElement
 import com.amazon.ionelement.api.MetaContainer
 
 /**
@@ -26,7 +26,9 @@ import com.amazon.ionelement.api.MetaContainer
 abstract class DomainVisitorTransformBase {
     open fun transformMetas(metas: MetaContainer) = metas
 
-    open fun transformIonElement(node: IonElement): IonElement = node.copy(metas = transformMetas(node.metas))
+    open fun transformAnyElement(node: AnyElement): AnyElement =
+        // TODO:  remove .asAnyElement() below when https://github.com/amzn/ion-element-kotlin/issues/36 is fixed.
+        node.copy(metas = transformMetas(node.metas)).asAnyElement()
 
     open fun transformSymbolPrimitive(sym: SymbolPrimitive) =
         SymbolPrimitive(

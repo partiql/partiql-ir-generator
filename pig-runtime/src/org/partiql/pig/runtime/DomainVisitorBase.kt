@@ -15,7 +15,7 @@
 
 package org.partiql.pig.runtime
 
-import com.amazon.ionelement.api.IonElement
+import com.amazon.ionelement.api.AnyElement
 import com.amazon.ionelement.api.MetaContainer
 
 open class DomainVisitorBase {
@@ -28,7 +28,7 @@ open class DomainVisitorBase {
         // default does nothing
     }
 
-    protected open fun visitIonElement(node: IonElement) {
+    protected open fun visitAnyElement(node: AnyElement) {
         // default does nothing
     }
 
@@ -48,8 +48,8 @@ open class DomainVisitorBase {
         walkMetas(node.metas)
     }
 
-    open fun walkIonElement(node: IonElement) {
-        visitIonElement(node)
+    open fun walkAnyElement(node: AnyElement) {
+        visitAnyElement(node)
         walkMetas(node.metas)
     }
 
