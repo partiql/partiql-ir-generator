@@ -59,7 +59,7 @@ open class VisitorTransform : DomainVisitorTransformBase() {
         }
 [#list s.variants as t]
     // Variant ${s.kotlinName}${t.kotlinName}
-    open fun transform${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}): ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName} {
+    open fun transform${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}): ${domain.kotlinName}.${s.kotlinName} {
         [@transform_fun_body domain, t, "${s.kotlinName}${t.kotlinName}" /]
     }
 
