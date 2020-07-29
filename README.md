@@ -35,7 +35,7 @@ structures required by PartiQL.  PIG generates Kotlin classes to represent data 
 - Three different implementations of the [visitor pattern](https://en.wikipedia.org/wiki/Visitor_pattern):
     - Plain visitors, which can be used to perform simple semantic checks.
     - Folding visitors, which can be used to extract data from a tree.
-    - (TODO) Rewriting visitors for simple transformations of trees.
+    - Rewriting visitors for simple transformations of trees.
 - Components to transform between the generated classes and Ion s-expressions and to check the structure of the 
 structure of the s-expression representation.
 
