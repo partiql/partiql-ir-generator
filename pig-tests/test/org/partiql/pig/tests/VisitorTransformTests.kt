@@ -28,7 +28,11 @@ const val INDEX_META_KEY = "index"
 
 class VisitorTransformTests {
 
-    /** The outermost visitor simply establishes the root [ScopeTracker] and recurses into it. */
+    /** 
+    * This is a VisitorTransform implementation that transforms variable references from names to indexes.
+    * 
+    * The outermost visitor simply establishes the root [ScopeTracker] and recurses into it. 
+    */
     class VariableResolver : ToyLang.VisitorTransform() {
 
         override fun transformExprLet_body(node: ToyLang.Expr.Let): ToyLang.Expr =
