@@ -22,7 +22,8 @@ import com.amazon.ionelement.api.emptyMetaContainer
 /**
  * Base class for all PIG data types, including primitives and products, records and sums.
  */
-sealed class DataType(val metas: MetaContainer) {
+sealed class DataType {
+    abstract val metas: MetaContainer
     /**
      * Indicates if this data type is a primitive value.
      *
@@ -59,27 +60,30 @@ sealed class DataType(val metas: MetaContainer) {
     /**
      * Represents an instance of the Ion DOM in the target language.
      */
-    object Ion : DataType(emptyMetaContainer()) {
+    object Ion : DataType() {
         override val isPrimitive: Boolean get() = false
         override val isBuiltin: Boolean get() = true
         override val tag: String get() = "ion"
+        override val metas: MetaContainer get() = emptyMetaContainer()
     }
 
     /**
      * Represents the equivalent of an Ion `int` in the target language.
      * This is one of pig's "primitive" types.
      */
-    object Int : DataType(emptyMetaContainer()) {
+    object Int : DataType() {
         override val isPrimitive: Boolean get() = true
         override val isBuiltin: Boolean get() = true
         override val tag: String get() = "int"
+        override val metas: MetaContainer get() = emptyMetaContainer()
     }
 
     /** Represents the equivalent of an Ion `symbol` in the target language. */
-    object Symbol : DataType(emptyMetaContainer()) {
+    object Symbol : DataType() {
         override val isPrimitive: Boolean get() = true
         override val isBuiltin: Boolean get() = true
         override val tag: String get() = "symbol"
+        override val metas: MetaContainer get() = emptyMetaContainer()
     }
 
     /**
@@ -88,12 +92,12 @@ sealed class DataType(val metas: MetaContainer) {
      * A [Tuple] can be either a product or a record.  In the serialized form a product is a tuple whose
      * elements are not named while a record has named elements.
      */
-    class Tuple(
+    data class Tuple(
         override val tag: String,
         val tupleType: TupleType,
         val namedElements: List<NamedElement>,
-        metas: MetaContainer
-    ) : DataType(metas) {
+        override val metas: MetaContainer
+    ) : DataType() {
 
         fun computeArity(): IntRange {
             // Calculate the arity range for this product... Due to type domain error checking,
@@ -111,10 +115,9 @@ sealed class DataType(val metas: MetaContainer) {
     }
 
     /** A sum type consisting of a [tag] and one or more [variants]. */
-    class Sum(
+    data class Sum(
         override val tag: String,
         val variants: List<Tuple>,
-        metas: MetaContainer
-    ) : DataType(metas)
-
+        override val metas: MetaContainer
+    ) : DataType()
 }

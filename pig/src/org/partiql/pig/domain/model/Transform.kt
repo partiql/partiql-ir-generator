@@ -14,16 +14,3 @@
  */
 
 package org.partiql.pig.domain.model
-
-import com.amazon.ionelement.api.MetaContainer
-
-/** An element of a product or record. */
-data class NamedElement(
-    /** The name of the element that should be used in generated code. */
-    val identifier: String,
-    /** The tag used in the s-expression representation, if this is a record element. */
-    val tag: String,
-    /** A reference to the type of this element.*/
-    val typeReference: TypeRef,
-    val metas: MetaContainer
-)

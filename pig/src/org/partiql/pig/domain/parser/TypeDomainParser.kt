@@ -58,10 +58,21 @@ private fun parseDefine(sexp: SexpElement): Statement {
     return when (valueSexp.tag) {
         "domain" -> parseTypeDomain(name, valueSexp)
         "permute_domain" -> parsePermuteDomain(name, valueSexp)
+        "transform" -> parseTransform(name, valueSexp)
         else -> parseError(
             valueSexp.head,
             ParserErrorContext.UnknownConstructor(valueSexp.tag))
     }
+}
+
+fun parseTransform(name: String, sexp: SexpElement): Statement {
+    requireArityForTag(sexp, 2)
+    return Transform(
+        name = name,
+        sourceDomain = sexp.values[1].symbolValue,
+        destinationDomain = sexp.values[2].symbolValue,
+        metas = sexp.metas
+    )
 }
 
 private fun parseTypeDomain(domainName: String, sexp: SexpElement): TypeDomain {

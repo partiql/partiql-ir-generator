@@ -25,6 +25,7 @@ import org.partiql.pig.domain.model.NamedElement
 import org.partiql.pig.domain.model.PermutedDomain
 import org.partiql.pig.domain.model.PermutedSum
 import org.partiql.pig.domain.model.Statement
+import org.partiql.pig.domain.model.Transform
 import org.partiql.pig.domain.model.TupleType
 import org.partiql.pig.domain.model.TypeDomain
 import org.partiql.pig.domain.model.TypeUniverse
@@ -73,6 +74,14 @@ fun Statement.toIonElement(): IonElement =
                                     ionSymbol("include"),
                                     *includedTypes.map { it.toIonElement(includeTypeTag = true) }.toTypedArray())
                         ) + permutedSums.map { it.toIonElement() }))
+            is Transform ->
+                ionSexpOf(
+                    ionSymbol("define"),
+                    ionSymbol(this.name),
+                    ionSexpOf(
+                        ionSymbol("transform"),
+                        ionSymbol(this.sourceDomain),
+                        ionSymbol(this.destinationDomain)))
         }
 
 fun PermutedSum.toIonElement(): IonElement =
