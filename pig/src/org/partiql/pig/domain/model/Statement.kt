@@ -22,16 +22,31 @@ import com.amazon.ionelement.api.locationToString
 
 
 /** Base class for top level statements of a type universe definition. */ 
-sealed class Statement(val metas: MetaContainer)
+sealed class Statement {
+    abstract val metas: MetaContainer
+}
+
+
+
+/**
+ * Transforms will generate target specific code to aid in the transformation of
+ * one type domain to another.
+ */
+data class Transform(
+    val name: String,
+    val sourceDomain: String,
+    val destinationDomain: String,
+    override val metas: MetaContainer
+) : Statement()
 
 /** Represents a fully defined type domain. */
-class TypeDomain(
+data class TypeDomain(
     /** The name of the type domain. */
     val tag: String,
     /** The list of user-defined types.  Does not include primitive types. */
     val userTypes: List<DataType>,
-    metas: MetaContainer = emptyMetaContainer()
-): Statement(metas) {
+    override val metas: MetaContainer = emptyMetaContainer()
+): Statement() {
 
     /** All data types. (User types + primitives). */
     val types: List<DataType> = listOf(DataType.Int, DataType.Symbol, DataType.Ion) + userTypes
@@ -51,14 +66,14 @@ class TypeDomain(
  * Given a [TypeDomain] and a [PermutedDomain] a new [TypeDomain] can be computed which differs from the original
  * as specified by the [PermutedDomain].
  */
-class PermutedDomain(
+data class PermutedDomain(
     val tag: String,
     val permutesDomain: String,
     val excludedTypes: List<String>,
     val includedTypes: List<DataType>,
     val permutedSums: List<PermutedSum>,
-    metas: MetaContainer
-) : Statement(metas) {
+    override val metas: MetaContainer
+) : Statement() {
 
     /**
      * Given a map of concrete type domains keyed by name, generates a new concrete type domain with the deltas
@@ -134,9 +149,8 @@ class PermutedDomain(
     }
 }
 
-
 /** Represents differences to a sum in the domain being permuted. */
-class PermutedSum(
+data class PermutedSum(
     val tag: String,
     val removedVariants: List<String>,
     val addedVariants: List<DataType.Tuple>,

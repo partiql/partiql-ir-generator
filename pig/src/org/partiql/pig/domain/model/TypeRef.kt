@@ -21,7 +21,7 @@ import com.amazon.ionelement.api.ionInt
 import com.amazon.ionelement.api.ionSexpOf
 import com.amazon.ionelement.api.ionSymbol
 
-class TypeRef(val typeName: String, val arity: Arity, val metas: MetaContainer) {
+data class TypeRef(val typeName: String, val arity: Arity, val metas: MetaContainer) {
     /**
      * Generates an s-expression representation of this [TypeRef].
      *

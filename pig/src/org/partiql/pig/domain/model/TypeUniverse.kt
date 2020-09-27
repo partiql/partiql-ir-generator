@@ -32,18 +32,20 @@ data class TypeUniverse(val statements: List<Statement>) {
 
         val domains = mutableMapOf<String, TypeDomain>()
         statements.forEach { stmt ->
-            val typeDomain = when(stmt) {
+            when(stmt) {
+                is Transform -> { null }
                 is TypeDomain -> stmt
                 is PermutedDomain -> {
                     // Note that we compute the [TypeDomain] for the [PermutedDomain] *before* semantic checking.
                     stmt.computePermutation(domains)
                 }
-            }
+            }?.let { typeDomain ->
 
-            typeDomain.checkSemantics()
+                typeDomain.checkSemantics()
 
-            if(domains.putIfAbsent(typeDomain.tag, typeDomain) != null) {
-                semanticError(typeDomain.metas, SemanticErrorContext.DuplicateTypeDomainName(typeDomain.tag))
+                if (domains.putIfAbsent(typeDomain.tag, typeDomain) != null) {
+                    semanticError(typeDomain.metas, SemanticErrorContext.DuplicateTypeDomainName(typeDomain.tag))
+                }
             }
         }
 

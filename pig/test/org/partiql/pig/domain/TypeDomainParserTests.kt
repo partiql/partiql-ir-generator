@@ -36,6 +36,8 @@ class TypeDomainParserTests {
                         (product foo a::string b::(* int 2))
                         (product bar a::bat b::(? baz) c::(* blargh 10))))
             """)
+    @Test
+    fun testTransform() = runTestCase("(define domain_a_to_domain_b (transform domain_a domain_b))")
 
     @Test
     fun testRecord() = runTestCase(
@@ -68,7 +70,6 @@ class TypeDomainParserTests {
                             )))
             """)
 
-
     @Test
     fun testPermuteDomain() = runTestCase(
             """
@@ -99,6 +100,6 @@ class TypeDomainParserTests {
                 expected),
             parsed.toIonElement())
     }
-
 }
+
 
