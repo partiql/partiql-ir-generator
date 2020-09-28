@@ -25,7 +25,7 @@
         (variable index::int)
         (let index::int value::expr body::expr)))))
 
-(define todo
+(define todo <-- TODO: this name currently isn't used!  need to remove it!
     (transform toy_lang toy_lang_nameless))
 
 /*

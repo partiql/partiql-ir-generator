@@ -33,7 +33,7 @@ class VisitorTransformTests {
     * 
     * The outermost visitor simply establishes the root [ScopeTracker] and recurses into it. 
     */
-    class VariableResolverWithMetas(val scope: Scope = Scope.Global) : ToyLang.VisitorTransformToToyLang() {
+    class VariableResolverWithMetas(private val scope: Scope = Scope.Global) : ToyLang.VisitorTransformToToyLang() {
 
         /** todo: kdoc */
         override fun transformExprVariable(node: ToyLang.Expr.Variable): ToyLang.Expr.Variable =

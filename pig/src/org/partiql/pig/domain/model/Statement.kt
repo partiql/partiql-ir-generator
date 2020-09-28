@@ -26,11 +26,6 @@ sealed class Statement {
     abstract val metas: MetaContainer
 }
 
-class foo {
-    val t = 1
-}
-
-
 /**
  * Transforms will generate target specific code to aid in the transformation of
  * one type domain to another.
@@ -62,9 +57,20 @@ class TypeDomain(
         types.find { it.tag == typeRef.typeName }
             ?: error("${locationToString(typeRef.metas.location)}: Couldn't resolve type '${typeRef.typeName}'")
 
+    /**
+     * Creates a copy of this [TypeDomain] while setting the [DataType.UserType.isRemoved] on any user
+     * data types that are present in the current domain but not in [destination].  This includes
+     * domain-level products, sums and records, as well as sum variants.
+     *
+     * For domain-level products and sum variants that do exist in [destination] and have different
+     * definitions, [DataType.UserType.isRemoved] is also set.
+     *
+     * The resulting [TypeDomain] can later be used by the language targets to generate visitors and the like
+     * which can transform from one type domain to another, while still generating code for all common data types.
+     */
     fun computeTransform(destination: TypeDomain): TypeDomain {
 
-        val destUserTypes = destination.userTypes.filterIsInstance<DataType.UserType>()
+        val destUserTypes = destination.userTypes
 
         val transformedTypes = userTypes
             .map { srcType ->

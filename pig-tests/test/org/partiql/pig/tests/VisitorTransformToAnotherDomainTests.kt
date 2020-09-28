@@ -16,10 +16,10 @@
 package org.partiql.pig.tests
 
 import com.amazon.ionelement.api.ionInt
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.partiql.pig.tests.generated.ToyLang
 import org.partiql.pig.tests.generated.ToyLangNameless
+import kotlin.test.assertEquals
 
 class VisitorTransformToAnotherDomainTests {
 
@@ -77,13 +77,17 @@ class VisitorTransformToAnotherDomainTests {
         val resolver = VariableResolverToPermutedDomain()
         val outerLet = resolver.transformExpr(unresolved) as ToyLangNameless.Expr.Let
 
-        val innerLet = outerLet.body as ToyLangNameless.Expr.Let
-        val plus = innerLet.body as ToyLangNameless.Expr.Plus
-        val operand1 = plus.operands[0] as ToyLangNameless.Expr.Variable
-        val operand2 = plus.operands[1] as ToyLangNameless.Expr.Variable
+        val expected = ToyLangNameless.build {
+            let(
+                0,
+                lit(ionInt(42)),
+                let(
+                    1,
+                    lit(ionInt(48)),
+                    plus(variable(0), variable(1))))
+        }
+        assertEquals(expected, outerLet)
 
-        Assertions.assertEquals(0L, operand1.index.value)
-        Assertions.assertEquals(1L, operand2.index.value)
     }
 
 }
