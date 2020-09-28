@@ -17,12 +17,12 @@ package org.partiql.pig.tests
 
 import com.amazon.ionelement.api.ionInt
 import com.amazon.ionelement.api.metaContainerOf
-import org.junit.jupiter.api.Test
-import org.partiql.pig.tests.generated.ToyLang
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.partiql.pig.runtime.LongPrimitive
 import org.partiql.pig.runtime.SymbolPrimitive
 import org.partiql.pig.tests.generated.TestDomain
+import org.partiql.pig.tests.generated.ToyLang
 
 const val INDEX_META_KEY = "index"
 
@@ -33,48 +33,19 @@ class VisitorTransformTests {
     * 
     * The outermost visitor simply establishes the root [ScopeTracker] and recurses into it. 
     */
-    class VariableResolver : ToyLang.VisitorTransform() {
+    class VariableResolverWithMetas(val scope: Scope = Scope.Global) : ToyLang.VisitorTransformToToyLang() {
 
+        /** todo: kdoc */
+        override fun transformExprVariable(node: ToyLang.Expr.Variable): ToyLang.Expr.Variable =
+            node.withMeta(INDEX_META_KEY, scope.findIndex(node.name.text))
+
+        /** todo: kdoc */
         override fun transformExprLet_body(node: ToyLang.Expr.Let): ToyLang.Expr =
-            ScopeTracker(name = node.name.text, index = 0, parent = null)
-                .transformExpr(node.body)
-
-        /** This class actually does the variable resolution. */
-        private class ScopeTracker(
-            val name: String,
-            val index: Int,
-            val parent: ScopeTracker?
-        ) : ToyLang.VisitorTransform() {
-
-            /** Does the actual resolution of a variable's index. */
-            override fun transformExprVariable(node: ToyLang.Expr.Variable): ToyLang.Expr.Variable =
-                node.withMeta(INDEX_META_KEY, findIndex(node.name.text))
-
-            /** Replaces the default behavior of [demo_ast_.VisitorBase] with a *nested* [ScopeTracker] visitor. */
-            override fun transformExprLet_body(node: ToyLang.Expr.Let): ToyLang.Expr =
-                createNested(node.name.text)
-                    .transformExpr(node.body)
-
-            /**
-             * Recursively searches up the scope graph to find the variable with the specified [name].
-             *
-             * Throws if the variable is undefined.
-             */
-            private fun findIndex(name: String): Int =
-                when {
-                    this.name == name -> index
-                    this.parent == null -> error("Undefined variable '$name'")
-                    else -> this.parent.findIndex(name)
-                }
-
-            /** Creates a nested scope for the specified variable. */
-            private fun createNested(name: String) =
-                ScopeTracker(name, index + 1, this)
-        }
+            VariableResolverWithMetas(this.scope.nest(node.name.text)).transformExpr(node.body)
     }
 
     @Test
-    fun `demonstrate a simple variable index resolver`() { // also prove that metas can be added.
+    fun `demonstrate a simple variable index resolver that adds the index as a meta`() { // also prove that metas can be added.
 
         /*
             Equivalent to:
@@ -92,17 +63,17 @@ class VisitorTransformTests {
                     plus(variable("foo"), variable("bar"))))
         }
 
-        val resolver = VariableResolver()
+        val resolver = VariableResolverWithMetas()
         val outerLet = resolver.transformExpr(unresolved) as ToyLang.Expr.Let
 
         val innerLet = outerLet.body as ToyLang.Expr.Let
         val plus = innerLet.body as ToyLang.Expr.Plus
 
-        assertEquals(metaContainerOf(INDEX_META_KEY to 0), plus.operands[0].metas)
-        assertEquals(metaContainerOf(INDEX_META_KEY to 1), plus.operands[1].metas)
+        assertEquals(metaContainerOf(INDEX_META_KEY to 0L), plus.operands[0].metas)
+        assertEquals(metaContainerOf(INDEX_META_KEY to 1L), plus.operands[1].metas)
     }
 
-    private val longIncrementer = object : TestDomain.VisitorTransform() {
+    private val longIncrementer = object : TestDomain.VisitorTransformToTestDomain() {
         override fun transformLongPrimitiveValue(sym: LongPrimitive): Long = sym.value + 1
     }
 
@@ -162,7 +133,7 @@ class VisitorTransformTests {
         assertEquals(expectedAst, output)
     }
 
-    private val nameMangler = object : TestDomain.VisitorTransform() {
+    private val nameMangler = object : TestDomain.VisitorTransformToTestDomain() {
         override fun transformEntityHuman_firstName(node: TestDomain.Entity.Human): SymbolPrimitive =
             SymbolPrimitive(node.firstName.text + "_mangled", node.firstName.metas)
 

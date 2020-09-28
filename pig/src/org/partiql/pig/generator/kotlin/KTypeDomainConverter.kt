@@ -25,7 +25,32 @@ import org.partiql.pig.domain.model.*
 import org.partiql.pig.util.snakeToCamelCase
 import org.partiql.pig.util.snakeToPascalCase
 
-internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
+
+internal fun TypeUniverse.convertToKTypeUniverse(): KTypeUniverse {
+    val allTypeDomains: List<TypeDomain> = this.computeTypeDomains()
+    val allTransforms = this.statements.filterIsInstance<Transform>()
+
+    val kotlinTypeDomains = allTypeDomains.map { typeDomain ->
+
+        // Find all the transform statements that apply to the current domain
+        // TODO:  we are ignoring the name of the transform here...
+        val transforms = allTransforms.filter { transform ->
+            transform.sourceDomainTag == typeDomain.tag
+        }.map { transform ->
+            // Fetch the
+            allTypeDomains.single { domain -> domain.tag == transform.destinationDomainTag }
+        }
+        KTypeDomainConverter(typeDomain, transforms, isTransfrom = true).convert()
+    }
+
+    return KTypeUniverse(kotlinTypeDomains)
+}
+
+private class KTypeDomainConverter(
+    private val typeDomain: TypeDomain,
+    private val transformTo: List<TypeDomain>,
+    private val isTransfrom: Boolean
+) {
     private val defaultBaseClass get() = "${typeDomain.tag}Node"
 
     fun convert(): KTypeDomain {
@@ -35,12 +60,12 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
         typeDomain.types.forEach {
             when(it) {
                 DataType.Int, DataType.Symbol, DataType.Ion -> { /* intentionally blank */ }
-                is DataType.Tuple ->
+                is DataType.UserType.Tuple ->
                     ktTuples.add(
                         it.toKProduct(
                             superClass = defaultBaseClass.snakeToPascalCase(),
                             constructorName = it.tag.snakeToPascalCase()))
-                is DataType.Sum ->
+                is DataType.UserType.Sum ->
                     ktSums.add(
                         KSum(
                             kotlinName = it.tag.snakeToPascalCase(),
@@ -49,15 +74,33 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                                 v.toKProduct(
                                     superClass = it.tag.snakeToPascalCase(),
                                     constructorName = "${it.tag.snakeToPascalCase()}.${v.tag.snakeToPascalCase()}")
-                            }
+                            },
+                            isRemoved = it.isRemoved
                         ))
             }
         }
 
-        return KTypeDomain(typeDomain.tag.snakeToPascalCase(), typeDomain.tag, ktTuples, ktSums)
+        val transforms = transformTo.map {
+            // TODO:  that empty list is here seems suggests that there might be a better modeling for
+            // KTypeDomain and its transforms...
+            val converter = KTypeDomainConverter(typeDomain.computeTransform(it), emptyList(), isTransfrom = true)
+            KDomainTransform(
+                converter.convert(),
+                it.tag.snakeToPascalCase()
+            )
+        }
+
+        return KTypeDomain(
+            kotlinName = typeDomain.tag.snakeToPascalCase(),
+            tag = typeDomain.tag,
+            tuples = ktTuples,
+            sums = ktSums,
+            transforms = transforms,
+            isTransform = isTransfrom
+        )
     }
 
-    private fun DataType.Tuple.toKProduct(superClass: String, constructorName: String): KTuple {
+    private fun DataType.UserType.Tuple.toKProduct(superClass: String, constructorName: String): KTuple {
         return KTuple(
             kotlinName = this.tag.snakeToPascalCase(),
             tag = this.tag,
@@ -70,7 +113,8 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
                 TupleType.PRODUCT -> false
                 TupleType.RECORD -> true
             },
-            hasVariadicElement = hasVariadicElement())
+            hasVariadicElement = hasVariadicElement(),
+            isRemoved = this.isRemoved)
     }
 
     /**
@@ -78,12 +122,12 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
      */
     private fun isKotlinPrimitive(element: NamedElement) = typeDomain.resolveTypeRef(element.typeReference).isPrimitive
 
-    private fun DataType.Tuple.hasPrimitiveElement() = this.namedElements.any { isKotlinPrimitive(it) }
+    private fun DataType.UserType.Tuple.hasPrimitiveElement() = this.namedElements.any { isKotlinPrimitive(it) }
 
-    private fun DataType.Tuple.hasVariadicElement() =
+    private fun DataType.UserType.Tuple.hasVariadicElement() =
         this.namedElements.any { it.typeReference.arity is Arity.Variadic }
 
-    private fun computeBuilderFunctions(tuple: DataType.Tuple): List<KBuilderFunction> {
+    private fun computeBuilderFunctions(tuple: DataType.UserType.Tuple): List<KBuilderFunction> {
         val hasPrimitiveElement = tuple.hasPrimitiveElement()
         val hasVariadicElement = tuple.hasVariadicElement()
 
@@ -112,7 +156,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
 
     /** Computes a non-variadic builder function that List<> instead of `vararg` for its variadic element if one exists. */
     private fun computeUniadicBuilderFunction(
-        tuple: DataType.Tuple,
+        tuple: DataType.UserType.Tuple,
         useKotlinPrimitives: Boolean
     ): KBuilderFunction {
 
@@ -161,7 +205,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
     }
 
     /** Computes a non-variadic builder function that uses a `vararg` argument for its variadic element if one exists. */
-    private fun computeVariadicBuilderFunction(tuple: DataType.Tuple, useKotlinPrimitives: Boolean): KBuilderFunction {
+    private fun computeVariadicBuilderFunction(tuple: DataType.UserType.Tuple, useKotlinPrimitives: Boolean): KBuilderFunction {
         return KBuilderFunction(
             kotlinName = tuple.tag.snakeToCamelCase() + if(!useKotlinPrimitives) "_" else "",
             parameters = computeExpandedVariadicBuilderFunctionParameters(tuple, useKotlinPrimitives),
@@ -233,7 +277,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
      * This provides a way of enforcing the minimum arity of variadic fields of at Kotlin compile-time when
      * using a generated builder.
      */
-    private fun computeExpandedVariadicBuilderFunctionParameters(tuple: DataType.Tuple, primitive: Boolean): List<KParameter> =
+    private fun computeExpandedVariadicBuilderFunctionParameters(tuple: DataType.UserType.Tuple, primitive: Boolean): List<KParameter> =
         tuple.namedElements.map { element ->
             when (val arity = element.typeReference.arity) {
                 is Arity.Required, is Arity.Optional -> {
@@ -266,7 +310,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             }
         }.flatten()
 
-    private fun computeTransformExpr(tuple: DataType.Tuple, element: NamedElement, ordinal: Int): String =
+    private fun computeTransformExpr(tuple: DataType.UserType.Tuple, element: NamedElement, ordinal: Int): String =
         when(tuple.tupleType) {
             TupleType.RECORD -> {
                 val expectCast = createExpectCast(element.typeReference)
@@ -292,7 +336,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             }
         }
 
-    private fun computeProperties(tuple: DataType.Tuple): List<KProperty> =
+    private fun computeProperties(tuple: DataType.UserType.Tuple): List<KProperty> =
         tuple.namedElements.mapIndexed { ordinal, element ->
             val deserExpr = computeTransformExpr(tuple, element, ordinal)
             val (isVariadic, isNullable) = when (element.typeReference.arity) {
@@ -315,7 +359,7 @@ internal class KTypeDomainConverter(private val typeDomain: TypeDomain) {
             DataType.Ion -> ""
             DataType.Int -> ".toLongPrimitive()"
             DataType.Symbol -> ".toSymbolPrimitive()"
-            is DataType.Tuple, is DataType.Sum ->
+            is DataType.UserType.Tuple, is DataType.UserType.Sum ->
                 ".transformExpect<${typeRef.typeName.snakeToPascalCase()}>()"
         }
 
