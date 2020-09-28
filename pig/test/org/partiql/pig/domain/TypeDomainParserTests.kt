@@ -26,7 +26,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.partiql.pig.domain.parser.parseTypeUniverse
 
 class TypeDomainParserTests {
-    val loader = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
+    private val loader = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
 
     @Test
     fun testProduct() = runTestCase(

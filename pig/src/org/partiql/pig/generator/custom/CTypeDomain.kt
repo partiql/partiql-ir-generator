@@ -66,9 +66,8 @@ fun TypeDomain.toCTypeDomain(): CTypeDomain {
 
     this.userTypes.forEach {
         when(it) {
-            DataType.Ion, DataType.Int, DataType.Symbol ->  { /* intentionally blank */ }
-            is DataType.Tuple -> gTuples.add(it.toCTuple(memberOfType = null))
-            is DataType.Sum -> gSums.add(it.toCTuple())
+            is DataType.UserType.Tuple -> gTuples.add(it.toCTuple(memberOfType = null))
+            is DataType.UserType.Sum -> gSums.add(it.toCTuple())
         }
     }
 
@@ -79,7 +78,7 @@ fun TypeDomain.toCTypeDomain(): CTypeDomain {
     )
 }
 
-private fun DataType.Tuple.toCTuple(memberOfType: String?) =
+private fun DataType.UserType.Tuple.toCTuple(memberOfType: String?) =
     CTuple(
         tag = this.tag,
         memberOfType = memberOfType,
@@ -104,7 +103,7 @@ private fun NamedElement.toCElement(): CElement {
 }
 
 
-private fun DataType.Sum.toCTuple() =
+private fun DataType.UserType.Sum.toCTuple() =
     CSum(
         name = this.tag,
         variants = this.variants.map { it.toCTuple(this.tag) }

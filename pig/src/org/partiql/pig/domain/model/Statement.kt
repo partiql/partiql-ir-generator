@@ -26,25 +26,23 @@ sealed class Statement {
     abstract val metas: MetaContainer
 }
 
-
-
 /**
  * Transforms will generate target specific code to aid in the transformation of
  * one type domain to another.
  */
 data class Transform(
     val name: String,
-    val sourceDomain: String,
-    val destinationDomain: String,
+    val sourceDomainTag: String,
+    val destinationDomainTag: String,
     override val metas: MetaContainer
 ) : Statement()
 
 /** Represents a fully defined type domain. */
-data class TypeDomain(
+class TypeDomain(
     /** The name of the type domain. */
     val tag: String,
     /** The list of user-defined types.  Does not include primitive types. */
-    val userTypes: List<DataType>,
+    val userTypes: List<DataType.UserType>,
     override val metas: MetaContainer = emptyMetaContainer()
 ): Statement() {
 
@@ -58,6 +56,46 @@ data class TypeDomain(
          */
         types.find { it.tag == typeRef.typeName }
             ?: error("${locationToString(typeRef.metas.location)}: Couldn't resolve type '${typeRef.typeName}'")
+
+    fun computeTransform(destination: TypeDomain): TypeDomain {
+
+        val destUserTypes = destination.userTypes.filterIsInstance<DataType.UserType>()
+
+        val transformedTypes = userTypes
+            .map { srcType ->
+                val destType = destUserTypes.firstOrNull { it.tag == srcType.tag }
+
+                when {
+                    // original type was not found in destination domain... it was removed
+                    destType == null -> srcType.copyAsRemoved()
+                    srcType is DataType.UserType.Tuple && destType is DataType.UserType.Tuple ->
+                        when (srcType) {
+                            // sourceType is unmodified from the original
+                            destType -> srcType
+                            else -> srcType.copyAsRemoved()
+                        }
+                    srcType is DataType.UserType.Sum && destType is DataType.UserType.Sum -> {
+                        // both types are sums, now lets check to see what variants exist
+                        val newVariants = srcType.variants.map { srcVariant ->
+                            val destVariant = destType.variants.firstOrNull { it.tag == srcVariant.tag }
+                            when {
+                                destVariant == null || srcVariant != destVariant -> srcVariant.copyAsRemoved()
+                                else -> srcVariant
+                            }
+                        }
+                        srcType.copy(variants = newVariants)
+                    }
+                    // One type is sum and one is variant, mark as removed.
+                    else -> srcType.copyAsRemoved()
+                }
+            }
+
+        return TypeDomain(
+            tag = "${tag}",
+            userTypes = transformedTypes,
+            metas = this.metas
+        )
+    }
 }
 
 /**
@@ -70,7 +108,7 @@ data class PermutedDomain(
     val tag: String,
     val permutesDomain: String,
     val excludedTypes: List<String>,
-    val includedTypes: List<DataType>,
+    val includedTypes: List<DataType.UserType>,
     val permutedSums: List<PermutedSum>,
     override val metas: MetaContainer
 ) : Statement() {
@@ -115,10 +153,10 @@ data class PermutedDomain(
                         extSum.metas,
                         SemanticErrorContext.CannotPermuteNonExistentSum(extSum.tag, tag, permutesDomain))
                 }
-                is DataType.Tuple, is DataType.Int, is DataType.Symbol -> {
+                is DataType.UserType.Tuple, is DataType.Int, is DataType.Symbol -> {
                     semanticError(extSum.metas, SemanticErrorContext.CannotPermuteNonSumType(extSum.tag))
                 }
-                is DataType.Sum -> {
+                is DataType.UserType.Sum -> {
                     val newVariants = typeToAlter.variants.toMutableList()
 
                     val removedVariantTags = extSum.removedVariants.toSet()
@@ -131,7 +169,11 @@ data class PermutedDomain(
                     }
 
                     newVariants.addAll(extSum.addedVariants)
-                    val newSumType = DataType.Sum(extSum.tag, newVariants, metas)
+                    val newSumType = DataType.UserType.Sum(
+                        tag = extSum.tag,
+                        variants = newVariants,
+                        metas = metas
+                    )
 
                     if(!newTypes.remove(typeToAlter))
                         // If this happens it's a bug
@@ -145,7 +187,7 @@ data class PermutedDomain(
         newTypes.addAll(this.includedTypes)
 
         // errorCheck is being called by TypeUniverse.resolveExtensions
-        return TypeDomain(tag, newTypes.filter { !it.isBuiltin }, metas)
+        return TypeDomain(tag, newTypes.filterIsInstance<DataType.UserType>(), metas)
     }
 }
 
@@ -153,6 +195,6 @@ data class PermutedDomain(
 data class PermutedSum(
     val tag: String,
     val removedVariants: List<String>,
-    val addedVariants: List<DataType.Tuple>,
+    val addedVariants: List<DataType.UserType.Tuple>,
     val metas: MetaContainer
 )

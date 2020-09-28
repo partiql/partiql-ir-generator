@@ -24,6 +24,7 @@ import com.amazon.ionelement.api.emptyMetaContainer
  */
 sealed class DataType {
     abstract val metas: MetaContainer
+
     /**
      * Indicates if this data type is a primitive value.
      *
@@ -57,6 +58,7 @@ sealed class DataType {
      */
     abstract val tag: String
 
+
     /**
      * Represents an instance of the Ion DOM in the target language.
      */
@@ -65,6 +67,7 @@ sealed class DataType {
         override val isBuiltin: Boolean get() = true
         override val tag: String get() = "ion"
         override val metas: MetaContainer get() = emptyMetaContainer()
+
     }
 
     /**
@@ -86,38 +89,53 @@ sealed class DataType {
         override val metas: MetaContainer get() = emptyMetaContainer()
     }
 
-    /**
-     * A product type consisting of a [tag] and one or more [namedElements].
-     *
-     * A [Tuple] can be either a product or a record.  In the serialized form a product is a tuple whose
-     * elements are not named while a record has named elements.
-     */
-    data class Tuple(
-        override val tag: String,
-        val tupleType: TupleType,
-        val namedElements: List<NamedElement>,
-        override val metas: MetaContainer
-    ) : DataType() {
 
-        fun computeArity(): IntRange {
-            // Calculate the arity range for this product... Due to type domain error checking,
-            // we can make the following assumptions:
-            // - There will never be more than one variadic field.
-            // - If such a field exists, it will be the last field.
-            return namedElements.fold(IntRange(0, 0)) { acc, curr ->
-                when (curr.typeReference.arity) {
-                    Arity.Required -> IntRange(acc.first + 1, acc.last + 1)
-                    Arity.Optional -> IntRange(acc.first, acc.last + 1)
-                    is Arity.Variadic -> IntRange(acc.first, kotlin.Int.MAX_VALUE)
+    sealed class UserType: DataType() {
+        // TODO: kdoc
+        abstract val isRemoved: Boolean
+
+        abstract fun copyAsRemoved(): UserType
+
+        /**
+         * A product type consisting of a [tag] and one or more [namedElements].
+         *
+         * A [Tuple] can be either a product or a record.  In the serialized form a product is a tuple whose
+         * elements are not named while a record has named elements.
+         */
+        data class Tuple(
+            override val tag: String,
+            val tupleType: TupleType,
+            val namedElements: List<NamedElement>,
+            override val metas: MetaContainer,
+            override val isRemoved: Boolean = false
+        ) : UserType() {
+
+            fun computeArity(): IntRange {
+                // Calculate the arity range for this product... Due to type domain error checking,
+                // we can make the following assumptions:
+                // - There will never be more than one variadic field.
+                // - If such a field exists, it will be the last field.
+                return namedElements.fold(IntRange(0, 0)) { acc, curr ->
+                    when (curr.typeReference.arity) {
+                        Arity.Required -> IntRange(acc.first + 1, acc.last + 1)
+                        Arity.Optional -> IntRange(acc.first, acc.last + 1)
+                        is Arity.Variadic -> IntRange(acc.first, kotlin.Int.MAX_VALUE)
+                    }
                 }
             }
+
+            override fun copyAsRemoved(): Tuple = this.copy(isRemoved = true)
+        }
+
+        /** A sum type consisting of a [tag] and one or more [variants]. */
+        data class Sum(
+            override val tag: String,
+            val variants: List<Tuple>,
+            override val metas: MetaContainer,
+            override val isRemoved: Boolean = false
+        ) : UserType() {
+            override fun copyAsRemoved(): UserType = this.copy(isRemoved = true)
         }
     }
 
-    /** A sum type consisting of a [tag] and one or more [variants]. */
-    data class Sum(
-        override val tag: String,
-        val variants: List<Tuple>,
-        override val metas: MetaContainer
-    ) : DataType()
 }

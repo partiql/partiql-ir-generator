@@ -25,6 +25,8 @@
         (variable index::int)
         (let index::int value::expr body::expr)))))
 
+(define todo
+    (transform toy_lang toy_lang_nameless))
 
 /*
     `test_domain` covers all of the following equivalence classes and is included to test the serializers and

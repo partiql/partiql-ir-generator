@@ -69,8 +69,8 @@ fun parseTransform(name: String, sexp: SexpElement): Statement {
     requireArityForTag(sexp, 2)
     return Transform(
         name = name,
-        sourceDomain = sexp.values[1].symbolValue,
-        destinationDomain = sexp.values[2].symbolValue,
+        sourceDomainTag = sexp.values[1].symbolValue,
+        destinationDomainTag = sexp.values[2].symbolValue,
         metas = sexp.metas
     )
 }
@@ -85,12 +85,12 @@ private fun parseTypeDomain(domainName: String, sexp: SexpElement): TypeDomain {
     }.toList()
 
     return TypeDomain(
-        domainName,
-        userTypes,
-        sexp.metas)
+        tag = domainName,
+        userTypes = userTypes,
+        metas = sexp.metas)
 }
 
-private fun parseDomainLevelStatement(tlvs: SexpElement): DataType {
+private fun parseDomainLevelStatement(tlvs: SexpElement): DataType.UserType {
     return when (tlvs.tag) {
         "product" -> parseProductBody(tlvs.tail, tlvs.metas)
         "record" -> parseRecordBody(tlvs.tail, tlvs.metas)
@@ -106,7 +106,7 @@ private fun parseTypeRefs(values: List<IonElement>): List<TypeRef> =
 private fun parseVariant(
     bodyArguments: List<AnyElement>,
     metas: MetaContainer
-): DataType.Tuple {
+): DataType.UserType.Tuple {
     val elements = bodyArguments.tail
 
     // If there are no elements, definitely not a record.
@@ -135,12 +135,12 @@ private fun parseVariant(
     }
 }
 
-private fun parseProductBody(bodyArguments: List<AnyElement>, metas: MetaContainer): DataType.Tuple {
+private fun parseProductBody(bodyArguments: List<AnyElement>, metas: MetaContainer): DataType.UserType.Tuple {
     val typeName = bodyArguments.head.symbolValue
 
     val namedElements = parseProductElements(bodyArguments.tail)
 
-    return DataType.Tuple(typeName, TupleType.PRODUCT, namedElements, metas)
+    return DataType.UserType.Tuple(typeName, TupleType.PRODUCT, namedElements, metas)
 }
 
 private fun parseProductElements(values: List<IonElement>): List<NamedElement> =
@@ -159,10 +159,10 @@ private fun parseProductElements(values: List<IonElement>): List<NamedElement> =
             metas = it.metas)
     }
 
-private fun parseRecordBody(bodyArguments: List<AnyElement>, metas: MetaContainer): DataType.Tuple {
+private fun parseRecordBody(bodyArguments: List<AnyElement>, metas: MetaContainer): DataType.UserType.Tuple {
     val typeName = bodyArguments.head.symbolValue
     val namedElements = parseRecordElements(bodyArguments.tail)
-    return DataType.Tuple(typeName, TupleType.RECORD, namedElements, metas)
+    return DataType.UserType.Tuple(typeName, TupleType.RECORD, namedElements, metas)
 }
 
 fun parseRecordElements(elementSexps: List<AnyElement>): List<NamedElement> =
@@ -187,7 +187,7 @@ fun parseRecordElements(elementSexps: List<AnyElement>): List<NamedElement> =
         }
         .toList()
 
-private fun parseSum(sexp: SexpElement): DataType.Sum {
+private fun parseSum(sexp: SexpElement): DataType.UserType.Sum {
     val args = sexp.tail // Skip tag
     val typeName = args.head.symbolValue
 
@@ -195,10 +195,10 @@ private fun parseSum(sexp: SexpElement): DataType.Sum {
         parseSumVariant(it.asSexp())
     }
 
-    return DataType.Sum(typeName, variants.toList(), sexp.metas)
+    return DataType.UserType.Sum(typeName, variants.toList(), sexp.metas)
 }
 
-private fun parseSumVariant(sexp: SexpElement): DataType.Tuple {
+private fun parseSumVariant(sexp: SexpElement): DataType.UserType.Tuple {
     return parseVariant(sexp.values, sexp.metas)
 }
 
@@ -232,7 +232,7 @@ private fun parsePermuteDomain(domainName: String, sexp: SexpElement): PermutedD
 
     val permutingDomain = args.head.symbolValue
     val removedTypes = mutableListOf<String>()
-    val newTypes = mutableListOf<DataType>()
+    val newTypes = mutableListOf<DataType.UserType>()
     val permutedSums = mutableListOf<PermutedSum>()
 
     val alterSexps = args.tail
@@ -259,7 +259,7 @@ private fun parseWithSum(sexp: SexpElement): PermutedSum {
 
     val nameOfAlteredSum = args.head.symbolValue
     val removedVariants = mutableListOf<String>()
-    val addedVariants = mutableListOf<DataType.Tuple>()
+    val addedVariants = mutableListOf<DataType.UserType.Tuple>()
 
     args.tail.forEach { alterationValue ->
         val alterationSexp = alterationValue.asSexp()

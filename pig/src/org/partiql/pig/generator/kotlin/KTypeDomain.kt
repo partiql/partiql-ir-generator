@@ -33,7 +33,14 @@ data class KTypeDomain(
     /** The name of the type domain as defined in the type universe. */
     val tag: String,
     val tuples: List<KTuple>,
-    val sums: List<KSum>
+    val sums: List<KSum>,
+    val transforms: List<KDomainTransform>,
+    val isTransform: Boolean
+)
+
+data class KDomainTransform(
+    val sourceDomainWithRemovals: KTypeDomain,
+    val destDomainName: String
 )
 
 data class KProperty(
@@ -80,14 +87,17 @@ data class KTuple(
     val arity: IntRange,
     val builderFunctions: List<KBuilderFunction>,
     val isRecord: Boolean,
+    // TODO: kdoc
+    val isRemoved: Boolean,
     val hasVariadicElement: Boolean
-)
+) {
+
+}
 
 data class KSum(
     val kotlinName: String,
     val superClass: String,
-    val variants: List<KTuple>
+    val variants: List<KTuple>,
+    // TODO: kdoc
+    val isRemoved: Boolean
 )
-
-fun TypeDomain.toKTypeDomain(): KTypeDomain = KTypeDomainConverter(this).convert()
-
