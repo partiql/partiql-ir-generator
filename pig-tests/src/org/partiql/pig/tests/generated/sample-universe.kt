@@ -334,6 +334,13 @@ class ToyLang private constructor() {
                 return elements
             }
         
+            fun copy(
+                value: com.amazon.ionelement.api.AnyElement = this.value,
+                metas: MetaContainer = this.metas) =
+                Lit(
+                    value,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -369,6 +376,13 @@ class ToyLang private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
+                metas: MetaContainer = this.metas) =
+                Variable(
+                    name,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -406,6 +420,13 @@ class ToyLang private constructor() {
                 return elements
             }
         
+            fun copy(
+                expr: Expr = this.expr,
+                metas: MetaContainer = this.metas) =
+                Not(
+                    expr,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -441,6 +462,13 @@ class ToyLang private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Plus(
+                    operands,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -478,6 +506,13 @@ class ToyLang private constructor() {
                 return elements
             }
         
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Minus(
+                    operands,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -513,6 +548,13 @@ class ToyLang private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Times(
+                    operands,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -550,6 +592,13 @@ class ToyLang private constructor() {
                 return elements
             }
         
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Divide(
+                    operands,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -585,6 +634,13 @@ class ToyLang private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Modulo(
+                    operands,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -624,6 +680,15 @@ class ToyLang private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
+                argument: Expr = this.argument,
+                metas: MetaContainer = this.metas) =
+                Call(
+                    name,
+                    argument,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -669,6 +734,17 @@ class ToyLang private constructor() {
                 return elements
             }
         
+            fun copy(
+                name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
+                value: Expr = this.value,
+                body: Expr = this.body,
+                metas: MetaContainer = this.metas) =
+                Let(
+                    name,
+                    value,
+                    body,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -711,6 +787,15 @@ class ToyLang private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                varName: org.partiql.pig.runtime.SymbolPrimitive = this.varName,
+                body: Expr = this.body,
+                metas: MetaContainer = this.metas) =
+                Function(
+                    varName,
+                    body,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -1653,6 +1738,13 @@ class ToyLangNameless private constructor() {
                 return elements
             }
         
+            fun copy(
+                value: com.amazon.ionelement.api.AnyElement = this.value,
+                metas: MetaContainer = this.metas) =
+                Lit(
+                    value,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -1688,6 +1780,13 @@ class ToyLangNameless private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                expr: Expr = this.expr,
+                metas: MetaContainer = this.metas) =
+                Not(
+                    expr,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -1725,6 +1824,13 @@ class ToyLangNameless private constructor() {
                 return elements
             }
         
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Plus(
+                    operands,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -1760,6 +1866,13 @@ class ToyLangNameless private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Minus(
+                    operands,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -1797,6 +1910,13 @@ class ToyLangNameless private constructor() {
                 return elements
             }
         
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Times(
+                    operands,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -1833,6 +1953,13 @@ class ToyLangNameless private constructor() {
                 return elements
             }
         
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Divide(
+                    operands,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -1868,6 +1995,13 @@ class ToyLangNameless private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Modulo(
+                    operands,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -1907,6 +2041,15 @@ class ToyLangNameless private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
+                argument: Expr = this.argument,
+                metas: MetaContainer = this.metas) =
+                Call(
+                    name,
+                    argument,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -1949,6 +2092,15 @@ class ToyLangNameless private constructor() {
                 return elements
             }
         
+            fun copy(
+                varName: org.partiql.pig.runtime.SymbolPrimitive = this.varName,
+                body: Expr = this.body,
+                metas: MetaContainer = this.metas) =
+                Function(
+                    varName,
+                    body,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -1986,6 +2138,13 @@ class ToyLangNameless private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                index: org.partiql.pig.runtime.LongPrimitive = this.index,
+                metas: MetaContainer = this.metas) =
+                Variable(
+                    index,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -2028,6 +2187,17 @@ class ToyLangNameless private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                index: org.partiql.pig.runtime.LongPrimitive = this.index,
+                value: Expr = this.value,
+                body: Expr = this.body,
+                metas: MetaContainer = this.metas) =
+                Let(
+                    index,
+                    value,
+                    body,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -3639,6 +3809,15 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            first: org.partiql.pig.runtime.LongPrimitive = this.first,
+            second: org.partiql.pig.runtime.LongPrimitive = this.second,
+            metas: MetaContainer = this.metas) =
+            IntPair(
+                first,
+                second,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -3679,6 +3858,15 @@ class TestDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.SymbolPrimitive = this.first,
+            second: org.partiql.pig.runtime.SymbolPrimitive = this.second,
+            metas: MetaContainer = this.metas) =
+            SymbolPair(
+                first,
+                second,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -3721,6 +3909,15 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            first: com.amazon.ionelement.api.AnyElement = this.first,
+            second: com.amazon.ionelement.api.AnyElement = this.second,
+            metas: MetaContainer = this.metas) =
+            IonPair(
+                first,
+                second,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -3761,6 +3958,15 @@ class TestDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.LongPrimitive = this.first,
+            second: org.partiql.pig.runtime.SymbolPrimitive = this.second,
+            metas: MetaContainer = this.metas) =
+            IntSymbolPair(
+                first,
+                second,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -3803,6 +4009,15 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            first: org.partiql.pig.runtime.SymbolPrimitive = this.first,
+            second: org.partiql.pig.runtime.LongPrimitive = this.second,
+            metas: MetaContainer = this.metas) =
+            SymbolIntPair(
+                first,
+                second,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -3843,6 +4058,15 @@ class TestDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            first: com.amazon.ionelement.api.AnyElement = this.first,
+            second: org.partiql.pig.runtime.LongPrimitive = this.second,
+            metas: MetaContainer = this.metas) =
+            IonIntPair(
+                first,
+                second,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -3885,6 +4109,15 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            first: com.amazon.ionelement.api.AnyElement = this.first,
+            second: com.amazon.ionelement.api.AnyElement = this.second,
+            metas: MetaContainer = this.metas) =
+            IonSymbolPair(
+                first,
+                second,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -3925,6 +4158,15 @@ class TestDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            first: IntPair = this.first,
+            second: IntPair = this.second,
+            metas: MetaContainer = this.metas) =
+            IntPairPair(
+                first,
+                second,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -3967,6 +4209,15 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            first: SymbolPair = this.first,
+            second: SymbolPair = this.second,
+            metas: MetaContainer = this.metas) =
+            SymbolPairPair(
+                first,
+                second,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -4007,6 +4258,15 @@ class TestDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            first: IonPair = this.first,
+            second: IonPair = this.second,
+            metas: MetaContainer = this.metas) =
+            IonPairPair(
+                first,
+                second,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -4049,6 +4309,15 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            first: org.partiql.pig.runtime.LongPrimitive = this.first,
+            second: RecursivePair? = this.second,
+            metas: MetaContainer = this.metas) =
+            RecursivePair(
+                first,
+                second,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -4089,6 +4358,15 @@ class TestDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            first: Answer = this.first,
+            second: Answer = this.second,
+            metas: MetaContainer = this.metas) =
+            AnswerPair(
+                first,
+                second,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -4131,6 +4409,15 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            first: Answer = this.first,
+            second: org.partiql.pig.runtime.LongPrimitive = this.second,
+            metas: MetaContainer = this.metas) =
+            AnswerIntPair(
+                first,
+                second,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -4171,6 +4458,15 @@ class TestDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.LongPrimitive = this.first,
+            second: Answer = this.second,
+            metas: MetaContainer = this.metas) =
+            IntAnswerPair(
+                first,
+                second,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -4213,6 +4509,15 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            first: org.partiql.pig.runtime.SymbolPrimitive = this.first,
+            second: Answer = this.second,
+            metas: MetaContainer = this.metas) =
+            SymbolAnswerPair(
+                first,
+                second,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -4254,6 +4559,15 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            first: Answer = this.first,
+            second: org.partiql.pig.runtime.SymbolPrimitive = this.second,
+            metas: MetaContainer = this.metas) =
+            AnswerSymbolPair(
+                first,
+                second,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -4292,6 +4606,13 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.ints,
+            metas: MetaContainer = this.metas) =
+            VariadicMin0(
+                ints,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -4327,6 +4648,13 @@ class TestDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.ints,
+            metas: MetaContainer = this.metas) =
+            VariadicMin1(
+                ints,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -4367,6 +4695,15 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.ints,
+            metas: MetaContainer = this.metas) =
+            ElementVariadic(
+                name,
+                ints,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -4404,6 +4741,13 @@ class TestDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            value: org.partiql.pig.runtime.LongPrimitive? = this.value,
+            metas: MetaContainer = this.metas) =
+            Optional1(
+                value,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -4443,6 +4787,15 @@ class TestDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.LongPrimitive? = this.first,
+            second: org.partiql.pig.runtime.LongPrimitive? = this.second,
+            metas: MetaContainer = this.metas) =
+            Optional2(
+                first,
+                second,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -4489,6 +4842,17 @@ class TestDomain private constructor() {
             return ionSexpOf(elements, metas = metas)
         }
     
+        fun copy(
+            someField: org.partiql.pig.runtime.LongPrimitive = this.someField,
+            anotherField: org.partiql.pig.runtime.SymbolPrimitive = this.anotherField,
+            optionalField: org.partiql.pig.runtime.LongPrimitive? = this.optionalField,
+            metas: MetaContainer = this.metas) =
+            DomainLevelRecord(
+                someField,
+                anotherField,
+                optionalField,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -4531,6 +4895,15 @@ class TestDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            value: org.partiql.pig.runtime.LongPrimitive = this.value,
+            dlr: DomainLevelRecord = this.dlr,
+            metas: MetaContainer = this.metas) =
+            ProductWithRecord(
+                value,
+                dlr,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -4576,6 +4949,17 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            a: TestSum = this.a,
+            b: TestSum = this.b,
+            c: TestSum = this.c,
+            metas: MetaContainer = this.metas) =
+            TestSumTriplet(
+                a,
+                b,
+                c,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -4619,6 +5003,15 @@ class TestDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            first: Entity = this.first,
+            second: Entity = this.second,
+            metas: MetaContainer = this.metas) =
+            EntityPair(
+                first,
+                second,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -4661,6 +5054,11 @@ class TestDomain private constructor() {
                 return elements
             }
         
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                No(
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -4686,6 +5084,11 @@ class TestDomain private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                Yes(
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -4722,6 +5125,15 @@ class TestDomain private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                value: org.partiql.pig.runtime.LongPrimitive = this.value,
+                dlr: DomainLevelRecord = this.dlr,
+                metas: MetaContainer = this.metas) =
+                VariantWithRecord(
+                    value,
+                    dlr,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -4765,6 +5177,13 @@ class TestDomain private constructor() {
                 return elements
             }
         
+            fun copy(
+                a: org.partiql.pig.runtime.LongPrimitive = this.a,
+                metas: MetaContainer = this.metas) =
+                One(
+                    a,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -4803,6 +5222,15 @@ class TestDomain private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                a: org.partiql.pig.runtime.LongPrimitive = this.a,
+                b: org.partiql.pig.runtime.LongPrimitive = this.b,
+                metas: MetaContainer = this.metas) =
+                Two(
+                    a,
+                    b,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -4848,6 +5276,17 @@ class TestDomain private constructor() {
                 return elements
             }
         
+            fun copy(
+                a: org.partiql.pig.runtime.LongPrimitive = this.a,
+                b: org.partiql.pig.runtime.LongPrimitive = this.b,
+                c: org.partiql.pig.runtime.LongPrimitive = this.c,
+                metas: MetaContainer = this.metas) =
+                Three(
+                    a,
+                    b,
+                    c,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -4889,6 +5328,11 @@ class TestDomain private constructor() {
                 return elements
             }
         
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                Slug(
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -4917,6 +5361,13 @@ class TestDomain private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                id: org.partiql.pig.runtime.LongPrimitive = this.id,
+                metas: MetaContainer = this.metas) =
+                Android(
+                    id,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -4963,6 +5414,19 @@ class TestDomain private constructor() {
         
                 return ionSexpOf(elements, metas = metas)
             }
+        
+            fun copy(
+                firstName: org.partiql.pig.runtime.SymbolPrimitive = this.firstName,
+                lastName: org.partiql.pig.runtime.SymbolPrimitive = this.lastName,
+                title: org.partiql.pig.runtime.SymbolPrimitive? = this.title,
+                parent: Entity? = this.parent,
+                metas: MetaContainer = this.metas) =
+                Human(
+                    firstName,
+                    lastName,
+                    title,
+                    parent,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -7341,6 +7805,11 @@ class MultiWordDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            metas: MetaContainer = this.metas) =
+            AaaAaa(
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -7369,6 +7838,13 @@ class MultiWordDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            dField: org.partiql.pig.runtime.LongPrimitive? = this.dField,
+            metas: MetaContainer = this.metas) =
+            AaaAab(
+                dField,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -7409,6 +7885,15 @@ class MultiWordDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            dField: org.partiql.pig.runtime.LongPrimitive? = this.dField,
+            eField: org.partiql.pig.runtime.SymbolPrimitive? = this.eField,
+            metas: MetaContainer = this.metas) =
+            AaaAac(
+                dField,
+                eField,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -7447,6 +7932,13 @@ class MultiWordDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.dField,
+            metas: MetaContainer = this.metas) =
+            AaaAad(
+                dField,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -7482,6 +7974,13 @@ class MultiWordDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.dField,
+            metas: MetaContainer = this.metas) =
+            AaaAae(
+                dField,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -7521,6 +8020,15 @@ class MultiWordDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            bField: org.partiql.pig.runtime.LongPrimitive = this.bField,
+            cField: org.partiql.pig.runtime.SymbolPrimitive = this.cField,
+            metas: MetaContainer = this.metas) =
+            AabAaa(
+                bField,
+                cField,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -7565,6 +8073,17 @@ class MultiWordDomain private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            bField: org.partiql.pig.runtime.LongPrimitive = this.bField,
+            cField: org.partiql.pig.runtime.SymbolPrimitive = this.cField,
+            dField: org.partiql.pig.runtime.LongPrimitive? = this.dField,
+            metas: MetaContainer = this.metas) =
+            AabAab(
+                bField,
+                cField,
+                dField,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -7615,6 +8134,19 @@ class MultiWordDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            bField: org.partiql.pig.runtime.LongPrimitive = this.bField,
+            cField: org.partiql.pig.runtime.SymbolPrimitive = this.cField,
+            dField: org.partiql.pig.runtime.LongPrimitive? = this.dField,
+            eField: org.partiql.pig.runtime.SymbolPrimitive? = this.eField,
+            metas: MetaContainer = this.metas) =
+            AabAac(
+                bField,
+                cField,
+                dField,
+                eField,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -7663,6 +8195,17 @@ class MultiWordDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            bField: org.partiql.pig.runtime.LongPrimitive = this.bField,
+            cField: org.partiql.pig.runtime.SymbolPrimitive = this.cField,
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.dField,
+            metas: MetaContainer = this.metas) =
+            AabAad(
+                bField,
+                cField,
+                dField,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -7709,6 +8252,17 @@ class MultiWordDomain private constructor() {
             return elements
         }
     
+        fun copy(
+            bField: org.partiql.pig.runtime.LongPrimitive = this.bField,
+            cField: org.partiql.pig.runtime.SymbolPrimitive = this.cField,
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.dField,
+            metas: MetaContainer = this.metas) =
+            AabAae(
+                bField,
+                cField,
+                dField,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -7752,6 +8306,15 @@ class MultiWordDomain private constructor() {
     
             return ionSexpOf(elements, metas = metas)
         }
+    
+        fun copy(
+            aField: org.partiql.pig.runtime.LongPrimitive = this.aField,
+            bbbField: org.partiql.pig.runtime.LongPrimitive = this.bbbField,
+            metas: MetaContainer = this.metas) =
+            Rrr(
+                aField,
+                bbbField,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -7798,6 +8361,13 @@ class MultiWordDomain private constructor() {
                 return elements
             }
         
+            fun copy(
+                uField: org.partiql.pig.runtime.LongPrimitive = this.uField,
+                metas: MetaContainer = this.metas) =
+                Lll(
+                    uField,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -7833,6 +8403,13 @@ class MultiWordDomain private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                vField: org.partiql.pig.runtime.SymbolPrimitive = this.vField,
+                metas: MetaContainer = this.metas) =
+                Mmm(
+                    vField,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -9505,7 +10082,7 @@ class PartiqlBasic private constructor() {
         val second: Expr,
         override val metas: MetaContainer = emptyMetaContainer()
     ): PartiqlBasicNode() {
-    
+
         override fun withMeta(metaKey: String, metaValue: Any): ExprPair =
             ExprPair(
                 first = first,
@@ -9520,6 +10097,15 @@ class PartiqlBasic private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            first: Expr = this.first,
+            second: Expr = this.second,
+            metas: MetaContainer = this.metas) =
+            ExprPair(
+                first,
+                second,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -9562,6 +10148,15 @@ class PartiqlBasic private constructor() {
             return elements
         }
     
+        fun copy(
+            value: Expr = this.value,
+            asAlias: org.partiql.pig.runtime.SymbolPrimitive? = this.asAlias,
+            metas: MetaContainer = this.metas) =
+            GroupByItem(
+                value,
+                asAlias,
+                metas)
+    
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
@@ -9599,6 +10194,13 @@ class PartiqlBasic private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            items: kotlin.collections.List<GroupByItem> = this.items,
+            metas: MetaContainer = this.metas) =
+            GroupByList(
+                items,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -9638,6 +10240,15 @@ class PartiqlBasic private constructor() {
                 metas = metas)
             return elements
         }
+    
+        fun copy(
+            items: GroupByList = this.items,
+            groupAsAlias: org.partiql.pig.runtime.SymbolPrimitive? = this.groupAsAlias,
+            metas: MetaContainer = this.metas) =
+            GroupBy(
+                items,
+                groupAsAlias,
+                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -9684,6 +10295,13 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                items: kotlin.collections.List<ProjectItem> = this.items,
+                metas: MetaContainer = this.metas) =
+                ProjectList(
+                    items,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -9719,6 +10337,13 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                value: Expr = this.value,
+                metas: MetaContainer = this.metas) =
+                ProjectValue(
+                    value,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -9757,6 +10382,11 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                ProjectAll(
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -9788,6 +10418,15 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                value: Expr = this.value,
+                asAlias: org.partiql.pig.runtime.SymbolPrimitive? = this.asAlias,
+                metas: MetaContainer = this.metas) =
+                ProjectExpr(
+                    value,
+                    asAlias,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -9828,6 +10467,11 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                Inner(
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -9853,6 +10497,11 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                Left(
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -9880,6 +10529,11 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                Right(
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -9905,6 +10559,11 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                Outer(
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -9947,6 +10606,19 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                expr: Expr = this.expr,
+                asAlias: org.partiql.pig.runtime.SymbolPrimitive? = this.asAlias,
+                atAlias: org.partiql.pig.runtime.SymbolPrimitive? = this.atAlias,
+                byAlias: org.partiql.pig.runtime.SymbolPrimitive? = this.byAlias,
+                metas: MetaContainer = this.metas) =
+                Scan(
+                    expr,
+                    asAlias,
+                    atAlias,
+                    byAlias,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -9999,6 +10671,19 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                type: JoinType = this.type,
+                left: FromSource = this.left,
+                right: FromSource = this.right,
+                predicate: Expr? = this.predicate,
+                metas: MetaContainer = this.metas) =
+                Join(
+                    type,
+                    left,
+                    right,
+                    predicate,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10042,6 +10727,11 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                CaseSensitive(
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10067,6 +10757,11 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                CaseInsensitive(
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -10098,6 +10793,11 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                Unqualified(
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10123,6 +10823,11 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                Qualified(
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -10154,6 +10859,11 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                All(
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10179,6 +10889,11 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                Distinct(
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -10213,6 +10928,13 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                expr: Expr = this.expr,
+                metas: MetaContainer = this.metas) =
+                PathExpr(
+                    expr,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10246,6 +10968,11 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                PathWildcard(
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10272,6 +10999,11 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                metas: MetaContainer = this.metas) =
+                PathUnpivot(
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10286,7 +11018,7 @@ class PartiqlBasic private constructor() {
     }
     
     sealed class Expr : PartiqlBasicNode() {
-    
+
         class Lit(
             val value: com.amazon.ionelement.api.AnyElement,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -10304,6 +11036,13 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                value: com.amazon.ionelement.api.AnyElement = this.value,
+                metas: MetaContainer = this.metas) =
+                Lit(
+                    value,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -10347,6 +11086,17 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
+                case: CaseSensitivity = this.case,
+                scopeQualifier: ScopeQualifier = this.scopeQualifier,
+                metas: MetaContainer = this.metas) =
+                Id(
+                    name,
+                    case,
+                    scopeQualifier,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10387,6 +11137,13 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                index: org.partiql.pig.runtime.LongPrimitive = this.index,
+                metas: MetaContainer = this.metas) =
+                Parameter(
+                    index,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10422,6 +11179,13 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                expr: Expr = this.expr,
+                metas: MetaContainer = this.metas) =
+                Not(
+                    expr,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -10459,6 +11223,13 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Plus(
+                    operands,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10494,6 +11265,13 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Minus(
+                    operands,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -10531,6 +11309,13 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Times(
+                    operands,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10566,6 +11351,13 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Divide(
+                    operands,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -10603,6 +11395,13 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Modulo(
+                    operands,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10638,6 +11437,13 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                operands: kotlin.collections.List<Expr> = this.operands,
+                metas: MetaContainer = this.metas) =
+                Concat(
+                    operands,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -10680,6 +11486,17 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                left: Expr = this.left,
+                right: Expr = this.right,
+                escape: Expr = this.escape,
+                metas: MetaContainer = this.metas) =
+                Like(
+                    left,
+                    right,
+                    escape,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -10727,6 +11544,17 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                value: Expr = this.value,
+                from: Expr = this.from,
+                to: Expr = this.to,
+                metas: MetaContainer = this.metas) =
+                Between(
+                    value,
+                    from,
+                    to,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10770,6 +11598,15 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                root: Expr = this.root,
+                elements: kotlin.collections.List<PathElement> = this.elements,
+                metas: MetaContainer = this.metas) =
+                Path(
+                    root,
+                    elements,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10810,6 +11647,15 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
+                args: kotlin.collections.List<Expr> = this.args,
+                metas: MetaContainer = this.metas) =
+                Call(
+                    name,
+                    args,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -10855,6 +11701,17 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
+                setQuantifier: SetQuantifier = this.setQuantifier,
+                arg: Expr = this.arg,
+                metas: MetaContainer = this.metas) =
+                CallAgg(
+                    name,
+                    setQuantifier,
+                    arg,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10898,6 +11755,15 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                value: Expr = this.value,
+                branches: kotlin.collections.List<ExprPair> = this.branches,
+                metas: MetaContainer = this.metas) =
+                SimpleCase(
+                    value,
+                    branches,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10936,6 +11802,13 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                branches: kotlin.collections.List<ExprPair> = this.branches,
+                metas: MetaContainer = this.metas) =
+                SearchedCase(
+                    branches,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -10971,6 +11844,13 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                fields: kotlin.collections.List<ExprPair> = this.fields,
+                metas: MetaContainer = this.metas) =
+                Struct(
+                    fields,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -11008,6 +11888,13 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
+            fun copy(
+                values: kotlin.collections.List<Expr> = this.values,
+                metas: MetaContainer = this.metas) =
+                Bag(
+                    values,
+                    metas)
+        
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
@@ -11043,6 +11930,13 @@ class PartiqlBasic private constructor() {
                     metas = metas)
                 return elements
             }
+        
+            fun copy(
+                values: kotlin.collections.List<Expr> = this.values,
+                metas: MetaContainer = this.metas) =
+                List(
+                    values,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -11098,6 +11992,25 @@ class PartiqlBasic private constructor() {
         
                 return ionSexpOf(elements, metas = metas)
             }
+        
+            fun copy(
+                setq: SetQuantifier? = this.setq,
+                project: Projection = this.project,
+                from: FromSource = this.from,
+                where: Expr? = this.where,
+                group: GroupBy? = this.group,
+                having: Expr? = this.having,
+                limit: Expr? = this.limit,
+                metas: MetaContainer = this.metas) =
+                Select(
+                    setq,
+                    project,
+                    from,
+                    where,
+                    group,
+                    having,
+                    limit,
+                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
