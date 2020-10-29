@@ -64,7 +64,7 @@ class CopyTests {
     }
 
     @Test
-    fun `copy element again test`() {
+    fun `copy element twice test`() {
         val copiedNode = node.copy(first = LongPrimitive(0, emptyMetaContainer()))
         assertNotEquals(node, copiedNode)
 
@@ -73,8 +73,17 @@ class CopyTests {
     }
 
     @Test
-    fun `copy metas test`() {
+    fun `copy only metas test`() {
         val copiedNode = node.copy(metas = metaContainerOf(NUMBER_KEY to 0))
+        assertNotEquals(node.metas, copiedNode.metas)
+        assertEquals(node.first, copiedNode.first)
+        assertEquals(node.second, copiedNode.second)
+        assertEquals(node, copiedNode)
+    }
+
+    @Test
+    fun `copyMetas test`() {
+        val copiedNode = node.copyMetas(metaContainerOf(NUMBER_KEY to 0))
         assertNotEquals(node.metas, copiedNode.metas)
         assertEquals(node.first, copiedNode.first)
         assertEquals(node.second, copiedNode.second)

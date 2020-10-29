@@ -24,6 +24,9 @@ interface DomainNode {
     /** This node's collection of metadata. */
     val metas: MetaContainer
 
+    /** Creates a copy of the current node with [newMetas] as the new metas. */
+    fun copyMetas(newMetas : MetaContainer): DomainNode
+
     /** Creates a copy of the current node with the specified [key] and [value] as metadata.*/
     fun withMeta(metaKey: String, metaValue: Any): DomainNode
 

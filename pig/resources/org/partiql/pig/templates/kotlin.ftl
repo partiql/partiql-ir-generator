@@ -31,6 +31,13 @@ class ${t.kotlinName}(
     override val metas: MetaContainer = emptyMetaContainer()
 ): ${t.superClass}() {
 
+    override fun copyMetas(newMetas: MetaContainer): ${t.kotlinName} =
+        ${t.kotlinName}(
+            [#list t.properties as p]
+            ${p.kotlinName} = ${p.kotlinName},
+            [/#list]
+            metas = newMetas)
+
     override fun withMeta(metaKey: String, metaValue: Any): ${t.kotlinName} =
         ${t.kotlinName}(
             [#list t.properties as p]
@@ -191,6 +198,7 @@ object Builder {
 
 /** Base class for all ${domain.kotlinName} types. */
 abstract class ${domain.kotlinName}Node : DomainNode {
+    abstract override fun copyMetas(newMetas: MetaContainer): ${domain.kotlinName}Node
     override fun toString() = toIonElement().toString()
     abstract override fun withMeta(metaKey: String, metaValue: Any): ${domain.kotlinName}Node
     abstract override fun toIonElement(): SexpElement
@@ -211,7 +219,13 @@ abstract class ${domain.kotlinName}Node : DomainNode {
 /////////////////////////////////////////////////////////////////////////////
 [#list domain.sums as s]
 
-sealed class ${s.kotlinName} : ${s.superClass}() {
+sealed class ${s.kotlinName}(override val metas: MetaContainer = emptyMetaContainer()) : ${s.superClass}() {
+    override fun copyMetas(newMetas: MetaContainer): ${s.kotlinName} =
+        when (this) {
+            [#list s.variants as v]
+            is ${v.kotlinName} -> copy(metas = newMetas)
+            [/#list]
+        }
 
 [#list s.variants as v]
 [@indent count=4]
