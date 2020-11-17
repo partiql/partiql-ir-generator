@@ -15,11 +15,18 @@ https://freemarker.apache.org/docs/dgui_misc_whitespace.html
 [#-- Generates a parameter list not including (). --]
 
 
-[#macro parameter_list params]
+[#macro parameter_list_with_defaults params]
 [#list params as param]
 [#if param.variadic]vararg [/#if]${param.kotlinName}: ${param.kotlinType}[#if param.defaultValue??] = ${param.defaultValue}[/#if],
 [/#list]
 metas: MetaContainer = emptyMetaContainer()
+[/#macro]
+
+[#macro parameter_list_no_defaults params]
+[#list params as param]
+[#if param.variadic]vararg [/#if]${param.kotlinName}: ${param.kotlinType},
+[/#list]
+metas: MetaContainer
 [/#macro]
 
 [#-- Template to generate a tuple type class. --]
@@ -99,8 +106,8 @@ class ${t.kotlinName}(
 
 [/#macro]
 
-[#--Emits builder functions that wraps the constructors of domain type. --]
-[#macro builder_constructor_fun t return_type]
+[#--Emits the interface for the domain's builder functions that wrap the constructors of the domain type. --]
+[#macro builder_constructor_fun_interface t return_type]
 [#list t.builderFunctions as bf]
 /**
  * Creates an instance of [${return_type}].
@@ -113,7 +120,19 @@ class ${t.kotlinName}(
  */
 fun ${bf.kotlinName}(
     [@indent count=4]
-        [@parameter_list bf.parameters/]
+        [@parameter_list_with_defaults bf.parameters/]
+    [/@indent]
+): ${return_type}
+
+[/#list]
+[/#macro]
+
+[#--Emits builder functions that wrap the constructors of the domain type defined by the builder interface.  --]
+[#macro builder_constructor_fun t return_type]
+[#list t.builderFunctions as bf]
+override fun ${bf.kotlinName}(
+    [@indent count=4]
+        [@parameter_list_no_defaults bf.parameters/]
     [/@indent]
 ): ${return_type} =
     ${return_type}(
@@ -148,8 +167,11 @@ class ${domain.kotlinName} private constructor() {
 // Builder
 /////////////////////////////////////////////////////////////////////////////
 companion object {
+    @JvmStatic
+    fun BUILDER() : Builder = ${domain.kotlinName}Builder
+
     fun <T: ${domain.kotlinName}Node> build(block: Builder.() -> T) =
-        Builder.block()
+        ${domain.kotlinName}Builder.block()
 
     fun transform(element: AnyElement): ${domain.kotlinName}Node =
         transform(element.asSexp())
@@ -158,7 +180,27 @@ companion object {
         Transformer().transform(element)
 }
 
-object Builder {
+interface Builder {
+    [@indent count = 4]
+        [#if domain.tuples?size > 0]
+        // Tuples
+        [#list domain.tuples as tuple]
+        [@builder_constructor_fun_interface tuple "${domain.kotlinName}.${tuple.kotlinName}"/]
+
+        [/#list]
+        [/#if]
+        [#list domain.sums as s]
+        [#-- Not sure why the [#lt] below is needed to emit the correct indentation. --]
+        // Variants for Sum: ${s.kotlinName} [#lt]
+        [#list s.variants as tuple]
+        [@builder_constructor_fun_interface tuple "${domain.kotlinName}.${s.kotlinName}.${tuple.kotlinName}"/]
+
+        [/#list]
+        [/#list]
+    [/@indent]
+}
+
+private object ${domain.kotlinName}Builder : Builder {
     [@indent count = 4]
         [#if domain.tuples?size > 0]
         // Tuples
