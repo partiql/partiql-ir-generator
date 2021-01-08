@@ -80,7 +80,8 @@ class ${t.kotlinName}(
     [#list t.properties as p]
         ${p.kotlinName}: ${p.kotlinTypeName} = this.${p.kotlinName},
     [/#list]
-        metas: MetaContainer = this.metas) =
+        metas: MetaContainer = this.metas
+    ) =
         ${t.kotlinName}(
             [#list t.properties as p]
             ${p.kotlinName},

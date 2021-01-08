@@ -22,6 +22,7 @@ import org.partiql.pig.runtime.LongPrimitive
 import org.partiql.pig.tests.generated.TestDomain
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
+import kotlin.test.assertNotSame
 
 private const val NUMBER_KEY = "number"
 
@@ -32,6 +33,7 @@ class CopyTests {
     fun `copy empty test`() {
         val copiedNode = node.copy()
         assertEquals(node, copiedNode)
+        assertNotSame(node, copiedNode)
     }
 
     @Test
@@ -40,6 +42,7 @@ class CopyTests {
                                    second = LongPrimitive(2, emptyMetaContainer()),
                                    metas = metaContainerOf(NUMBER_KEY to 3))
         assertEquals(node, copiedNode)
+        assertNotSame(node, copiedNode)
     }
 
     @Test
@@ -50,6 +53,7 @@ class CopyTests {
         assertEquals(node.second, copiedNode.second)
         assertEquals(node.metas, copiedNode.metas)
         assertNotEquals(node, copiedNode)
+        assertNotSame(node, copiedNode)
     }
 
     @Test
@@ -61,15 +65,19 @@ class CopyTests {
         assertNotEquals(node.second, copiedNode.second)
         assertEquals(node.metas, copiedNode.metas)
         assertNotEquals(node, copiedNode)
+        assertNotSame(node, copiedNode)
     }
 
     @Test
     fun `copy element twice test`() {
         val copiedNode = node.copy(first = LongPrimitive(0, emptyMetaContainer()))
         assertNotEquals(node, copiedNode)
+        assertNotSame(node, copiedNode)
 
         val copiedAgainNode = node.copy(first = LongPrimitive(1, emptyMetaContainer()))
         assertEquals(node, copiedAgainNode)
+        assertNotSame(node, copiedAgainNode)
+        assertNotSame(copiedNode, copiedAgainNode)
     }
 
     @Test
@@ -79,6 +87,7 @@ class CopyTests {
         assertEquals(node.first, copiedNode.first)
         assertEquals(node.second, copiedNode.second)
         assertEquals(node, copiedNode)
+        assertNotSame(node, copiedNode)
     }
 
     @Test
@@ -88,5 +97,6 @@ class CopyTests {
         assertEquals(node.first, copiedNode.first)
         assertEquals(node.second, copiedNode.second)
         assertEquals(node, copiedNode)
+        assertNotSame(node, copiedNode)
     }
 }

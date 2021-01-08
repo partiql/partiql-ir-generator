@@ -356,7 +356,8 @@ class ToyLang private constructor() {
         
             fun copy(
                 value: com.amazon.ionelement.api.AnyElement = this.value,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Lit(
                     value,
                     metas)
@@ -404,7 +405,8 @@ class ToyLang private constructor() {
         
             fun copy(
                 name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Variable(
                     name,
                     metas)
@@ -452,7 +454,8 @@ class ToyLang private constructor() {
         
             fun copy(
                 expr: Expr = this.expr,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Not(
                     expr,
                     metas)
@@ -500,7 +503,8 @@ class ToyLang private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Plus(
                     operands,
                     metas)
@@ -548,7 +552,8 @@ class ToyLang private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Minus(
                     operands,
                     metas)
@@ -596,7 +601,8 @@ class ToyLang private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Times(
                     operands,
                     metas)
@@ -644,7 +650,8 @@ class ToyLang private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Divide(
                     operands,
                     metas)
@@ -692,7 +699,8 @@ class ToyLang private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Modulo(
                     operands,
                     metas)
@@ -745,7 +753,8 @@ class ToyLang private constructor() {
             fun copy(
                 name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
                 argument: Expr = this.argument,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Call(
                     name,
                     argument,
@@ -806,7 +815,8 @@ class ToyLang private constructor() {
                 name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
                 value: Expr = this.value,
                 body: Expr = this.body,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Let(
                     name,
                     value,
@@ -865,7 +875,8 @@ class ToyLang private constructor() {
             fun copy(
                 varName: org.partiql.pig.runtime.SymbolPrimitive = this.varName,
                 body: Expr = this.body,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Function(
                     varName,
                     body,
@@ -1834,7 +1845,8 @@ class ToyLangNameless private constructor() {
         
             fun copy(
                 value: com.amazon.ionelement.api.AnyElement = this.value,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Lit(
                     value,
                     metas)
@@ -1882,7 +1894,8 @@ class ToyLangNameless private constructor() {
         
             fun copy(
                 expr: Expr = this.expr,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Not(
                     expr,
                     metas)
@@ -1930,7 +1943,8 @@ class ToyLangNameless private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Plus(
                     operands,
                     metas)
@@ -1978,7 +1992,8 @@ class ToyLangNameless private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Minus(
                     operands,
                     metas)
@@ -2026,7 +2041,8 @@ class ToyLangNameless private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Times(
                     operands,
                     metas)
@@ -2074,7 +2090,8 @@ class ToyLangNameless private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Divide(
                     operands,
                     metas)
@@ -2122,7 +2139,8 @@ class ToyLangNameless private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Modulo(
                     operands,
                     metas)
@@ -2175,7 +2193,8 @@ class ToyLangNameless private constructor() {
             fun copy(
                 name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
                 argument: Expr = this.argument,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Call(
                     name,
                     argument,
@@ -2231,7 +2250,8 @@ class ToyLangNameless private constructor() {
             fun copy(
                 varName: org.partiql.pig.runtime.SymbolPrimitive = this.varName,
                 body: Expr = this.body,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Function(
                     varName,
                     body,
@@ -2282,7 +2302,8 @@ class ToyLangNameless private constructor() {
         
             fun copy(
                 index: org.partiql.pig.runtime.LongPrimitive = this.index,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Variable(
                     index,
                     metas)
@@ -2340,7 +2361,8 @@ class ToyLangNameless private constructor() {
                 index: org.partiql.pig.runtime.LongPrimitive = this.index,
                 value: Expr = this.value,
                 body: Expr = this.body,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Let(
                     index,
                     value,
@@ -3967,7 +3989,8 @@ class TestDomain private constructor() {
         fun copy(
             first: org.partiql.pig.runtime.LongPrimitive = this.first,
             second: org.partiql.pig.runtime.LongPrimitive = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             IntPair(
                 first,
                 second,
@@ -4023,7 +4046,8 @@ class TestDomain private constructor() {
         fun copy(
             first: org.partiql.pig.runtime.SymbolPrimitive = this.first,
             second: org.partiql.pig.runtime.SymbolPrimitive = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             SymbolPair(
                 first,
                 second,
@@ -4079,7 +4103,8 @@ class TestDomain private constructor() {
         fun copy(
             first: com.amazon.ionelement.api.AnyElement = this.first,
             second: com.amazon.ionelement.api.AnyElement = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             IonPair(
                 first,
                 second,
@@ -4135,7 +4160,8 @@ class TestDomain private constructor() {
         fun copy(
             first: org.partiql.pig.runtime.LongPrimitive = this.first,
             second: org.partiql.pig.runtime.SymbolPrimitive = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             IntSymbolPair(
                 first,
                 second,
@@ -4191,7 +4217,8 @@ class TestDomain private constructor() {
         fun copy(
             first: org.partiql.pig.runtime.SymbolPrimitive = this.first,
             second: org.partiql.pig.runtime.LongPrimitive = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             SymbolIntPair(
                 first,
                 second,
@@ -4247,7 +4274,8 @@ class TestDomain private constructor() {
         fun copy(
             first: com.amazon.ionelement.api.AnyElement = this.first,
             second: org.partiql.pig.runtime.LongPrimitive = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             IonIntPair(
                 first,
                 second,
@@ -4303,7 +4331,8 @@ class TestDomain private constructor() {
         fun copy(
             first: com.amazon.ionelement.api.AnyElement = this.first,
             second: com.amazon.ionelement.api.AnyElement = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             IonSymbolPair(
                 first,
                 second,
@@ -4359,7 +4388,8 @@ class TestDomain private constructor() {
         fun copy(
             first: IntPair = this.first,
             second: IntPair = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             IntPairPair(
                 first,
                 second,
@@ -4415,7 +4445,8 @@ class TestDomain private constructor() {
         fun copy(
             first: SymbolPair = this.first,
             second: SymbolPair = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             SymbolPairPair(
                 first,
                 second,
@@ -4471,7 +4502,8 @@ class TestDomain private constructor() {
         fun copy(
             first: IonPair = this.first,
             second: IonPair = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             IonPairPair(
                 first,
                 second,
@@ -4527,7 +4559,8 @@ class TestDomain private constructor() {
         fun copy(
             first: org.partiql.pig.runtime.LongPrimitive = this.first,
             second: RecursivePair? = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             RecursivePair(
                 first,
                 second,
@@ -4583,7 +4616,8 @@ class TestDomain private constructor() {
         fun copy(
             first: Answer = this.first,
             second: Answer = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AnswerPair(
                 first,
                 second,
@@ -4639,7 +4673,8 @@ class TestDomain private constructor() {
         fun copy(
             first: Answer = this.first,
             second: org.partiql.pig.runtime.LongPrimitive = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AnswerIntPair(
                 first,
                 second,
@@ -4695,7 +4730,8 @@ class TestDomain private constructor() {
         fun copy(
             first: org.partiql.pig.runtime.LongPrimitive = this.first,
             second: Answer = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             IntAnswerPair(
                 first,
                 second,
@@ -4751,7 +4787,8 @@ class TestDomain private constructor() {
         fun copy(
             first: org.partiql.pig.runtime.SymbolPrimitive = this.first,
             second: Answer = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             SymbolAnswerPair(
                 first,
                 second,
@@ -4807,7 +4844,8 @@ class TestDomain private constructor() {
         fun copy(
             first: Answer = this.first,
             second: org.partiql.pig.runtime.SymbolPrimitive = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AnswerSymbolPair(
                 first,
                 second,
@@ -4858,7 +4896,8 @@ class TestDomain private constructor() {
     
         fun copy(
             ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.ints,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             VariadicMin0(
                 ints,
                 metas)
@@ -4906,7 +4945,8 @@ class TestDomain private constructor() {
     
         fun copy(
             ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.ints,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             VariadicMin1(
                 ints,
                 metas)
@@ -4959,7 +4999,8 @@ class TestDomain private constructor() {
         fun copy(
             name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
             ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.ints,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             ElementVariadic(
                 name,
                 ints,
@@ -5010,7 +5051,8 @@ class TestDomain private constructor() {
     
         fun copy(
             value: org.partiql.pig.runtime.LongPrimitive? = this.value,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             Optional1(
                 value,
                 metas)
@@ -5063,7 +5105,8 @@ class TestDomain private constructor() {
         fun copy(
             first: org.partiql.pig.runtime.LongPrimitive? = this.first,
             second: org.partiql.pig.runtime.LongPrimitive? = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             Optional2(
                 first,
                 second,
@@ -5125,7 +5168,8 @@ class TestDomain private constructor() {
             someField: org.partiql.pig.runtime.LongPrimitive = this.someField,
             anotherField: org.partiql.pig.runtime.SymbolPrimitive = this.anotherField,
             optionalField: org.partiql.pig.runtime.LongPrimitive? = this.optionalField,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             DomainLevelRecord(
                 someField,
                 anotherField,
@@ -5184,7 +5228,8 @@ class TestDomain private constructor() {
         fun copy(
             value: org.partiql.pig.runtime.LongPrimitive = this.value,
             dlr: DomainLevelRecord = this.dlr,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             ProductWithRecord(
                 value,
                 dlr,
@@ -5245,7 +5290,8 @@ class TestDomain private constructor() {
             a: TestSum = this.a,
             b: TestSum = this.b,
             c: TestSum = this.c,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             TestSumTriplet(
                 a,
                 b,
@@ -5304,7 +5350,8 @@ class TestDomain private constructor() {
         fun copy(
             first: Entity = this.first,
             second: Entity = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             EntityPair(
                 first,
                 second,
@@ -5362,7 +5409,8 @@ class TestDomain private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 No(
                     metas)
         
@@ -5397,7 +5445,8 @@ class TestDomain private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Yes(
                     metas)
         
@@ -5450,7 +5499,8 @@ class TestDomain private constructor() {
             fun copy(
                 value: org.partiql.pig.runtime.LongPrimitive = this.value,
                 dlr: DomainLevelRecord = this.dlr,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 VariantWithRecord(
                     value,
                     dlr,
@@ -5511,7 +5561,8 @@ class TestDomain private constructor() {
         
             fun copy(
                 a: org.partiql.pig.runtime.LongPrimitive = this.a,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 One(
                     a,
                     metas)
@@ -5564,7 +5615,8 @@ class TestDomain private constructor() {
             fun copy(
                 a: org.partiql.pig.runtime.LongPrimitive = this.a,
                 b: org.partiql.pig.runtime.LongPrimitive = this.b,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Two(
                     a,
                     b,
@@ -5625,7 +5677,8 @@ class TestDomain private constructor() {
                 a: org.partiql.pig.runtime.LongPrimitive = this.a,
                 b: org.partiql.pig.runtime.LongPrimitive = this.b,
                 c: org.partiql.pig.runtime.LongPrimitive = this.c,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Three(
                     a,
                     b,
@@ -5684,7 +5737,8 @@ class TestDomain private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Slug(
                     metas)
         
@@ -5724,7 +5778,8 @@ class TestDomain private constructor() {
         
             fun copy(
                 id: org.partiql.pig.runtime.LongPrimitive = this.id,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Android(
                     id,
                     metas)
@@ -5788,7 +5843,8 @@ class TestDomain private constructor() {
                 lastName: org.partiql.pig.runtime.SymbolPrimitive = this.lastName,
                 title: org.partiql.pig.runtime.SymbolPrimitive? = this.title,
                 parent: Entity? = this.parent,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Human(
                     firstName,
                     lastName,
@@ -8179,7 +8235,8 @@ class MultiWordDomain private constructor() {
         }
     
         fun copy(
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AaaAaa(
                 metas)
     
@@ -8219,7 +8276,8 @@ class MultiWordDomain private constructor() {
     
         fun copy(
             dField: org.partiql.pig.runtime.LongPrimitive? = this.dField,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AaaAab(
                 dField,
                 metas)
@@ -8272,7 +8330,8 @@ class MultiWordDomain private constructor() {
         fun copy(
             dField: org.partiql.pig.runtime.LongPrimitive? = this.dField,
             eField: org.partiql.pig.runtime.SymbolPrimitive? = this.eField,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AaaAac(
                 dField,
                 eField,
@@ -8323,7 +8382,8 @@ class MultiWordDomain private constructor() {
     
         fun copy(
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.dField,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AaaAad(
                 dField,
                 metas)
@@ -8371,7 +8431,8 @@ class MultiWordDomain private constructor() {
     
         fun copy(
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.dField,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AaaAae(
                 dField,
                 metas)
@@ -8424,7 +8485,8 @@ class MultiWordDomain private constructor() {
         fun copy(
             bField: org.partiql.pig.runtime.LongPrimitive = this.bField,
             cField: org.partiql.pig.runtime.SymbolPrimitive = this.cField,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AabAaa(
                 bField,
                 cField,
@@ -8485,7 +8547,8 @@ class MultiWordDomain private constructor() {
             bField: org.partiql.pig.runtime.LongPrimitive = this.bField,
             cField: org.partiql.pig.runtime.SymbolPrimitive = this.cField,
             dField: org.partiql.pig.runtime.LongPrimitive? = this.dField,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AabAab(
                 bField,
                 cField,
@@ -8554,7 +8617,8 @@ class MultiWordDomain private constructor() {
             cField: org.partiql.pig.runtime.SymbolPrimitive = this.cField,
             dField: org.partiql.pig.runtime.LongPrimitive? = this.dField,
             eField: org.partiql.pig.runtime.SymbolPrimitive? = this.eField,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AabAac(
                 bField,
                 cField,
@@ -8621,7 +8685,8 @@ class MultiWordDomain private constructor() {
             bField: org.partiql.pig.runtime.LongPrimitive = this.bField,
             cField: org.partiql.pig.runtime.SymbolPrimitive = this.cField,
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.dField,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AabAad(
                 bField,
                 cField,
@@ -8685,7 +8750,8 @@ class MultiWordDomain private constructor() {
             bField: org.partiql.pig.runtime.LongPrimitive = this.bField,
             cField: org.partiql.pig.runtime.SymbolPrimitive = this.cField,
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.dField,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             AabAae(
                 bField,
                 cField,
@@ -8745,7 +8811,8 @@ class MultiWordDomain private constructor() {
         fun copy(
             aField: org.partiql.pig.runtime.LongPrimitive = this.aField,
             bbbField: org.partiql.pig.runtime.LongPrimitive = this.bbbField,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             Rrr(
                 aField,
                 bbbField,
@@ -8808,7 +8875,8 @@ class MultiWordDomain private constructor() {
         
             fun copy(
                 uField: org.partiql.pig.runtime.LongPrimitive = this.uField,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Lll(
                     uField,
                     metas)
@@ -8856,7 +8924,8 @@ class MultiWordDomain private constructor() {
         
             fun copy(
                 vField: org.partiql.pig.runtime.SymbolPrimitive = this.vField,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Mmm(
                     vField,
                     metas)
@@ -10558,7 +10627,8 @@ class PartiqlBasic private constructor() {
         fun copy(
             first: Expr = this.first,
             second: Expr = this.second,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             ExprPair(
                 first,
                 second,
@@ -10614,7 +10684,8 @@ class PartiqlBasic private constructor() {
         fun copy(
             value: Expr = this.value,
             asAlias: org.partiql.pig.runtime.SymbolPrimitive? = this.asAlias,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             GroupByItem(
                 value,
                 asAlias,
@@ -10665,7 +10736,8 @@ class PartiqlBasic private constructor() {
     
         fun copy(
             items: kotlin.collections.List<GroupByItem> = this.items,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             GroupByList(
                 items,
                 metas)
@@ -10718,7 +10790,8 @@ class PartiqlBasic private constructor() {
         fun copy(
             items: GroupByList = this.items,
             groupAsAlias: org.partiql.pig.runtime.SymbolPrimitive? = this.groupAsAlias,
-            metas: MetaContainer = this.metas) =
+            metas: MetaContainer = this.metas
+        ) =
             GroupBy(
                 items,
                 groupAsAlias,
@@ -10781,7 +10854,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 items: kotlin.collections.List<ProjectItem> = this.items,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 ProjectList(
                     items,
                     metas)
@@ -10829,7 +10903,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 value: Expr = this.value,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 ProjectValue(
                     value,
                     metas)
@@ -10881,7 +10956,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 ProjectAll(
                     metas)
         
@@ -10926,7 +11002,8 @@ class PartiqlBasic private constructor() {
             fun copy(
                 value: Expr = this.value,
                 asAlias: org.partiql.pig.runtime.SymbolPrimitive? = this.asAlias,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 ProjectExpr(
                     value,
                     asAlias,
@@ -10983,7 +11060,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Inner(
                     metas)
         
@@ -11018,7 +11096,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Left(
                     metas)
         
@@ -11053,7 +11132,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Right(
                     metas)
         
@@ -11088,7 +11168,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Outer(
                     metas)
         
@@ -11152,7 +11233,8 @@ class PartiqlBasic private constructor() {
                 asAlias: org.partiql.pig.runtime.SymbolPrimitive? = this.asAlias,
                 atAlias: org.partiql.pig.runtime.SymbolPrimitive? = this.atAlias,
                 byAlias: org.partiql.pig.runtime.SymbolPrimitive? = this.byAlias,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Scan(
                     expr,
                     asAlias,
@@ -11224,7 +11306,8 @@ class PartiqlBasic private constructor() {
                 left: FromSource = this.left,
                 right: FromSource = this.right,
                 predicate: Expr? = this.predicate,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Join(
                     type,
                     left,
@@ -11285,7 +11368,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 CaseSensitive(
                     metas)
         
@@ -11320,7 +11404,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 CaseInsensitive(
                     metas)
         
@@ -11364,7 +11449,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Unqualified(
                     metas)
         
@@ -11399,7 +11485,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Qualified(
                     metas)
         
@@ -11443,7 +11530,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 All(
                     metas)
         
@@ -11478,7 +11566,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Distinct(
                     metas)
         
@@ -11528,7 +11617,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 expr: Expr = this.expr,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 PathExpr(
                     expr,
                     metas)
@@ -11571,7 +11661,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 PathWildcard(
                     metas)
         
@@ -11606,7 +11697,8 @@ class PartiqlBasic private constructor() {
             }
         
             fun copy(
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 PathUnpivot(
                     metas)
         
@@ -11674,7 +11766,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 value: com.amazon.ionelement.api.AnyElement = this.value,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Lit(
                     value,
                     metas)
@@ -11732,7 +11825,8 @@ class PartiqlBasic private constructor() {
                 name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
                 case: CaseSensitivity = this.case,
                 scopeQualifier: ScopeQualifier = this.scopeQualifier,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Id(
                     name,
                     case,
@@ -11786,7 +11880,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 index: org.partiql.pig.runtime.LongPrimitive = this.index,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Parameter(
                     index,
                     metas)
@@ -11834,7 +11929,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 expr: Expr = this.expr,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Not(
                     expr,
                     metas)
@@ -11882,7 +11978,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Plus(
                     operands,
                     metas)
@@ -11930,7 +12027,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Minus(
                     operands,
                     metas)
@@ -11978,7 +12076,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Times(
                     operands,
                     metas)
@@ -12026,7 +12125,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Divide(
                     operands,
                     metas)
@@ -12074,7 +12174,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Modulo(
                     operands,
                     metas)
@@ -12122,7 +12223,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Concat(
                     operands,
                     metas)
@@ -12180,7 +12282,8 @@ class PartiqlBasic private constructor() {
                 left: Expr = this.left,
                 right: Expr = this.right,
                 escape: Expr = this.escape,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Like(
                     left,
                     right,
@@ -12244,7 +12347,8 @@ class PartiqlBasic private constructor() {
                 value: Expr = this.value,
                 from: Expr = this.from,
                 to: Expr = this.to,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Between(
                     value,
                     from,
@@ -12303,7 +12407,8 @@ class PartiqlBasic private constructor() {
             fun copy(
                 root: Expr = this.root,
                 elements: kotlin.collections.List<PathElement> = this.elements,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Path(
                     root,
                     elements,
@@ -12359,7 +12464,8 @@ class PartiqlBasic private constructor() {
             fun copy(
                 name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
                 args: kotlin.collections.List<Expr> = this.args,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Call(
                     name,
                     args,
@@ -12420,7 +12526,8 @@ class PartiqlBasic private constructor() {
                 name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
                 setQuantifier: SetQuantifier = this.setQuantifier,
                 arg: Expr = this.arg,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 CallAgg(
                     name,
                     setQuantifier,
@@ -12479,7 +12586,8 @@ class PartiqlBasic private constructor() {
             fun copy(
                 value: Expr = this.value,
                 branches: kotlin.collections.List<ExprPair> = this.branches,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 SimpleCase(
                     value,
                     branches,
@@ -12530,7 +12638,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 branches: kotlin.collections.List<ExprPair> = this.branches,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 SearchedCase(
                     branches,
                     metas)
@@ -12578,7 +12687,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 fields: kotlin.collections.List<ExprPair> = this.fields,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Struct(
                     fields,
                     metas)
@@ -12626,7 +12736,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 values: kotlin.collections.List<Expr> = this.values,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Bag(
                     values,
                     metas)
@@ -12674,7 +12785,8 @@ class PartiqlBasic private constructor() {
         
             fun copy(
                 values: kotlin.collections.List<Expr> = this.values,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 List(
                     values,
                     metas)
@@ -12753,7 +12865,8 @@ class PartiqlBasic private constructor() {
                 group: GroupBy? = this.group,
                 having: Expr? = this.having,
                 limit: Expr? = this.limit,
-                metas: MetaContainer = this.metas) =
+                metas: MetaContainer = this.metas
+            ) =
                 Select(
                     setq,
                     project,
