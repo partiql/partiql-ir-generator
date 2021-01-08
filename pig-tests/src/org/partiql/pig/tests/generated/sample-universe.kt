@@ -16,8 +16,11 @@ class ToyLang private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
+        @JvmStatic
+        fun BUILDER() : Builder = ToyLangBuilder
+    
         fun <T: ToyLangNode> build(block: Builder.() -> T) =
-            Builder.block()
+            ToyLangBuilder.block()
     
         fun transform(element: AnyElement): ToyLangNode =
             transform(element.asSexp())
@@ -26,7 +29,7 @@ class ToyLang private constructor() {
             Transformer().transform(element)
     }
     
-    object Builder {
+    interface Builder {
         // Variants for Sum: Expr 
         /**
          * Creates an instance of [ToyLang.Expr.Lit].
@@ -34,10 +37,7 @@ class ToyLang private constructor() {
         fun lit(
             value: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Lit =
-            ToyLang.Expr.Lit(
-                value = value.asAnyElement(),
-                metas = metas)
+        ): ToyLang.Expr.Lit
         
         
         /**
@@ -46,10 +46,7 @@ class ToyLang private constructor() {
         fun variable(
             name: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Variable =
-            ToyLang.Expr.Variable(
-                name = name.asPrimitive(),
-                metas = metas)
+        ): ToyLang.Expr.Variable
         
         /**
          * Creates an instance of [ToyLang.Expr.Variable].
@@ -61,10 +58,7 @@ class ToyLang private constructor() {
         fun variable_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Variable =
-            ToyLang.Expr.Variable(
-                name = name,
-                metas = metas)
+        ): ToyLang.Expr.Variable
         
         
         /**
@@ -73,10 +67,7 @@ class ToyLang private constructor() {
         fun not(
             expr: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Not =
-            ToyLang.Expr.Not(
-                expr = expr,
-                metas = metas)
+        ): ToyLang.Expr.Not
         
         
         /**
@@ -85,10 +76,7 @@ class ToyLang private constructor() {
         fun plus(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Plus =
-            ToyLang.Expr.Plus(
-                operands = operands,
-                metas = metas)
+        ): ToyLang.Expr.Plus
         
         /**
          * Creates an instance of [ToyLang.Expr.Plus].
@@ -98,10 +86,7 @@ class ToyLang private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Plus =
-            ToyLang.Expr.Plus(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): ToyLang.Expr.Plus
         
         
         /**
@@ -110,10 +95,7 @@ class ToyLang private constructor() {
         fun minus(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Minus =
-            ToyLang.Expr.Minus(
-                operands = operands,
-                metas = metas)
+        ): ToyLang.Expr.Minus
         
         /**
          * Creates an instance of [ToyLang.Expr.Minus].
@@ -123,10 +105,7 @@ class ToyLang private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Minus =
-            ToyLang.Expr.Minus(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): ToyLang.Expr.Minus
         
         
         /**
@@ -135,10 +114,7 @@ class ToyLang private constructor() {
         fun times(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Times =
-            ToyLang.Expr.Times(
-                operands = operands,
-                metas = metas)
+        ): ToyLang.Expr.Times
         
         /**
          * Creates an instance of [ToyLang.Expr.Times].
@@ -148,10 +124,7 @@ class ToyLang private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Times =
-            ToyLang.Expr.Times(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): ToyLang.Expr.Times
         
         
         /**
@@ -160,10 +133,7 @@ class ToyLang private constructor() {
         fun divide(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Divide =
-            ToyLang.Expr.Divide(
-                operands = operands,
-                metas = metas)
+        ): ToyLang.Expr.Divide
         
         /**
          * Creates an instance of [ToyLang.Expr.Divide].
@@ -173,10 +143,7 @@ class ToyLang private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Divide =
-            ToyLang.Expr.Divide(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): ToyLang.Expr.Divide
         
         
         /**
@@ -185,10 +152,7 @@ class ToyLang private constructor() {
         fun modulo(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Modulo =
-            ToyLang.Expr.Modulo(
-                operands = operands,
-                metas = metas)
+        ): ToyLang.Expr.Modulo
         
         /**
          * Creates an instance of [ToyLang.Expr.Modulo].
@@ -198,10 +162,7 @@ class ToyLang private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Modulo =
-            ToyLang.Expr.Modulo(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): ToyLang.Expr.Modulo
         
         
         /**
@@ -211,11 +172,7 @@ class ToyLang private constructor() {
             name: String,
             argument: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Call =
-            ToyLang.Expr.Call(
-                name = name.asPrimitive(),
-                argument = argument,
-                metas = metas)
+        ): ToyLang.Expr.Call
         
         /**
          * Creates an instance of [ToyLang.Expr.Call].
@@ -228,11 +185,7 @@ class ToyLang private constructor() {
             name: org.partiql.pig.runtime.SymbolPrimitive,
             argument: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Call =
-            ToyLang.Expr.Call(
-                name = name,
-                argument = argument,
-                metas = metas)
+        ): ToyLang.Expr.Call
         
         
         /**
@@ -243,12 +196,7 @@ class ToyLang private constructor() {
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Let =
-            ToyLang.Expr.Let(
-                name = name.asPrimitive(),
-                value = value,
-                body = body,
-                metas = metas)
+        ): ToyLang.Expr.Let
         
         /**
          * Creates an instance of [ToyLang.Expr.Let].
@@ -262,12 +210,7 @@ class ToyLang private constructor() {
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Let =
-            ToyLang.Expr.Let(
-                name = name,
-                value = value,
-                body = body,
-                metas = metas)
+        ): ToyLang.Expr.Let
         
         
         /**
@@ -277,11 +220,7 @@ class ToyLang private constructor() {
             varName: String,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Function =
-            ToyLang.Expr.Function(
-                varName = varName.asPrimitive(),
-                body = body,
-                metas = metas)
+        ): ToyLang.Expr.Function
         
         /**
          * Creates an instance of [ToyLang.Expr.Function].
@@ -294,6 +233,201 @@ class ToyLang private constructor() {
             varName: org.partiql.pig.runtime.SymbolPrimitive,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
+        ): ToyLang.Expr.Function
+    }
+    
+    private object ToyLangBuilder : Builder {
+        // Variants for Sum: Expr 
+        override fun lit(
+            value: com.amazon.ionelement.api.IonElement,
+            metas: MetaContainer
+        ): ToyLang.Expr.Lit =
+            ToyLang.Expr.Lit(
+                value = value.asAnyElement(),
+                metas = metas)
+        
+        
+        override fun variable(
+            name: String,
+            metas: MetaContainer
+        ): ToyLang.Expr.Variable =
+            ToyLang.Expr.Variable(
+                name = name.asPrimitive(),
+                metas = metas)
+        
+        override fun variable_(
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer
+        ): ToyLang.Expr.Variable =
+            ToyLang.Expr.Variable(
+                name = name,
+                metas = metas)
+        
+        
+        override fun not(
+            expr: Expr,
+            metas: MetaContainer
+        ): ToyLang.Expr.Not =
+            ToyLang.Expr.Not(
+                expr = expr,
+                metas = metas)
+        
+        
+        override fun plus(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): ToyLang.Expr.Plus =
+            ToyLang.Expr.Plus(
+                operands = operands,
+                metas = metas)
+        
+        override fun plus(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): ToyLang.Expr.Plus =
+            ToyLang.Expr.Plus(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun minus(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): ToyLang.Expr.Minus =
+            ToyLang.Expr.Minus(
+                operands = operands,
+                metas = metas)
+        
+        override fun minus(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): ToyLang.Expr.Minus =
+            ToyLang.Expr.Minus(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun times(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): ToyLang.Expr.Times =
+            ToyLang.Expr.Times(
+                operands = operands,
+                metas = metas)
+        
+        override fun times(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): ToyLang.Expr.Times =
+            ToyLang.Expr.Times(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun divide(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): ToyLang.Expr.Divide =
+            ToyLang.Expr.Divide(
+                operands = operands,
+                metas = metas)
+        
+        override fun divide(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): ToyLang.Expr.Divide =
+            ToyLang.Expr.Divide(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun modulo(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): ToyLang.Expr.Modulo =
+            ToyLang.Expr.Modulo(
+                operands = operands,
+                metas = metas)
+        
+        override fun modulo(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): ToyLang.Expr.Modulo =
+            ToyLang.Expr.Modulo(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun call(
+            name: String,
+            argument: Expr,
+            metas: MetaContainer
+        ): ToyLang.Expr.Call =
+            ToyLang.Expr.Call(
+                name = name.asPrimitive(),
+                argument = argument,
+                metas = metas)
+        
+        override fun call_(
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            argument: Expr,
+            metas: MetaContainer
+        ): ToyLang.Expr.Call =
+            ToyLang.Expr.Call(
+                name = name,
+                argument = argument,
+                metas = metas)
+        
+        
+        override fun let(
+            name: String,
+            value: Expr,
+            body: Expr,
+            metas: MetaContainer
+        ): ToyLang.Expr.Let =
+            ToyLang.Expr.Let(
+                name = name.asPrimitive(),
+                value = value,
+                body = body,
+                metas = metas)
+        
+        override fun let_(
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            value: Expr,
+            body: Expr,
+            metas: MetaContainer
+        ): ToyLang.Expr.Let =
+            ToyLang.Expr.Let(
+                name = name,
+                value = value,
+                body = body,
+                metas = metas)
+        
+        
+        override fun function(
+            varName: String,
+            body: Expr,
+            metas: MetaContainer
+        ): ToyLang.Expr.Function =
+            ToyLang.Expr.Function(
+                varName = varName.asPrimitive(),
+                body = body,
+                metas = metas)
+        
+        override fun function_(
+            varName: org.partiql.pig.runtime.SymbolPrimitive,
+            body: Expr,
+            metas: MetaContainer
         ): ToyLang.Expr.Function =
             ToyLang.Expr.Function(
                 varName = varName,
@@ -1505,8 +1639,11 @@ class ToyLangNameless private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
+        @JvmStatic
+        fun BUILDER() : Builder = ToyLangNamelessBuilder
+    
         fun <T: ToyLangNamelessNode> build(block: Builder.() -> T) =
-            Builder.block()
+            ToyLangNamelessBuilder.block()
     
         fun transform(element: AnyElement): ToyLangNamelessNode =
             transform(element.asSexp())
@@ -1515,7 +1652,7 @@ class ToyLangNameless private constructor() {
             Transformer().transform(element)
     }
     
-    object Builder {
+    interface Builder {
         // Variants for Sum: Expr 
         /**
          * Creates an instance of [ToyLangNameless.Expr.Lit].
@@ -1523,10 +1660,7 @@ class ToyLangNameless private constructor() {
         fun lit(
             value: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Lit =
-            ToyLangNameless.Expr.Lit(
-                value = value.asAnyElement(),
-                metas = metas)
+        ): ToyLangNameless.Expr.Lit
         
         
         /**
@@ -1535,10 +1669,7 @@ class ToyLangNameless private constructor() {
         fun not(
             expr: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Not =
-            ToyLangNameless.Expr.Not(
-                expr = expr,
-                metas = metas)
+        ): ToyLangNameless.Expr.Not
         
         
         /**
@@ -1547,10 +1678,7 @@ class ToyLangNameless private constructor() {
         fun plus(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Plus =
-            ToyLangNameless.Expr.Plus(
-                operands = operands,
-                metas = metas)
+        ): ToyLangNameless.Expr.Plus
         
         /**
          * Creates an instance of [ToyLangNameless.Expr.Plus].
@@ -1560,10 +1688,7 @@ class ToyLangNameless private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Plus =
-            ToyLangNameless.Expr.Plus(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): ToyLangNameless.Expr.Plus
         
         
         /**
@@ -1572,10 +1697,7 @@ class ToyLangNameless private constructor() {
         fun minus(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Minus =
-            ToyLangNameless.Expr.Minus(
-                operands = operands,
-                metas = metas)
+        ): ToyLangNameless.Expr.Minus
         
         /**
          * Creates an instance of [ToyLangNameless.Expr.Minus].
@@ -1585,10 +1707,7 @@ class ToyLangNameless private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Minus =
-            ToyLangNameless.Expr.Minus(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): ToyLangNameless.Expr.Minus
         
         
         /**
@@ -1597,10 +1716,7 @@ class ToyLangNameless private constructor() {
         fun times(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Times =
-            ToyLangNameless.Expr.Times(
-                operands = operands,
-                metas = metas)
+        ): ToyLangNameless.Expr.Times
         
         /**
          * Creates an instance of [ToyLangNameless.Expr.Times].
@@ -1610,10 +1726,7 @@ class ToyLangNameless private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Times =
-            ToyLangNameless.Expr.Times(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): ToyLangNameless.Expr.Times
         
         
         /**
@@ -1622,10 +1735,7 @@ class ToyLangNameless private constructor() {
         fun divide(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Divide =
-            ToyLangNameless.Expr.Divide(
-                operands = operands,
-                metas = metas)
+        ): ToyLangNameless.Expr.Divide
         
         /**
          * Creates an instance of [ToyLangNameless.Expr.Divide].
@@ -1635,10 +1745,7 @@ class ToyLangNameless private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Divide =
-            ToyLangNameless.Expr.Divide(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): ToyLangNameless.Expr.Divide
         
         
         /**
@@ -1647,10 +1754,7 @@ class ToyLangNameless private constructor() {
         fun modulo(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Modulo =
-            ToyLangNameless.Expr.Modulo(
-                operands = operands,
-                metas = metas)
+        ): ToyLangNameless.Expr.Modulo
         
         /**
          * Creates an instance of [ToyLangNameless.Expr.Modulo].
@@ -1660,10 +1764,7 @@ class ToyLangNameless private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Modulo =
-            ToyLangNameless.Expr.Modulo(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): ToyLangNameless.Expr.Modulo
         
         
         /**
@@ -1673,11 +1774,7 @@ class ToyLangNameless private constructor() {
             name: String,
             argument: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Call =
-            ToyLangNameless.Expr.Call(
-                name = name.asPrimitive(),
-                argument = argument,
-                metas = metas)
+        ): ToyLangNameless.Expr.Call
         
         /**
          * Creates an instance of [ToyLangNameless.Expr.Call].
@@ -1690,11 +1787,7 @@ class ToyLangNameless private constructor() {
             name: org.partiql.pig.runtime.SymbolPrimitive,
             argument: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Call =
-            ToyLangNameless.Expr.Call(
-                name = name,
-                argument = argument,
-                metas = metas)
+        ): ToyLangNameless.Expr.Call
         
         
         /**
@@ -1704,11 +1797,7 @@ class ToyLangNameless private constructor() {
             varName: String,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Function =
-            ToyLangNameless.Expr.Function(
-                varName = varName.asPrimitive(),
-                body = body,
-                metas = metas)
+        ): ToyLangNameless.Expr.Function
         
         /**
          * Creates an instance of [ToyLangNameless.Expr.Function].
@@ -1721,11 +1810,7 @@ class ToyLangNameless private constructor() {
             varName: org.partiql.pig.runtime.SymbolPrimitive,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Function =
-            ToyLangNameless.Expr.Function(
-                varName = varName,
-                body = body,
-                metas = metas)
+        ): ToyLangNameless.Expr.Function
         
         
         /**
@@ -1734,10 +1819,7 @@ class ToyLangNameless private constructor() {
         fun variable(
             index: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Variable =
-            ToyLangNameless.Expr.Variable(
-                index = index.asPrimitive(),
-                metas = metas)
+        ): ToyLangNameless.Expr.Variable
         
         /**
          * Creates an instance of [ToyLangNameless.Expr.Variable].
@@ -1749,10 +1831,7 @@ class ToyLangNameless private constructor() {
         fun variable_(
             index: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Variable =
-            ToyLangNameless.Expr.Variable(
-                index = index,
-                metas = metas)
+        ): ToyLangNameless.Expr.Variable
         
         
         /**
@@ -1763,12 +1842,7 @@ class ToyLangNameless private constructor() {
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangNameless.Expr.Let =
-            ToyLangNameless.Expr.Let(
-                index = index.asPrimitive(),
-                value = value,
-                body = body,
-                metas = metas)
+        ): ToyLangNameless.Expr.Let
         
         /**
          * Creates an instance of [ToyLangNameless.Expr.Let].
@@ -1782,6 +1856,200 @@ class ToyLangNameless private constructor() {
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
+        ): ToyLangNameless.Expr.Let
+    }
+    
+    private object ToyLangNamelessBuilder : Builder {
+        // Variants for Sum: Expr 
+        override fun lit(
+            value: com.amazon.ionelement.api.IonElement,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Lit =
+            ToyLangNameless.Expr.Lit(
+                value = value.asAnyElement(),
+                metas = metas)
+        
+        
+        override fun not(
+            expr: Expr,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Not =
+            ToyLangNameless.Expr.Not(
+                expr = expr,
+                metas = metas)
+        
+        
+        override fun plus(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Plus =
+            ToyLangNameless.Expr.Plus(
+                operands = operands,
+                metas = metas)
+        
+        override fun plus(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Plus =
+            ToyLangNameless.Expr.Plus(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun minus(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Minus =
+            ToyLangNameless.Expr.Minus(
+                operands = operands,
+                metas = metas)
+        
+        override fun minus(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Minus =
+            ToyLangNameless.Expr.Minus(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun times(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Times =
+            ToyLangNameless.Expr.Times(
+                operands = operands,
+                metas = metas)
+        
+        override fun times(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Times =
+            ToyLangNameless.Expr.Times(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun divide(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Divide =
+            ToyLangNameless.Expr.Divide(
+                operands = operands,
+                metas = metas)
+        
+        override fun divide(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Divide =
+            ToyLangNameless.Expr.Divide(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun modulo(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Modulo =
+            ToyLangNameless.Expr.Modulo(
+                operands = operands,
+                metas = metas)
+        
+        override fun modulo(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Modulo =
+            ToyLangNameless.Expr.Modulo(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun call(
+            name: String,
+            argument: Expr,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Call =
+            ToyLangNameless.Expr.Call(
+                name = name.asPrimitive(),
+                argument = argument,
+                metas = metas)
+        
+        override fun call_(
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            argument: Expr,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Call =
+            ToyLangNameless.Expr.Call(
+                name = name,
+                argument = argument,
+                metas = metas)
+        
+        
+        override fun function(
+            varName: String,
+            body: Expr,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Function =
+            ToyLangNameless.Expr.Function(
+                varName = varName.asPrimitive(),
+                body = body,
+                metas = metas)
+        
+        override fun function_(
+            varName: org.partiql.pig.runtime.SymbolPrimitive,
+            body: Expr,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Function =
+            ToyLangNameless.Expr.Function(
+                varName = varName,
+                body = body,
+                metas = metas)
+        
+        
+        override fun variable(
+            index: Long,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Variable =
+            ToyLangNameless.Expr.Variable(
+                index = index.asPrimitive(),
+                metas = metas)
+        
+        override fun variable_(
+            index: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Variable =
+            ToyLangNameless.Expr.Variable(
+                index = index,
+                metas = metas)
+        
+        
+        override fun let(
+            index: Long,
+            value: Expr,
+            body: Expr,
+            metas: MetaContainer
+        ): ToyLangNameless.Expr.Let =
+            ToyLangNameless.Expr.Let(
+                index = index.asPrimitive(),
+                value = value,
+                body = body,
+                metas = metas)
+        
+        override fun let_(
+            index: org.partiql.pig.runtime.LongPrimitive,
+            value: Expr,
+            body: Expr,
+            metas: MetaContainer
         ): ToyLangNameless.Expr.Let =
             ToyLangNameless.Expr.Let(
                 index = index,
@@ -2994,8 +3262,11 @@ class TestDomain private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
+        @JvmStatic
+        fun BUILDER() : Builder = TestDomainBuilder
+    
         fun <T: TestDomainNode> build(block: Builder.() -> T) =
-            Builder.block()
+            TestDomainBuilder.block()
     
         fun transform(element: AnyElement): TestDomainNode =
             transform(element.asSexp())
@@ -3004,7 +3275,7 @@ class TestDomain private constructor() {
             Transformer().transform(element)
     }
     
-    object Builder {
+    interface Builder {
                 // Tuples
         /**
          * Creates an instance of [TestDomain.IntPair].
@@ -3013,11 +3284,7 @@ class TestDomain private constructor() {
             first: Long,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntPair =
-            TestDomain.IntPair(
-                first = first.asPrimitive(),
-                second = second.asPrimitive(),
-                metas = metas)
+        ): TestDomain.IntPair
         
         /**
          * Creates an instance of [TestDomain.IntPair].
@@ -3030,11 +3297,7 @@ class TestDomain private constructor() {
             first: org.partiql.pig.runtime.LongPrimitive,
             second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntPair =
-            TestDomain.IntPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.IntPair
         
         
         /**
@@ -3044,11 +3307,7 @@ class TestDomain private constructor() {
             first: String,
             second: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolPair =
-            TestDomain.SymbolPair(
-                first = first.asPrimitive(),
-                second = second.asPrimitive(),
-                metas = metas)
+        ): TestDomain.SymbolPair
         
         /**
          * Creates an instance of [TestDomain.SymbolPair].
@@ -3061,11 +3320,7 @@ class TestDomain private constructor() {
             first: org.partiql.pig.runtime.SymbolPrimitive,
             second: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolPair =
-            TestDomain.SymbolPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.SymbolPair
         
         
         /**
@@ -3075,11 +3330,7 @@ class TestDomain private constructor() {
             first: com.amazon.ionelement.api.IonElement,
             second: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IonPair =
-            TestDomain.IonPair(
-                first = first.asAnyElement(),
-                second = second.asAnyElement(),
-                metas = metas)
+        ): TestDomain.IonPair
         
         
         /**
@@ -3089,11 +3340,7 @@ class TestDomain private constructor() {
             first: Long,
             second: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntSymbolPair =
-            TestDomain.IntSymbolPair(
-                first = first.asPrimitive(),
-                second = second.asPrimitive(),
-                metas = metas)
+        ): TestDomain.IntSymbolPair
         
         /**
          * Creates an instance of [TestDomain.IntSymbolPair].
@@ -3106,11 +3353,7 @@ class TestDomain private constructor() {
             first: org.partiql.pig.runtime.LongPrimitive,
             second: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntSymbolPair =
-            TestDomain.IntSymbolPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.IntSymbolPair
         
         
         /**
@@ -3120,11 +3363,7 @@ class TestDomain private constructor() {
             first: String,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolIntPair =
-            TestDomain.SymbolIntPair(
-                first = first.asPrimitive(),
-                second = second.asPrimitive(),
-                metas = metas)
+        ): TestDomain.SymbolIntPair
         
         /**
          * Creates an instance of [TestDomain.SymbolIntPair].
@@ -3137,11 +3376,7 @@ class TestDomain private constructor() {
             first: org.partiql.pig.runtime.SymbolPrimitive,
             second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolIntPair =
-            TestDomain.SymbolIntPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.SymbolIntPair
         
         
         /**
@@ -3151,11 +3386,7 @@ class TestDomain private constructor() {
             first: com.amazon.ionelement.api.IonElement,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IonIntPair =
-            TestDomain.IonIntPair(
-                first = first.asAnyElement(),
-                second = second.asPrimitive(),
-                metas = metas)
+        ): TestDomain.IonIntPair
         
         /**
          * Creates an instance of [TestDomain.IonIntPair].
@@ -3168,11 +3399,7 @@ class TestDomain private constructor() {
             first: com.amazon.ionelement.api.IonElement,
             second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IonIntPair =
-            TestDomain.IonIntPair(
-                first = first.asAnyElement(),
-                second = second,
-                metas = metas)
+        ): TestDomain.IonIntPair
         
         
         /**
@@ -3182,11 +3409,7 @@ class TestDomain private constructor() {
             first: com.amazon.ionelement.api.IonElement,
             second: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IonSymbolPair =
-            TestDomain.IonSymbolPair(
-                first = first.asAnyElement(),
-                second = second.asAnyElement(),
-                metas = metas)
+        ): TestDomain.IonSymbolPair
         
         
         /**
@@ -3196,11 +3419,7 @@ class TestDomain private constructor() {
             first: IntPair,
             second: IntPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntPairPair =
-            TestDomain.IntPairPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.IntPairPair
         
         
         /**
@@ -3210,11 +3429,7 @@ class TestDomain private constructor() {
             first: SymbolPair,
             second: SymbolPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolPairPair =
-            TestDomain.SymbolPairPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.SymbolPairPair
         
         
         /**
@@ -3224,11 +3439,7 @@ class TestDomain private constructor() {
             first: IonPair,
             second: IonPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IonPairPair =
-            TestDomain.IonPairPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.IonPairPair
         
         
         /**
@@ -3238,11 +3449,7 @@ class TestDomain private constructor() {
             first: Long,
             second: RecursivePair? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.RecursivePair =
-            TestDomain.RecursivePair(
-                first = first.asPrimitive(),
-                second = second,
-                metas = metas)
+        ): TestDomain.RecursivePair
         
         /**
          * Creates an instance of [TestDomain.RecursivePair].
@@ -3255,11 +3462,7 @@ class TestDomain private constructor() {
             first: org.partiql.pig.runtime.LongPrimitive,
             second: RecursivePair? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.RecursivePair =
-            TestDomain.RecursivePair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.RecursivePair
         
         
         /**
@@ -3269,11 +3472,7 @@ class TestDomain private constructor() {
             first: Answer,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.AnswerPair =
-            TestDomain.AnswerPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.AnswerPair
         
         
         /**
@@ -3283,11 +3482,7 @@ class TestDomain private constructor() {
             first: Answer,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.AnswerIntPair =
-            TestDomain.AnswerIntPair(
-                first = first,
-                second = second.asPrimitive(),
-                metas = metas)
+        ): TestDomain.AnswerIntPair
         
         /**
          * Creates an instance of [TestDomain.AnswerIntPair].
@@ -3300,11 +3495,7 @@ class TestDomain private constructor() {
             first: Answer,
             second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.AnswerIntPair =
-            TestDomain.AnswerIntPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.AnswerIntPair
         
         
         /**
@@ -3314,11 +3505,7 @@ class TestDomain private constructor() {
             first: Long,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntAnswerPair =
-            TestDomain.IntAnswerPair(
-                first = first.asPrimitive(),
-                second = second,
-                metas = metas)
+        ): TestDomain.IntAnswerPair
         
         /**
          * Creates an instance of [TestDomain.IntAnswerPair].
@@ -3331,11 +3518,7 @@ class TestDomain private constructor() {
             first: org.partiql.pig.runtime.LongPrimitive,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntAnswerPair =
-            TestDomain.IntAnswerPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.IntAnswerPair
         
         
         /**
@@ -3345,11 +3528,7 @@ class TestDomain private constructor() {
             first: String,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolAnswerPair =
-            TestDomain.SymbolAnswerPair(
-                first = first.asPrimitive(),
-                second = second,
-                metas = metas)
+        ): TestDomain.SymbolAnswerPair
         
         /**
          * Creates an instance of [TestDomain.SymbolAnswerPair].
@@ -3362,11 +3541,7 @@ class TestDomain private constructor() {
             first: org.partiql.pig.runtime.SymbolPrimitive,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolAnswerPair =
-            TestDomain.SymbolAnswerPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.SymbolAnswerPair
         
         
         /**
@@ -3376,11 +3551,7 @@ class TestDomain private constructor() {
             first: Answer,
             second: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.AnswerSymbolPair =
-            TestDomain.AnswerSymbolPair(
-                first = first,
-                second = second.asPrimitive(),
-                metas = metas)
+        ): TestDomain.AnswerSymbolPair
         
         /**
          * Creates an instance of [TestDomain.AnswerSymbolPair].
@@ -3393,11 +3564,7 @@ class TestDomain private constructor() {
             first: Answer,
             second: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.AnswerSymbolPair =
-            TestDomain.AnswerSymbolPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.AnswerSymbolPair
         
         
         /**
@@ -3406,10 +3573,7 @@ class TestDomain private constructor() {
         fun variadicMin0(
             ints: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin0 =
-            TestDomain.VariadicMin0(
-                ints = ints.map { it.asPrimitive() },
-                metas = metas)
+        ): TestDomain.VariadicMin0
         
         /**
          * Creates an instance of [TestDomain.VariadicMin0].
@@ -3421,10 +3585,7 @@ class TestDomain private constructor() {
         fun variadicMin0_(
             ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin0 =
-            TestDomain.VariadicMin0(
-                ints = ints,
-                metas = metas)
+        ): TestDomain.VariadicMin0
         
         /**
          * Creates an instance of [TestDomain.VariadicMin0].
@@ -3432,10 +3593,7 @@ class TestDomain private constructor() {
         fun variadicMin0(
             vararg ints: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin0 =
-            TestDomain.VariadicMin0(
-                ints = ints.map { it.asPrimitive() },
-                metas = metas)
+        ): TestDomain.VariadicMin0
         
         /**
          * Creates an instance of [TestDomain.VariadicMin0].
@@ -3447,10 +3605,7 @@ class TestDomain private constructor() {
         fun variadicMin0_(
             vararg ints: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin0 =
-            TestDomain.VariadicMin0(
-                ints = ints.toList(),
-                metas = metas)
+        ): TestDomain.VariadicMin0
         
         
         /**
@@ -3459,10 +3614,7 @@ class TestDomain private constructor() {
         fun variadicMin1(
             ints: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin1 =
-            TestDomain.VariadicMin1(
-                ints = ints.map { it.asPrimitive() },
-                metas = metas)
+        ): TestDomain.VariadicMin1
         
         /**
          * Creates an instance of [TestDomain.VariadicMin1].
@@ -3474,10 +3626,7 @@ class TestDomain private constructor() {
         fun variadicMin1_(
             ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin1 =
-            TestDomain.VariadicMin1(
-                ints = ints,
-                metas = metas)
+        ): TestDomain.VariadicMin1
         
         /**
          * Creates an instance of [TestDomain.VariadicMin1].
@@ -3486,10 +3635,7 @@ class TestDomain private constructor() {
             ints0: Long,
             vararg ints: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin1 =
-            TestDomain.VariadicMin1(
-                ints = listOfPrimitives(ints0) + ints.map { it.asPrimitive() },
-                metas = metas)
+        ): TestDomain.VariadicMin1
         
         /**
          * Creates an instance of [TestDomain.VariadicMin1].
@@ -3502,10 +3648,7 @@ class TestDomain private constructor() {
             ints0: org.partiql.pig.runtime.LongPrimitive,
             vararg ints: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin1 =
-            TestDomain.VariadicMin1(
-                ints = listOfPrimitives(ints0) + ints.toList(),
-                metas = metas)
+        ): TestDomain.VariadicMin1
         
         
         /**
@@ -3515,11 +3658,7 @@ class TestDomain private constructor() {
             name: String,
             ints: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.ElementVariadic =
-            TestDomain.ElementVariadic(
-                name = name.asPrimitive(),
-                ints = ints.map { it.asPrimitive() },
-                metas = metas)
+        ): TestDomain.ElementVariadic
         
         /**
          * Creates an instance of [TestDomain.ElementVariadic].
@@ -3532,11 +3671,7 @@ class TestDomain private constructor() {
             name: org.partiql.pig.runtime.SymbolPrimitive,
             ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.ElementVariadic =
-            TestDomain.ElementVariadic(
-                name = name,
-                ints = ints,
-                metas = metas)
+        ): TestDomain.ElementVariadic
         
         /**
          * Creates an instance of [TestDomain.ElementVariadic].
@@ -3545,11 +3680,7 @@ class TestDomain private constructor() {
             name: String,
             vararg ints: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.ElementVariadic =
-            TestDomain.ElementVariadic(
-                name = name.asPrimitive(),
-                ints = ints.map { it.asPrimitive() },
-                metas = metas)
+        ): TestDomain.ElementVariadic
         
         /**
          * Creates an instance of [TestDomain.ElementVariadic].
@@ -3562,11 +3693,7 @@ class TestDomain private constructor() {
             name: org.partiql.pig.runtime.SymbolPrimitive,
             vararg ints: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.ElementVariadic =
-            TestDomain.ElementVariadic(
-                name = name,
-                ints = ints.toList(),
-                metas = metas)
+        ): TestDomain.ElementVariadic
         
         
         /**
@@ -3575,10 +3702,7 @@ class TestDomain private constructor() {
         fun optional1(
             value: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Optional1 =
-            TestDomain.Optional1(
-                value = value?.asPrimitive(),
-                metas = metas)
+        ): TestDomain.Optional1
         
         /**
          * Creates an instance of [TestDomain.Optional1].
@@ -3590,10 +3714,7 @@ class TestDomain private constructor() {
         fun optional1_(
             value: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Optional1 =
-            TestDomain.Optional1(
-                value = value,
-                metas = metas)
+        ): TestDomain.Optional1
         
         
         /**
@@ -3603,11 +3724,7 @@ class TestDomain private constructor() {
             first: Long? = null,
             second: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Optional2 =
-            TestDomain.Optional2(
-                first = first?.asPrimitive(),
-                second = second?.asPrimitive(),
-                metas = metas)
+        ): TestDomain.Optional2
         
         /**
          * Creates an instance of [TestDomain.Optional2].
@@ -3620,11 +3737,7 @@ class TestDomain private constructor() {
             first: org.partiql.pig.runtime.LongPrimitive? = null,
             second: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Optional2 =
-            TestDomain.Optional2(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.Optional2
         
         
         /**
@@ -3635,12 +3748,7 @@ class TestDomain private constructor() {
             anotherField: String,
             optionalField: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.DomainLevelRecord =
-            TestDomain.DomainLevelRecord(
-                someField = someField.asPrimitive(),
-                anotherField = anotherField.asPrimitive(),
-                optionalField = optionalField?.asPrimitive(),
-                metas = metas)
+        ): TestDomain.DomainLevelRecord
         
         /**
          * Creates an instance of [TestDomain.DomainLevelRecord].
@@ -3654,12 +3762,7 @@ class TestDomain private constructor() {
             anotherField: org.partiql.pig.runtime.SymbolPrimitive,
             optionalField: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.DomainLevelRecord =
-            TestDomain.DomainLevelRecord(
-                someField = someField,
-                anotherField = anotherField,
-                optionalField = optionalField,
-                metas = metas)
+        ): TestDomain.DomainLevelRecord
         
         
         /**
@@ -3669,11 +3772,7 @@ class TestDomain private constructor() {
             value: Long,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.ProductWithRecord =
-            TestDomain.ProductWithRecord(
-                value = value.asPrimitive(),
-                dlr = dlr,
-                metas = metas)
+        ): TestDomain.ProductWithRecord
         
         /**
          * Creates an instance of [TestDomain.ProductWithRecord].
@@ -3686,11 +3785,7 @@ class TestDomain private constructor() {
             value: org.partiql.pig.runtime.LongPrimitive,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.ProductWithRecord =
-            TestDomain.ProductWithRecord(
-                value = value,
-                dlr = dlr,
-                metas = metas)
+        ): TestDomain.ProductWithRecord
         
         
         /**
@@ -3701,12 +3796,7 @@ class TestDomain private constructor() {
             b: TestSum,
             c: TestSum,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSumTriplet =
-            TestDomain.TestSumTriplet(
-                a = a,
-                b = b,
-                c = c,
-                metas = metas)
+        ): TestDomain.TestSumTriplet
         
         
         /**
@@ -3716,11 +3806,7 @@ class TestDomain private constructor() {
             first: Entity,
             second: Entity,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.EntityPair =
-            TestDomain.EntityPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): TestDomain.EntityPair
         
         
         // Variants for Sum: Answer 
@@ -3729,9 +3815,7 @@ class TestDomain private constructor() {
          */
         fun no(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Answer.No =
-            TestDomain.Answer.No(
-                metas = metas)
+        ): TestDomain.Answer.No
         
         
         /**
@@ -3739,9 +3823,7 @@ class TestDomain private constructor() {
          */
         fun yes(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Answer.Yes =
-            TestDomain.Answer.Yes(
-                metas = metas)
+        ): TestDomain.Answer.Yes
         
         
         // Variants for Sum: SumWithRecord 
@@ -3752,11 +3834,7 @@ class TestDomain private constructor() {
             value: Long,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SumWithRecord.VariantWithRecord =
-            TestDomain.SumWithRecord.VariantWithRecord(
-                value = value.asPrimitive(),
-                dlr = dlr,
-                metas = metas)
+        ): TestDomain.SumWithRecord.VariantWithRecord
         
         /**
          * Creates an instance of [TestDomain.SumWithRecord.VariantWithRecord].
@@ -3769,11 +3847,7 @@ class TestDomain private constructor() {
             value: org.partiql.pig.runtime.LongPrimitive,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SumWithRecord.VariantWithRecord =
-            TestDomain.SumWithRecord.VariantWithRecord(
-                value = value,
-                dlr = dlr,
-                metas = metas)
+        ): TestDomain.SumWithRecord.VariantWithRecord
         
         
         // Variants for Sum: TestSum 
@@ -3783,10 +3857,7 @@ class TestDomain private constructor() {
         fun one(
             a: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSum.One =
-            TestDomain.TestSum.One(
-                a = a.asPrimitive(),
-                metas = metas)
+        ): TestDomain.TestSum.One
         
         /**
          * Creates an instance of [TestDomain.TestSum.One].
@@ -3798,10 +3869,7 @@ class TestDomain private constructor() {
         fun one_(
             a: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSum.One =
-            TestDomain.TestSum.One(
-                a = a,
-                metas = metas)
+        ): TestDomain.TestSum.One
         
         
         /**
@@ -3811,11 +3879,7 @@ class TestDomain private constructor() {
             a: Long,
             b: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSum.Two =
-            TestDomain.TestSum.Two(
-                a = a.asPrimitive(),
-                b = b.asPrimitive(),
-                metas = metas)
+        ): TestDomain.TestSum.Two
         
         /**
          * Creates an instance of [TestDomain.TestSum.Two].
@@ -3828,11 +3892,7 @@ class TestDomain private constructor() {
             a: org.partiql.pig.runtime.LongPrimitive,
             b: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSum.Two =
-            TestDomain.TestSum.Two(
-                a = a,
-                b = b,
-                metas = metas)
+        ): TestDomain.TestSum.Two
         
         
         /**
@@ -3843,12 +3903,7 @@ class TestDomain private constructor() {
             b: Long,
             c: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSum.Three =
-            TestDomain.TestSum.Three(
-                a = a.asPrimitive(),
-                b = b.asPrimitive(),
-                c = c.asPrimitive(),
-                metas = metas)
+        ): TestDomain.TestSum.Three
         
         /**
          * Creates an instance of [TestDomain.TestSum.Three].
@@ -3862,12 +3917,7 @@ class TestDomain private constructor() {
             b: org.partiql.pig.runtime.LongPrimitive,
             c: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSum.Three =
-            TestDomain.TestSum.Three(
-                a = a,
-                b = b,
-                c = c,
-                metas = metas)
+        ): TestDomain.TestSum.Three
         
         
         // Variants for Sum: Entity 
@@ -3876,9 +3926,7 @@ class TestDomain private constructor() {
          */
         fun slug(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Entity.Slug =
-            TestDomain.Entity.Slug(
-                metas = metas)
+        ): TestDomain.Entity.Slug
         
         
         /**
@@ -3887,10 +3935,7 @@ class TestDomain private constructor() {
         fun android(
             id: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Entity.Android =
-            TestDomain.Entity.Android(
-                id = id.asPrimitive(),
-                metas = metas)
+        ): TestDomain.Entity.Android
         
         /**
          * Creates an instance of [TestDomain.Entity.Android].
@@ -3902,10 +3947,7 @@ class TestDomain private constructor() {
         fun android_(
             id: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Entity.Android =
-            TestDomain.Entity.Android(
-                id = id,
-                metas = metas)
+        ): TestDomain.Entity.Android
         
         
         /**
@@ -3917,13 +3959,7 @@ class TestDomain private constructor() {
             title: String? = null,
             parent: Entity? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Entity.Human =
-            TestDomain.Entity.Human(
-                firstName = firstName.asPrimitive(),
-                lastName = lastName.asPrimitive(),
-                title = title?.asPrimitive(),
-                parent = parent,
-                metas = metas)
+        ): TestDomain.Entity.Human
         
         /**
          * Creates an instance of [TestDomain.Entity.Human].
@@ -3938,6 +3974,650 @@ class TestDomain private constructor() {
             title: org.partiql.pig.runtime.SymbolPrimitive? = null,
             parent: Entity? = null,
             metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.Entity.Human
+    }
+    
+    private object TestDomainBuilder : Builder {
+                // Tuples
+        override fun intPair(
+            first: Long,
+            second: Long,
+            metas: MetaContainer
+        ): TestDomain.IntPair =
+            TestDomain.IntPair(
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = metas)
+        
+        override fun intPair_(
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): TestDomain.IntPair =
+            TestDomain.IntPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun symbolPair(
+            first: String,
+            second: String,
+            metas: MetaContainer
+        ): TestDomain.SymbolPair =
+            TestDomain.SymbolPair(
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = metas)
+        
+        override fun symbolPair_(
+            first: org.partiql.pig.runtime.SymbolPrimitive,
+            second: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer
+        ): TestDomain.SymbolPair =
+            TestDomain.SymbolPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun ionPair(
+            first: com.amazon.ionelement.api.IonElement,
+            second: com.amazon.ionelement.api.IonElement,
+            metas: MetaContainer
+        ): TestDomain.IonPair =
+            TestDomain.IonPair(
+                first = first.asAnyElement(),
+                second = second.asAnyElement(),
+                metas = metas)
+        
+        
+        override fun intSymbolPair(
+            first: Long,
+            second: String,
+            metas: MetaContainer
+        ): TestDomain.IntSymbolPair =
+            TestDomain.IntSymbolPair(
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = metas)
+        
+        override fun intSymbolPair_(
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer
+        ): TestDomain.IntSymbolPair =
+            TestDomain.IntSymbolPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun symbolIntPair(
+            first: String,
+            second: Long,
+            metas: MetaContainer
+        ): TestDomain.SymbolIntPair =
+            TestDomain.SymbolIntPair(
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = metas)
+        
+        override fun symbolIntPair_(
+            first: org.partiql.pig.runtime.SymbolPrimitive,
+            second: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): TestDomain.SymbolIntPair =
+            TestDomain.SymbolIntPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun ionIntPair(
+            first: com.amazon.ionelement.api.IonElement,
+            second: Long,
+            metas: MetaContainer
+        ): TestDomain.IonIntPair =
+            TestDomain.IonIntPair(
+                first = first.asAnyElement(),
+                second = second.asPrimitive(),
+                metas = metas)
+        
+        override fun ionIntPair_(
+            first: com.amazon.ionelement.api.IonElement,
+            second: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): TestDomain.IonIntPair =
+            TestDomain.IonIntPair(
+                first = first.asAnyElement(),
+                second = second,
+                metas = metas)
+        
+        
+        override fun ionSymbolPair(
+            first: com.amazon.ionelement.api.IonElement,
+            second: com.amazon.ionelement.api.IonElement,
+            metas: MetaContainer
+        ): TestDomain.IonSymbolPair =
+            TestDomain.IonSymbolPair(
+                first = first.asAnyElement(),
+                second = second.asAnyElement(),
+                metas = metas)
+        
+        
+        override fun intPairPair(
+            first: IntPair,
+            second: IntPair,
+            metas: MetaContainer
+        ): TestDomain.IntPairPair =
+            TestDomain.IntPairPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun symbolPairPair(
+            first: SymbolPair,
+            second: SymbolPair,
+            metas: MetaContainer
+        ): TestDomain.SymbolPairPair =
+            TestDomain.SymbolPairPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun ionPairPair(
+            first: IonPair,
+            second: IonPair,
+            metas: MetaContainer
+        ): TestDomain.IonPairPair =
+            TestDomain.IonPairPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun recursivePair(
+            first: Long,
+            second: RecursivePair?,
+            metas: MetaContainer
+        ): TestDomain.RecursivePair =
+            TestDomain.RecursivePair(
+                first = first.asPrimitive(),
+                second = second,
+                metas = metas)
+        
+        override fun recursivePair_(
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: RecursivePair?,
+            metas: MetaContainer
+        ): TestDomain.RecursivePair =
+            TestDomain.RecursivePair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun answerPair(
+            first: Answer,
+            second: Answer,
+            metas: MetaContainer
+        ): TestDomain.AnswerPair =
+            TestDomain.AnswerPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun answerIntPair(
+            first: Answer,
+            second: Long,
+            metas: MetaContainer
+        ): TestDomain.AnswerIntPair =
+            TestDomain.AnswerIntPair(
+                first = first,
+                second = second.asPrimitive(),
+                metas = metas)
+        
+        override fun answerIntPair_(
+            first: Answer,
+            second: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): TestDomain.AnswerIntPair =
+            TestDomain.AnswerIntPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun intAnswerPair(
+            first: Long,
+            second: Answer,
+            metas: MetaContainer
+        ): TestDomain.IntAnswerPair =
+            TestDomain.IntAnswerPair(
+                first = first.asPrimitive(),
+                second = second,
+                metas = metas)
+        
+        override fun intAnswerPair_(
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: Answer,
+            metas: MetaContainer
+        ): TestDomain.IntAnswerPair =
+            TestDomain.IntAnswerPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun symbolAnswerPair(
+            first: String,
+            second: Answer,
+            metas: MetaContainer
+        ): TestDomain.SymbolAnswerPair =
+            TestDomain.SymbolAnswerPair(
+                first = first.asPrimitive(),
+                second = second,
+                metas = metas)
+        
+        override fun symbolAnswerPair_(
+            first: org.partiql.pig.runtime.SymbolPrimitive,
+            second: Answer,
+            metas: MetaContainer
+        ): TestDomain.SymbolAnswerPair =
+            TestDomain.SymbolAnswerPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun answerSymbolPair(
+            first: Answer,
+            second: String,
+            metas: MetaContainer
+        ): TestDomain.AnswerSymbolPair =
+            TestDomain.AnswerSymbolPair(
+                first = first,
+                second = second.asPrimitive(),
+                metas = metas)
+        
+        override fun answerSymbolPair_(
+            first: Answer,
+            second: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer
+        ): TestDomain.AnswerSymbolPair =
+            TestDomain.AnswerSymbolPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun variadicMin0(
+            ints: kotlin.collections.List<Long>,
+            metas: MetaContainer
+        ): TestDomain.VariadicMin0 =
+            TestDomain.VariadicMin0(
+                ints = ints.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun variadicMin0_(
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            metas: MetaContainer
+        ): TestDomain.VariadicMin0 =
+            TestDomain.VariadicMin0(
+                ints = ints,
+                metas = metas)
+        
+        override fun variadicMin0(
+            vararg ints: Long,
+            metas: MetaContainer
+        ): TestDomain.VariadicMin0 =
+            TestDomain.VariadicMin0(
+                ints = ints.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun variadicMin0_(
+            vararg ints: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): TestDomain.VariadicMin0 =
+            TestDomain.VariadicMin0(
+                ints = ints.toList(),
+                metas = metas)
+        
+        
+        override fun variadicMin1(
+            ints: kotlin.collections.List<Long>,
+            metas: MetaContainer
+        ): TestDomain.VariadicMin1 =
+            TestDomain.VariadicMin1(
+                ints = ints.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun variadicMin1_(
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            metas: MetaContainer
+        ): TestDomain.VariadicMin1 =
+            TestDomain.VariadicMin1(
+                ints = ints,
+                metas = metas)
+        
+        override fun variadicMin1(
+            ints0: Long,
+            vararg ints: Long,
+            metas: MetaContainer
+        ): TestDomain.VariadicMin1 =
+            TestDomain.VariadicMin1(
+                ints = listOfPrimitives(ints0) + ints.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun variadicMin1_(
+            ints0: org.partiql.pig.runtime.LongPrimitive,
+            vararg ints: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): TestDomain.VariadicMin1 =
+            TestDomain.VariadicMin1(
+                ints = listOfPrimitives(ints0) + ints.toList(),
+                metas = metas)
+        
+        
+        override fun elementVariadic(
+            name: String,
+            ints: kotlin.collections.List<Long>,
+            metas: MetaContainer
+        ): TestDomain.ElementVariadic =
+            TestDomain.ElementVariadic(
+                name = name.asPrimitive(),
+                ints = ints.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun elementVariadic_(
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            metas: MetaContainer
+        ): TestDomain.ElementVariadic =
+            TestDomain.ElementVariadic(
+                name = name,
+                ints = ints,
+                metas = metas)
+        
+        override fun elementVariadic(
+            name: String,
+            vararg ints: Long,
+            metas: MetaContainer
+        ): TestDomain.ElementVariadic =
+            TestDomain.ElementVariadic(
+                name = name.asPrimitive(),
+                ints = ints.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun elementVariadic_(
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            vararg ints: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): TestDomain.ElementVariadic =
+            TestDomain.ElementVariadic(
+                name = name,
+                ints = ints.toList(),
+                metas = metas)
+        
+        
+        override fun optional1(
+            value: Long?,
+            metas: MetaContainer
+        ): TestDomain.Optional1 =
+            TestDomain.Optional1(
+                value = value?.asPrimitive(),
+                metas = metas)
+        
+        override fun optional1_(
+            value: org.partiql.pig.runtime.LongPrimitive?,
+            metas: MetaContainer
+        ): TestDomain.Optional1 =
+            TestDomain.Optional1(
+                value = value,
+                metas = metas)
+        
+        
+        override fun optional2(
+            first: Long?,
+            second: Long?,
+            metas: MetaContainer
+        ): TestDomain.Optional2 =
+            TestDomain.Optional2(
+                first = first?.asPrimitive(),
+                second = second?.asPrimitive(),
+                metas = metas)
+        
+        override fun optional2_(
+            first: org.partiql.pig.runtime.LongPrimitive?,
+            second: org.partiql.pig.runtime.LongPrimitive?,
+            metas: MetaContainer
+        ): TestDomain.Optional2 =
+            TestDomain.Optional2(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun domainLevelRecord(
+            someField: Long,
+            anotherField: String,
+            optionalField: Long?,
+            metas: MetaContainer
+        ): TestDomain.DomainLevelRecord =
+            TestDomain.DomainLevelRecord(
+                someField = someField.asPrimitive(),
+                anotherField = anotherField.asPrimitive(),
+                optionalField = optionalField?.asPrimitive(),
+                metas = metas)
+        
+        override fun domainLevelRecord_(
+            someField: org.partiql.pig.runtime.LongPrimitive,
+            anotherField: org.partiql.pig.runtime.SymbolPrimitive,
+            optionalField: org.partiql.pig.runtime.LongPrimitive?,
+            metas: MetaContainer
+        ): TestDomain.DomainLevelRecord =
+            TestDomain.DomainLevelRecord(
+                someField = someField,
+                anotherField = anotherField,
+                optionalField = optionalField,
+                metas = metas)
+        
+        
+        override fun productWithRecord(
+            value: Long,
+            dlr: DomainLevelRecord,
+            metas: MetaContainer
+        ): TestDomain.ProductWithRecord =
+            TestDomain.ProductWithRecord(
+                value = value.asPrimitive(),
+                dlr = dlr,
+                metas = metas)
+        
+        override fun productWithRecord_(
+            value: org.partiql.pig.runtime.LongPrimitive,
+            dlr: DomainLevelRecord,
+            metas: MetaContainer
+        ): TestDomain.ProductWithRecord =
+            TestDomain.ProductWithRecord(
+                value = value,
+                dlr = dlr,
+                metas = metas)
+        
+        
+        override fun testSumTriplet(
+            a: TestSum,
+            b: TestSum,
+            c: TestSum,
+            metas: MetaContainer
+        ): TestDomain.TestSumTriplet =
+            TestDomain.TestSumTriplet(
+                a = a,
+                b = b,
+                c = c,
+                metas = metas)
+        
+        
+        override fun entityPair(
+            first: Entity,
+            second: Entity,
+            metas: MetaContainer
+        ): TestDomain.EntityPair =
+            TestDomain.EntityPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        // Variants for Sum: Answer 
+        override fun no(
+            metas: MetaContainer
+        ): TestDomain.Answer.No =
+            TestDomain.Answer.No(
+                metas = metas)
+        
+        
+        override fun yes(
+            metas: MetaContainer
+        ): TestDomain.Answer.Yes =
+            TestDomain.Answer.Yes(
+                metas = metas)
+        
+        
+        // Variants for Sum: SumWithRecord 
+        override fun variantWithRecord(
+            value: Long,
+            dlr: DomainLevelRecord,
+            metas: MetaContainer
+        ): TestDomain.SumWithRecord.VariantWithRecord =
+            TestDomain.SumWithRecord.VariantWithRecord(
+                value = value.asPrimitive(),
+                dlr = dlr,
+                metas = metas)
+        
+        override fun variantWithRecord_(
+            value: org.partiql.pig.runtime.LongPrimitive,
+            dlr: DomainLevelRecord,
+            metas: MetaContainer
+        ): TestDomain.SumWithRecord.VariantWithRecord =
+            TestDomain.SumWithRecord.VariantWithRecord(
+                value = value,
+                dlr = dlr,
+                metas = metas)
+        
+        
+        // Variants for Sum: TestSum 
+        override fun one(
+            a: Long,
+            metas: MetaContainer
+        ): TestDomain.TestSum.One =
+            TestDomain.TestSum.One(
+                a = a.asPrimitive(),
+                metas = metas)
+        
+        override fun one_(
+            a: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): TestDomain.TestSum.One =
+            TestDomain.TestSum.One(
+                a = a,
+                metas = metas)
+        
+        
+        override fun two(
+            a: Long,
+            b: Long,
+            metas: MetaContainer
+        ): TestDomain.TestSum.Two =
+            TestDomain.TestSum.Two(
+                a = a.asPrimitive(),
+                b = b.asPrimitive(),
+                metas = metas)
+        
+        override fun two_(
+            a: org.partiql.pig.runtime.LongPrimitive,
+            b: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): TestDomain.TestSum.Two =
+            TestDomain.TestSum.Two(
+                a = a,
+                b = b,
+                metas = metas)
+        
+        
+        override fun three(
+            a: Long,
+            b: Long,
+            c: Long,
+            metas: MetaContainer
+        ): TestDomain.TestSum.Three =
+            TestDomain.TestSum.Three(
+                a = a.asPrimitive(),
+                b = b.asPrimitive(),
+                c = c.asPrimitive(),
+                metas = metas)
+        
+        override fun three_(
+            a: org.partiql.pig.runtime.LongPrimitive,
+            b: org.partiql.pig.runtime.LongPrimitive,
+            c: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): TestDomain.TestSum.Three =
+            TestDomain.TestSum.Three(
+                a = a,
+                b = b,
+                c = c,
+                metas = metas)
+        
+        
+        // Variants for Sum: Entity 
+        override fun slug(
+            metas: MetaContainer
+        ): TestDomain.Entity.Slug =
+            TestDomain.Entity.Slug(
+                metas = metas)
+        
+        
+        override fun android(
+            id: Long,
+            metas: MetaContainer
+        ): TestDomain.Entity.Android =
+            TestDomain.Entity.Android(
+                id = id.asPrimitive(),
+                metas = metas)
+        
+        override fun android_(
+            id: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): TestDomain.Entity.Android =
+            TestDomain.Entity.Android(
+                id = id,
+                metas = metas)
+        
+        
+        override fun human(
+            firstName: String,
+            lastName: String,
+            title: String?,
+            parent: Entity?,
+            metas: MetaContainer
+        ): TestDomain.Entity.Human =
+            TestDomain.Entity.Human(
+                firstName = firstName.asPrimitive(),
+                lastName = lastName.asPrimitive(),
+                title = title?.asPrimitive(),
+                parent = parent,
+                metas = metas)
+        
+        override fun human_(
+            firstName: org.partiql.pig.runtime.SymbolPrimitive,
+            lastName: org.partiql.pig.runtime.SymbolPrimitive,
+            title: org.partiql.pig.runtime.SymbolPrimitive?,
+            parent: Entity?,
+            metas: MetaContainer
         ): TestDomain.Entity.Human =
             TestDomain.Entity.Human(
                 firstName = firstName,
@@ -7680,8 +8360,11 @@ class MultiWordDomain private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
+        @JvmStatic
+        fun BUILDER() : Builder = MultiWordDomainBuilder
+    
         fun <T: MultiWordDomainNode> build(block: Builder.() -> T) =
-            Builder.block()
+            MultiWordDomainBuilder.block()
     
         fun transform(element: AnyElement): MultiWordDomainNode =
             transform(element.asSexp())
@@ -7690,16 +8373,14 @@ class MultiWordDomain private constructor() {
             Transformer().transform(element)
     }
     
-    object Builder {
+    interface Builder {
                 // Tuples
         /**
          * Creates an instance of [MultiWordDomain.AaaAaa].
          */
         fun aaaAaa(
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAaa =
-            MultiWordDomain.AaaAaa(
-                metas = metas)
+        ): MultiWordDomain.AaaAaa
         
         
         /**
@@ -7708,10 +8389,7 @@ class MultiWordDomain private constructor() {
         fun aaaAab(
             dField: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAab =
-            MultiWordDomain.AaaAab(
-                dField = dField?.asPrimitive(),
-                metas = metas)
+        ): MultiWordDomain.AaaAab
         
         /**
          * Creates an instance of [MultiWordDomain.AaaAab].
@@ -7723,10 +8401,7 @@ class MultiWordDomain private constructor() {
         fun aaaAab_(
             dField: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAab =
-            MultiWordDomain.AaaAab(
-                dField = dField,
-                metas = metas)
+        ): MultiWordDomain.AaaAab
         
         
         /**
@@ -7736,11 +8411,7 @@ class MultiWordDomain private constructor() {
             dField: Long? = null,
             eField: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAac =
-            MultiWordDomain.AaaAac(
-                dField = dField?.asPrimitive(),
-                eField = eField?.asPrimitive(),
-                metas = metas)
+        ): MultiWordDomain.AaaAac
         
         /**
          * Creates an instance of [MultiWordDomain.AaaAac].
@@ -7753,11 +8424,7 @@ class MultiWordDomain private constructor() {
             dField: org.partiql.pig.runtime.LongPrimitive? = null,
             eField: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAac =
-            MultiWordDomain.AaaAac(
-                dField = dField,
-                eField = eField,
-                metas = metas)
+        ): MultiWordDomain.AaaAac
         
         
         /**
@@ -7766,10 +8433,7 @@ class MultiWordDomain private constructor() {
         fun aaaAad(
             dField: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAad =
-            MultiWordDomain.AaaAad(
-                dField = dField.map { it.asPrimitive() },
-                metas = metas)
+        ): MultiWordDomain.AaaAad
         
         /**
          * Creates an instance of [MultiWordDomain.AaaAad].
@@ -7781,10 +8445,7 @@ class MultiWordDomain private constructor() {
         fun aaaAad_(
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAad =
-            MultiWordDomain.AaaAad(
-                dField = dField,
-                metas = metas)
+        ): MultiWordDomain.AaaAad
         
         /**
          * Creates an instance of [MultiWordDomain.AaaAad].
@@ -7792,10 +8453,7 @@ class MultiWordDomain private constructor() {
         fun aaaAad(
             vararg dField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAad =
-            MultiWordDomain.AaaAad(
-                dField = dField.map { it.asPrimitive() },
-                metas = metas)
+        ): MultiWordDomain.AaaAad
         
         /**
          * Creates an instance of [MultiWordDomain.AaaAad].
@@ -7807,10 +8465,7 @@ class MultiWordDomain private constructor() {
         fun aaaAad_(
             vararg dField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAad =
-            MultiWordDomain.AaaAad(
-                dField = dField.toList(),
-                metas = metas)
+        ): MultiWordDomain.AaaAad
         
         
         /**
@@ -7819,10 +8474,7 @@ class MultiWordDomain private constructor() {
         fun aaaAae(
             dField: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAae =
-            MultiWordDomain.AaaAae(
-                dField = dField.map { it.asPrimitive() },
-                metas = metas)
+        ): MultiWordDomain.AaaAae
         
         /**
          * Creates an instance of [MultiWordDomain.AaaAae].
@@ -7834,10 +8486,7 @@ class MultiWordDomain private constructor() {
         fun aaaAae_(
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAae =
-            MultiWordDomain.AaaAae(
-                dField = dField,
-                metas = metas)
+        ): MultiWordDomain.AaaAae
         
         /**
          * Creates an instance of [MultiWordDomain.AaaAae].
@@ -7847,10 +8496,7 @@ class MultiWordDomain private constructor() {
             dField1: Long,
             vararg dField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAae =
-            MultiWordDomain.AaaAae(
-                dField = listOfPrimitives(dField0, dField1) + dField.map { it.asPrimitive() },
-                metas = metas)
+        ): MultiWordDomain.AaaAae
         
         /**
          * Creates an instance of [MultiWordDomain.AaaAae].
@@ -7864,10 +8510,7 @@ class MultiWordDomain private constructor() {
             dField1: org.partiql.pig.runtime.LongPrimitive,
             vararg dField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAae =
-            MultiWordDomain.AaaAae(
-                dField = listOfPrimitives(dField0, dField1) + dField.toList(),
-                metas = metas)
+        ): MultiWordDomain.AaaAae
         
         
         /**
@@ -7877,11 +8520,7 @@ class MultiWordDomain private constructor() {
             bField: Long,
             cField: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAaa =
-            MultiWordDomain.AabAaa(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
-                metas = metas)
+        ): MultiWordDomain.AabAaa
         
         /**
          * Creates an instance of [MultiWordDomain.AabAaa].
@@ -7894,11 +8533,7 @@ class MultiWordDomain private constructor() {
             bField: org.partiql.pig.runtime.LongPrimitive,
             cField: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAaa =
-            MultiWordDomain.AabAaa(
-                bField = bField,
-                cField = cField,
-                metas = metas)
+        ): MultiWordDomain.AabAaa
         
         
         /**
@@ -7909,12 +8544,7 @@ class MultiWordDomain private constructor() {
             cField: String,
             dField: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAab =
-            MultiWordDomain.AabAab(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
-                dField = dField?.asPrimitive(),
-                metas = metas)
+        ): MultiWordDomain.AabAab
         
         /**
          * Creates an instance of [MultiWordDomain.AabAab].
@@ -7928,12 +8558,7 @@ class MultiWordDomain private constructor() {
             cField: org.partiql.pig.runtime.SymbolPrimitive,
             dField: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAab =
-            MultiWordDomain.AabAab(
-                bField = bField,
-                cField = cField,
-                dField = dField,
-                metas = metas)
+        ): MultiWordDomain.AabAab
         
         
         /**
@@ -7945,13 +8570,7 @@ class MultiWordDomain private constructor() {
             dField: Long? = null,
             eField: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAac =
-            MultiWordDomain.AabAac(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
-                dField = dField?.asPrimitive(),
-                eField = eField?.asPrimitive(),
-                metas = metas)
+        ): MultiWordDomain.AabAac
         
         /**
          * Creates an instance of [MultiWordDomain.AabAac].
@@ -7966,13 +8585,7 @@ class MultiWordDomain private constructor() {
             dField: org.partiql.pig.runtime.LongPrimitive? = null,
             eField: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAac =
-            MultiWordDomain.AabAac(
-                bField = bField,
-                cField = cField,
-                dField = dField,
-                eField = eField,
-                metas = metas)
+        ): MultiWordDomain.AabAac
         
         
         /**
@@ -7983,12 +8596,7 @@ class MultiWordDomain private constructor() {
             cField: String,
             dField: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAad =
-            MultiWordDomain.AabAad(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
-                dField = dField.map { it.asPrimitive() },
-                metas = metas)
+        ): MultiWordDomain.AabAad
         
         /**
          * Creates an instance of [MultiWordDomain.AabAad].
@@ -8002,12 +8610,7 @@ class MultiWordDomain private constructor() {
             cField: org.partiql.pig.runtime.SymbolPrimitive,
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAad =
-            MultiWordDomain.AabAad(
-                bField = bField,
-                cField = cField,
-                dField = dField,
-                metas = metas)
+        ): MultiWordDomain.AabAad
         
         /**
          * Creates an instance of [MultiWordDomain.AabAad].
@@ -8017,12 +8620,7 @@ class MultiWordDomain private constructor() {
             cField: String,
             vararg dField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAad =
-            MultiWordDomain.AabAad(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
-                dField = dField.map { it.asPrimitive() },
-                metas = metas)
+        ): MultiWordDomain.AabAad
         
         /**
          * Creates an instance of [MultiWordDomain.AabAad].
@@ -8036,12 +8634,7 @@ class MultiWordDomain private constructor() {
             cField: org.partiql.pig.runtime.SymbolPrimitive,
             vararg dField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAad =
-            MultiWordDomain.AabAad(
-                bField = bField,
-                cField = cField,
-                dField = dField.toList(),
-                metas = metas)
+        ): MultiWordDomain.AabAad
         
         
         /**
@@ -8052,12 +8645,7 @@ class MultiWordDomain private constructor() {
             cField: String,
             dField: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAae =
-            MultiWordDomain.AabAae(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
-                dField = dField.map { it.asPrimitive() },
-                metas = metas)
+        ): MultiWordDomain.AabAae
         
         /**
          * Creates an instance of [MultiWordDomain.AabAae].
@@ -8071,12 +8659,7 @@ class MultiWordDomain private constructor() {
             cField: org.partiql.pig.runtime.SymbolPrimitive,
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAae =
-            MultiWordDomain.AabAae(
-                bField = bField,
-                cField = cField,
-                dField = dField,
-                metas = metas)
+        ): MultiWordDomain.AabAae
         
         /**
          * Creates an instance of [MultiWordDomain.AabAae].
@@ -8088,12 +8671,7 @@ class MultiWordDomain private constructor() {
             dField1: Long,
             vararg dField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAae =
-            MultiWordDomain.AabAae(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
-                dField = listOfPrimitives(dField0, dField1) + dField.map { it.asPrimitive() },
-                metas = metas)
+        ): MultiWordDomain.AabAae
         
         /**
          * Creates an instance of [MultiWordDomain.AabAae].
@@ -8109,12 +8687,7 @@ class MultiWordDomain private constructor() {
             dField1: org.partiql.pig.runtime.LongPrimitive,
             vararg dField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAae =
-            MultiWordDomain.AabAae(
-                bField = bField,
-                cField = cField,
-                dField = listOfPrimitives(dField0, dField1) + dField.toList(),
-                metas = metas)
+        ): MultiWordDomain.AabAae
         
         
         /**
@@ -8124,11 +8697,7 @@ class MultiWordDomain private constructor() {
             aField: Long,
             bbbField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.Rrr =
-            MultiWordDomain.Rrr(
-                aField = aField.asPrimitive(),
-                bbbField = bbbField.asPrimitive(),
-                metas = metas)
+        ): MultiWordDomain.Rrr
         
         /**
          * Creates an instance of [MultiWordDomain.Rrr].
@@ -8141,11 +8710,7 @@ class MultiWordDomain private constructor() {
             aField: org.partiql.pig.runtime.LongPrimitive,
             bbbField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.Rrr =
-            MultiWordDomain.Rrr(
-                aField = aField,
-                bbbField = bbbField,
-                metas = metas)
+        ): MultiWordDomain.Rrr
         
         
         // Variants for Sum: SssTtt 
@@ -8155,10 +8720,7 @@ class MultiWordDomain private constructor() {
         fun lll(
             uField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.SssTtt.Lll =
-            MultiWordDomain.SssTtt.Lll(
-                uField = uField.asPrimitive(),
-                metas = metas)
+        ): MultiWordDomain.SssTtt.Lll
         
         /**
          * Creates an instance of [MultiWordDomain.SssTtt.Lll].
@@ -8170,10 +8732,7 @@ class MultiWordDomain private constructor() {
         fun lll_(
             uField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.SssTtt.Lll =
-            MultiWordDomain.SssTtt.Lll(
-                uField = uField,
-                metas = metas)
+        ): MultiWordDomain.SssTtt.Lll
         
         
         /**
@@ -8182,10 +8741,7 @@ class MultiWordDomain private constructor() {
         fun mmm(
             vField: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.SssTtt.Mmm =
-            MultiWordDomain.SssTtt.Mmm(
-                vField = vField.asPrimitive(),
-                metas = metas)
+        ): MultiWordDomain.SssTtt.Mmm
         
         /**
          * Creates an instance of [MultiWordDomain.SssTtt.Mmm].
@@ -8197,6 +8753,353 @@ class MultiWordDomain private constructor() {
         fun mmm_(
             vField: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
+        ): MultiWordDomain.SssTtt.Mmm
+    }
+    
+    private object MultiWordDomainBuilder : Builder {
+                // Tuples
+        override fun aaaAaa(
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAaa =
+            MultiWordDomain.AaaAaa(
+                metas = metas)
+        
+        
+        override fun aaaAab(
+            dField: Long?,
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAab =
+            MultiWordDomain.AaaAab(
+                dField = dField?.asPrimitive(),
+                metas = metas)
+        
+        override fun aaaAab_(
+            dField: org.partiql.pig.runtime.LongPrimitive?,
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAab =
+            MultiWordDomain.AaaAab(
+                dField = dField,
+                metas = metas)
+        
+        
+        override fun aaaAac(
+            dField: Long?,
+            eField: String?,
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAac =
+            MultiWordDomain.AaaAac(
+                dField = dField?.asPrimitive(),
+                eField = eField?.asPrimitive(),
+                metas = metas)
+        
+        override fun aaaAac_(
+            dField: org.partiql.pig.runtime.LongPrimitive?,
+            eField: org.partiql.pig.runtime.SymbolPrimitive?,
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAac =
+            MultiWordDomain.AaaAac(
+                dField = dField,
+                eField = eField,
+                metas = metas)
+        
+        
+        override fun aaaAad(
+            dField: kotlin.collections.List<Long>,
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAad =
+            MultiWordDomain.AaaAad(
+                dField = dField.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun aaaAad_(
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAad =
+            MultiWordDomain.AaaAad(
+                dField = dField,
+                metas = metas)
+        
+        override fun aaaAad(
+            vararg dField: Long,
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAad =
+            MultiWordDomain.AaaAad(
+                dField = dField.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun aaaAad_(
+            vararg dField: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAad =
+            MultiWordDomain.AaaAad(
+                dField = dField.toList(),
+                metas = metas)
+        
+        
+        override fun aaaAae(
+            dField: kotlin.collections.List<Long>,
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAae =
+            MultiWordDomain.AaaAae(
+                dField = dField.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun aaaAae_(
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAae =
+            MultiWordDomain.AaaAae(
+                dField = dField,
+                metas = metas)
+        
+        override fun aaaAae(
+            dField0: Long,
+            dField1: Long,
+            vararg dField: Long,
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAae =
+            MultiWordDomain.AaaAae(
+                dField = listOfPrimitives(dField0, dField1) + dField.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun aaaAae_(
+            dField0: org.partiql.pig.runtime.LongPrimitive,
+            dField1: org.partiql.pig.runtime.LongPrimitive,
+            vararg dField: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): MultiWordDomain.AaaAae =
+            MultiWordDomain.AaaAae(
+                dField = listOfPrimitives(dField0, dField1) + dField.toList(),
+                metas = metas)
+        
+        
+        override fun aabAaa(
+            bField: Long,
+            cField: String,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAaa =
+            MultiWordDomain.AabAaa(
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
+                metas = metas)
+        
+        override fun aabAaa_(
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAaa =
+            MultiWordDomain.AabAaa(
+                bField = bField,
+                cField = cField,
+                metas = metas)
+        
+        
+        override fun aabAab(
+            bField: Long,
+            cField: String,
+            dField: Long?,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAab =
+            MultiWordDomain.AabAab(
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
+                dField = dField?.asPrimitive(),
+                metas = metas)
+        
+        override fun aabAab_(
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField: org.partiql.pig.runtime.LongPrimitive?,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAab =
+            MultiWordDomain.AabAab(
+                bField = bField,
+                cField = cField,
+                dField = dField,
+                metas = metas)
+        
+        
+        override fun aabAac(
+            bField: Long,
+            cField: String,
+            dField: Long?,
+            eField: String?,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAac =
+            MultiWordDomain.AabAac(
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
+                dField = dField?.asPrimitive(),
+                eField = eField?.asPrimitive(),
+                metas = metas)
+        
+        override fun aabAac_(
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField: org.partiql.pig.runtime.LongPrimitive?,
+            eField: org.partiql.pig.runtime.SymbolPrimitive?,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAac =
+            MultiWordDomain.AabAac(
+                bField = bField,
+                cField = cField,
+                dField = dField,
+                eField = eField,
+                metas = metas)
+        
+        
+        override fun aabAad(
+            bField: Long,
+            cField: String,
+            dField: kotlin.collections.List<Long>,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAad =
+            MultiWordDomain.AabAad(
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
+                dField = dField.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun aabAad_(
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAad =
+            MultiWordDomain.AabAad(
+                bField = bField,
+                cField = cField,
+                dField = dField,
+                metas = metas)
+        
+        override fun aabAad(
+            bField: Long,
+            cField: String,
+            vararg dField: Long,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAad =
+            MultiWordDomain.AabAad(
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
+                dField = dField.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun aabAad_(
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            vararg dField: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAad =
+            MultiWordDomain.AabAad(
+                bField = bField,
+                cField = cField,
+                dField = dField.toList(),
+                metas = metas)
+        
+        
+        override fun aabAae(
+            bField: Long,
+            cField: String,
+            dField: kotlin.collections.List<Long>,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAae =
+            MultiWordDomain.AabAae(
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
+                dField = dField.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun aabAae_(
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAae =
+            MultiWordDomain.AabAae(
+                bField = bField,
+                cField = cField,
+                dField = dField,
+                metas = metas)
+        
+        override fun aabAae(
+            bField: Long,
+            cField: String,
+            dField0: Long,
+            dField1: Long,
+            vararg dField: Long,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAae =
+            MultiWordDomain.AabAae(
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
+                dField = listOfPrimitives(dField0, dField1) + dField.map { it.asPrimitive() },
+                metas = metas)
+        
+        override fun aabAae_(
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField0: org.partiql.pig.runtime.LongPrimitive,
+            dField1: org.partiql.pig.runtime.LongPrimitive,
+            vararg dField: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): MultiWordDomain.AabAae =
+            MultiWordDomain.AabAae(
+                bField = bField,
+                cField = cField,
+                dField = listOfPrimitives(dField0, dField1) + dField.toList(),
+                metas = metas)
+        
+        
+        override fun rrr(
+            aField: Long,
+            bbbField: Long,
+            metas: MetaContainer
+        ): MultiWordDomain.Rrr =
+            MultiWordDomain.Rrr(
+                aField = aField.asPrimitive(),
+                bbbField = bbbField.asPrimitive(),
+                metas = metas)
+        
+        override fun rrr_(
+            aField: org.partiql.pig.runtime.LongPrimitive,
+            bbbField: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): MultiWordDomain.Rrr =
+            MultiWordDomain.Rrr(
+                aField = aField,
+                bbbField = bbbField,
+                metas = metas)
+        
+        
+        // Variants for Sum: SssTtt 
+        override fun lll(
+            uField: Long,
+            metas: MetaContainer
+        ): MultiWordDomain.SssTtt.Lll =
+            MultiWordDomain.SssTtt.Lll(
+                uField = uField.asPrimitive(),
+                metas = metas)
+        
+        override fun lll_(
+            uField: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): MultiWordDomain.SssTtt.Lll =
+            MultiWordDomain.SssTtt.Lll(
+                uField = uField,
+                metas = metas)
+        
+        
+        override fun mmm(
+            vField: String,
+            metas: MetaContainer
+        ): MultiWordDomain.SssTtt.Mmm =
+            MultiWordDomain.SssTtt.Mmm(
+                vField = vField.asPrimitive(),
+                metas = metas)
+        
+        override fun mmm_(
+            vField: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer
         ): MultiWordDomain.SssTtt.Mmm =
             MultiWordDomain.SssTtt.Mmm(
                 vField = vField,
@@ -9659,8 +10562,11 @@ class PartiqlBasic private constructor() {
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
+        @JvmStatic
+        fun BUILDER() : Builder = PartiqlBasicBuilder
+    
         fun <T: PartiqlBasicNode> build(block: Builder.() -> T) =
-            Builder.block()
+            PartiqlBasicBuilder.block()
     
         fun transform(element: AnyElement): PartiqlBasicNode =
             transform(element.asSexp())
@@ -9669,7 +10575,7 @@ class PartiqlBasic private constructor() {
             Transformer().transform(element)
     }
     
-    object Builder {
+    interface Builder {
                 // Tuples
         /**
          * Creates an instance of [PartiqlBasic.ExprPair].
@@ -9678,11 +10584,7 @@ class PartiqlBasic private constructor() {
             first: Expr,
             second: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.ExprPair =
-            PartiqlBasic.ExprPair(
-                first = first,
-                second = second,
-                metas = metas)
+        ): PartiqlBasic.ExprPair
         
         
         /**
@@ -9692,11 +10594,7 @@ class PartiqlBasic private constructor() {
             value: Expr,
             asAlias: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.GroupByItem =
-            PartiqlBasic.GroupByItem(
-                value = value,
-                asAlias = asAlias?.asPrimitive(),
-                metas = metas)
+        ): PartiqlBasic.GroupByItem
         
         /**
          * Creates an instance of [PartiqlBasic.GroupByItem].
@@ -9709,11 +10607,7 @@ class PartiqlBasic private constructor() {
             value: Expr,
             asAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.GroupByItem =
-            PartiqlBasic.GroupByItem(
-                value = value,
-                asAlias = asAlias,
-                metas = metas)
+        ): PartiqlBasic.GroupByItem
         
         
         /**
@@ -9722,10 +10616,7 @@ class PartiqlBasic private constructor() {
         fun groupByList(
             items: kotlin.collections.List<GroupByItem>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.GroupByList =
-            PartiqlBasic.GroupByList(
-                items = items,
-                metas = metas)
+        ): PartiqlBasic.GroupByList
         
         /**
          * Creates an instance of [PartiqlBasic.GroupByList].
@@ -9734,10 +10625,7 @@ class PartiqlBasic private constructor() {
             items0: GroupByItem,
             vararg items: GroupByItem,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.GroupByList =
-            PartiqlBasic.GroupByList(
-                items = listOf(items0) + items.toList(),
-                metas = metas)
+        ): PartiqlBasic.GroupByList
         
         
         /**
@@ -9747,11 +10635,7 @@ class PartiqlBasic private constructor() {
             items: GroupByList,
             groupAsAlias: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.GroupBy =
-            PartiqlBasic.GroupBy(
-                items = items,
-                groupAsAlias = groupAsAlias?.asPrimitive(),
-                metas = metas)
+        ): PartiqlBasic.GroupBy
         
         /**
          * Creates an instance of [PartiqlBasic.GroupBy].
@@ -9764,11 +10648,7 @@ class PartiqlBasic private constructor() {
             items: GroupByList,
             groupAsAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.GroupBy =
-            PartiqlBasic.GroupBy(
-                items = items,
-                groupAsAlias = groupAsAlias,
-                metas = metas)
+        ): PartiqlBasic.GroupBy
         
         
         // Variants for Sum: Projection 
@@ -9778,10 +10658,7 @@ class PartiqlBasic private constructor() {
         fun projectList(
             items: kotlin.collections.List<ProjectItem>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Projection.ProjectList =
-            PartiqlBasic.Projection.ProjectList(
-                items = items,
-                metas = metas)
+        ): PartiqlBasic.Projection.ProjectList
         
         /**
          * Creates an instance of [PartiqlBasic.Projection.ProjectList].
@@ -9790,10 +10667,7 @@ class PartiqlBasic private constructor() {
             items0: ProjectItem,
             vararg items: ProjectItem,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Projection.ProjectList =
-            PartiqlBasic.Projection.ProjectList(
-                items = listOf(items0) + items.toList(),
-                metas = metas)
+        ): PartiqlBasic.Projection.ProjectList
         
         
         /**
@@ -9802,10 +10676,7 @@ class PartiqlBasic private constructor() {
         fun projectValue(
             value: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Projection.ProjectValue =
-            PartiqlBasic.Projection.ProjectValue(
-                value = value,
-                metas = metas)
+        ): PartiqlBasic.Projection.ProjectValue
         
         
         // Variants for Sum: ProjectItem 
@@ -9814,9 +10685,7 @@ class PartiqlBasic private constructor() {
          */
         fun projectAll(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.ProjectItem.ProjectAll =
-            PartiqlBasic.ProjectItem.ProjectAll(
-                metas = metas)
+        ): PartiqlBasic.ProjectItem.ProjectAll
         
         
         /**
@@ -9826,11 +10695,7 @@ class PartiqlBasic private constructor() {
             value: Expr,
             asAlias: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.ProjectItem.ProjectExpr =
-            PartiqlBasic.ProjectItem.ProjectExpr(
-                value = value,
-                asAlias = asAlias?.asPrimitive(),
-                metas = metas)
+        ): PartiqlBasic.ProjectItem.ProjectExpr
         
         /**
          * Creates an instance of [PartiqlBasic.ProjectItem.ProjectExpr].
@@ -9843,11 +10708,7 @@ class PartiqlBasic private constructor() {
             value: Expr,
             asAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.ProjectItem.ProjectExpr =
-            PartiqlBasic.ProjectItem.ProjectExpr(
-                value = value,
-                asAlias = asAlias,
-                metas = metas)
+        ): PartiqlBasic.ProjectItem.ProjectExpr
         
         
         // Variants for Sum: JoinType 
@@ -9856,9 +10717,7 @@ class PartiqlBasic private constructor() {
          */
         fun inner(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.JoinType.Inner =
-            PartiqlBasic.JoinType.Inner(
-                metas = metas)
+        ): PartiqlBasic.JoinType.Inner
         
         
         /**
@@ -9866,9 +10725,7 @@ class PartiqlBasic private constructor() {
          */
         fun left(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.JoinType.Left =
-            PartiqlBasic.JoinType.Left(
-                metas = metas)
+        ): PartiqlBasic.JoinType.Left
         
         
         /**
@@ -9876,9 +10733,7 @@ class PartiqlBasic private constructor() {
          */
         fun right(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.JoinType.Right =
-            PartiqlBasic.JoinType.Right(
-                metas = metas)
+        ): PartiqlBasic.JoinType.Right
         
         
         /**
@@ -9886,9 +10741,7 @@ class PartiqlBasic private constructor() {
          */
         fun outer(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.JoinType.Outer =
-            PartiqlBasic.JoinType.Outer(
-                metas = metas)
+        ): PartiqlBasic.JoinType.Outer
         
         
         // Variants for Sum: FromSource 
@@ -9901,13 +10754,7 @@ class PartiqlBasic private constructor() {
             atAlias: String? = null,
             byAlias: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.FromSource.Scan =
-            PartiqlBasic.FromSource.Scan(
-                expr = expr,
-                asAlias = asAlias?.asPrimitive(),
-                atAlias = atAlias?.asPrimitive(),
-                byAlias = byAlias?.asPrimitive(),
-                metas = metas)
+        ): PartiqlBasic.FromSource.Scan
         
         /**
          * Creates an instance of [PartiqlBasic.FromSource.Scan].
@@ -9922,13 +10769,7 @@ class PartiqlBasic private constructor() {
             atAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
             byAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.FromSource.Scan =
-            PartiqlBasic.FromSource.Scan(
-                expr = expr,
-                asAlias = asAlias,
-                atAlias = atAlias,
-                byAlias = byAlias,
-                metas = metas)
+        ): PartiqlBasic.FromSource.Scan
         
         
         /**
@@ -9940,13 +10781,7 @@ class PartiqlBasic private constructor() {
             right: FromSource,
             predicate: Expr? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.FromSource.Join =
-            PartiqlBasic.FromSource.Join(
-                type = type,
-                left = left,
-                right = right,
-                predicate = predicate,
-                metas = metas)
+        ): PartiqlBasic.FromSource.Join
         
         
         // Variants for Sum: CaseSensitivity 
@@ -9955,9 +10790,7 @@ class PartiqlBasic private constructor() {
          */
         fun caseSensitive(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.CaseSensitivity.CaseSensitive =
-            PartiqlBasic.CaseSensitivity.CaseSensitive(
-                metas = metas)
+        ): PartiqlBasic.CaseSensitivity.CaseSensitive
         
         
         /**
@@ -9965,9 +10798,7 @@ class PartiqlBasic private constructor() {
          */
         fun caseInsensitive(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.CaseSensitivity.CaseInsensitive =
-            PartiqlBasic.CaseSensitivity.CaseInsensitive(
-                metas = metas)
+        ): PartiqlBasic.CaseSensitivity.CaseInsensitive
         
         
         // Variants for Sum: ScopeQualifier 
@@ -9976,9 +10807,7 @@ class PartiqlBasic private constructor() {
          */
         fun unqualified(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.ScopeQualifier.Unqualified =
-            PartiqlBasic.ScopeQualifier.Unqualified(
-                metas = metas)
+        ): PartiqlBasic.ScopeQualifier.Unqualified
         
         
         /**
@@ -9986,9 +10815,7 @@ class PartiqlBasic private constructor() {
          */
         fun qualified(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.ScopeQualifier.Qualified =
-            PartiqlBasic.ScopeQualifier.Qualified(
-                metas = metas)
+        ): PartiqlBasic.ScopeQualifier.Qualified
         
         
         // Variants for Sum: SetQuantifier 
@@ -9997,9 +10824,7 @@ class PartiqlBasic private constructor() {
          */
         fun all(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.SetQuantifier.All =
-            PartiqlBasic.SetQuantifier.All(
-                metas = metas)
+        ): PartiqlBasic.SetQuantifier.All
         
         
         /**
@@ -10007,9 +10832,7 @@ class PartiqlBasic private constructor() {
          */
         fun distinct(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.SetQuantifier.Distinct =
-            PartiqlBasic.SetQuantifier.Distinct(
-                metas = metas)
+        ): PartiqlBasic.SetQuantifier.Distinct
         
         
         // Variants for Sum: PathElement 
@@ -10019,10 +10842,7 @@ class PartiqlBasic private constructor() {
         fun pathExpr(
             expr: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.PathElement.PathExpr =
-            PartiqlBasic.PathElement.PathExpr(
-                expr = expr,
-                metas = metas)
+        ): PartiqlBasic.PathElement.PathExpr
         
         
         /**
@@ -10030,9 +10850,7 @@ class PartiqlBasic private constructor() {
          */
         fun pathWildcard(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.PathElement.PathWildcard =
-            PartiqlBasic.PathElement.PathWildcard(
-                metas = metas)
+        ): PartiqlBasic.PathElement.PathWildcard
         
         
         /**
@@ -10040,9 +10858,7 @@ class PartiqlBasic private constructor() {
          */
         fun pathUnpivot(
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.PathElement.PathUnpivot =
-            PartiqlBasic.PathElement.PathUnpivot(
-                metas = metas)
+        ): PartiqlBasic.PathElement.PathUnpivot
         
         
         // Variants for Sum: Expr 
@@ -10052,10 +10868,7 @@ class PartiqlBasic private constructor() {
         fun lit(
             value: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Lit =
-            PartiqlBasic.Expr.Lit(
-                value = value.asAnyElement(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Lit
         
         
         /**
@@ -10066,12 +10879,7 @@ class PartiqlBasic private constructor() {
             case: CaseSensitivity,
             scopeQualifier: ScopeQualifier,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Id =
-            PartiqlBasic.Expr.Id(
-                name = name.asPrimitive(),
-                case = case,
-                scopeQualifier = scopeQualifier,
-                metas = metas)
+        ): PartiqlBasic.Expr.Id
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Id].
@@ -10085,12 +10893,7 @@ class PartiqlBasic private constructor() {
             case: CaseSensitivity,
             scopeQualifier: ScopeQualifier,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Id =
-            PartiqlBasic.Expr.Id(
-                name = name,
-                case = case,
-                scopeQualifier = scopeQualifier,
-                metas = metas)
+        ): PartiqlBasic.Expr.Id
         
         
         /**
@@ -10099,10 +10902,7 @@ class PartiqlBasic private constructor() {
         fun parameter(
             index: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Parameter =
-            PartiqlBasic.Expr.Parameter(
-                index = index.asPrimitive(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Parameter
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Parameter].
@@ -10114,10 +10914,7 @@ class PartiqlBasic private constructor() {
         fun parameter_(
             index: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Parameter =
-            PartiqlBasic.Expr.Parameter(
-                index = index,
-                metas = metas)
+        ): PartiqlBasic.Expr.Parameter
         
         
         /**
@@ -10126,10 +10923,7 @@ class PartiqlBasic private constructor() {
         fun not(
             expr: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Not =
-            PartiqlBasic.Expr.Not(
-                expr = expr,
-                metas = metas)
+        ): PartiqlBasic.Expr.Not
         
         
         /**
@@ -10138,10 +10932,7 @@ class PartiqlBasic private constructor() {
         fun plus(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Plus =
-            PartiqlBasic.Expr.Plus(
-                operands = operands,
-                metas = metas)
+        ): PartiqlBasic.Expr.Plus
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Plus].
@@ -10151,10 +10942,7 @@ class PartiqlBasic private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Plus =
-            PartiqlBasic.Expr.Plus(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Plus
         
         
         /**
@@ -10163,10 +10951,7 @@ class PartiqlBasic private constructor() {
         fun minus(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Minus =
-            PartiqlBasic.Expr.Minus(
-                operands = operands,
-                metas = metas)
+        ): PartiqlBasic.Expr.Minus
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Minus].
@@ -10176,10 +10961,7 @@ class PartiqlBasic private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Minus =
-            PartiqlBasic.Expr.Minus(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Minus
         
         
         /**
@@ -10188,10 +10970,7 @@ class PartiqlBasic private constructor() {
         fun times(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Times =
-            PartiqlBasic.Expr.Times(
-                operands = operands,
-                metas = metas)
+        ): PartiqlBasic.Expr.Times
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Times].
@@ -10201,10 +10980,7 @@ class PartiqlBasic private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Times =
-            PartiqlBasic.Expr.Times(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Times
         
         
         /**
@@ -10213,10 +10989,7 @@ class PartiqlBasic private constructor() {
         fun divide(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Divide =
-            PartiqlBasic.Expr.Divide(
-                operands = operands,
-                metas = metas)
+        ): PartiqlBasic.Expr.Divide
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Divide].
@@ -10226,10 +10999,7 @@ class PartiqlBasic private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Divide =
-            PartiqlBasic.Expr.Divide(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Divide
         
         
         /**
@@ -10238,10 +11008,7 @@ class PartiqlBasic private constructor() {
         fun modulo(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Modulo =
-            PartiqlBasic.Expr.Modulo(
-                operands = operands,
-                metas = metas)
+        ): PartiqlBasic.Expr.Modulo
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Modulo].
@@ -10251,10 +11018,7 @@ class PartiqlBasic private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Modulo =
-            PartiqlBasic.Expr.Modulo(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Modulo
         
         
         /**
@@ -10263,10 +11027,7 @@ class PartiqlBasic private constructor() {
         fun concat(
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Concat =
-            PartiqlBasic.Expr.Concat(
-                operands = operands,
-                metas = metas)
+        ): PartiqlBasic.Expr.Concat
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Concat].
@@ -10276,10 +11037,7 @@ class PartiqlBasic private constructor() {
             operands1: Expr,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Concat =
-            PartiqlBasic.Expr.Concat(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Concat
         
         
         /**
@@ -10290,12 +11048,7 @@ class PartiqlBasic private constructor() {
             right: Expr,
             escape: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Like =
-            PartiqlBasic.Expr.Like(
-                left = left,
-                right = right,
-                escape = escape,
-                metas = metas)
+        ): PartiqlBasic.Expr.Like
         
         
         /**
@@ -10306,12 +11059,7 @@ class PartiqlBasic private constructor() {
             from: Expr,
             to: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Between =
-            PartiqlBasic.Expr.Between(
-                value = value,
-                from = from,
-                to = to,
-                metas = metas)
+        ): PartiqlBasic.Expr.Between
         
         
         /**
@@ -10321,11 +11069,7 @@ class PartiqlBasic private constructor() {
             root: Expr,
             elements: kotlin.collections.List<PathElement>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Path =
-            PartiqlBasic.Expr.Path(
-                root = root,
-                elements = elements,
-                metas = metas)
+        ): PartiqlBasic.Expr.Path
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Path].
@@ -10335,11 +11079,7 @@ class PartiqlBasic private constructor() {
             elements0: PathElement,
             vararg elements: PathElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Path =
-            PartiqlBasic.Expr.Path(
-                root = root,
-                elements = listOf(elements0) + elements.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Path
         
         
         /**
@@ -10349,11 +11089,7 @@ class PartiqlBasic private constructor() {
             name: String,
             args: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Call =
-            PartiqlBasic.Expr.Call(
-                name = name.asPrimitive(),
-                args = args,
-                metas = metas)
+        ): PartiqlBasic.Expr.Call
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Call].
@@ -10366,11 +11102,7 @@ class PartiqlBasic private constructor() {
             name: org.partiql.pig.runtime.SymbolPrimitive,
             args: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Call =
-            PartiqlBasic.Expr.Call(
-                name = name,
-                args = args,
-                metas = metas)
+        ): PartiqlBasic.Expr.Call
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Call].
@@ -10380,11 +11112,7 @@ class PartiqlBasic private constructor() {
             args0: Expr,
             vararg args: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Call =
-            PartiqlBasic.Expr.Call(
-                name = name.asPrimitive(),
-                args = listOf(args0) + args.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Call
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Call].
@@ -10398,11 +11126,7 @@ class PartiqlBasic private constructor() {
             args0: Expr,
             vararg args: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Call =
-            PartiqlBasic.Expr.Call(
-                name = name,
-                args = listOf(args0) + args.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Call
         
         
         /**
@@ -10413,12 +11137,7 @@ class PartiqlBasic private constructor() {
             setQuantifier: SetQuantifier,
             arg: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.CallAgg =
-            PartiqlBasic.Expr.CallAgg(
-                name = name.asPrimitive(),
-                setQuantifier = setQuantifier,
-                arg = arg,
-                metas = metas)
+        ): PartiqlBasic.Expr.CallAgg
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.CallAgg].
@@ -10432,12 +11151,7 @@ class PartiqlBasic private constructor() {
             setQuantifier: SetQuantifier,
             arg: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.CallAgg =
-            PartiqlBasic.Expr.CallAgg(
-                name = name,
-                setQuantifier = setQuantifier,
-                arg = arg,
-                metas = metas)
+        ): PartiqlBasic.Expr.CallAgg
         
         
         /**
@@ -10447,11 +11161,7 @@ class PartiqlBasic private constructor() {
             value: Expr,
             branches: kotlin.collections.List<ExprPair>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.SimpleCase =
-            PartiqlBasic.Expr.SimpleCase(
-                value = value,
-                branches = branches,
-                metas = metas)
+        ): PartiqlBasic.Expr.SimpleCase
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.SimpleCase].
@@ -10461,11 +11171,7 @@ class PartiqlBasic private constructor() {
             branches0: ExprPair,
             vararg branches: ExprPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.SimpleCase =
-            PartiqlBasic.Expr.SimpleCase(
-                value = value,
-                branches = listOf(branches0) + branches.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.SimpleCase
         
         
         /**
@@ -10474,10 +11180,7 @@ class PartiqlBasic private constructor() {
         fun searchedCase(
             branches: kotlin.collections.List<ExprPair>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.SearchedCase =
-            PartiqlBasic.Expr.SearchedCase(
-                branches = branches,
-                metas = metas)
+        ): PartiqlBasic.Expr.SearchedCase
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.SearchedCase].
@@ -10486,10 +11189,7 @@ class PartiqlBasic private constructor() {
             branches0: ExprPair,
             vararg branches: ExprPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.SearchedCase =
-            PartiqlBasic.Expr.SearchedCase(
-                branches = listOf(branches0) + branches.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.SearchedCase
         
         
         /**
@@ -10498,10 +11198,7 @@ class PartiqlBasic private constructor() {
         fun struct(
             fields: kotlin.collections.List<ExprPair>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Struct =
-            PartiqlBasic.Expr.Struct(
-                fields = fields,
-                metas = metas)
+        ): PartiqlBasic.Expr.Struct
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Struct].
@@ -10509,10 +11206,7 @@ class PartiqlBasic private constructor() {
         fun struct(
             vararg fields: ExprPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Struct =
-            PartiqlBasic.Expr.Struct(
-                fields = fields.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Struct
         
         
         /**
@@ -10521,10 +11215,7 @@ class PartiqlBasic private constructor() {
         fun bag(
             values: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Bag =
-            PartiqlBasic.Expr.Bag(
-                values = values,
-                metas = metas)
+        ): PartiqlBasic.Expr.Bag
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.Bag].
@@ -10532,10 +11223,7 @@ class PartiqlBasic private constructor() {
         fun bag(
             vararg values: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.Bag =
-            PartiqlBasic.Expr.Bag(
-                values = values.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.Bag
         
         
         /**
@@ -10544,10 +11232,7 @@ class PartiqlBasic private constructor() {
         fun list(
             values: kotlin.collections.List<Expr>,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.List =
-            PartiqlBasic.Expr.List(
-                values = values,
-                metas = metas)
+        ): PartiqlBasic.Expr.List
         
         /**
          * Creates an instance of [PartiqlBasic.Expr.List].
@@ -10555,10 +11240,7 @@ class PartiqlBasic private constructor() {
         fun list(
             vararg values: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): PartiqlBasic.Expr.List =
-            PartiqlBasic.Expr.List(
-                values = values.toList(),
-                metas = metas)
+        ): PartiqlBasic.Expr.List
         
         
         /**
@@ -10573,6 +11255,673 @@ class PartiqlBasic private constructor() {
             having: Expr? = null,
             limit: Expr? = null,
             metas: MetaContainer = emptyMetaContainer()
+        ): PartiqlBasic.Expr.Select
+    }
+    
+    private object PartiqlBasicBuilder : Builder {
+                // Tuples
+        override fun exprPair(
+            first: Expr,
+            second: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.ExprPair =
+            PartiqlBasic.ExprPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
+        override fun groupByItem(
+            value: Expr,
+            asAlias: String?,
+            metas: MetaContainer
+        ): PartiqlBasic.GroupByItem =
+            PartiqlBasic.GroupByItem(
+                value = value,
+                asAlias = asAlias?.asPrimitive(),
+                metas = metas)
+        
+        override fun groupByItem_(
+            value: Expr,
+            asAlias: org.partiql.pig.runtime.SymbolPrimitive?,
+            metas: MetaContainer
+        ): PartiqlBasic.GroupByItem =
+            PartiqlBasic.GroupByItem(
+                value = value,
+                asAlias = asAlias,
+                metas = metas)
+        
+        
+        override fun groupByList(
+            items: kotlin.collections.List<GroupByItem>,
+            metas: MetaContainer
+        ): PartiqlBasic.GroupByList =
+            PartiqlBasic.GroupByList(
+                items = items,
+                metas = metas)
+        
+        override fun groupByList(
+            items0: GroupByItem,
+            vararg items: GroupByItem,
+            metas: MetaContainer
+        ): PartiqlBasic.GroupByList =
+            PartiqlBasic.GroupByList(
+                items = listOf(items0) + items.toList(),
+                metas = metas)
+        
+        
+        override fun groupBy(
+            items: GroupByList,
+            groupAsAlias: String?,
+            metas: MetaContainer
+        ): PartiqlBasic.GroupBy =
+            PartiqlBasic.GroupBy(
+                items = items,
+                groupAsAlias = groupAsAlias?.asPrimitive(),
+                metas = metas)
+        
+        override fun groupBy_(
+            items: GroupByList,
+            groupAsAlias: org.partiql.pig.runtime.SymbolPrimitive?,
+            metas: MetaContainer
+        ): PartiqlBasic.GroupBy =
+            PartiqlBasic.GroupBy(
+                items = items,
+                groupAsAlias = groupAsAlias,
+                metas = metas)
+        
+        
+        // Variants for Sum: Projection 
+        override fun projectList(
+            items: kotlin.collections.List<ProjectItem>,
+            metas: MetaContainer
+        ): PartiqlBasic.Projection.ProjectList =
+            PartiqlBasic.Projection.ProjectList(
+                items = items,
+                metas = metas)
+        
+        override fun projectList(
+            items0: ProjectItem,
+            vararg items: ProjectItem,
+            metas: MetaContainer
+        ): PartiqlBasic.Projection.ProjectList =
+            PartiqlBasic.Projection.ProjectList(
+                items = listOf(items0) + items.toList(),
+                metas = metas)
+        
+        
+        override fun projectValue(
+            value: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Projection.ProjectValue =
+            PartiqlBasic.Projection.ProjectValue(
+                value = value,
+                metas = metas)
+        
+        
+        // Variants for Sum: ProjectItem 
+        override fun projectAll(
+            metas: MetaContainer
+        ): PartiqlBasic.ProjectItem.ProjectAll =
+            PartiqlBasic.ProjectItem.ProjectAll(
+                metas = metas)
+        
+        
+        override fun projectExpr(
+            value: Expr,
+            asAlias: String?,
+            metas: MetaContainer
+        ): PartiqlBasic.ProjectItem.ProjectExpr =
+            PartiqlBasic.ProjectItem.ProjectExpr(
+                value = value,
+                asAlias = asAlias?.asPrimitive(),
+                metas = metas)
+        
+        override fun projectExpr_(
+            value: Expr,
+            asAlias: org.partiql.pig.runtime.SymbolPrimitive?,
+            metas: MetaContainer
+        ): PartiqlBasic.ProjectItem.ProjectExpr =
+            PartiqlBasic.ProjectItem.ProjectExpr(
+                value = value,
+                asAlias = asAlias,
+                metas = metas)
+        
+        
+        // Variants for Sum: JoinType 
+        override fun inner(
+            metas: MetaContainer
+        ): PartiqlBasic.JoinType.Inner =
+            PartiqlBasic.JoinType.Inner(
+                metas = metas)
+        
+        
+        override fun left(
+            metas: MetaContainer
+        ): PartiqlBasic.JoinType.Left =
+            PartiqlBasic.JoinType.Left(
+                metas = metas)
+        
+        
+        override fun right(
+            metas: MetaContainer
+        ): PartiqlBasic.JoinType.Right =
+            PartiqlBasic.JoinType.Right(
+                metas = metas)
+        
+        
+        override fun outer(
+            metas: MetaContainer
+        ): PartiqlBasic.JoinType.Outer =
+            PartiqlBasic.JoinType.Outer(
+                metas = metas)
+        
+        
+        // Variants for Sum: FromSource 
+        override fun scan(
+            expr: Expr,
+            asAlias: String?,
+            atAlias: String?,
+            byAlias: String?,
+            metas: MetaContainer
+        ): PartiqlBasic.FromSource.Scan =
+            PartiqlBasic.FromSource.Scan(
+                expr = expr,
+                asAlias = asAlias?.asPrimitive(),
+                atAlias = atAlias?.asPrimitive(),
+                byAlias = byAlias?.asPrimitive(),
+                metas = metas)
+        
+        override fun scan_(
+            expr: Expr,
+            asAlias: org.partiql.pig.runtime.SymbolPrimitive?,
+            atAlias: org.partiql.pig.runtime.SymbolPrimitive?,
+            byAlias: org.partiql.pig.runtime.SymbolPrimitive?,
+            metas: MetaContainer
+        ): PartiqlBasic.FromSource.Scan =
+            PartiqlBasic.FromSource.Scan(
+                expr = expr,
+                asAlias = asAlias,
+                atAlias = atAlias,
+                byAlias = byAlias,
+                metas = metas)
+        
+        
+        override fun join(
+            type: JoinType,
+            left: FromSource,
+            right: FromSource,
+            predicate: Expr?,
+            metas: MetaContainer
+        ): PartiqlBasic.FromSource.Join =
+            PartiqlBasic.FromSource.Join(
+                type = type,
+                left = left,
+                right = right,
+                predicate = predicate,
+                metas = metas)
+        
+        
+        // Variants for Sum: CaseSensitivity 
+        override fun caseSensitive(
+            metas: MetaContainer
+        ): PartiqlBasic.CaseSensitivity.CaseSensitive =
+            PartiqlBasic.CaseSensitivity.CaseSensitive(
+                metas = metas)
+        
+        
+        override fun caseInsensitive(
+            metas: MetaContainer
+        ): PartiqlBasic.CaseSensitivity.CaseInsensitive =
+            PartiqlBasic.CaseSensitivity.CaseInsensitive(
+                metas = metas)
+        
+        
+        // Variants for Sum: ScopeQualifier 
+        override fun unqualified(
+            metas: MetaContainer
+        ): PartiqlBasic.ScopeQualifier.Unqualified =
+            PartiqlBasic.ScopeQualifier.Unqualified(
+                metas = metas)
+        
+        
+        override fun qualified(
+            metas: MetaContainer
+        ): PartiqlBasic.ScopeQualifier.Qualified =
+            PartiqlBasic.ScopeQualifier.Qualified(
+                metas = metas)
+        
+        
+        // Variants for Sum: SetQuantifier 
+        override fun all(
+            metas: MetaContainer
+        ): PartiqlBasic.SetQuantifier.All =
+            PartiqlBasic.SetQuantifier.All(
+                metas = metas)
+        
+        
+        override fun distinct(
+            metas: MetaContainer
+        ): PartiqlBasic.SetQuantifier.Distinct =
+            PartiqlBasic.SetQuantifier.Distinct(
+                metas = metas)
+        
+        
+        // Variants for Sum: PathElement 
+        override fun pathExpr(
+            expr: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.PathElement.PathExpr =
+            PartiqlBasic.PathElement.PathExpr(
+                expr = expr,
+                metas = metas)
+        
+        
+        override fun pathWildcard(
+            metas: MetaContainer
+        ): PartiqlBasic.PathElement.PathWildcard =
+            PartiqlBasic.PathElement.PathWildcard(
+                metas = metas)
+        
+        
+        override fun pathUnpivot(
+            metas: MetaContainer
+        ): PartiqlBasic.PathElement.PathUnpivot =
+            PartiqlBasic.PathElement.PathUnpivot(
+                metas = metas)
+        
+        
+        // Variants for Sum: Expr 
+        override fun lit(
+            value: com.amazon.ionelement.api.IonElement,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Lit =
+            PartiqlBasic.Expr.Lit(
+                value = value.asAnyElement(),
+                metas = metas)
+        
+        
+        override fun id(
+            name: String,
+            case: CaseSensitivity,
+            scopeQualifier: ScopeQualifier,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Id =
+            PartiqlBasic.Expr.Id(
+                name = name.asPrimitive(),
+                case = case,
+                scopeQualifier = scopeQualifier,
+                metas = metas)
+        
+        override fun id_(
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            case: CaseSensitivity,
+            scopeQualifier: ScopeQualifier,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Id =
+            PartiqlBasic.Expr.Id(
+                name = name,
+                case = case,
+                scopeQualifier = scopeQualifier,
+                metas = metas)
+        
+        
+        override fun parameter(
+            index: Long,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Parameter =
+            PartiqlBasic.Expr.Parameter(
+                index = index.asPrimitive(),
+                metas = metas)
+        
+        override fun parameter_(
+            index: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Parameter =
+            PartiqlBasic.Expr.Parameter(
+                index = index,
+                metas = metas)
+        
+        
+        override fun not(
+            expr: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Not =
+            PartiqlBasic.Expr.Not(
+                expr = expr,
+                metas = metas)
+        
+        
+        override fun plus(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Plus =
+            PartiqlBasic.Expr.Plus(
+                operands = operands,
+                metas = metas)
+        
+        override fun plus(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Plus =
+            PartiqlBasic.Expr.Plus(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun minus(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Minus =
+            PartiqlBasic.Expr.Minus(
+                operands = operands,
+                metas = metas)
+        
+        override fun minus(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Minus =
+            PartiqlBasic.Expr.Minus(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun times(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Times =
+            PartiqlBasic.Expr.Times(
+                operands = operands,
+                metas = metas)
+        
+        override fun times(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Times =
+            PartiqlBasic.Expr.Times(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun divide(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Divide =
+            PartiqlBasic.Expr.Divide(
+                operands = operands,
+                metas = metas)
+        
+        override fun divide(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Divide =
+            PartiqlBasic.Expr.Divide(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun modulo(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Modulo =
+            PartiqlBasic.Expr.Modulo(
+                operands = operands,
+                metas = metas)
+        
+        override fun modulo(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Modulo =
+            PartiqlBasic.Expr.Modulo(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun concat(
+            operands: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Concat =
+            PartiqlBasic.Expr.Concat(
+                operands = operands,
+                metas = metas)
+        
+        override fun concat(
+            operands0: Expr,
+            operands1: Expr,
+            vararg operands: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Concat =
+            PartiqlBasic.Expr.Concat(
+                operands = listOf(operands0, operands1) + operands.toList(),
+                metas = metas)
+        
+        
+        override fun like(
+            left: Expr,
+            right: Expr,
+            escape: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Like =
+            PartiqlBasic.Expr.Like(
+                left = left,
+                right = right,
+                escape = escape,
+                metas = metas)
+        
+        
+        override fun between(
+            value: Expr,
+            from: Expr,
+            to: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Between =
+            PartiqlBasic.Expr.Between(
+                value = value,
+                from = from,
+                to = to,
+                metas = metas)
+        
+        
+        override fun path(
+            root: Expr,
+            elements: kotlin.collections.List<PathElement>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Path =
+            PartiqlBasic.Expr.Path(
+                root = root,
+                elements = elements,
+                metas = metas)
+        
+        override fun path(
+            root: Expr,
+            elements0: PathElement,
+            vararg elements: PathElement,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Path =
+            PartiqlBasic.Expr.Path(
+                root = root,
+                elements = listOf(elements0) + elements.toList(),
+                metas = metas)
+        
+        
+        override fun call(
+            name: String,
+            args: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Call =
+            PartiqlBasic.Expr.Call(
+                name = name.asPrimitive(),
+                args = args,
+                metas = metas)
+        
+        override fun call_(
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            args: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Call =
+            PartiqlBasic.Expr.Call(
+                name = name,
+                args = args,
+                metas = metas)
+        
+        override fun call(
+            name: String,
+            args0: Expr,
+            vararg args: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Call =
+            PartiqlBasic.Expr.Call(
+                name = name.asPrimitive(),
+                args = listOf(args0) + args.toList(),
+                metas = metas)
+        
+        override fun call_(
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            args0: Expr,
+            vararg args: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Call =
+            PartiqlBasic.Expr.Call(
+                name = name,
+                args = listOf(args0) + args.toList(),
+                metas = metas)
+        
+        
+        override fun callAgg(
+            name: String,
+            setQuantifier: SetQuantifier,
+            arg: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.CallAgg =
+            PartiqlBasic.Expr.CallAgg(
+                name = name.asPrimitive(),
+                setQuantifier = setQuantifier,
+                arg = arg,
+                metas = metas)
+        
+        override fun callAgg_(
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            setQuantifier: SetQuantifier,
+            arg: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.CallAgg =
+            PartiqlBasic.Expr.CallAgg(
+                name = name,
+                setQuantifier = setQuantifier,
+                arg = arg,
+                metas = metas)
+        
+        
+        override fun simpleCase(
+            value: Expr,
+            branches: kotlin.collections.List<ExprPair>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.SimpleCase =
+            PartiqlBasic.Expr.SimpleCase(
+                value = value,
+                branches = branches,
+                metas = metas)
+        
+        override fun simpleCase(
+            value: Expr,
+            branches0: ExprPair,
+            vararg branches: ExprPair,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.SimpleCase =
+            PartiqlBasic.Expr.SimpleCase(
+                value = value,
+                branches = listOf(branches0) + branches.toList(),
+                metas = metas)
+        
+        
+        override fun searchedCase(
+            branches: kotlin.collections.List<ExprPair>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.SearchedCase =
+            PartiqlBasic.Expr.SearchedCase(
+                branches = branches,
+                metas = metas)
+        
+        override fun searchedCase(
+            branches0: ExprPair,
+            vararg branches: ExprPair,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.SearchedCase =
+            PartiqlBasic.Expr.SearchedCase(
+                branches = listOf(branches0) + branches.toList(),
+                metas = metas)
+        
+        
+        override fun struct(
+            fields: kotlin.collections.List<ExprPair>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Struct =
+            PartiqlBasic.Expr.Struct(
+                fields = fields,
+                metas = metas)
+        
+        override fun struct(
+            vararg fields: ExprPair,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Struct =
+            PartiqlBasic.Expr.Struct(
+                fields = fields.toList(),
+                metas = metas)
+        
+        
+        override fun bag(
+            values: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Bag =
+            PartiqlBasic.Expr.Bag(
+                values = values,
+                metas = metas)
+        
+        override fun bag(
+            vararg values: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.Bag =
+            PartiqlBasic.Expr.Bag(
+                values = values.toList(),
+                metas = metas)
+        
+        
+        override fun list(
+            values: kotlin.collections.List<Expr>,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.List =
+            PartiqlBasic.Expr.List(
+                values = values,
+                metas = metas)
+        
+        override fun list(
+            vararg values: Expr,
+            metas: MetaContainer
+        ): PartiqlBasic.Expr.List =
+            PartiqlBasic.Expr.List(
+                values = values.toList(),
+                metas = metas)
+        
+        
+        override fun select(
+            setq: SetQuantifier?,
+            project: Projection,
+            from: FromSource,
+            where: Expr?,
+            group: GroupBy?,
+            having: Expr?,
+            limit: Expr?,
+            metas: MetaContainer
         ): PartiqlBasic.Expr.Select =
             PartiqlBasic.Expr.Select(
                 setq = setq,
