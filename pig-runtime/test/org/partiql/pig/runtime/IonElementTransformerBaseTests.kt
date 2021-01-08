@@ -31,6 +31,10 @@ class  IonElementTransformerBaseTests {
     abstract class DummyDomainNode : DomainNode
 
     data class CorrectDomainNode(val someString: String, override val metas: MetaContainer = emptyMetaContainer()): DummyDomainNode() {
+        override fun copyMetas(newMetas: MetaContainer): DomainNode {
+            error("does not need to be implemented for tests")
+        }
+
         override fun withMeta(metaKey: String, metaValue: Any): DomainNode {
             error("does not need to be implemented for tests")
         }
@@ -40,6 +44,10 @@ class  IonElementTransformerBaseTests {
     }
 
     data class IncorrectDomainNode(val someString: String): DummyDomainNode() {
+        override fun copyMetas(newMetas: MetaContainer): DomainNode {
+            error("does not need to be implemented for tests")
+        }
+
         override fun withMeta(metaKey: String, metaValue: Any): DomainNode {
             error("does not need to be implemented for tests")
         }

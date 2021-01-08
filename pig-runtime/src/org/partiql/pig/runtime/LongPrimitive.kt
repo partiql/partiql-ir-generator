@@ -31,6 +31,10 @@ class LongPrimitive(val value: Long, override val metas: MetaContainer) : Domain
     fun copy(value: Long = this.value, metas: MetaContainer = this.metas): LongPrimitive =
         LongPrimitive(value, metas)
 
+    /** Creates a copy of the current [LongPrimitive] with [newMetas] as the new metas. */
+    override fun copyMetas(newMetas: MetaContainer): LongPrimitive =
+        LongPrimitive(value, newMetas)
+
     /** Creates a copy of the current [LongPrimitive] with the specified additional meta. */
     override fun withMeta(metaKey: String, metaValue: Any): LongPrimitive =
         LongPrimitive(this.value, metas + metaContainerOf(metaKey to metaValue))
