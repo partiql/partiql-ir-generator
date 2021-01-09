@@ -1,3 +1,5 @@
+import java.nio.file.Paths
+
 /*
  * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -41,29 +43,42 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 }
 
-task generateTestDomains(type: Exec) {
-    workingDir projectDir
-    //commandLine "/bin/sh -c \"echo $projectDir\""
+final PIG_INPUT_DIR = './type-domains'
+final PIG_OUTPUT_DIR = './src/org/partiql/pig/tests/generated/'
+final PIG_TARGET_PACKAGE = 'org.partiql.pig.tests.generated'
+final universesToGenerate = ['toy-lang', 'sample-universe', 'partiql-basic']
 
-    final universeFile = './type-domains/sample-universe.ion'
-    final namespace = 'org.partiql.pig.tests.generated'
-    final outputFile = './src/org/partiql/pig/tests/generated/sample-universe.kt'
-    def pathToPig = new File(projectDir, '../pig/build/install/pig/bin/pig').getCanonicalPath().toString()
-    commandLine pathToPig, '-u', universeFile, '-t', 'kotlin', '-n', namespace, '-o', outputFile
-
+// the universe-specific tasks registered below will be added as dependencies of this task
+// provides a simplified way to ask pig to generate all the universes, i.e. ./gradlew pig_all
+task pig_all {
+    group 'pig'
 }
 
-// Always make sure the code generator is built and "installed" before generating code!
-// Note that this test harness should *not* take a dependency on the generator directly,
-// but we still need it to be built before we invoke it to generate the test domains that
-// we exercise during these tests.
-// The installDist task below installs the pig distribution at ../pig/build/install/pig
-generateTestDomains.dependsOn project(':pig').tasks.installDist
+// Make sure all pig tasks have completed before the kotlin code is compiled.
+compileKotlin.dependsOn pig_all
 
-// Also ensure that generateTestDomains is invoked before the build of this project
-build.dependsOn generateTestDomains
+universesToGenerate.each({ u ->
+    tasks.register("pig-generate-${u}") { generateTask ->
+        group 'pig'
+        def pathToPig = new File(projectDir, '../pig/build/install/pig/bin/pig').getCanonicalPath().toString()
+        def pathToUniverseFile = Paths.get(projectDir.toString(), PIG_INPUT_DIR, "${u}.ion")
+        def pathToOutputFile = Paths.get(projectDir.toString(), PIG_OUTPUT_DIR, "${u}.kt")
 
+        tasks.findByName("pig_all").dependsOn generateTask
 
+        // Make sure the :pig:installDist task has completed before the pig tasks are generated
+        // this installs the binary and gradle-generated launch script to the build directory
+        // so it is accessible to the `exec` task below.
+        dependsOn project(":pig").tasks.installDist
+
+        doLast {
+            exec {
+                workingDir projectDir
+                commandLine pathToPig, '-u', pathToUniverseFile, '-t', 'kotlin', '-n', PIG_TARGET_PACKAGE, '-o', pathToOutputFile
+            }
+        }
+    }
+})
 
 test {
     useJUnitPlatform()

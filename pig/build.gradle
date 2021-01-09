@@ -81,6 +81,10 @@ task javadocJar(type: Jar) {
     classifier = "javadoc"
 }
 
+build {
+    finalizedBy installDist
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
