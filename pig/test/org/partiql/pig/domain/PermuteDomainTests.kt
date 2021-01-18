@@ -25,7 +25,6 @@ import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.domain.parser.parseTypeUniverse
 
 class PermuteDomainTests {
-
     /**
      * Runs a simple type universe that uses through all processing steps and verifies the result.
      *
@@ -68,12 +67,12 @@ class PermuteDomainTests {
         val concreteDomain = concretes.single { it.tag == "test_domain" }
 
         // In the original domain, the `pair` type consists of two ions
-        val ionPair = concreteDomain.types.single { it.tag == "pair" } as DataType.Tuple
+        val ionPair = concreteDomain.types.single { it.tag == "pair" } as DataType.UserType.Tuple
         assertEquals(2, ionPair.namedElements.size)
         assertTrue(ionPair.namedElements.all { it.typeReference.typeName == "ion" && it.typeReference.arity is Arity.Required })
 
         // In test.domain the "thing" sum has "a", "b", and "c" variants.
-        val thing = concreteDomain.types.single { it.tag == "thing" } as DataType.Sum
+        val thing = concreteDomain.types.single { it.tag == "thing" } as DataType.UserType.Sum
         assertEquals(3, thing.variants.size)
         assertEquals(1, thing.variants.filter { it.tag == "a"}.size)
         assertEquals(1, thing.variants.filter { it.tag == "b"}.size)
@@ -86,12 +85,12 @@ class PermuteDomainTests {
         assertTrue(permutedDomain.types.map { it.tag }.containsAll(listOf("pair", "thing", "other_pair", "new_pair")))
 
         // In the permuted domain, the 'pair' type consists of two ints'
-        val intPair = permutedDomain.types.single { it.tag == "pair" } as DataType.Tuple
+        val intPair = permutedDomain.types.single { it.tag == "pair" } as DataType.UserType.Tuple
         assertEquals(2, intPair.namedElements.size)
         assertTrue(intPair.namedElements.all { it.typeReference.typeName == "int" && it.typeReference.arity is Arity.Required })
 
         // In the permuted domain, the "thing.a" variant has been replaced with "thing.d" and "thing.e" has been added
-        val exThing = permutedDomain.types.single { it.tag == "thing" } as DataType.Sum
+        val exThing = permutedDomain.types.single { it.tag == "thing" } as DataType.UserType.Sum
         assertEquals(4, exThing.variants.size)
         assertTrue(exThing.variants.none { it.tag == "a"})
         assertEquals(1, exThing.variants.filter { it.tag == "b"}.size)

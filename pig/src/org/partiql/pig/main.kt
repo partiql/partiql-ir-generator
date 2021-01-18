@@ -24,9 +24,8 @@ import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.generator.custom.applyCustomTemplate
 import org.partiql.pig.generator.html.applyHtmlTemplate
-import org.partiql.pig.generator.kotlin.KTypeUniverse
 import org.partiql.pig.generator.kotlin.applyKotlinTemplate
-import org.partiql.pig.generator.kotlin.toKTypeDomain
+import org.partiql.pig.generator.kotlin.convertToKTypeUniverse
 import java.io.FileInputStream
 import java.io.PrintWriter
 import kotlin.system.exitProcess
@@ -71,29 +70,27 @@ fun generateCode(command: Command.Generate) {
     }
 
     progress("permuting domains...")
-    val allTypeDomains =typeUniverse.computeTypeDomains()
 
     PrintWriter(command.outputFile).use { printWriter ->
         when (command.target) {
             is TargetLanguage.Kotlin -> {
                 progress("applying Kotlin pre-processing")
-                val kotlinTypeUniverse = KTypeUniverse(allTypeDomains.map { it.toKTypeDomain() })
+                val kotlinTypeUniverse = typeUniverse.convertToKTypeUniverse()
 
                 progress("applying the Kotlin template...")
                 applyKotlinTemplate(command.target.namespace, kotlinTypeUniverse, printWriter)
             }
             is TargetLanguage.Custom -> {
                 progress("applying ${command.target.templateFile}")
-                applyCustomTemplate(command.target.templateFile, allTypeDomains, printWriter)
+                applyCustomTemplate(command.target.templateFile, typeUniverse.computeTypeDomains(), printWriter)
             }
             is TargetLanguage.Html -> {
                 progress("applying the HTML template")
-                applyHtmlTemplate(allTypeDomains, printWriter)
+                applyHtmlTemplate(typeUniverse.computeTypeDomains(), printWriter)
             }
         }
     }
 
     progress("universe generation complete!")
 }
-
 

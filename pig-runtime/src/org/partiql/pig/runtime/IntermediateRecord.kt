@@ -16,11 +16,10 @@
 package org.partiql.pig.runtime
 
 import com.amazon.ionelement.api.AnyElement
-import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.SexpElement
-import com.amazon.ionelement.api.location
 import com.amazon.ionelement.api.head
+import com.amazon.ionelement.api.location
 import com.amazon.ionelement.api.tail
 
 /**

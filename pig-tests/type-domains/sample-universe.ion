@@ -117,3 +117,71 @@
             bbb_field::(b_field int))
 
 ))
+
+
+//////////////////////////////////////////////////////////////////////////////
+// Permute domain tests
+//////////////////////////////////////////////////////////////////////////////
+
+(define test_permute_domain_a
+    (domain
+        // These will be removed (but not replaced) in the permuted domain
+        (product product_to_remove whatever::symbol)
+        (record record_to_remove (irrelevant int))
+        (sum sum_to_remove (doesnt) (matter))
+
+        // 5 different data types tested here:
+        // - product
+        // - record
+        // - sum (ensure sum will be permuted)
+        // - products sum variant
+        // - records sum variant
+
+        // these will be removed and replaced
+        (product product_a one::int)
+        (record record_a (one int))
+        (sum sum_a (who) (cares))
+
+        // the variants of this sum will be modified as indicated by their names
+        (sum sum_b (will_be_unchanged) (will_be_removed) (will_be_replaced something::int))
+
+        // These are here to ensure they make it through the perumute process without modification
+
+        (product unpermuted_product foo::symbol bar::int)
+        (record unpermuted_record (foo symbol) (bar int))
+
+        (sum unpermuted_sum
+            (unpermuted_product_variant foo::symbol bar::int)
+            (unpermuted_record_variant (foo symbol) (bar int)))
+))
+
+(define test_permute_domain_b
+    (permute_domain test_permute_domain_a
+        (exclude
+            // these will not be replaced
+            product_to_remove
+            record_to_remove
+            sum_to_remove
+            // these will be replaced
+            product_a
+            record_a
+            sum_a
+        )
+        (include
+            (product product_a one::symbol)
+            (record record_a (one symbol))
+
+            // These are new to test_permute_domain_b
+            (product new_product foo::int)
+            (record new_record (foo int))
+            (sum new_sum (eek) (whatever))
+        )
+        (with sum_b
+            (exclude will_be_removed will_be_replaced)
+            (include
+                (will_be_replaced something::symbol))
+        )
+))
+
+(transform test_permute_domain_a test_permute_domain_b)
+

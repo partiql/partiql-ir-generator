@@ -80,7 +80,14 @@ class TypeDomainSemanticCheckerTests {
                      makeErr(1, 64, SemanticErrorContext.MoreThanOneVariadicElement)),
 
             TestCase("(define some_domain (domain (product some_product x::(? ion))))",
-                     makeErr(1, 51, SemanticErrorContext.OptionalIonTypeElement)))
+                     makeErr(1, 51, SemanticErrorContext.OptionalIonTypeElement)),
+
+            TestCase("(define foo (domain)) (transform bar foo)",
+                makeErr(1, 23, SemanticErrorContext.SourceDomainDoesNotExist("bar"))),
+
+            TestCase("(define foo (domain)) (transform foo bar)",
+                makeErr(1, 23, SemanticErrorContext.DestinationDomainDoesNotExist("bar")))
+            )
 
         @JvmStatic
         @Suppress("unused")

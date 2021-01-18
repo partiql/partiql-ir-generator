@@ -25,7 +25,19 @@ import org.partiql.pig.domain.model.TypeDomain
   otherwise be.
  */
 
-data class KTypeUniverse(val domains: List<KTypeDomain>)
+data class KTypeUniverse(val domains: List<KTypeDomain>, val transforms: List<KTransform>)
+
+/**
+ * Models the *difference* between a source domain and a destination domain.
+ */
+data class KTransform(
+    /**
+     * This KTypeDomain instance will be derived from the *difference* between the destination
+     * domain and the source domain.  See [TypeUniverse.computeTypeDomains] to learn how this
+     * difference is computed.
+     */
+    val sourceDomainDifference: KTypeDomain,
+    val destDomainKotlinName: String)
 
 data class KTypeDomain(
     /** The name of the type domain in the generated Kotlin code. .*/
@@ -80,14 +92,17 @@ data class KTuple(
     val arity: IntRange,
     val builderFunctions: List<KBuilderFunction>,
     val isRecord: Boolean,
+    // TODO: kdoc
+    val isTransformAbstract: Boolean,
     val hasVariadicElement: Boolean
-)
+) {
+
+}
 
 data class KSum(
     val kotlinName: String,
     val superClass: String,
-    val variants: List<KTuple>
+    val variants: List<KTuple>,
+    // TODO: kdoc
+    val isRemoved: Boolean
 )
-
-fun TypeDomain.toKTypeDomain(): KTypeDomain = KTypeDomainConverter(this).convert()
-

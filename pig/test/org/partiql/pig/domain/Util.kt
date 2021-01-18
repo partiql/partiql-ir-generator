@@ -25,6 +25,7 @@ import org.partiql.pig.domain.model.NamedElement
 import org.partiql.pig.domain.model.PermutedDomain
 import org.partiql.pig.domain.model.PermutedSum
 import org.partiql.pig.domain.model.Statement
+import org.partiql.pig.domain.model.Transform
 import org.partiql.pig.domain.model.TupleType
 import org.partiql.pig.domain.model.TypeDomain
 import org.partiql.pig.domain.model.TypeUniverse
@@ -57,7 +58,9 @@ fun Statement.toIonElement(): IonElement =
                     ionSymbol(tag),
                     ionSexpOf(
                         ionSymbol("domain"),
-                        *userTypes.map { it.toIonElement(includeTypeTag = true) }.toTypedArray()))
+                        *userTypes
+                            .filterNot { it.isDifferent }
+                            .map { it.toIonElement(includeTypeTag = true) }.toTypedArray()))
             is PermutedDomain ->
                 ionSexpOf(
                         ionSymbol("define"),
@@ -73,6 +76,11 @@ fun Statement.toIonElement(): IonElement =
                                     ionSymbol("include"),
                                     *includedTypes.map { it.toIonElement(includeTypeTag = true) }.toTypedArray())
                         ) + permutedSums.map { it.toIonElement() }))
+            is Transform ->
+                ionSexpOf(
+                    ionSymbol("transform"),
+                    ionSymbol(this.sourceDomainTag),
+                    ionSymbol(this.destinationDomainTag))
         }
 
 fun PermutedSum.toIonElement(): IonElement =
@@ -91,17 +99,19 @@ fun DataType.toIonElement(includeTypeTag: Boolean): IonElement = when(this) {
     DataType.Ion -> ionSymbol("ion")
     DataType.Int -> ionSymbol("int")
     DataType.Symbol -> ionSymbol("symbol")
-    is DataType.Tuple ->
+    is DataType.UserType.Tuple ->
         ionSexpOf(
             listOfNotNull(
                 if(includeTypeTag) ionSymbol(tupleType.toString().toLowerCase()) else null,
                 ionSymbol(tag),
                 *namedElements.map { it.toIonElement(this.tupleType) }.toTypedArray()))
-    is DataType.Sum ->
+    is DataType.UserType.Sum ->
         ionSexpOf(
             ionSymbol("sum"),
             ionSymbol(tag),
-            *variants.map { it.toIonElement(includeTypeTag = false) }.toTypedArray())
+            *variants
+                .filterNot { it.isDifferent }
+                .map { it.toIonElement(includeTypeTag = false) }.toTypedArray())
 }
 
 fun NamedElement.toIonElement(tupleType: TupleType) =

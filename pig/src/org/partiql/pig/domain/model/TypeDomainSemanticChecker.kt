@@ -56,8 +56,8 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
 
 
             when (dataType) {
-                is DataType.Tuple -> checkElementNames(dataType)
-                is DataType.Sum -> {
+                is DataType.UserType.Tuple -> checkElementNames(dataType)
+                is DataType.UserType.Sum -> {
                     dataType.variants.forEach { variant ->
                         // Check that the variant name isn't already used.
                         if (names.putIfAbsent(variant.tag, NameType.VARIANT) != null) {
@@ -76,7 +76,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
         }
     }
 
-    private fun checkElementNames(dataType: DataType.Tuple) {
+    private fun checkElementNames(dataType: DataType.UserType.Tuple) {
         when (dataType.tupleType) {
             TupleType.PRODUCT -> { /* */ }
             TupleType.RECORD -> checkRecordElementTags(dataType)
@@ -86,7 +86,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
         checkTupleElementIdentifiers(dataType)
     }
 
-    private fun checkTupleElementIdentifiers(variant: DataType.Tuple) {
+    private fun checkTupleElementIdentifiers(variant: DataType.UserType.Tuple) {
         val elementIdentifiers = mutableSetOf<String>()
         variant.namedElements.forEach {
             when {
@@ -96,7 +96,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
         }
     }
 
-    private fun checkRecordElementTags(variant: DataType.Tuple) {
+    private fun checkRecordElementTags(variant: DataType.UserType.Tuple) {
         val elementTags = mutableSetOf<String>()
         variant.namedElements.forEach {
             when {
@@ -113,10 +113,10 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
     private fun errorCheck() {
         typeDomain.types.forEach { dataType ->
             when (dataType) {
-                is DataType.Tuple -> {
+                is DataType.UserType.Tuple -> {
                     checkTupleForErrors(dataType)
                 }
-                is DataType.Sum -> {
+                is DataType.UserType.Sum -> {
                     if (dataType.variants.none()) {
                         semanticError(dataType.metas, SemanticErrorContext.EmptySumType(dataType.tag))
                     }
@@ -133,7 +133,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
         }
     }
 
-    private fun checkTupleForErrors(t: DataType.Tuple) {
+    private fun checkTupleForErrors(t: DataType.UserType.Tuple) {
         when(t.tupleType) {
             TupleType.PRODUCT -> checkProductForErrors(t)
             TupleType.RECORD -> checkRecordForErrors(t)
@@ -141,7 +141,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
     }
 
     // Check all type references to ensure they refer to valid types
-    private fun checkProductForErrors(p: DataType.Tuple) {
+    private fun checkProductForErrors(p: DataType.UserType.Tuple) {
         p.namedElements.forEach { typeRef ->
             checkTypeRef(typeRef.typeReference)
         }
@@ -150,7 +150,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
         checkProductArgumentOrder(p)
     }
 
-    private fun checkRecordForErrors(r: DataType.Tuple) {
+    private fun checkRecordForErrors(r: DataType.UserType.Tuple) {
         if(r.namedElements.none()) {
             semanticError(r.metas, SemanticErrorContext.EmptyRecord)
         }
@@ -187,7 +187,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
      *  This is implemented as a simple state machine.
      */
 
-    private fun checkProductArgumentOrder(p: DataType.Tuple) {
+    private fun checkProductArgumentOrder(p: DataType.UserType.Tuple) {
         var currentState = ArgumentState.REQUIRED
         p.namedElements.forEach { element ->
             val arity = element.typeReference.arity
@@ -242,7 +242,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
      * there: It's a valid value of this argument, not a placeholder for
      * unprovided optional argument.
      */
-    private fun checkProductIonFieldArity(p: DataType.Tuple) =
+    private fun checkProductIonFieldArity(p: DataType.UserType.Tuple) =
         p.namedElements.forEach { element ->
             val dataType = typeDomain.resolveTypeRef(element.typeReference)
             if (dataType == DataType.Ion && element.typeReference.arity == Arity.Optional)

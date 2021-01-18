@@ -196,7 +196,7 @@ companion object {
         transform(element.asSexp())
 
     fun transform(element: SexpElement): ${domain.kotlinName}Node =
-        Transformer().transform(element)
+        IonElementTransformer().transform(element)
 }
 
 interface Builder {
@@ -280,7 +280,7 @@ sealed class ${s.kotlinName}(override val metas: MetaContainer = emptyMetaContai
 [/#list]
 
 /////////////////////////////////////////////////////////////////////////////
-// Transformer
+// IonElementTransformer
 /////////////////////////////////////////////////////////////////////////////
 
 [#macro transformer_case tuple domain_name]
@@ -310,7 +310,7 @@ sealed class ${s.kotlinName}(override val metas: MetaContainer = emptyMetaContai
     }
 [/#macro]
 
-private class Transformer : IonElementTransformerBase<${domain.kotlinName}Node>() {
+private class IonElementTransformer : IonElementTransformerBase<${domain.kotlinName}Node>() {
 
     override fun innerTransform(sexp: SexpElement): ${domain.kotlinName}Node {
         return when(sexp.tag) {
@@ -346,4 +346,18 @@ private class Transformer : IonElementTransformerBase<${domain.kotlinName}Node>(
 [/@indent]
 }
 
+
+[/#list]
+
+//////////////////////////////////////
+// Cross domain transforms
+//////////////////////////////////////
+
+[#list universe.transforms]
+    [#items as xform]
+        [@visitor_transform_class
+            "${xform.sourceDomainDifference.kotlinName}To${xform.destDomainKotlinName}VisitorTransform"
+            xform.sourceDomainDifference
+            xform.destDomainKotlinName /]
+    [/#items]
 [/#list]

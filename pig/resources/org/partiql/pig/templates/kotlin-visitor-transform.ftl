@@ -1,25 +1,23 @@
 [#ftl output_format="plainText"]
 [#-- @ftlvariable name="universe" type="org.partiql.pig.generator.kotlin.KTypeUniverse" --]
 
-[#macro transform_fun_body domain t transformFuncName]
+[#macro transform_fun_body destDomainName t transformFuncName]
     [#list t.properties as p]
         val new_${p.kotlinName} = transform${transformFuncName}_${p.kotlinName}(node)
     [/#list]
         val new_metas = transform${transformFuncName}_metas(node)
-        return build {
-            ${t.constructorName}(
+        return ${destDomainName}.${t.constructorName}(
                 [#list t.properties as p]
                 ${p.kotlinName} = new_${p.kotlinName},
                 [/#list]
                 metas = new_metas
             )
-        }
 [/#macro]
 
-[#macro trasnform_property_functions t sumName]
-[#assign qualifed_name][#if sumName?has_content]${sumName}.[/#if]${t.kotlinName}[/#assign]
-[#list t.properties as p]
-    open fun transform${sumName}${t.kotlinName}_${p.kotlinName}(node: ${qualifed_name}) =
+[#macro transform_property_functions source_domain tuple sumName]
+[#assign qualifed_name]${source_domain.kotlinName}.[#if sumName?has_content]${sumName}.[/#if]${tuple.kotlinName}[/#assign]
+[#list tuple.properties as p]
+    open fun transform${sumName}${tuple.kotlinName}_${p.kotlinName}(node: ${qualifed_name}) =
         [#if p.variadic]
         node.${p.kotlinName}.map { transform${p.rawTypeName}(it) }
         [#elseif p.nullable]
@@ -28,43 +26,55 @@
         transform${p.rawTypeName}(node.${p.kotlinName})
         [/#if]
 [/#list]
-    open fun transform${sumName}${t.kotlinName}_metas(node: ${qualifed_name}) =
+    open fun transform${sumName}${tuple.kotlinName}_metas(node: ${qualifed_name}) =
         transformMetas(node.metas)
 
 [/#macro]
 
-
-open class VisitorTransform : DomainVisitorTransformBase() {
-    [#list domain.tuples]
+[#macro visitor_transform_class class_name source_domain dest_domain_name]
+abstract class ${class_name} : DomainVisitorTransformBase() {
+    [#list source_domain.tuples]
     //////////////////////////////////////
     // Tuple Types
     //////////////////////////////////////
-    [#items as t]
-    // Tuple ${t.kotlinName}
-    open fun transform${t.kotlinName}(node: ${t.kotlinName}): ${t.kotlinName} {
-        [@transform_fun_body domain t t.kotlinName /]
+    [#items as tuple]
+    // Tuple ${tuple.kotlinName}
+    [#if !tuple.transformAbstract]
+    open fun transform${tuple.kotlinName}(node: ${source_domain.kotlinName}.${tuple.kotlinName}): ${dest_domain_name}.${tuple.kotlinName} {
+        [@transform_fun_body dest_domain_name tuple tuple.kotlinName /]
     }
-    [@trasnform_property_functions t ""/]
+    [@transform_property_functions source_domain tuple ""/]
+    [#else]
+    abstract fun transform${tuple.kotlinName}(node:${source_domain.kotlinName}.${tuple.kotlinName}): ${dest_domain_name}.${tuple.kotlinName}
+    [/#if]
     [/#items]
     [/#list]
-    [#list domain.sums as s]
+    [#list source_domain.sums as s]
     //////////////////////////////////////
     // Sum Type: ${s.kotlinName}
     //////////////////////////////////////
-    open fun transform${s.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}) =
+    open fun transform${s.kotlinName}(node: ${source_domain.kotlinName}.${s.kotlinName}): ${dest_domain_name}.${s.kotlinName} =
         when(node) {
         [#list s.variants as v]
-            is ${domain.kotlinName}.${s.kotlinName}.${v.kotlinName} -> transform${s.kotlinName}${v.kotlinName}(node)
+            is ${source_domain.kotlinName}.${s.kotlinName}.${v.kotlinName} -> transform${s.kotlinName}${v.kotlinName}(node)
         [/#list]
         }
-[#list s.variants as t]
-    // Variant ${s.kotlinName}${t.kotlinName}
-    open fun transform${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}): ${domain.kotlinName}.${s.kotlinName} {
-        [@transform_fun_body domain, t, "${s.kotlinName}${t.kotlinName}" /]
+[#list s.variants as tuple]
+    // Variant ${s.kotlinName}${tuple.kotlinName}
+    [#if !tuple.transformAbstract]
+    open fun transform${s.kotlinName}${tuple.kotlinName}(node: ${source_domain.kotlinName}.${s.kotlinName}.${tuple.kotlinName}): ${dest_domain_name}.${s.kotlinName}  {
+        [@transform_fun_body dest_domain_name, tuple, "${s.kotlinName}${tuple.kotlinName}" /]
     }
-
-    [@trasnform_property_functions t s.kotlinName /]
-
+    [@transform_property_functions source_domain tuple s.kotlinName /]
+    [#else]
+    abstract fun transform${s.kotlinName}${tuple.kotlinName}(node: ${source_domain.kotlinName}.${s.kotlinName}.${tuple.kotlinName}): ${dest_domain_name}.${s.kotlinName}
+    [/#if]
 [/#list]
 [/#list]
 }
+[/#macro]
+
+[#--Always generate a visitor transform for domain to same domain --]
+[@visitor_transform_class "VisitorTransform" domain domain.kotlinName/]
+
+

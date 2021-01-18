@@ -25,3 +25,6 @@
       (include
         (variable index::int)
         (let index::int value::expr body::expr)))))
+
+(transform toy_lang toy_lang_nameless)
+

@@ -18,7 +18,7 @@ package org.partiql.pig.domain.model
 import com.amazon.ionelement.api.MetaContainer
 
 /** An element of a product or record. */
-class NamedElement(
+data class NamedElement(
     /** The name of the element that should be used in generated code. */
     val identifier: String,
     /** The tag used in the s-expression representation, if this is a record element. */
@@ -26,4 +26,25 @@ class NamedElement(
     /** A reference to the type of this element.*/
     val typeReference: TypeRef,
     val metas: MetaContainer
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is NamedElement) return false
+
+        if (identifier != other.identifier) return false
+        if (tag != other.tag) return false
+        if (typeReference != other.typeReference) return false
+        // Metas intentionally omitted here
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = identifier.hashCode()
+        result = 31 * result + tag.hashCode()
+        result = 31 * result + typeReference.hashCode()
+        // Metas intentionally omitted here
+
+        return result
+    }
+}
