@@ -3273,7 +3273,7 @@ class TestDomain private constructor() {
                 val elements = listOfNotNull(
                     ionSymbol("human"),
                     firstName?.let { ionSexpOf(ionSymbol("first_name"), it.toIonElement()) },
-                    if(middleNames.any()) { ionSexpOf(ionSymbol("middle_names"), ionSexpOf(middleNames.map { it.toIonElement() })) } else { null },
+                    if(middleNames.any()) { ionSexpOf(ionSymbol("middle_names"), *middleNames.map { it.toIonElement() }.toTypedArray()) } else { null },
                     lastName?.let { ionSexpOf(ionSymbol("last_name"), it.toIonElement()) },
                     title?.let { ionSexpOf(ionSymbol("title"), it.toIonElement()) },
                     parent?.let { ionSexpOf(ionSymbol("parent"), it.toIonElement()) }

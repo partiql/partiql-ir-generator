@@ -367,7 +367,7 @@ class IonElementTransformerTests {
                         (android 789) 
                         (human 
                             (first_name billy)
-                            (middle_names (joe johnson jack))
+                            (middle_names joe johnson jack)
                             (last_name bob)))
                 """
             ),
