@@ -104,7 +104,6 @@ private class KTypeDomainConverter(
                 TupleType.PRODUCT -> false
                 TupleType.RECORD -> true
             },
-            hasVariadicElement = hasVariadicElement(),
             isTransformAbstract = this.isDifferent)
     }
 
@@ -115,12 +114,8 @@ private class KTypeDomainConverter(
 
     private fun DataType.UserType.Tuple.hasPrimitiveElement() = this.namedElements.any { isKotlinPrimitive(it) }
 
-    private fun DataType.UserType.Tuple.hasVariadicElement() =
-        this.namedElements.any { it.typeReference.arity is Arity.Variadic }
-
     private fun computeBuilderFunctions(tuple: DataType.UserType.Tuple): List<KBuilderFunction> {
         val hasPrimitiveElement = tuple.hasPrimitiveElement()
-        val hasVariadicElement = tuple.hasVariadicElement()
 
         val functions = mutableListOf<KBuilderFunction>()
 
@@ -135,10 +130,14 @@ private class KTypeDomainConverter(
         }
 
         // Same for variadic elements.
-        if(hasVariadicElement) {
-            functions.add(computeVariadicBuilderFunction(tuple, useKotlinPrimitives = true))
-            if(hasPrimitiveElement) {
-                functions.add(computeVariadicBuilderFunction(tuple, useKotlinPrimitives = false))
+        if(tuple.tupleType != TupleType.RECORD) {
+            // Do not generate vararg builder functions for records
+            val hasVariadicElement = tuple.namedElements.any { it.typeReference.arity is Arity.Variadic }
+            if (hasVariadicElement) {
+                functions.add(computeVariadicBuilderFunction(tuple, useKotlinPrimitives = true))
+                if (hasPrimitiveElement) {
+                    functions.add(computeVariadicBuilderFunction(tuple, useKotlinPrimitives = false))
+                }
             }
         }
 
@@ -158,7 +157,15 @@ private class KTypeDomainConverter(
                     KParameter(
                         kotlinName =  it.identifier.snakeToCamelCase(),
                         kotlinType = it.typeReference.getQualifiedTypeName(useKotlinPrimitives, useAnyElement = false),
-                        defaultValue = if (it.typeReference.arity is Arity.Optional) "null" else null,
+                        defaultValue = when (it.typeReference.arity) {
+                            is Arity.Optional -> "null"
+                            is Arity.Variadic -> when {
+                                // Only generate a default value when the minimum arity is zero.
+                                it.typeReference.arity.minimumArity == 0 -> "emptyList()"
+                                else -> null
+                            }
+                            else -> null
+                        },
                         isVariadic = false)
                 },
             constructorArguments = tuple.namedElements.map {
@@ -208,7 +215,7 @@ private class KTypeDomainConverter(
                         KConstructorArgument(
                             kotlinName = elementKotlinName,
                             value = elementKotlinName + when {
-                                elementIsKotlinPrimitive && useKotlinPrimitives -> ".asPrimitive()"
+                                elementIsKotlinPrimitive && useKotlinPrimitives -> "?.asPrimitive()"
                                 else -> ""
                             })
                     }
@@ -305,12 +312,11 @@ private class KTypeDomainConverter(
         when(tuple.tupleType) {
             TupleType.RECORD -> {
                 val expectCast = createExpectCast(element.typeReference)
-                val processFuncName = when (element.typeReference.arity) {
-                    is Arity.Required -> "processRequiredField"
-                    is Arity.Optional -> "processOptionalField"
-                    is Arity.Variadic -> TODO("Variadic elements in records not yet supported")
+                when (element.typeReference.arity) {
+                    is Arity.Required ->"ir.processRequiredField(\"${element.identifier}\") { it$expectCast }"
+                    is Arity.Optional -> "ir.processOptionalField(\"${element.identifier}\") { it$expectCast }"
+                    is Arity.Variadic -> "ir.processVariadicField(\"${element.identifier}\", ${element.typeReference.arity.minimumArity}) { it$expectCast }"
                 }
-                "ir.${processFuncName}(\"${element.identifier}\") { it$expectCast }"
             }
             TupleType.PRODUCT -> {
                 val expectCast = createExpectCast(element.typeReference)

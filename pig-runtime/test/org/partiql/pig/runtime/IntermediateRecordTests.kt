@@ -15,15 +15,19 @@
 
 package org.partiql.pig.runtime
 
-import com.amazon.ionelement.api.AnyElement
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.IonElementLoaderOptions
 import com.amazon.ionelement.api.IonTextLocation
-import com.amazon.ionelement.api.createIonElementLoader
 import com.amazon.ionelement.api.ionInt
-import org.junit.jupiter.api.Assertions.*
+import com.amazon.ionelement.api.loadSingleElement
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.fail
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 class IntermediateRecordTests {
     private val oneOne = IonTextLocation(1, 1)
@@ -35,11 +39,12 @@ class IntermediateRecordTests {
             (some_record
                 (foo 1)
                 (bar 2)
-                (bat 3))
+                (bat 3)
+                (variadic_foo 4)
+                (variadic_empty))
         """.trimIndent()
 
-        val ir = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
-            .loadSingleElement(someRecord).asSexp().transformToIntermediateRecord()
+        val ir = createIntermediateRecord(someRecord)
 
         val foundFields = mutableListOf<IonElement>()
 
@@ -53,33 +58,66 @@ class IntermediateRecordTests {
         // Optional field that's not present
         ir.processOptionalField("baz") { foundFields.add(it) }
 
+        // Variadic field with minimum arity of 1
+        ir.processVariadicField("variadic_foo", 1) { foundFields.add(it) }
+
+        // Variadic field with minimum arity of 0 that is present with no values
+        // (should be removed so that the call to malformedIfAnyUnprocessedFieldsRemain does not throw)
+        ir.processVariadicField("variadic_empty", 0) { foundFields.add(it) }
+
+        // Variadic field with minimum arity of 0 that is not present (should not throw)
+        ir.processVariadicField("variadic_not_present", 0) { fail("should not get called")}
+
         assertDoesNotThrow { ir.malformedIfAnyUnprocessedFieldsRemain() }
-        assertEquals(listOf(ionInt(1), ionInt(2), ionInt(3)), foundFields)
+        assertEquals(listOf(ionInt(1), ionInt(2), ionInt(3), ionInt(4)), foundFields)
     }
 
-    @Test
-    fun requiredFieldMissing() {
-        val ir = createIntermediateRecord(mapOf("foo" to ionInt(1).asAnyElement()))
+    @ParameterizedTest
+    @MethodSource("parametersForMalformedTest")
+    fun malformedTests(tc: MalformedTestCase) {
         val ex = assertThrows<MalformedDomainDataException> {
-            ir.processRequiredField("bad_field") { error("should not be invoked") }
+            tc.blockThrowingMalformedDomainDataException()
         }
-        assertTrue(ex.message!!.contains("bad_field"))
+        tc.messageMustContainStrings.forEach {
+            assertTrue(ex.message!!.contains(it), "exception message must contain '$it'")
+        }
         assertEquals(oneOne, ex.location)
     }
 
-    @Test
-    fun extraFields() {
-        val ir = createIntermediateRecord(mapOf("foo" to ionInt(1).asAnyElement()))
-        val ex = assertThrows<MalformedDomainDataException>{ ir.malformedIfAnyUnprocessedFieldsRemain() }
+    companion object {
+        @JvmStatic
+        @Suppress("UNUSED")
+        fun parametersForMalformedTest() = listOf(
+            MalformedTestCase(
+                "required field missing",
+                { createIntermediateRecord("(some_record (foo 1))").processRequiredField("bad_field")  { fail("should not be called")} },
+                listOf("bad_field")),
+            MalformedTestCase(
+                "required field arity too high",
+                { createIntermediateRecord("(some_record (foo 1 2))").processRequiredField("foo")  { fail("should not be called")} },
+                listOf("foo", "1..1")),
+            MalformedTestCase(
+                "optional field arity too high",
+                { createIntermediateRecord("(some_record (foo 1 2))").processOptionalField("foo")  { fail("should not be called")} },
+                listOf("foo", "1..1")),
+            MalformedTestCase(
+                "variadic arity too low",
+                { createIntermediateRecord("(some_record (foo 1 2))").processVariadicField("foo", 3)  { fail("should not be called")} },
+                listOf("foo", "3..2147483647")),
+            MalformedTestCase(
+                "variadic arity too low",
+                { createIntermediateRecord("(some_record (foo 1 2))").malformedIfAnyUnprocessedFieldsRemain() },
+                listOf("Unexpected", "foo"))
+        )
 
-        assertTrue(ex.message!!.contains("foo"))
-        assertEquals(oneOne, ex.location)
+        private fun createIntermediateRecord(recordIonText: String): IntermediateRecord =
+            loadSingleElement(recordIonText, IonElementLoaderOptions(includeLocationMeta = true))
+                .asSexp()
+                .transformToIntermediateRecord()
+
+        data class MalformedTestCase(
+            val name: String,
+            val blockThrowingMalformedDomainDataException: () -> Unit,
+            val messageMustContainStrings: List<String>)
     }
-
-
-    private fun createIntermediateRecord(fields: Map<String, AnyElement>): IntermediateRecord =
-        IntermediateRecord(
-            recordTagName = "some_tag",
-            location = oneOne,
-            fields = fields)
 }

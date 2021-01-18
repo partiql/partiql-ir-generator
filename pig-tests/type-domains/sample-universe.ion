@@ -79,8 +79,7 @@
 
             // Uniquely identifying humans a bit more is complex and requires a record.
             (human (first_name symbol)          // required
-                   //TODO: variadic record fields are not currently supported in records.
-                   // (middle_names (* symbol 0))  // variadic
+                   (middle_names (* symbol 0))  // variadic
                    (last_name symbol)           // required
                    (title (? symbol))           // optional
                    (parent (? entity))))        // recursive

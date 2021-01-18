@@ -23,12 +23,13 @@ import com.amazon.ionelement.api.location
 import com.amazon.ionelement.api.tail
 
 /**
- * Contains an "intermediate" representation of a Pig record.
+ * Contains an "intermediate" representation of a PIG record.
  *
- * This is a helper function that helps reduce the complexity of the template and the size of
- * the generated code.
+ * This class was intended only for use by PIG-generated domain serialization code. Human written client code
+ * should avoid using this class.
  *
- * Single use only.  Discard after extracting all field values with [processRequiredField] or [processOptionalField].
+ * Instances are single use only and should be discarded after extracting all field values with [processRequiredField]
+ * or [processOptionalField].
  */
 class IntermediateRecord(
     /** The tag of the record. Used for error reporting purposes only. */
@@ -36,7 +37,7 @@ class IntermediateRecord(
     /** The location of the record within the data being transformer. */
     private val location: IonLocation?,
     /** The fields and their values. */
-    fields: Map<String, AnyElement>
+    fields: Map<String, List<AnyElement>>
 ) {
     private val fieldMap = fields.toMutableMap()
 
@@ -45,7 +46,10 @@ class IntermediateRecord(
      * [deserFunc] to perform deserialization.  Returns `null` if the field does not exist in [fieldMap].
      */
     fun <T> processOptionalField(fieldName: String, deserFunc: (AnyElement) -> T): T? =
-        fieldMap.remove(fieldName)?.let { deserFunc(it) }
+        fieldMap.remove(fieldName)?.let { values: List<AnyElement> ->
+            values.requireArityOrMalformed(fieldName, 1)
+            deserFunc(values.single())
+        }
 
     /**
      * Same as [processOptionalField] but throws [MalformedDomainDataException] if the field does not exist
@@ -54,6 +58,31 @@ class IntermediateRecord(
     fun <T> processRequiredField(fieldName: String, deserFunc: (AnyElement) -> T): T =
         processOptionalField(fieldName, deserFunc)
             ?: errMalformed(location, "Required field '${fieldName}' was not found within '$recordTagName' record")
+
+    /**
+     * Processes a variadic record field.
+     *
+     * Throws [MalformedDomainDataException] if [minArity] is > 0 and the field is not present.
+     */
+    fun <T> processVariadicField(fieldName: String, minArity: Int, deserFunc: (AnyElement) -> T): List<T> {
+        val foundFieldValues = fieldMap.remove(fieldName) ?: emptyList()
+        foundFieldValues.requireArityOrMalformed(fieldName, minArity..Int.MAX_VALUE)
+        return foundFieldValues.map {
+            deserFunc(it)
+        }
+    }
+
+    private fun List<AnyElement>.requireArityOrMalformed(fieldName: String, size: Int) =
+        this@requireArityOrMalformed.requireArityOrMalformed(fieldName, IntRange(size, size))
+
+    private fun List<AnyElement>.requireArityOrMalformed(fieldName: String, arityRange: IntRange) {
+        if(this.size !in arityRange) {
+            errMalformed(
+                location,
+                "$arityRange values(s) were required to for field '$fieldName' of record '$recordTagName' " +
+                    "but ${this.size} was/were supplied.")
+        }
+    }
 
     /**
      * After all required an optional fields in a record have been processed by the transformer, this
@@ -84,8 +113,7 @@ fun SexpElement.transformToIntermediateRecord(): IntermediateRecord {
 
     val fieldMap = recordFields.map { field: AnyElement ->
         val fieldSexp = field.asSexp()
-        fieldSexp.requireArityOrMalformed(1)
-        fieldSexp.head.symbolValue to fieldSexp.tail.head
+        fieldSexp.head.symbolValue to fieldSexp.values.tail
     }.toMap()
 
     return IntermediateRecord(recordTagName, this.metas.location, fieldMap)

@@ -360,13 +360,14 @@ class IonElementTransformerTests {
                 TestDomain.build {
                     entityPair(
                         android(789),
-                        human(firstName = "billy", lastName = "bob"))
+                        human(firstName = "billy", middleNames = listOf("joe", "johnson", "jack"), lastName = "bob"))
                 },
                 """
                     (entity_pair 
                         (android 789) 
                         (human 
-                            (first_name billy) 
+                            (first_name billy)
+                            (middle_names (joe johnson jack))
                             (last_name bob)))
                 """
             ),

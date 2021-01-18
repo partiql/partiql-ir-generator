@@ -650,7 +650,7 @@ class PartiqlBasic private constructor() {
          * Creates an instance of [PartiqlBasic.Expr.Struct].
          */
         fun struct(
-            fields: kotlin.collections.List<ExprPair>,
+            fields: kotlin.collections.List<ExprPair> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Struct
         
@@ -667,7 +667,7 @@ class PartiqlBasic private constructor() {
          * Creates an instance of [PartiqlBasic.Expr.Bag].
          */
         fun bag(
-            values: kotlin.collections.List<Expr>,
+            values: kotlin.collections.List<Expr> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Bag
         
@@ -684,7 +684,7 @@ class PartiqlBasic private constructor() {
          * Creates an instance of [PartiqlBasic.Expr.List].
          */
         fun list(
-            values: kotlin.collections.List<Expr>,
+            values: kotlin.collections.List<Expr> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.List
         
@@ -1235,7 +1235,7 @@ class PartiqlBasic private constructor() {
             metas: MetaContainer
         ): PartiqlBasic.Expr.Call =
             PartiqlBasic.Expr.Call(
-                name = name.asPrimitive(),
+                name = name?.asPrimitive(),
                 args = listOf(args0) + args.toList(),
                 metas = metas)
         

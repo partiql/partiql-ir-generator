@@ -325,7 +325,7 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.VariadicMin0].
          */
         fun variadicMin0(
-            ints: kotlin.collections.List<Long>,
+            ints: kotlin.collections.List<Long> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin0
         
@@ -337,7 +337,7 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variadicMin0_(
-            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin0
         
@@ -410,7 +410,7 @@ class TestDomain private constructor() {
          */
         fun elementVariadic(
             name: String,
-            ints: kotlin.collections.List<Long>,
+            ints: kotlin.collections.List<Long> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.ElementVariadic
         
@@ -423,7 +423,7 @@ class TestDomain private constructor() {
          */
         fun elementVariadic_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
-            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.ElementVariadic
         
@@ -709,6 +709,7 @@ class TestDomain private constructor() {
          */
         fun human(
             firstName: String,
+            middleNames: kotlin.collections.List<String> = emptyList(),
             lastName: String,
             title: String? = null,
             parent: Entity? = null,
@@ -724,6 +725,7 @@ class TestDomain private constructor() {
          */
         fun human_(
             firstName: org.partiql.pig.runtime.SymbolPrimitive,
+            middleNames: kotlin.collections.List<org.partiql.pig.runtime.SymbolPrimitive> = emptyList(),
             lastName: org.partiql.pig.runtime.SymbolPrimitive,
             title: org.partiql.pig.runtime.SymbolPrimitive? = null,
             parent: Entity? = null,
@@ -1103,7 +1105,7 @@ class TestDomain private constructor() {
             metas: MetaContainer
         ): TestDomain.ElementVariadic =
             TestDomain.ElementVariadic(
-                name = name.asPrimitive(),
+                name = name?.asPrimitive(),
                 ints = ints.map { it.asPrimitive() },
                 metas = metas)
         
@@ -1354,6 +1356,7 @@ class TestDomain private constructor() {
         
         override fun human(
             firstName: String,
+            middleNames: kotlin.collections.List<String>,
             lastName: String,
             title: String?,
             parent: Entity?,
@@ -1361,6 +1364,7 @@ class TestDomain private constructor() {
         ): TestDomain.Entity.Human =
             TestDomain.Entity.Human(
                 firstName = firstName.asPrimitive(),
+                middleNames = middleNames.map { it.asPrimitive() },
                 lastName = lastName.asPrimitive(),
                 title = title?.asPrimitive(),
                 parent = parent,
@@ -1368,6 +1372,7 @@ class TestDomain private constructor() {
         
         override fun human_(
             firstName: org.partiql.pig.runtime.SymbolPrimitive,
+            middleNames: kotlin.collections.List<org.partiql.pig.runtime.SymbolPrimitive>,
             lastName: org.partiql.pig.runtime.SymbolPrimitive,
             title: org.partiql.pig.runtime.SymbolPrimitive?,
             parent: Entity?,
@@ -1375,6 +1380,7 @@ class TestDomain private constructor() {
         ): TestDomain.Entity.Human =
             TestDomain.Entity.Human(
                 firstName = firstName,
+                middleNames = middleNames,
                 lastName = lastName,
                 title = title,
                 parent = parent,
@@ -3238,6 +3244,7 @@ class TestDomain private constructor() {
     
         class Human(
             val firstName: org.partiql.pig.runtime.SymbolPrimitive,
+            val middleNames: kotlin.collections.List<org.partiql.pig.runtime.SymbolPrimitive>,
             val lastName: org.partiql.pig.runtime.SymbolPrimitive,
             val title: org.partiql.pig.runtime.SymbolPrimitive?,
             val parent: Entity?,
@@ -3247,6 +3254,7 @@ class TestDomain private constructor() {
             override fun copyMetas(newMetas: MetaContainer): Human =
                 Human(
                     firstName = firstName,
+                    middleNames = middleNames,
                     lastName = lastName,
                     title = title,
                     parent = parent,
@@ -3255,6 +3263,7 @@ class TestDomain private constructor() {
             override fun withMeta(metaKey: String, metaValue: Any): Human =
                 Human(
                     firstName = firstName,
+                    middleNames = middleNames,
                     lastName = lastName,
                     title = title,
                     parent = parent,
@@ -3264,6 +3273,7 @@ class TestDomain private constructor() {
                 val elements = listOfNotNull(
                     ionSymbol("human"),
                     firstName?.let { ionSexpOf(ionSymbol("first_name"), it.toIonElement()) },
+                    if(middleNames.any()) { ionSexpOf(ionSymbol("middle_names"), ionSexpOf(middleNames.map { it.toIonElement() })) } else { null },
                     lastName?.let { ionSexpOf(ionSymbol("last_name"), it.toIonElement()) },
                     title?.let { ionSexpOf(ionSymbol("title"), it.toIonElement()) },
                     parent?.let { ionSexpOf(ionSymbol("parent"), it.toIonElement()) }
@@ -3274,6 +3284,7 @@ class TestDomain private constructor() {
         
             fun copy(
                 firstName: org.partiql.pig.runtime.SymbolPrimitive = this.firstName,
+                middleNames: kotlin.collections.List<org.partiql.pig.runtime.SymbolPrimitive> = this.middleNames,
                 lastName: org.partiql.pig.runtime.SymbolPrimitive = this.lastName,
                 title: org.partiql.pig.runtime.SymbolPrimitive? = this.title,
                 parent: Entity? = this.parent,
@@ -3281,6 +3292,7 @@ class TestDomain private constructor() {
             ) =
                 Human(
                     firstName,
+                    middleNames,
                     lastName,
                     title,
                     parent,
@@ -3293,6 +3305,7 @@ class TestDomain private constructor() {
         
                 other as Human
                 if (firstName != other.firstName) return false
+                if (middleNames != other.middleNames) return false
                 if (lastName != other.lastName) return false
                 if (title != other.title) return false
                 if (parent != other.parent) return false
@@ -3301,6 +3314,7 @@ class TestDomain private constructor() {
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
                 var hc = firstName.hashCode()
+                hc = 31 * hc + middleNames.hashCode()
                 hc = 31 * hc + lastName.hashCode()
                 hc = 31 * hc + title.hashCode()
                 hc = 31 * hc + parent.hashCode()
@@ -3621,13 +3635,14 @@ class TestDomain private constructor() {
                     val ir = sexp.transformToIntermediateRecord()
             
                     val firstName = ir.processRequiredField("first_name") { it.toSymbolPrimitive() }
+                    val middleNames = ir.processVariadicField("middle_names", 0) { it.toSymbolPrimitive() }
                     val lastName = ir.processRequiredField("last_name") { it.toSymbolPrimitive() }
                     val title = ir.processOptionalField("title") { it.toSymbolPrimitive() }
                     val parent = ir.processOptionalField("parent") { it.transformExpect<Entity>() }
             
                     ir.malformedIfAnyUnprocessedFieldsRemain()
             
-                    Entity.Human(firstName, lastName, title, parent, metas = sexp.metas)
+                    Entity.Human(firstName, middleNames, lastName, title, parent, metas = sexp.metas)
                 }
                 else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'test_domain'")
             }
@@ -3972,6 +3987,7 @@ class TestDomain private constructor() {
         open fun walkEntityHuman(node: TestDomain.Entity.Human) {
             visitEntityHuman(node)
             walkSymbolPrimitive(node.firstName)
+            node.middleNames.map { walkSymbolPrimitive(it) }
             walkSymbolPrimitive(node.lastName)
             node.title?.let { walkSymbolPrimitive(it) }
             node.parent?.let { walkEntity(it) }
@@ -4385,6 +4401,7 @@ class TestDomain private constructor() {
             var current = accumulator
             current = visitEntityHuman(node, current)
             current = walkSymbolPrimitive(node.firstName, current)
+            node.middleNames.map { current = walkSymbolPrimitive(it, current) }
             current = walkSymbolPrimitive(node.lastName, current)
             node.title?.let { current = walkSymbolPrimitive(it, current) }
             node.parent?.let { current = walkEntity(it, current) }
@@ -4995,12 +5012,14 @@ class TestDomain private constructor() {
         // Variant EntityHuman
         open fun transformEntityHuman(node: TestDomain.Entity.Human): TestDomain.Entity  {
             val new_firstName = transformEntityHuman_firstName(node)
+            val new_middleNames = transformEntityHuman_middleNames(node)
             val new_lastName = transformEntityHuman_lastName(node)
             val new_title = transformEntityHuman_title(node)
             val new_parent = transformEntityHuman_parent(node)
             val new_metas = transformEntityHuman_metas(node)
             return TestDomain.Entity.Human(
                     firstName = new_firstName,
+                    middleNames = new_middleNames,
                     lastName = new_lastName,
                     title = new_title,
                     parent = new_parent,
@@ -5009,6 +5028,8 @@ class TestDomain private constructor() {
         }
         open fun transformEntityHuman_firstName(node: TestDomain.Entity.Human) =
             transformSymbolPrimitive(node.firstName)
+        open fun transformEntityHuman_middleNames(node: TestDomain.Entity.Human) =
+            node.middleNames.map { transformSymbolPrimitive(it) }
         open fun transformEntityHuman_lastName(node: TestDomain.Entity.Human) =
             transformSymbolPrimitive(node.lastName)
         open fun transformEntityHuman_title(node: TestDomain.Entity.Human) =
@@ -5098,7 +5119,7 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AaaAad].
          */
         fun aaaAad(
-            dField: kotlin.collections.List<Long>,
+            dField: kotlin.collections.List<Long> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAad
         
@@ -5110,7 +5131,7 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAad_(
-            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAad
         
@@ -5261,7 +5282,7 @@ class MultiWordDomain private constructor() {
         fun aabAad(
             bField: Long,
             cField: String,
-            dField: kotlin.collections.List<Long>,
+            dField: kotlin.collections.List<Long> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAad
         
@@ -5275,7 +5296,7 @@ class MultiWordDomain private constructor() {
         fun aabAad_(
             bField: org.partiql.pig.runtime.LongPrimitive,
             cField: org.partiql.pig.runtime.SymbolPrimitive,
-            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAad
         
@@ -5646,8 +5667,8 @@ class MultiWordDomain private constructor() {
             metas: MetaContainer
         ): MultiWordDomain.AabAad =
             MultiWordDomain.AabAad(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
+                bField = bField?.asPrimitive(),
+                cField = cField?.asPrimitive(),
                 dField = dField.map { it.asPrimitive() },
                 metas = metas)
         
@@ -5697,8 +5718,8 @@ class MultiWordDomain private constructor() {
             metas: MetaContainer
         ): MultiWordDomain.AabAae =
             MultiWordDomain.AabAae(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
+                bField = bField?.asPrimitive(),
+                cField = cField?.asPrimitive(),
                 dField = listOfPrimitives(dField0, dField1) + dField.map { it.asPrimitive() },
                 metas = metas)
         

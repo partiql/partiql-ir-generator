@@ -24,7 +24,6 @@ import org.partiql.pig.domain.model.TypeDomain
   results to an instance of this domain model.  This helps keep the template much simpler than it would
   otherwise be.
  */
-
 data class KTypeUniverse(val domains: List<KTypeDomain>, val transforms: List<KTransform>)
 
 /**
@@ -93,8 +92,7 @@ data class KTuple(
     val builderFunctions: List<KBuilderFunction>,
     val isRecord: Boolean,
     // TODO: kdoc
-    val isTransformAbstract: Boolean,
-    val hasVariadicElement: Boolean
+    val isTransformAbstract: Boolean
 ) {
 
 }
