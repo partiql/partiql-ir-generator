@@ -92,17 +92,23 @@ data class KTuple(
     val arity: IntRange,
     val builderFunctions: List<KBuilderFunction>,
     val isRecord: Boolean,
-    // TODO: kdoc
+    /**
+     * Set to true if this [KTuple] is a member of a [KTypeDomain] that represents the differences between
+     * two type domains and this particular tuple has been removed or is different in the second domain.  If
+     * `true`, its generated visitor transform `transform*` method will be `abstract`.
+     */
     val isTransformAbstract: Boolean,
     val hasVariadicElement: Boolean
-) {
-
-}
+)
 
 data class KSum(
     val kotlinName: String,
     val superClass: String,
     val variants: List<KTuple>,
-    // TODO: kdoc
-    val isRemoved: Boolean
+    /**
+     * Set to true if this [KSum] is a member of a [KTypeDomain] that represents the differences between
+     * two type domains and this particular sum has been removed from the second.  When this is `true`, its
+     * generated visitor transform `transform*` method will be `abstract`.
+     */
+    val isTransformAbstract: Boolean
 )

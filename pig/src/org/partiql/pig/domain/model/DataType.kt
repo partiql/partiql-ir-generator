@@ -87,7 +87,7 @@ sealed class DataType {
         override val metas: MetaContainer get() = emptyMetaContainer()
     }
 
-
+    /** Represents a user-defined data type such as a product, sum or record. */
     sealed class UserType : DataType() {
         /**
          * If the domain in which this [UserType] is a member indicates the difference between two domains,

@@ -17,13 +17,14 @@ package org.partiql.pig.tests
 
 import com.amazon.ionelement.api.ionInt
 import org.junit.jupiter.api.Test
+import org.partiql.pig.runtime.asPrimitive
 import org.partiql.pig.tests.generated.ToyLang
-import org.partiql.pig.tests.generated.ToyLangNameless
-import org.partiql.pig.tests.generated.ToyLangToToyLangNamelessVisitorTransform
+import org.partiql.pig.tests.generated.ToyLangIndexed
+import org.partiql.pig.tests.generated.ToyLangIndexedToToyLangVisitorTransform
+import org.partiql.pig.tests.generated.ToyLangToToyLangIndexedVisitorTransform
 import kotlin.test.assertEquals
 
 class PermuteTransformSmokeTests {
-
     /**
      * This is a VisitorTransformToToyLangNameless implementation that transforms variable references from names
      * to indexes.
@@ -33,36 +34,37 @@ class PermuteTransformSmokeTests {
      */
     private class VariableResolverToPermutedDomain(
         val scope: Scope = Scope.Global
-    ) : ToyLangToToyLangNamelessVisitorTransform() {
+    ) : ToyLangToToyLangIndexedVisitorTransform() {
 
-        /** Any variable reference resides in the top scope is undefined. */
-        override fun transformExprVariable(node: ToyLang.Expr.Variable): ToyLangNameless.Expr {
+        /** Any variable reference that resides in the top scope is undefined. */
+        override fun transformExprVariable(node: ToyLang.Expr.Variable): ToyLangIndexed.Expr {
             val thiz = this
-            return ToyLangNameless.build {
-                variable(index = thiz.scope.findIndex(node.name.text))
+            return ToyLangIndexed.build {
+                variable_(name = node.name, index = thiz.scope.findIndex(node.name.text).asPrimitive())
             }
         }
 
-        override fun transformExprLet(node: ToyLang.Expr.Let): ToyLangNameless.Expr =
-            ToyLangNameless.build {
+        override fun transformExprLet(node: ToyLang.Expr.Let): ToyLangIndexed.Expr =
+            ToyLangIndexed.build {
                 val nestedScope = this@VariableResolverToPermutedDomain.scope.nest(node.name.text)
-                let(
-                    index = nestedScope.index,
+
+                let_(
+                    name = node.name,
+                    index = nestedScope.index.asPrimitive(),
                     value = transformExpr(node.value),
-                    body = VariableResolverToPermutedDomain(scope.nest(node.name.text)).transformExpr(node.body)
-                )
+                    body = VariableResolverToPermutedDomain(scope.nest(node.name.text)).transformExpr(node.body))
             }
     }
 
     @Test
-    fun `demonstrate a simple variable index resolver that transforms to a permuted domain`() {
+    fun `demonstrate a simple variable index resolver that transforms to a permuted domain and back again`() {
         /*
             Equivalent to:
             let foo = 42 in
                 let bar = 48 in
                     foo + bar
          */
-        val unresolved = ToyLang.build {
+        val unindexed = ToyLang.build {
             let(
                 "foo",
                 lit(ionInt(42)),
@@ -74,17 +76,42 @@ class PermuteTransformSmokeTests {
 
 
         val resolver = VariableResolverToPermutedDomain()
-        val outerLet = resolver.transformExpr(unresolved) as ToyLangNameless.Expr.Let
+        val outerLet = resolver.transformExpr(unindexed) as ToyLangIndexed.Expr.Let
 
-        val expected = ToyLangNameless.build {
+        val indexed = ToyLangIndexed.build {
             let(
+                "foo",
                 0,
                 lit(ionInt(42)),
                 let(
+                    "bar",
                     1,
                     lit(ionInt(48)),
-                    plus(variable(0), variable(1))))
+                    plus(variable("foo", 0), variable("bar", 1))))
         }
-        assertEquals(expected, outerLet)
+        assertEquals(indexed, outerLet)
+
+        // We can also go the other direction
+
+        val indexedToUnindexed = object : ToyLangIndexedToToyLangVisitorTransform() {
+            override fun transformExprVariable(node: ToyLangIndexed.Expr.Variable): ToyLang.Expr =
+                ToyLang.build {
+                    variable_(
+                        name = node.name,
+                        metas = node.metas)
+                }
+
+            override fun transformExprLet(node: ToyLangIndexed.Expr.Let): ToyLang.Expr =
+                ToyLang.build {
+                    let_(
+                        name = node.name,
+                        value = transformExpr(node.value),
+                        body = transformExpr(node.body),
+                        metas = node.metas)
+                }
+        }
+
+        val rountTripped = indexedToUnindexed.transformExpr(indexed)
+        assertEquals(unindexed, rountTripped)
     }
 }

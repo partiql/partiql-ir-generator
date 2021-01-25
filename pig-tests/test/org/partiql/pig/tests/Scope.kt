@@ -46,3 +46,4 @@ sealed class Scope {
             }
     }
 }
+

@@ -78,7 +78,7 @@ private class KTypeDomainConverter(
                                     superClass = it.tag.snakeToPascalCase(),
                                     constructorName = "${it.tag.snakeToPascalCase()}.${v.tag.snakeToPascalCase()}")
                             },
-                            isRemoved = it.isDifferent
+                            isTransformAbstract = it.isDifferent
                         ))
             }
         }

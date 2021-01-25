@@ -7193,36 +7193,36 @@ class MultiWordDomain private constructor() {
 }
 
 
-class TestPermuteDomainA private constructor() {
+class DomainA private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
         @JvmStatic
-        fun BUILDER() : Builder = TestPermuteDomainABuilder
+        fun BUILDER() : Builder = DomainABuilder
     
-        fun <T: TestPermuteDomainANode> build(block: Builder.() -> T) =
-            TestPermuteDomainABuilder.block()
+        fun <T: DomainANode> build(block: Builder.() -> T) =
+            DomainABuilder.block()
     
-        fun transform(element: AnyElement): TestPermuteDomainANode =
+        fun transform(element: AnyElement): DomainANode =
             transform(element.asSexp())
     
-        fun transform(element: SexpElement): TestPermuteDomainANode =
+        fun transform(element: SexpElement): DomainANode =
             IonElementTransformer().transform(element)
     }
     
     interface Builder {
                 // Tuples
         /**
-         * Creates an instance of [TestPermuteDomainA.ProductToRemove].
+         * Creates an instance of [DomainA.ProductToRemove].
          */
         fun productToRemove(
             whatever: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.ProductToRemove
+        ): DomainA.ProductToRemove
         
         /**
-         * Creates an instance of [TestPermuteDomainA.ProductToRemove].
+         * Creates an instance of [DomainA.ProductToRemove].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -7231,19 +7231,19 @@ class TestPermuteDomainA private constructor() {
         fun productToRemove_(
             whatever: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.ProductToRemove
+        ): DomainA.ProductToRemove
         
         
         /**
-         * Creates an instance of [TestPermuteDomainA.RecordToRemove].
+         * Creates an instance of [DomainA.RecordToRemove].
          */
         fun recordToRemove(
             irrelevant: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.RecordToRemove
+        ): DomainA.RecordToRemove
         
         /**
-         * Creates an instance of [TestPermuteDomainA.RecordToRemove].
+         * Creates an instance of [DomainA.RecordToRemove].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -7252,19 +7252,19 @@ class TestPermuteDomainA private constructor() {
         fun recordToRemove_(
             irrelevant: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.RecordToRemove
+        ): DomainA.RecordToRemove
         
         
         /**
-         * Creates an instance of [TestPermuteDomainA.ProductA].
+         * Creates an instance of [DomainA.ProductA].
          */
         fun productA(
             one: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.ProductA
+        ): DomainA.ProductA
         
         /**
-         * Creates an instance of [TestPermuteDomainA.ProductA].
+         * Creates an instance of [DomainA.ProductA].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -7273,19 +7273,19 @@ class TestPermuteDomainA private constructor() {
         fun productA_(
             one: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.ProductA
+        ): DomainA.ProductA
         
         
         /**
-         * Creates an instance of [TestPermuteDomainA.RecordA].
+         * Creates an instance of [DomainA.RecordA].
          */
         fun recordA(
             one: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.RecordA
+        ): DomainA.RecordA
         
         /**
-         * Creates an instance of [TestPermuteDomainA.RecordA].
+         * Creates an instance of [DomainA.RecordA].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -7294,20 +7294,20 @@ class TestPermuteDomainA private constructor() {
         fun recordA_(
             one: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.RecordA
+        ): DomainA.RecordA
         
         
         /**
-         * Creates an instance of [TestPermuteDomainA.UnpermutedProduct].
+         * Creates an instance of [DomainA.UnpermutedProduct].
          */
         fun unpermutedProduct(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.UnpermutedProduct
+        ): DomainA.UnpermutedProduct
         
         /**
-         * Creates an instance of [TestPermuteDomainA.UnpermutedProduct].
+         * Creates an instance of [DomainA.UnpermutedProduct].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -7317,20 +7317,20 @@ class TestPermuteDomainA private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.UnpermutedProduct
+        ): DomainA.UnpermutedProduct
         
         
         /**
-         * Creates an instance of [TestPermuteDomainA.UnpermutedRecord].
+         * Creates an instance of [DomainA.UnpermutedRecord].
          */
         fun unpermutedRecord(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.UnpermutedRecord
+        ): DomainA.UnpermutedRecord
         
         /**
-         * Creates an instance of [TestPermuteDomainA.UnpermutedRecord].
+         * Creates an instance of [DomainA.UnpermutedRecord].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -7340,70 +7340,70 @@ class TestPermuteDomainA private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.UnpermutedRecord
+        ): DomainA.UnpermutedRecord
         
         
         // Variants for Sum: SumToRemove 
         /**
-         * Creates an instance of [TestPermuteDomainA.SumToRemove.Doesnt].
+         * Creates an instance of [DomainA.SumToRemove.Doesnt].
          */
         fun doesnt(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.SumToRemove.Doesnt
+        ): DomainA.SumToRemove.Doesnt
         
         
         /**
-         * Creates an instance of [TestPermuteDomainA.SumToRemove.Matter].
+         * Creates an instance of [DomainA.SumToRemove.Matter].
          */
         fun matter(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.SumToRemove.Matter
+        ): DomainA.SumToRemove.Matter
         
         
         // Variants for Sum: SumA 
         /**
-         * Creates an instance of [TestPermuteDomainA.SumA.Who].
+         * Creates an instance of [DomainA.SumA.Who].
          */
         fun who(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.SumA.Who
+        ): DomainA.SumA.Who
         
         
         /**
-         * Creates an instance of [TestPermuteDomainA.SumA.Cares].
+         * Creates an instance of [DomainA.SumA.Cares].
          */
         fun cares(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.SumA.Cares
+        ): DomainA.SumA.Cares
         
         
         // Variants for Sum: SumB 
         /**
-         * Creates an instance of [TestPermuteDomainA.SumB.WillBeUnchanged].
+         * Creates an instance of [DomainA.SumB.WillBeUnchanged].
          */
         fun willBeUnchanged(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.SumB.WillBeUnchanged
+        ): DomainA.SumB.WillBeUnchanged
         
         
         /**
-         * Creates an instance of [TestPermuteDomainA.SumB.WillBeRemoved].
+         * Creates an instance of [DomainA.SumB.WillBeRemoved].
          */
         fun willBeRemoved(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.SumB.WillBeRemoved
+        ): DomainA.SumB.WillBeRemoved
         
         
         /**
-         * Creates an instance of [TestPermuteDomainA.SumB.WillBeReplaced].
+         * Creates an instance of [DomainA.SumB.WillBeReplaced].
          */
         fun willBeReplaced(
             something: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.SumB.WillBeReplaced
+        ): DomainA.SumB.WillBeReplaced
         
         /**
-         * Creates an instance of [TestPermuteDomainA.SumB.WillBeReplaced].
+         * Creates an instance of [DomainA.SumB.WillBeReplaced].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -7412,21 +7412,21 @@ class TestPermuteDomainA private constructor() {
         fun willBeReplaced_(
             something: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.SumB.WillBeReplaced
+        ): DomainA.SumB.WillBeReplaced
         
         
         // Variants for Sum: UnpermutedSum 
         /**
-         * Creates an instance of [TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant].
+         * Creates an instance of [DomainA.UnpermutedSum.UnpermutedProductVariant].
          */
         fun unpermutedProductVariant(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant
+        ): DomainA.UnpermutedSum.UnpermutedProductVariant
         
         /**
-         * Creates an instance of [TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant].
+         * Creates an instance of [DomainA.UnpermutedSum.UnpermutedProductVariant].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -7436,20 +7436,20 @@ class TestPermuteDomainA private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant
+        ): DomainA.UnpermutedSum.UnpermutedProductVariant
         
         
         /**
-         * Creates an instance of [TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant].
+         * Creates an instance of [DomainA.UnpermutedSum.UnpermutedRecordVariant].
          */
         fun unpermutedRecordVariant(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant
+        ): DomainA.UnpermutedSum.UnpermutedRecordVariant
         
         /**
-         * Creates an instance of [TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant].
+         * Creates an instance of [DomainA.UnpermutedSum.UnpermutedRecordVariant].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -7459,24 +7459,24 @@ class TestPermuteDomainA private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant
+        ): DomainA.UnpermutedSum.UnpermutedRecordVariant
     }
     
-    private object TestPermuteDomainABuilder : Builder {
+    private object DomainABuilder : Builder {
                 // Tuples
         override fun productToRemove(
             whatever: String,
             metas: MetaContainer
-        ): TestPermuteDomainA.ProductToRemove =
-            TestPermuteDomainA.ProductToRemove(
+        ): DomainA.ProductToRemove =
+            DomainA.ProductToRemove(
                 whatever = whatever.asPrimitive(),
                 metas = metas)
         
         override fun productToRemove_(
             whatever: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainA.ProductToRemove =
-            TestPermuteDomainA.ProductToRemove(
+        ): DomainA.ProductToRemove =
+            DomainA.ProductToRemove(
                 whatever = whatever,
                 metas = metas)
         
@@ -7484,16 +7484,16 @@ class TestPermuteDomainA private constructor() {
         override fun recordToRemove(
             irrelevant: Long,
             metas: MetaContainer
-        ): TestPermuteDomainA.RecordToRemove =
-            TestPermuteDomainA.RecordToRemove(
+        ): DomainA.RecordToRemove =
+            DomainA.RecordToRemove(
                 irrelevant = irrelevant.asPrimitive(),
                 metas = metas)
         
         override fun recordToRemove_(
             irrelevant: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainA.RecordToRemove =
-            TestPermuteDomainA.RecordToRemove(
+        ): DomainA.RecordToRemove =
+            DomainA.RecordToRemove(
                 irrelevant = irrelevant,
                 metas = metas)
         
@@ -7501,16 +7501,16 @@ class TestPermuteDomainA private constructor() {
         override fun productA(
             one: Long,
             metas: MetaContainer
-        ): TestPermuteDomainA.ProductA =
-            TestPermuteDomainA.ProductA(
+        ): DomainA.ProductA =
+            DomainA.ProductA(
                 one = one.asPrimitive(),
                 metas = metas)
         
         override fun productA_(
             one: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainA.ProductA =
-            TestPermuteDomainA.ProductA(
+        ): DomainA.ProductA =
+            DomainA.ProductA(
                 one = one,
                 metas = metas)
         
@@ -7518,16 +7518,16 @@ class TestPermuteDomainA private constructor() {
         override fun recordA(
             one: Long,
             metas: MetaContainer
-        ): TestPermuteDomainA.RecordA =
-            TestPermuteDomainA.RecordA(
+        ): DomainA.RecordA =
+            DomainA.RecordA(
                 one = one.asPrimitive(),
                 metas = metas)
         
         override fun recordA_(
             one: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainA.RecordA =
-            TestPermuteDomainA.RecordA(
+        ): DomainA.RecordA =
+            DomainA.RecordA(
                 one = one,
                 metas = metas)
         
@@ -7536,8 +7536,8 @@ class TestPermuteDomainA private constructor() {
             foo: String,
             bar: Long,
             metas: MetaContainer
-        ): TestPermuteDomainA.UnpermutedProduct =
-            TestPermuteDomainA.UnpermutedProduct(
+        ): DomainA.UnpermutedProduct =
+            DomainA.UnpermutedProduct(
                 foo = foo.asPrimitive(),
                 bar = bar.asPrimitive(),
                 metas = metas)
@@ -7546,8 +7546,8 @@ class TestPermuteDomainA private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainA.UnpermutedProduct =
-            TestPermuteDomainA.UnpermutedProduct(
+        ): DomainA.UnpermutedProduct =
+            DomainA.UnpermutedProduct(
                 foo = foo,
                 bar = bar,
                 metas = metas)
@@ -7557,8 +7557,8 @@ class TestPermuteDomainA private constructor() {
             foo: String,
             bar: Long,
             metas: MetaContainer
-        ): TestPermuteDomainA.UnpermutedRecord =
-            TestPermuteDomainA.UnpermutedRecord(
+        ): DomainA.UnpermutedRecord =
+            DomainA.UnpermutedRecord(
                 foo = foo.asPrimitive(),
                 bar = bar.asPrimitive(),
                 metas = metas)
@@ -7567,8 +7567,8 @@ class TestPermuteDomainA private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainA.UnpermutedRecord =
-            TestPermuteDomainA.UnpermutedRecord(
+        ): DomainA.UnpermutedRecord =
+            DomainA.UnpermutedRecord(
                 foo = foo,
                 bar = bar,
                 metas = metas)
@@ -7577,61 +7577,61 @@ class TestPermuteDomainA private constructor() {
         // Variants for Sum: SumToRemove 
         override fun doesnt(
             metas: MetaContainer
-        ): TestPermuteDomainA.SumToRemove.Doesnt =
-            TestPermuteDomainA.SumToRemove.Doesnt(
+        ): DomainA.SumToRemove.Doesnt =
+            DomainA.SumToRemove.Doesnt(
                 metas = metas)
         
         
         override fun matter(
             metas: MetaContainer
-        ): TestPermuteDomainA.SumToRemove.Matter =
-            TestPermuteDomainA.SumToRemove.Matter(
+        ): DomainA.SumToRemove.Matter =
+            DomainA.SumToRemove.Matter(
                 metas = metas)
         
         
         // Variants for Sum: SumA 
         override fun who(
             metas: MetaContainer
-        ): TestPermuteDomainA.SumA.Who =
-            TestPermuteDomainA.SumA.Who(
+        ): DomainA.SumA.Who =
+            DomainA.SumA.Who(
                 metas = metas)
         
         
         override fun cares(
             metas: MetaContainer
-        ): TestPermuteDomainA.SumA.Cares =
-            TestPermuteDomainA.SumA.Cares(
+        ): DomainA.SumA.Cares =
+            DomainA.SumA.Cares(
                 metas = metas)
         
         
         // Variants for Sum: SumB 
         override fun willBeUnchanged(
             metas: MetaContainer
-        ): TestPermuteDomainA.SumB.WillBeUnchanged =
-            TestPermuteDomainA.SumB.WillBeUnchanged(
+        ): DomainA.SumB.WillBeUnchanged =
+            DomainA.SumB.WillBeUnchanged(
                 metas = metas)
         
         
         override fun willBeRemoved(
             metas: MetaContainer
-        ): TestPermuteDomainA.SumB.WillBeRemoved =
-            TestPermuteDomainA.SumB.WillBeRemoved(
+        ): DomainA.SumB.WillBeRemoved =
+            DomainA.SumB.WillBeRemoved(
                 metas = metas)
         
         
         override fun willBeReplaced(
             something: Long,
             metas: MetaContainer
-        ): TestPermuteDomainA.SumB.WillBeReplaced =
-            TestPermuteDomainA.SumB.WillBeReplaced(
+        ): DomainA.SumB.WillBeReplaced =
+            DomainA.SumB.WillBeReplaced(
                 something = something.asPrimitive(),
                 metas = metas)
         
         override fun willBeReplaced_(
             something: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainA.SumB.WillBeReplaced =
-            TestPermuteDomainA.SumB.WillBeReplaced(
+        ): DomainA.SumB.WillBeReplaced =
+            DomainA.SumB.WillBeReplaced(
                 something = something,
                 metas = metas)
         
@@ -7641,8 +7641,8 @@ class TestPermuteDomainA private constructor() {
             foo: String,
             bar: Long,
             metas: MetaContainer
-        ): TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant =
-            TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant(
+        ): DomainA.UnpermutedSum.UnpermutedProductVariant =
+            DomainA.UnpermutedSum.UnpermutedProductVariant(
                 foo = foo.asPrimitive(),
                 bar = bar.asPrimitive(),
                 metas = metas)
@@ -7651,8 +7651,8 @@ class TestPermuteDomainA private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant =
-            TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant(
+        ): DomainA.UnpermutedSum.UnpermutedProductVariant =
+            DomainA.UnpermutedSum.UnpermutedProductVariant(
                 foo = foo,
                 bar = bar,
                 metas = metas)
@@ -7662,8 +7662,8 @@ class TestPermuteDomainA private constructor() {
             foo: String,
             bar: Long,
             metas: MetaContainer
-        ): TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant =
-            TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant(
+        ): DomainA.UnpermutedSum.UnpermutedRecordVariant =
+            DomainA.UnpermutedSum.UnpermutedRecordVariant(
                 foo = foo.asPrimitive(),
                 bar = bar.asPrimitive(),
                 metas = metas)
@@ -7672,18 +7672,18 @@ class TestPermuteDomainA private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant =
-            TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant(
+        ): DomainA.UnpermutedSum.UnpermutedRecordVariant =
+            DomainA.UnpermutedSum.UnpermutedRecordVariant(
                 foo = foo,
                 bar = bar,
                 metas = metas)
     }
     
-    /** Base class for all TestPermuteDomainA types. */
-    abstract class TestPermuteDomainANode : DomainNode {
-        abstract override fun copyMetas(newMetas: MetaContainer): TestPermuteDomainANode
+    /** Base class for all DomainA types. */
+    abstract class DomainANode : DomainNode {
+        abstract override fun copyMetas(newMetas: MetaContainer): DomainANode
         override fun toString() = toIonElement().toString()
-        abstract override fun withMeta(metaKey: String, metaValue: Any): TestPermuteDomainANode
+        abstract override fun withMeta(metaKey: String, metaValue: Any): DomainANode
         abstract override fun toIonElement(): SexpElement
     }
     
@@ -7694,7 +7694,7 @@ class TestPermuteDomainA private constructor() {
     class ProductToRemove(
         val whatever: org.partiql.pig.runtime.SymbolPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
-    ): TestPermuteDomainANode() {
+    ): DomainANode() {
     
         override fun copyMetas(newMetas: MetaContainer): ProductToRemove =
             ProductToRemove(
@@ -7743,7 +7743,7 @@ class TestPermuteDomainA private constructor() {
     class RecordToRemove(
         val irrelevant: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
-    ): TestPermuteDomainANode() {
+    ): DomainANode() {
     
         override fun copyMetas(newMetas: MetaContainer): RecordToRemove =
             RecordToRemove(
@@ -7793,7 +7793,7 @@ class TestPermuteDomainA private constructor() {
     class ProductA(
         val one: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
-    ): TestPermuteDomainANode() {
+    ): DomainANode() {
     
         override fun copyMetas(newMetas: MetaContainer): ProductA =
             ProductA(
@@ -7842,7 +7842,7 @@ class TestPermuteDomainA private constructor() {
     class RecordA(
         val one: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
-    ): TestPermuteDomainANode() {
+    ): DomainANode() {
     
         override fun copyMetas(newMetas: MetaContainer): RecordA =
             RecordA(
@@ -7893,7 +7893,7 @@ class TestPermuteDomainA private constructor() {
         val foo: org.partiql.pig.runtime.SymbolPrimitive,
         val bar: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
-    ): TestPermuteDomainANode() {
+    ): DomainANode() {
     
         override fun copyMetas(newMetas: MetaContainer): UnpermutedProduct =
             UnpermutedProduct(
@@ -7950,7 +7950,7 @@ class TestPermuteDomainA private constructor() {
         val foo: org.partiql.pig.runtime.SymbolPrimitive,
         val bar: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
-    ): TestPermuteDomainANode() {
+    ): DomainANode() {
     
         override fun copyMetas(newMetas: MetaContainer): UnpermutedRecord =
             UnpermutedRecord(
@@ -8009,7 +8009,7 @@ class TestPermuteDomainA private constructor() {
     // Sum Types
     /////////////////////////////////////////////////////////////////////////////
     
-    sealed class SumToRemove(override val metas: MetaContainer = emptyMetaContainer()) : TestPermuteDomainANode() {
+    sealed class SumToRemove(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
         override fun copyMetas(newMetas: MetaContainer): SumToRemove =
             when (this) {
                 is Doesnt -> copy(metas = newMetas)
@@ -8090,7 +8090,7 @@ class TestPermuteDomainA private constructor() {
     
     }
     
-    sealed class SumA(override val metas: MetaContainer = emptyMetaContainer()) : TestPermuteDomainANode() {
+    sealed class SumA(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
         override fun copyMetas(newMetas: MetaContainer): SumA =
             when (this) {
                 is Who -> copy(metas = newMetas)
@@ -8171,7 +8171,7 @@ class TestPermuteDomainA private constructor() {
     
     }
     
-    sealed class SumB(override val metas: MetaContainer = emptyMetaContainer()) : TestPermuteDomainANode() {
+    sealed class SumB(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
         override fun copyMetas(newMetas: MetaContainer): SumB =
             when (this) {
                 is WillBeUnchanged -> copy(metas = newMetas)
@@ -8302,7 +8302,7 @@ class TestPermuteDomainA private constructor() {
     
     }
     
-    sealed class UnpermutedSum(override val metas: MetaContainer = emptyMetaContainer()) : TestPermuteDomainANode() {
+    sealed class UnpermutedSum(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
         override fun copyMetas(newMetas: MetaContainer): UnpermutedSum =
             when (this) {
                 is UnpermutedProductVariant -> copy(metas = newMetas)
@@ -8431,9 +8431,9 @@ class TestPermuteDomainA private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     
     
-    private class IonElementTransformer : IonElementTransformerBase<TestPermuteDomainANode>() {
+    private class IonElementTransformer : IonElementTransformerBase<DomainANode>() {
     
-        override fun innerTransform(sexp: SexpElement): TestPermuteDomainANode {
+        override fun innerTransform(sexp: SexpElement): DomainANode {
             return when(sexp.tag) {
                 //////////////////////////////////////
                 // Tuple Types
@@ -8441,7 +8441,7 @@ class TestPermuteDomainA private constructor() {
                 "product_to_remove" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
                     val whatever = sexp.getRequired(0).toSymbolPrimitive()
-                    TestPermuteDomainA.ProductToRemove(
+                    DomainA.ProductToRemove(
                         whatever,
                         metas = sexp.metas)
                 }
@@ -8457,7 +8457,7 @@ class TestPermuteDomainA private constructor() {
                 "product_a" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
                     val one = sexp.getRequired(0).toLongPrimitive()
-                    TestPermuteDomainA.ProductA(
+                    DomainA.ProductA(
                         one,
                         metas = sexp.metas)
                 }
@@ -8474,7 +8474,7 @@ class TestPermuteDomainA private constructor() {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
                     val foo = sexp.getRequired(0).toSymbolPrimitive()
                     val bar = sexp.getRequired(1).toLongPrimitive()
-                    TestPermuteDomainA.UnpermutedProduct(
+                    DomainA.UnpermutedProduct(
                         foo,
                         bar,
                         metas = sexp.metas)
@@ -8494,12 +8494,12 @@ class TestPermuteDomainA private constructor() {
                 //////////////////////////////////////
                 "doesnt" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    TestPermuteDomainA.SumToRemove.Doesnt(
+                    DomainA.SumToRemove.Doesnt(
                         metas = sexp.metas)
                 }
                 "matter" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    TestPermuteDomainA.SumToRemove.Matter(
+                    DomainA.SumToRemove.Matter(
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -8507,12 +8507,12 @@ class TestPermuteDomainA private constructor() {
                 //////////////////////////////////////
                 "who" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    TestPermuteDomainA.SumA.Who(
+                    DomainA.SumA.Who(
                         metas = sexp.metas)
                 }
                 "cares" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    TestPermuteDomainA.SumA.Cares(
+                    DomainA.SumA.Cares(
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
@@ -8520,18 +8520,18 @@ class TestPermuteDomainA private constructor() {
                 //////////////////////////////////////
                 "will_be_unchanged" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    TestPermuteDomainA.SumB.WillBeUnchanged(
+                    DomainA.SumB.WillBeUnchanged(
                         metas = sexp.metas)
                 }
                 "will_be_removed" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    TestPermuteDomainA.SumB.WillBeRemoved(
+                    DomainA.SumB.WillBeRemoved(
                         metas = sexp.metas)
                 }
                 "will_be_replaced" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
                     val something = sexp.getRequired(0).toLongPrimitive()
-                    TestPermuteDomainA.SumB.WillBeReplaced(
+                    DomainA.SumB.WillBeReplaced(
                         something,
                         metas = sexp.metas)
                 }
@@ -8542,7 +8542,7 @@ class TestPermuteDomainA private constructor() {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
                     val foo = sexp.getRequired(0).toSymbolPrimitive()
                     val bar = sexp.getRequired(1).toLongPrimitive()
-                    TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant(
+                    DomainA.UnpermutedSum.UnpermutedProductVariant(
                         foo,
                         bar,
                         metas = sexp.metas)
@@ -8557,7 +8557,7 @@ class TestPermuteDomainA private constructor() {
             
                     UnpermutedSum.UnpermutedRecordVariant(foo, bar, metas = sexp.metas)
                 }
-                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'test_permute_domain_a'")
+                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'domain_a'")
             }
         }
     }
@@ -8571,37 +8571,37 @@ class TestPermuteDomainA private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
-        open fun visitProductToRemove(node: TestPermuteDomainA.ProductToRemove) { }
-        open fun visitRecordToRemove(node: TestPermuteDomainA.RecordToRemove) { }
-        open fun visitProductA(node: TestPermuteDomainA.ProductA) { }
-        open fun visitRecordA(node: TestPermuteDomainA.RecordA) { }
-        open fun visitUnpermutedProduct(node: TestPermuteDomainA.UnpermutedProduct) { }
-        open fun visitUnpermutedRecord(node: TestPermuteDomainA.UnpermutedRecord) { }
+        open fun visitProductToRemove(node: DomainA.ProductToRemove) { }
+        open fun visitRecordToRemove(node: DomainA.RecordToRemove) { }
+        open fun visitProductA(node: DomainA.ProductA) { }
+        open fun visitRecordA(node: DomainA.RecordA) { }
+        open fun visitUnpermutedProduct(node: DomainA.UnpermutedProduct) { }
+        open fun visitUnpermutedRecord(node: DomainA.UnpermutedRecord) { }
         //////////////////////////////////////
         // Sum Type: SumToRemove
         //////////////////////////////////////
-        protected open fun visitSumToRemove(node: TestPermuteDomainA.SumToRemove) { }
-        protected open fun visitSumToRemoveDoesnt(node: TestPermuteDomainA.SumToRemove.Doesnt) { }
-        protected open fun visitSumToRemoveMatter(node: TestPermuteDomainA.SumToRemove.Matter) { }
+        protected open fun visitSumToRemove(node: DomainA.SumToRemove) { }
+        protected open fun visitSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt) { }
+        protected open fun visitSumToRemoveMatter(node: DomainA.SumToRemove.Matter) { }
         //////////////////////////////////////
         // Sum Type: SumA
         //////////////////////////////////////
-        protected open fun visitSumA(node: TestPermuteDomainA.SumA) { }
-        protected open fun visitSumAWho(node: TestPermuteDomainA.SumA.Who) { }
-        protected open fun visitSumACares(node: TestPermuteDomainA.SumA.Cares) { }
+        protected open fun visitSumA(node: DomainA.SumA) { }
+        protected open fun visitSumAWho(node: DomainA.SumA.Who) { }
+        protected open fun visitSumACares(node: DomainA.SumA.Cares) { }
         //////////////////////////////////////
         // Sum Type: SumB
         //////////////////////////////////////
-        protected open fun visitSumB(node: TestPermuteDomainA.SumB) { }
-        protected open fun visitSumBWillBeUnchanged(node: TestPermuteDomainA.SumB.WillBeUnchanged) { }
-        protected open fun visitSumBWillBeRemoved(node: TestPermuteDomainA.SumB.WillBeRemoved) { }
-        protected open fun visitSumBWillBeReplaced(node: TestPermuteDomainA.SumB.WillBeReplaced) { }
+        protected open fun visitSumB(node: DomainA.SumB) { }
+        protected open fun visitSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged) { }
+        protected open fun visitSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved) { }
+        protected open fun visitSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced) { }
         //////////////////////////////////////
         // Sum Type: UnpermutedSum
         //////////////////////////////////////
-        protected open fun visitUnpermutedSum(node: TestPermuteDomainA.UnpermutedSum) { }
-        protected open fun visitUnpermutedSumUnpermutedProductVariant(node: TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant) { }
-        protected open fun visitUnpermutedSumUnpermutedRecordVariant(node: TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant) { }
+        protected open fun visitUnpermutedSum(node: DomainA.UnpermutedSum) { }
+        protected open fun visitUnpermutedSumUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant) { }
+        protected open fun visitUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) { }
     
         ////////////////////////////////////////////////////////////////////////////
         // Walk Functions
@@ -8610,38 +8610,38 @@ class TestPermuteDomainA private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
-        open fun walkProductToRemove(node: TestPermuteDomainA.ProductToRemove) {
+        open fun walkProductToRemove(node: DomainA.ProductToRemove) {
             visitProductToRemove(node)
             walkSymbolPrimitive(node.whatever)
             walkMetas(node.metas)
         }
     
-        open fun walkRecordToRemove(node: TestPermuteDomainA.RecordToRemove) {
+        open fun walkRecordToRemove(node: DomainA.RecordToRemove) {
             visitRecordToRemove(node)
             walkLongPrimitive(node.irrelevant)
             walkMetas(node.metas)
         }
     
-        open fun walkProductA(node: TestPermuteDomainA.ProductA) {
+        open fun walkProductA(node: DomainA.ProductA) {
             visitProductA(node)
             walkLongPrimitive(node.one)
             walkMetas(node.metas)
         }
     
-        open fun walkRecordA(node: TestPermuteDomainA.RecordA) {
+        open fun walkRecordA(node: DomainA.RecordA) {
             visitRecordA(node)
             walkLongPrimitive(node.one)
             walkMetas(node.metas)
         }
     
-        open fun walkUnpermutedProduct(node: TestPermuteDomainA.UnpermutedProduct) {
+        open fun walkUnpermutedProduct(node: DomainA.UnpermutedProduct) {
             visitUnpermutedProduct(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
     
-        open fun walkUnpermutedRecord(node: TestPermuteDomainA.UnpermutedRecord) {
+        open fun walkUnpermutedRecord(node: DomainA.UnpermutedRecord) {
             visitUnpermutedRecord(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
@@ -8651,20 +8651,20 @@ class TestPermuteDomainA private constructor() {
         //////////////////////////////////////
         // Sum Type: SumToRemove
         //////////////////////////////////////
-        open fun walkSumToRemove(node: TestPermuteDomainA.SumToRemove) {
+        open fun walkSumToRemove(node: DomainA.SumToRemove) {
             visitSumToRemove(node)
             when(node) {
-                is TestPermuteDomainA.SumToRemove.Doesnt -> walkSumToRemoveDoesnt(node)
-                is TestPermuteDomainA.SumToRemove.Matter -> walkSumToRemoveMatter(node)
+                is DomainA.SumToRemove.Doesnt -> walkSumToRemoveDoesnt(node)
+                is DomainA.SumToRemove.Matter -> walkSumToRemoveMatter(node)
             }
         }
     
-        open fun walkSumToRemoveDoesnt(node: TestPermuteDomainA.SumToRemove.Doesnt) {
+        open fun walkSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt) {
             visitSumToRemoveDoesnt(node)
             walkMetas(node.metas)
         }
     
-        open fun walkSumToRemoveMatter(node: TestPermuteDomainA.SumToRemove.Matter) {
+        open fun walkSumToRemoveMatter(node: DomainA.SumToRemove.Matter) {
             visitSumToRemoveMatter(node)
             walkMetas(node.metas)
         }
@@ -8672,20 +8672,20 @@ class TestPermuteDomainA private constructor() {
         //////////////////////////////////////
         // Sum Type: SumA
         //////////////////////////////////////
-        open fun walkSumA(node: TestPermuteDomainA.SumA) {
+        open fun walkSumA(node: DomainA.SumA) {
             visitSumA(node)
             when(node) {
-                is TestPermuteDomainA.SumA.Who -> walkSumAWho(node)
-                is TestPermuteDomainA.SumA.Cares -> walkSumACares(node)
+                is DomainA.SumA.Who -> walkSumAWho(node)
+                is DomainA.SumA.Cares -> walkSumACares(node)
             }
         }
     
-        open fun walkSumAWho(node: TestPermuteDomainA.SumA.Who) {
+        open fun walkSumAWho(node: DomainA.SumA.Who) {
             visitSumAWho(node)
             walkMetas(node.metas)
         }
     
-        open fun walkSumACares(node: TestPermuteDomainA.SumA.Cares) {
+        open fun walkSumACares(node: DomainA.SumA.Cares) {
             visitSumACares(node)
             walkMetas(node.metas)
         }
@@ -8693,26 +8693,26 @@ class TestPermuteDomainA private constructor() {
         //////////////////////////////////////
         // Sum Type: SumB
         //////////////////////////////////////
-        open fun walkSumB(node: TestPermuteDomainA.SumB) {
+        open fun walkSumB(node: DomainA.SumB) {
             visitSumB(node)
             when(node) {
-                is TestPermuteDomainA.SumB.WillBeUnchanged -> walkSumBWillBeUnchanged(node)
-                is TestPermuteDomainA.SumB.WillBeRemoved -> walkSumBWillBeRemoved(node)
-                is TestPermuteDomainA.SumB.WillBeReplaced -> walkSumBWillBeReplaced(node)
+                is DomainA.SumB.WillBeUnchanged -> walkSumBWillBeUnchanged(node)
+                is DomainA.SumB.WillBeRemoved -> walkSumBWillBeRemoved(node)
+                is DomainA.SumB.WillBeReplaced -> walkSumBWillBeReplaced(node)
             }
         }
     
-        open fun walkSumBWillBeUnchanged(node: TestPermuteDomainA.SumB.WillBeUnchanged) {
+        open fun walkSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged) {
             visitSumBWillBeUnchanged(node)
             walkMetas(node.metas)
         }
     
-        open fun walkSumBWillBeRemoved(node: TestPermuteDomainA.SumB.WillBeRemoved) {
+        open fun walkSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved) {
             visitSumBWillBeRemoved(node)
             walkMetas(node.metas)
         }
     
-        open fun walkSumBWillBeReplaced(node: TestPermuteDomainA.SumB.WillBeReplaced) {
+        open fun walkSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced) {
             visitSumBWillBeReplaced(node)
             walkLongPrimitive(node.something)
             walkMetas(node.metas)
@@ -8721,22 +8721,22 @@ class TestPermuteDomainA private constructor() {
         //////////////////////////////////////
         // Sum Type: UnpermutedSum
         //////////////////////////////////////
-        open fun walkUnpermutedSum(node: TestPermuteDomainA.UnpermutedSum) {
+        open fun walkUnpermutedSum(node: DomainA.UnpermutedSum) {
             visitUnpermutedSum(node)
             when(node) {
-                is TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant -> walkUnpermutedSumUnpermutedProductVariant(node)
-                is TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant -> walkUnpermutedSumUnpermutedRecordVariant(node)
+                is DomainA.UnpermutedSum.UnpermutedProductVariant -> walkUnpermutedSumUnpermutedProductVariant(node)
+                is DomainA.UnpermutedSum.UnpermutedRecordVariant -> walkUnpermutedSumUnpermutedRecordVariant(node)
             }
         }
     
-        open fun walkUnpermutedSumUnpermutedProductVariant(node: TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant) {
+        open fun walkUnpermutedSumUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant) {
             visitUnpermutedSumUnpermutedProductVariant(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
     
-        open fun walkUnpermutedSumUnpermutedRecordVariant(node: TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant) {
+        open fun walkUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) {
             visitUnpermutedSumUnpermutedRecordVariant(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
@@ -8754,37 +8754,37 @@ class TestPermuteDomainA private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
-        open protected fun visitProductToRemove(node: TestPermuteDomainA.ProductToRemove, accumulator: T): T = accumulator
-        open protected fun visitRecordToRemove(node: TestPermuteDomainA.RecordToRemove, accumulator: T): T = accumulator
-        open protected fun visitProductA(node: TestPermuteDomainA.ProductA, accumulator: T): T = accumulator
-        open protected fun visitRecordA(node: TestPermuteDomainA.RecordA, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedProduct(node: TestPermuteDomainA.UnpermutedProduct, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedRecord(node: TestPermuteDomainA.UnpermutedRecord, accumulator: T): T = accumulator
+        open protected fun visitProductToRemove(node: DomainA.ProductToRemove, accumulator: T): T = accumulator
+        open protected fun visitRecordToRemove(node: DomainA.RecordToRemove, accumulator: T): T = accumulator
+        open protected fun visitProductA(node: DomainA.ProductA, accumulator: T): T = accumulator
+        open protected fun visitRecordA(node: DomainA.RecordA, accumulator: T): T = accumulator
+        open protected fun visitUnpermutedProduct(node: DomainA.UnpermutedProduct, accumulator: T): T = accumulator
+        open protected fun visitUnpermutedRecord(node: DomainA.UnpermutedRecord, accumulator: T): T = accumulator
         //////////////////////////////////////
         // Sum Type: SumToRemove
         //////////////////////////////////////
-        open protected fun visitSumToRemove(node: TestPermuteDomainA.SumToRemove, accumulator: T): T = accumulator
-        open protected fun visitSumToRemoveDoesnt(node: TestPermuteDomainA.SumToRemove.Doesnt, accumulator: T): T = accumulator
-        open protected fun visitSumToRemoveMatter(node: TestPermuteDomainA.SumToRemove.Matter, accumulator: T): T = accumulator
+        open protected fun visitSumToRemove(node: DomainA.SumToRemove, accumulator: T): T = accumulator
+        open protected fun visitSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt, accumulator: T): T = accumulator
+        open protected fun visitSumToRemoveMatter(node: DomainA.SumToRemove.Matter, accumulator: T): T = accumulator
         //////////////////////////////////////
         // Sum Type: SumA
         //////////////////////////////////////
-        open protected fun visitSumA(node: TestPermuteDomainA.SumA, accumulator: T): T = accumulator
-        open protected fun visitSumAWho(node: TestPermuteDomainA.SumA.Who, accumulator: T): T = accumulator
-        open protected fun visitSumACares(node: TestPermuteDomainA.SumA.Cares, accumulator: T): T = accumulator
+        open protected fun visitSumA(node: DomainA.SumA, accumulator: T): T = accumulator
+        open protected fun visitSumAWho(node: DomainA.SumA.Who, accumulator: T): T = accumulator
+        open protected fun visitSumACares(node: DomainA.SumA.Cares, accumulator: T): T = accumulator
         //////////////////////////////////////
         // Sum Type: SumB
         //////////////////////////////////////
-        open protected fun visitSumB(node: TestPermuteDomainA.SumB, accumulator: T): T = accumulator
-        open protected fun visitSumBWillBeUnchanged(node: TestPermuteDomainA.SumB.WillBeUnchanged, accumulator: T): T = accumulator
-        open protected fun visitSumBWillBeRemoved(node: TestPermuteDomainA.SumB.WillBeRemoved, accumulator: T): T = accumulator
-        open protected fun visitSumBWillBeReplaced(node: TestPermuteDomainA.SumB.WillBeReplaced, accumulator: T): T = accumulator
+        open protected fun visitSumB(node: DomainA.SumB, accumulator: T): T = accumulator
+        open protected fun visitSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged, accumulator: T): T = accumulator
+        open protected fun visitSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved, accumulator: T): T = accumulator
+        open protected fun visitSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced, accumulator: T): T = accumulator
         //////////////////////////////////////
         // Sum Type: UnpermutedSum
         //////////////////////////////////////
-        open protected fun visitUnpermutedSum(node: TestPermuteDomainA.UnpermutedSum, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedSumUnpermutedProductVariant(node: TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedSumUnpermutedRecordVariant(node: TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant, accumulator: T): T = accumulator
+        open protected fun visitUnpermutedSum(node: DomainA.UnpermutedSum, accumulator: T): T = accumulator
+        open protected fun visitUnpermutedSumUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant, accumulator: T): T = accumulator
+        open protected fun visitUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant, accumulator: T): T = accumulator
     
         ////////////////////////////////////////////////////////////////////////////
         // Walk Functions
@@ -8793,7 +8793,7 @@ class TestPermuteDomainA private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
-        open fun walkProductToRemove(node: TestPermuteDomainA.ProductToRemove, accumulator: T): T {
+        open fun walkProductToRemove(node: DomainA.ProductToRemove, accumulator: T): T {
             var current = accumulator
             current = visitProductToRemove(node, current)
             current = walkSymbolPrimitive(node.whatever, current)
@@ -8801,7 +8801,7 @@ class TestPermuteDomainA private constructor() {
             return current
         }
     
-        open fun walkRecordToRemove(node: TestPermuteDomainA.RecordToRemove, accumulator: T): T {
+        open fun walkRecordToRemove(node: DomainA.RecordToRemove, accumulator: T): T {
             var current = accumulator
             current = visitRecordToRemove(node, current)
             current = walkLongPrimitive(node.irrelevant, current)
@@ -8809,7 +8809,7 @@ class TestPermuteDomainA private constructor() {
             return current
         }
     
-        open fun walkProductA(node: TestPermuteDomainA.ProductA, accumulator: T): T {
+        open fun walkProductA(node: DomainA.ProductA, accumulator: T): T {
             var current = accumulator
             current = visitProductA(node, current)
             current = walkLongPrimitive(node.one, current)
@@ -8817,7 +8817,7 @@ class TestPermuteDomainA private constructor() {
             return current
         }
     
-        open fun walkRecordA(node: TestPermuteDomainA.RecordA, accumulator: T): T {
+        open fun walkRecordA(node: DomainA.RecordA, accumulator: T): T {
             var current = accumulator
             current = visitRecordA(node, current)
             current = walkLongPrimitive(node.one, current)
@@ -8825,7 +8825,7 @@ class TestPermuteDomainA private constructor() {
             return current
         }
     
-        open fun walkUnpermutedProduct(node: TestPermuteDomainA.UnpermutedProduct, accumulator: T): T {
+        open fun walkUnpermutedProduct(node: DomainA.UnpermutedProduct, accumulator: T): T {
             var current = accumulator
             current = visitUnpermutedProduct(node, current)
             current = walkSymbolPrimitive(node.foo, current)
@@ -8834,7 +8834,7 @@ class TestPermuteDomainA private constructor() {
             return current
         }
     
-        open fun walkUnpermutedRecord(node: TestPermuteDomainA.UnpermutedRecord, accumulator: T): T {
+        open fun walkUnpermutedRecord(node: DomainA.UnpermutedRecord, accumulator: T): T {
             var current = accumulator
             current = visitUnpermutedRecord(node, current)
             current = walkSymbolPrimitive(node.foo, current)
@@ -8846,22 +8846,22 @@ class TestPermuteDomainA private constructor() {
         //////////////////////////////////////
         // Sum Type: SumToRemove
         //////////////////////////////////////
-        open fun walkSumToRemove(node: TestPermuteDomainA.SumToRemove, accumulator: T): T {
+        open fun walkSumToRemove(node: DomainA.SumToRemove, accumulator: T): T {
             val current = visitSumToRemove(node, accumulator)
             return when(node) {
-                is TestPermuteDomainA.SumToRemove.Doesnt -> walkSumToRemoveDoesnt(node, current)
-                is TestPermuteDomainA.SumToRemove.Matter -> walkSumToRemoveMatter(node, current)
+                is DomainA.SumToRemove.Doesnt -> walkSumToRemoveDoesnt(node, current)
+                is DomainA.SumToRemove.Matter -> walkSumToRemoveMatter(node, current)
             }
         }
     
-        open fun walkSumToRemoveDoesnt(node: TestPermuteDomainA.SumToRemove.Doesnt, accumulator: T): T {
+        open fun walkSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt, accumulator: T): T {
             var current = accumulator
             current = visitSumToRemoveDoesnt(node, current)
             current = walkMetas(node.metas, current)
             return current
         }
     
-        open fun walkSumToRemoveMatter(node: TestPermuteDomainA.SumToRemove.Matter, accumulator: T): T {
+        open fun walkSumToRemoveMatter(node: DomainA.SumToRemove.Matter, accumulator: T): T {
             var current = accumulator
             current = visitSumToRemoveMatter(node, current)
             current = walkMetas(node.metas, current)
@@ -8871,22 +8871,22 @@ class TestPermuteDomainA private constructor() {
         //////////////////////////////////////
         // Sum Type: SumA
         //////////////////////////////////////
-        open fun walkSumA(node: TestPermuteDomainA.SumA, accumulator: T): T {
+        open fun walkSumA(node: DomainA.SumA, accumulator: T): T {
             val current = visitSumA(node, accumulator)
             return when(node) {
-                is TestPermuteDomainA.SumA.Who -> walkSumAWho(node, current)
-                is TestPermuteDomainA.SumA.Cares -> walkSumACares(node, current)
+                is DomainA.SumA.Who -> walkSumAWho(node, current)
+                is DomainA.SumA.Cares -> walkSumACares(node, current)
             }
         }
     
-        open fun walkSumAWho(node: TestPermuteDomainA.SumA.Who, accumulator: T): T {
+        open fun walkSumAWho(node: DomainA.SumA.Who, accumulator: T): T {
             var current = accumulator
             current = visitSumAWho(node, current)
             current = walkMetas(node.metas, current)
             return current
         }
     
-        open fun walkSumACares(node: TestPermuteDomainA.SumA.Cares, accumulator: T): T {
+        open fun walkSumACares(node: DomainA.SumA.Cares, accumulator: T): T {
             var current = accumulator
             current = visitSumACares(node, current)
             current = walkMetas(node.metas, current)
@@ -8896,30 +8896,30 @@ class TestPermuteDomainA private constructor() {
         //////////////////////////////////////
         // Sum Type: SumB
         //////////////////////////////////////
-        open fun walkSumB(node: TestPermuteDomainA.SumB, accumulator: T): T {
+        open fun walkSumB(node: DomainA.SumB, accumulator: T): T {
             val current = visitSumB(node, accumulator)
             return when(node) {
-                is TestPermuteDomainA.SumB.WillBeUnchanged -> walkSumBWillBeUnchanged(node, current)
-                is TestPermuteDomainA.SumB.WillBeRemoved -> walkSumBWillBeRemoved(node, current)
-                is TestPermuteDomainA.SumB.WillBeReplaced -> walkSumBWillBeReplaced(node, current)
+                is DomainA.SumB.WillBeUnchanged -> walkSumBWillBeUnchanged(node, current)
+                is DomainA.SumB.WillBeRemoved -> walkSumBWillBeRemoved(node, current)
+                is DomainA.SumB.WillBeReplaced -> walkSumBWillBeReplaced(node, current)
             }
         }
     
-        open fun walkSumBWillBeUnchanged(node: TestPermuteDomainA.SumB.WillBeUnchanged, accumulator: T): T {
+        open fun walkSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged, accumulator: T): T {
             var current = accumulator
             current = visitSumBWillBeUnchanged(node, current)
             current = walkMetas(node.metas, current)
             return current
         }
     
-        open fun walkSumBWillBeRemoved(node: TestPermuteDomainA.SumB.WillBeRemoved, accumulator: T): T {
+        open fun walkSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved, accumulator: T): T {
             var current = accumulator
             current = visitSumBWillBeRemoved(node, current)
             current = walkMetas(node.metas, current)
             return current
         }
     
-        open fun walkSumBWillBeReplaced(node: TestPermuteDomainA.SumB.WillBeReplaced, accumulator: T): T {
+        open fun walkSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced, accumulator: T): T {
             var current = accumulator
             current = visitSumBWillBeReplaced(node, current)
             current = walkLongPrimitive(node.something, current)
@@ -8930,15 +8930,15 @@ class TestPermuteDomainA private constructor() {
         //////////////////////////////////////
         // Sum Type: UnpermutedSum
         //////////////////////////////////////
-        open fun walkUnpermutedSum(node: TestPermuteDomainA.UnpermutedSum, accumulator: T): T {
+        open fun walkUnpermutedSum(node: DomainA.UnpermutedSum, accumulator: T): T {
             val current = visitUnpermutedSum(node, accumulator)
             return when(node) {
-                is TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant -> walkUnpermutedSumUnpermutedProductVariant(node, current)
-                is TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant -> walkUnpermutedSumUnpermutedRecordVariant(node, current)
+                is DomainA.UnpermutedSum.UnpermutedProductVariant -> walkUnpermutedSumUnpermutedProductVariant(node, current)
+                is DomainA.UnpermutedSum.UnpermutedRecordVariant -> walkUnpermutedSumUnpermutedRecordVariant(node, current)
             }
         }
     
-        open fun walkUnpermutedSumUnpermutedProductVariant(node: TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant, accumulator: T): T {
+        open fun walkUnpermutedSumUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant, accumulator: T): T {
             var current = accumulator
             current = visitUnpermutedSumUnpermutedProductVariant(node, current)
             current = walkSymbolPrimitive(node.foo, current)
@@ -8947,7 +8947,7 @@ class TestPermuteDomainA private constructor() {
             return current
         }
     
-        open fun walkUnpermutedSumUnpermutedRecordVariant(node: TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant, accumulator: T): T {
+        open fun walkUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant, accumulator: T): T {
             var current = accumulator
             current = visitUnpermutedSumUnpermutedRecordVariant(node, current)
             current = walkSymbolPrimitive(node.foo, current)
@@ -8962,275 +8962,275 @@ class TestPermuteDomainA private constructor() {
         // Tuple Types
         //////////////////////////////////////
         // Tuple ProductToRemove
-        open fun transformProductToRemove(node: TestPermuteDomainA.ProductToRemove): TestPermuteDomainA.ProductToRemove {
+        open fun transformProductToRemove(node: DomainA.ProductToRemove): DomainA.ProductToRemove {
             val new_whatever = transformProductToRemove_whatever(node)
             val new_metas = transformProductToRemove_metas(node)
-            return TestPermuteDomainA.ProductToRemove(
+            return DomainA.ProductToRemove(
                     whatever = new_whatever,
                     metas = new_metas
                 )
         }
-        open fun transformProductToRemove_whatever(node: TestPermuteDomainA.ProductToRemove) =
+        open fun transformProductToRemove_whatever(node: DomainA.ProductToRemove) =
             transformSymbolPrimitive(node.whatever)
-        open fun transformProductToRemove_metas(node: TestPermuteDomainA.ProductToRemove) =
+        open fun transformProductToRemove_metas(node: DomainA.ProductToRemove) =
             transformMetas(node.metas)
     
         // Tuple RecordToRemove
-        open fun transformRecordToRemove(node: TestPermuteDomainA.RecordToRemove): TestPermuteDomainA.RecordToRemove {
+        open fun transformRecordToRemove(node: DomainA.RecordToRemove): DomainA.RecordToRemove {
             val new_irrelevant = transformRecordToRemove_irrelevant(node)
             val new_metas = transformRecordToRemove_metas(node)
-            return TestPermuteDomainA.RecordToRemove(
+            return DomainA.RecordToRemove(
                     irrelevant = new_irrelevant,
                     metas = new_metas
                 )
         }
-        open fun transformRecordToRemove_irrelevant(node: TestPermuteDomainA.RecordToRemove) =
+        open fun transformRecordToRemove_irrelevant(node: DomainA.RecordToRemove) =
             transformLongPrimitive(node.irrelevant)
-        open fun transformRecordToRemove_metas(node: TestPermuteDomainA.RecordToRemove) =
+        open fun transformRecordToRemove_metas(node: DomainA.RecordToRemove) =
             transformMetas(node.metas)
     
         // Tuple ProductA
-        open fun transformProductA(node: TestPermuteDomainA.ProductA): TestPermuteDomainA.ProductA {
+        open fun transformProductA(node: DomainA.ProductA): DomainA.ProductA {
             val new_one = transformProductA_one(node)
             val new_metas = transformProductA_metas(node)
-            return TestPermuteDomainA.ProductA(
+            return DomainA.ProductA(
                     one = new_one,
                     metas = new_metas
                 )
         }
-        open fun transformProductA_one(node: TestPermuteDomainA.ProductA) =
+        open fun transformProductA_one(node: DomainA.ProductA) =
             transformLongPrimitive(node.one)
-        open fun transformProductA_metas(node: TestPermuteDomainA.ProductA) =
+        open fun transformProductA_metas(node: DomainA.ProductA) =
             transformMetas(node.metas)
     
         // Tuple RecordA
-        open fun transformRecordA(node: TestPermuteDomainA.RecordA): TestPermuteDomainA.RecordA {
+        open fun transformRecordA(node: DomainA.RecordA): DomainA.RecordA {
             val new_one = transformRecordA_one(node)
             val new_metas = transformRecordA_metas(node)
-            return TestPermuteDomainA.RecordA(
+            return DomainA.RecordA(
                     one = new_one,
                     metas = new_metas
                 )
         }
-        open fun transformRecordA_one(node: TestPermuteDomainA.RecordA) =
+        open fun transformRecordA_one(node: DomainA.RecordA) =
             transformLongPrimitive(node.one)
-        open fun transformRecordA_metas(node: TestPermuteDomainA.RecordA) =
+        open fun transformRecordA_metas(node: DomainA.RecordA) =
             transformMetas(node.metas)
     
         // Tuple UnpermutedProduct
-        open fun transformUnpermutedProduct(node: TestPermuteDomainA.UnpermutedProduct): TestPermuteDomainA.UnpermutedProduct {
+        open fun transformUnpermutedProduct(node: DomainA.UnpermutedProduct): DomainA.UnpermutedProduct {
             val new_foo = transformUnpermutedProduct_foo(node)
             val new_bar = transformUnpermutedProduct_bar(node)
             val new_metas = transformUnpermutedProduct_metas(node)
-            return TestPermuteDomainA.UnpermutedProduct(
+            return DomainA.UnpermutedProduct(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
         }
-        open fun transformUnpermutedProduct_foo(node: TestPermuteDomainA.UnpermutedProduct) =
+        open fun transformUnpermutedProduct_foo(node: DomainA.UnpermutedProduct) =
             transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedProduct_bar(node: TestPermuteDomainA.UnpermutedProduct) =
+        open fun transformUnpermutedProduct_bar(node: DomainA.UnpermutedProduct) =
             transformLongPrimitive(node.bar)
-        open fun transformUnpermutedProduct_metas(node: TestPermuteDomainA.UnpermutedProduct) =
+        open fun transformUnpermutedProduct_metas(node: DomainA.UnpermutedProduct) =
             transformMetas(node.metas)
     
         // Tuple UnpermutedRecord
-        open fun transformUnpermutedRecord(node: TestPermuteDomainA.UnpermutedRecord): TestPermuteDomainA.UnpermutedRecord {
+        open fun transformUnpermutedRecord(node: DomainA.UnpermutedRecord): DomainA.UnpermutedRecord {
             val new_foo = transformUnpermutedRecord_foo(node)
             val new_bar = transformUnpermutedRecord_bar(node)
             val new_metas = transformUnpermutedRecord_metas(node)
-            return TestPermuteDomainA.UnpermutedRecord(
+            return DomainA.UnpermutedRecord(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
         }
-        open fun transformUnpermutedRecord_foo(node: TestPermuteDomainA.UnpermutedRecord) =
+        open fun transformUnpermutedRecord_foo(node: DomainA.UnpermutedRecord) =
             transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedRecord_bar(node: TestPermuteDomainA.UnpermutedRecord) =
+        open fun transformUnpermutedRecord_bar(node: DomainA.UnpermutedRecord) =
             transformLongPrimitive(node.bar)
-        open fun transformUnpermutedRecord_metas(node: TestPermuteDomainA.UnpermutedRecord) =
+        open fun transformUnpermutedRecord_metas(node: DomainA.UnpermutedRecord) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
         // Sum Type: SumToRemove
         //////////////////////////////////////
-        open fun transformSumToRemove(node: TestPermuteDomainA.SumToRemove): TestPermuteDomainA.SumToRemove =
+        open fun transformSumToRemove(node: DomainA.SumToRemove): DomainA.SumToRemove =
             when(node) {
-                is TestPermuteDomainA.SumToRemove.Doesnt -> transformSumToRemoveDoesnt(node)
-                is TestPermuteDomainA.SumToRemove.Matter -> transformSumToRemoveMatter(node)
+                is DomainA.SumToRemove.Doesnt -> transformSumToRemoveDoesnt(node)
+                is DomainA.SumToRemove.Matter -> transformSumToRemoveMatter(node)
             }
         // Variant SumToRemoveDoesnt
-        open fun transformSumToRemoveDoesnt(node: TestPermuteDomainA.SumToRemove.Doesnt): TestPermuteDomainA.SumToRemove  {
+        open fun transformSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt): DomainA.SumToRemove  {
             val new_metas = transformSumToRemoveDoesnt_metas(node)
-            return TestPermuteDomainA.SumToRemove.Doesnt(
+            return DomainA.SumToRemove.Doesnt(
                     metas = new_metas
                 )
         }
-        open fun transformSumToRemoveDoesnt_metas(node: TestPermuteDomainA.SumToRemove.Doesnt) =
+        open fun transformSumToRemoveDoesnt_metas(node: DomainA.SumToRemove.Doesnt) =
             transformMetas(node.metas)
     
         // Variant SumToRemoveMatter
-        open fun transformSumToRemoveMatter(node: TestPermuteDomainA.SumToRemove.Matter): TestPermuteDomainA.SumToRemove  {
+        open fun transformSumToRemoveMatter(node: DomainA.SumToRemove.Matter): DomainA.SumToRemove  {
             val new_metas = transformSumToRemoveMatter_metas(node)
-            return TestPermuteDomainA.SumToRemove.Matter(
+            return DomainA.SumToRemove.Matter(
                     metas = new_metas
                 )
         }
-        open fun transformSumToRemoveMatter_metas(node: TestPermuteDomainA.SumToRemove.Matter) =
+        open fun transformSumToRemoveMatter_metas(node: DomainA.SumToRemove.Matter) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
         // Sum Type: SumA
         //////////////////////////////////////
-        open fun transformSumA(node: TestPermuteDomainA.SumA): TestPermuteDomainA.SumA =
+        open fun transformSumA(node: DomainA.SumA): DomainA.SumA =
             when(node) {
-                is TestPermuteDomainA.SumA.Who -> transformSumAWho(node)
-                is TestPermuteDomainA.SumA.Cares -> transformSumACares(node)
+                is DomainA.SumA.Who -> transformSumAWho(node)
+                is DomainA.SumA.Cares -> transformSumACares(node)
             }
         // Variant SumAWho
-        open fun transformSumAWho(node: TestPermuteDomainA.SumA.Who): TestPermuteDomainA.SumA  {
+        open fun transformSumAWho(node: DomainA.SumA.Who): DomainA.SumA  {
             val new_metas = transformSumAWho_metas(node)
-            return TestPermuteDomainA.SumA.Who(
+            return DomainA.SumA.Who(
                     metas = new_metas
                 )
         }
-        open fun transformSumAWho_metas(node: TestPermuteDomainA.SumA.Who) =
+        open fun transformSumAWho_metas(node: DomainA.SumA.Who) =
             transformMetas(node.metas)
     
         // Variant SumACares
-        open fun transformSumACares(node: TestPermuteDomainA.SumA.Cares): TestPermuteDomainA.SumA  {
+        open fun transformSumACares(node: DomainA.SumA.Cares): DomainA.SumA  {
             val new_metas = transformSumACares_metas(node)
-            return TestPermuteDomainA.SumA.Cares(
+            return DomainA.SumA.Cares(
                     metas = new_metas
                 )
         }
-        open fun transformSumACares_metas(node: TestPermuteDomainA.SumA.Cares) =
+        open fun transformSumACares_metas(node: DomainA.SumA.Cares) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
         // Sum Type: SumB
         //////////////////////////////////////
-        open fun transformSumB(node: TestPermuteDomainA.SumB): TestPermuteDomainA.SumB =
+        open fun transformSumB(node: DomainA.SumB): DomainA.SumB =
             when(node) {
-                is TestPermuteDomainA.SumB.WillBeUnchanged -> transformSumBWillBeUnchanged(node)
-                is TestPermuteDomainA.SumB.WillBeRemoved -> transformSumBWillBeRemoved(node)
-                is TestPermuteDomainA.SumB.WillBeReplaced -> transformSumBWillBeReplaced(node)
+                is DomainA.SumB.WillBeUnchanged -> transformSumBWillBeUnchanged(node)
+                is DomainA.SumB.WillBeRemoved -> transformSumBWillBeRemoved(node)
+                is DomainA.SumB.WillBeReplaced -> transformSumBWillBeReplaced(node)
             }
         // Variant SumBWillBeUnchanged
-        open fun transformSumBWillBeUnchanged(node: TestPermuteDomainA.SumB.WillBeUnchanged): TestPermuteDomainA.SumB  {
+        open fun transformSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged): DomainA.SumB  {
             val new_metas = transformSumBWillBeUnchanged_metas(node)
-            return TestPermuteDomainA.SumB.WillBeUnchanged(
+            return DomainA.SumB.WillBeUnchanged(
                     metas = new_metas
                 )
         }
-        open fun transformSumBWillBeUnchanged_metas(node: TestPermuteDomainA.SumB.WillBeUnchanged) =
+        open fun transformSumBWillBeUnchanged_metas(node: DomainA.SumB.WillBeUnchanged) =
             transformMetas(node.metas)
     
         // Variant SumBWillBeRemoved
-        open fun transformSumBWillBeRemoved(node: TestPermuteDomainA.SumB.WillBeRemoved): TestPermuteDomainA.SumB  {
+        open fun transformSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved): DomainA.SumB  {
             val new_metas = transformSumBWillBeRemoved_metas(node)
-            return TestPermuteDomainA.SumB.WillBeRemoved(
+            return DomainA.SumB.WillBeRemoved(
                     metas = new_metas
                 )
         }
-        open fun transformSumBWillBeRemoved_metas(node: TestPermuteDomainA.SumB.WillBeRemoved) =
+        open fun transformSumBWillBeRemoved_metas(node: DomainA.SumB.WillBeRemoved) =
             transformMetas(node.metas)
     
         // Variant SumBWillBeReplaced
-        open fun transformSumBWillBeReplaced(node: TestPermuteDomainA.SumB.WillBeReplaced): TestPermuteDomainA.SumB  {
+        open fun transformSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced): DomainA.SumB  {
             val new_something = transformSumBWillBeReplaced_something(node)
             val new_metas = transformSumBWillBeReplaced_metas(node)
-            return TestPermuteDomainA.SumB.WillBeReplaced(
+            return DomainA.SumB.WillBeReplaced(
                     something = new_something,
                     metas = new_metas
                 )
         }
-        open fun transformSumBWillBeReplaced_something(node: TestPermuteDomainA.SumB.WillBeReplaced) =
+        open fun transformSumBWillBeReplaced_something(node: DomainA.SumB.WillBeReplaced) =
             transformLongPrimitive(node.something)
-        open fun transformSumBWillBeReplaced_metas(node: TestPermuteDomainA.SumB.WillBeReplaced) =
+        open fun transformSumBWillBeReplaced_metas(node: DomainA.SumB.WillBeReplaced) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
         // Sum Type: UnpermutedSum
         //////////////////////////////////////
-        open fun transformUnpermutedSum(node: TestPermuteDomainA.UnpermutedSum): TestPermuteDomainA.UnpermutedSum =
+        open fun transformUnpermutedSum(node: DomainA.UnpermutedSum): DomainA.UnpermutedSum =
             when(node) {
-                is TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant -> transformUnpermutedSumUnpermutedProductVariant(node)
-                is TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant -> transformUnpermutedSumUnpermutedRecordVariant(node)
+                is DomainA.UnpermutedSum.UnpermutedProductVariant -> transformUnpermutedSumUnpermutedProductVariant(node)
+                is DomainA.UnpermutedSum.UnpermutedRecordVariant -> transformUnpermutedSumUnpermutedRecordVariant(node)
             }
         // Variant UnpermutedSumUnpermutedProductVariant
-        open fun transformUnpermutedSumUnpermutedProductVariant(node: TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant): TestPermuteDomainA.UnpermutedSum  {
+        open fun transformUnpermutedSumUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant): DomainA.UnpermutedSum  {
             val new_foo = transformUnpermutedSumUnpermutedProductVariant_foo(node)
             val new_bar = transformUnpermutedSumUnpermutedProductVariant_bar(node)
             val new_metas = transformUnpermutedSumUnpermutedProductVariant_metas(node)
-            return TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant(
+            return DomainA.UnpermutedSum.UnpermutedProductVariant(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
         }
-        open fun transformUnpermutedSumUnpermutedProductVariant_foo(node: TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant) =
+        open fun transformUnpermutedSumUnpermutedProductVariant_foo(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
             transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedSumUnpermutedProductVariant_bar(node: TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant) =
+        open fun transformUnpermutedSumUnpermutedProductVariant_bar(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
             transformLongPrimitive(node.bar)
-        open fun transformUnpermutedSumUnpermutedProductVariant_metas(node: TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant) =
+        open fun transformUnpermutedSumUnpermutedProductVariant_metas(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
             transformMetas(node.metas)
     
         // Variant UnpermutedSumUnpermutedRecordVariant
-        open fun transformUnpermutedSumUnpermutedRecordVariant(node: TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant): TestPermuteDomainA.UnpermutedSum  {
+        open fun transformUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant): DomainA.UnpermutedSum  {
             val new_foo = transformUnpermutedSumUnpermutedRecordVariant_foo(node)
             val new_bar = transformUnpermutedSumUnpermutedRecordVariant_bar(node)
             val new_metas = transformUnpermutedSumUnpermutedRecordVariant_metas(node)
-            return TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant(
+            return DomainA.UnpermutedSum.UnpermutedRecordVariant(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
         }
-        open fun transformUnpermutedSumUnpermutedRecordVariant_foo(node: TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant) =
+        open fun transformUnpermutedSumUnpermutedRecordVariant_foo(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
             transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedSumUnpermutedRecordVariant_bar(node: TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant) =
+        open fun transformUnpermutedSumUnpermutedRecordVariant_bar(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
             transformLongPrimitive(node.bar)
-        open fun transformUnpermutedSumUnpermutedRecordVariant_metas(node: TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant) =
+        open fun transformUnpermutedSumUnpermutedRecordVariant_metas(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
             transformMetas(node.metas)
     
     }
 }
 
 
-class TestPermuteDomainB private constructor() {
+class DomainB private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     // Builder
     /////////////////////////////////////////////////////////////////////////////
     companion object {
         @JvmStatic
-        fun BUILDER() : Builder = TestPermuteDomainBBuilder
+        fun BUILDER() : Builder = DomainBBuilder
     
-        fun <T: TestPermuteDomainBNode> build(block: Builder.() -> T) =
-            TestPermuteDomainBBuilder.block()
+        fun <T: DomainBNode> build(block: Builder.() -> T) =
+            DomainBBuilder.block()
     
-        fun transform(element: AnyElement): TestPermuteDomainBNode =
+        fun transform(element: AnyElement): DomainBNode =
             transform(element.asSexp())
     
-        fun transform(element: SexpElement): TestPermuteDomainBNode =
+        fun transform(element: SexpElement): DomainBNode =
             IonElementTransformer().transform(element)
     }
     
     interface Builder {
                 // Tuples
         /**
-         * Creates an instance of [TestPermuteDomainB.UnpermutedProduct].
+         * Creates an instance of [DomainB.UnpermutedProduct].
          */
         fun unpermutedProduct(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.UnpermutedProduct
+        ): DomainB.UnpermutedProduct
         
         /**
-         * Creates an instance of [TestPermuteDomainB.UnpermutedProduct].
+         * Creates an instance of [DomainB.UnpermutedProduct].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -9240,20 +9240,20 @@ class TestPermuteDomainB private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.UnpermutedProduct
+        ): DomainB.UnpermutedProduct
         
         
         /**
-         * Creates an instance of [TestPermuteDomainB.UnpermutedRecord].
+         * Creates an instance of [DomainB.UnpermutedRecord].
          */
         fun unpermutedRecord(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.UnpermutedRecord
+        ): DomainB.UnpermutedRecord
         
         /**
-         * Creates an instance of [TestPermuteDomainB.UnpermutedRecord].
+         * Creates an instance of [DomainB.UnpermutedRecord].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -9263,19 +9263,19 @@ class TestPermuteDomainB private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.UnpermutedRecord
+        ): DomainB.UnpermutedRecord
         
         
         /**
-         * Creates an instance of [TestPermuteDomainB.ProductA].
+         * Creates an instance of [DomainB.ProductA].
          */
         fun productA(
             one: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.ProductA
+        ): DomainB.ProductA
         
         /**
-         * Creates an instance of [TestPermuteDomainB.ProductA].
+         * Creates an instance of [DomainB.ProductA].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -9284,19 +9284,19 @@ class TestPermuteDomainB private constructor() {
         fun productA_(
             one: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.ProductA
+        ): DomainB.ProductA
         
         
         /**
-         * Creates an instance of [TestPermuteDomainB.RecordA].
+         * Creates an instance of [DomainB.RecordA].
          */
         fun recordA(
             one: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.RecordA
+        ): DomainB.RecordA
         
         /**
-         * Creates an instance of [TestPermuteDomainB.RecordA].
+         * Creates an instance of [DomainB.RecordA].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -9305,19 +9305,19 @@ class TestPermuteDomainB private constructor() {
         fun recordA_(
             one: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.RecordA
+        ): DomainB.RecordA
         
         
         /**
-         * Creates an instance of [TestPermuteDomainB.NewProduct].
+         * Creates an instance of [DomainB.NewProduct].
          */
         fun newProduct(
             foo: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.NewProduct
+        ): DomainB.NewProduct
         
         /**
-         * Creates an instance of [TestPermuteDomainB.NewProduct].
+         * Creates an instance of [DomainB.NewProduct].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -9326,19 +9326,19 @@ class TestPermuteDomainB private constructor() {
         fun newProduct_(
             foo: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.NewProduct
+        ): DomainB.NewProduct
         
         
         /**
-         * Creates an instance of [TestPermuteDomainB.NewRecord].
+         * Creates an instance of [DomainB.NewRecord].
          */
         fun newRecord(
             foo: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.NewRecord
+        ): DomainB.NewRecord
         
         /**
-         * Creates an instance of [TestPermuteDomainB.NewRecord].
+         * Creates an instance of [DomainB.NewRecord].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -9347,21 +9347,21 @@ class TestPermuteDomainB private constructor() {
         fun newRecord_(
             foo: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.NewRecord
+        ): DomainB.NewRecord
         
         
         // Variants for Sum: UnpermutedSum 
         /**
-         * Creates an instance of [TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant].
+         * Creates an instance of [DomainB.UnpermutedSum.UnpermutedProductVariant].
          */
         fun unpermutedProductVariant(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant
+        ): DomainB.UnpermutedSum.UnpermutedProductVariant
         
         /**
-         * Creates an instance of [TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant].
+         * Creates an instance of [DomainB.UnpermutedSum.UnpermutedProductVariant].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -9371,20 +9371,20 @@ class TestPermuteDomainB private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant
+        ): DomainB.UnpermutedSum.UnpermutedProductVariant
         
         
         /**
-         * Creates an instance of [TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant].
+         * Creates an instance of [DomainB.UnpermutedSum.UnpermutedRecordVariant].
          */
         fun unpermutedRecordVariant(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant
+        ): DomainB.UnpermutedSum.UnpermutedRecordVariant
         
         /**
-         * Creates an instance of [TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant].
+         * Creates an instance of [DomainB.UnpermutedSum.UnpermutedRecordVariant].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -9394,28 +9394,28 @@ class TestPermuteDomainB private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant
+        ): DomainB.UnpermutedSum.UnpermutedRecordVariant
         
         
         // Variants for Sum: SumB 
         /**
-         * Creates an instance of [TestPermuteDomainB.SumB.WillBeUnchanged].
+         * Creates an instance of [DomainB.SumB.WillBeUnchanged].
          */
         fun willBeUnchanged(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.SumB.WillBeUnchanged
+        ): DomainB.SumB.WillBeUnchanged
         
         
         /**
-         * Creates an instance of [TestPermuteDomainB.SumB.WillBeReplaced].
+         * Creates an instance of [DomainB.SumB.WillBeReplaced].
          */
         fun willBeReplaced(
             something: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.SumB.WillBeReplaced
+        ): DomainB.SumB.WillBeReplaced
         
         /**
-         * Creates an instance of [TestPermuteDomainB.SumB.WillBeReplaced].
+         * Creates an instance of [DomainB.SumB.WillBeReplaced].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
@@ -9424,34 +9424,34 @@ class TestPermuteDomainB private constructor() {
         fun willBeReplaced_(
             something: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.SumB.WillBeReplaced
+        ): DomainB.SumB.WillBeReplaced
         
         
         // Variants for Sum: NewSum 
         /**
-         * Creates an instance of [TestPermuteDomainB.NewSum.Eek].
+         * Creates an instance of [DomainB.NewSum.Eek].
          */
         fun eek(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.NewSum.Eek
+        ): DomainB.NewSum.Eek
         
         
         /**
-         * Creates an instance of [TestPermuteDomainB.NewSum.Whatever].
+         * Creates an instance of [DomainB.NewSum.Whatever].
          */
         fun whatever(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestPermuteDomainB.NewSum.Whatever
+        ): DomainB.NewSum.Whatever
     }
     
-    private object TestPermuteDomainBBuilder : Builder {
+    private object DomainBBuilder : Builder {
                 // Tuples
         override fun unpermutedProduct(
             foo: String,
             bar: Long,
             metas: MetaContainer
-        ): TestPermuteDomainB.UnpermutedProduct =
-            TestPermuteDomainB.UnpermutedProduct(
+        ): DomainB.UnpermutedProduct =
+            DomainB.UnpermutedProduct(
                 foo = foo.asPrimitive(),
                 bar = bar.asPrimitive(),
                 metas = metas)
@@ -9460,8 +9460,8 @@ class TestPermuteDomainB private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainB.UnpermutedProduct =
-            TestPermuteDomainB.UnpermutedProduct(
+        ): DomainB.UnpermutedProduct =
+            DomainB.UnpermutedProduct(
                 foo = foo,
                 bar = bar,
                 metas = metas)
@@ -9471,8 +9471,8 @@ class TestPermuteDomainB private constructor() {
             foo: String,
             bar: Long,
             metas: MetaContainer
-        ): TestPermuteDomainB.UnpermutedRecord =
-            TestPermuteDomainB.UnpermutedRecord(
+        ): DomainB.UnpermutedRecord =
+            DomainB.UnpermutedRecord(
                 foo = foo.asPrimitive(),
                 bar = bar.asPrimitive(),
                 metas = metas)
@@ -9481,8 +9481,8 @@ class TestPermuteDomainB private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainB.UnpermutedRecord =
-            TestPermuteDomainB.UnpermutedRecord(
+        ): DomainB.UnpermutedRecord =
+            DomainB.UnpermutedRecord(
                 foo = foo,
                 bar = bar,
                 metas = metas)
@@ -9491,16 +9491,16 @@ class TestPermuteDomainB private constructor() {
         override fun productA(
             one: String,
             metas: MetaContainer
-        ): TestPermuteDomainB.ProductA =
-            TestPermuteDomainB.ProductA(
+        ): DomainB.ProductA =
+            DomainB.ProductA(
                 one = one.asPrimitive(),
                 metas = metas)
         
         override fun productA_(
             one: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainB.ProductA =
-            TestPermuteDomainB.ProductA(
+        ): DomainB.ProductA =
+            DomainB.ProductA(
                 one = one,
                 metas = metas)
         
@@ -9508,16 +9508,16 @@ class TestPermuteDomainB private constructor() {
         override fun recordA(
             one: String,
             metas: MetaContainer
-        ): TestPermuteDomainB.RecordA =
-            TestPermuteDomainB.RecordA(
+        ): DomainB.RecordA =
+            DomainB.RecordA(
                 one = one.asPrimitive(),
                 metas = metas)
         
         override fun recordA_(
             one: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainB.RecordA =
-            TestPermuteDomainB.RecordA(
+        ): DomainB.RecordA =
+            DomainB.RecordA(
                 one = one,
                 metas = metas)
         
@@ -9525,16 +9525,16 @@ class TestPermuteDomainB private constructor() {
         override fun newProduct(
             foo: Long,
             metas: MetaContainer
-        ): TestPermuteDomainB.NewProduct =
-            TestPermuteDomainB.NewProduct(
+        ): DomainB.NewProduct =
+            DomainB.NewProduct(
                 foo = foo.asPrimitive(),
                 metas = metas)
         
         override fun newProduct_(
             foo: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainB.NewProduct =
-            TestPermuteDomainB.NewProduct(
+        ): DomainB.NewProduct =
+            DomainB.NewProduct(
                 foo = foo,
                 metas = metas)
         
@@ -9542,16 +9542,16 @@ class TestPermuteDomainB private constructor() {
         override fun newRecord(
             foo: Long,
             metas: MetaContainer
-        ): TestPermuteDomainB.NewRecord =
-            TestPermuteDomainB.NewRecord(
+        ): DomainB.NewRecord =
+            DomainB.NewRecord(
                 foo = foo.asPrimitive(),
                 metas = metas)
         
         override fun newRecord_(
             foo: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainB.NewRecord =
-            TestPermuteDomainB.NewRecord(
+        ): DomainB.NewRecord =
+            DomainB.NewRecord(
                 foo = foo,
                 metas = metas)
         
@@ -9561,8 +9561,8 @@ class TestPermuteDomainB private constructor() {
             foo: String,
             bar: Long,
             metas: MetaContainer
-        ): TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant =
-            TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant(
+        ): DomainB.UnpermutedSum.UnpermutedProductVariant =
+            DomainB.UnpermutedSum.UnpermutedProductVariant(
                 foo = foo.asPrimitive(),
                 bar = bar.asPrimitive(),
                 metas = metas)
@@ -9571,8 +9571,8 @@ class TestPermuteDomainB private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant =
-            TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant(
+        ): DomainB.UnpermutedSum.UnpermutedProductVariant =
+            DomainB.UnpermutedSum.UnpermutedProductVariant(
                 foo = foo,
                 bar = bar,
                 metas = metas)
@@ -9582,8 +9582,8 @@ class TestPermuteDomainB private constructor() {
             foo: String,
             bar: Long,
             metas: MetaContainer
-        ): TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant =
-            TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant(
+        ): DomainB.UnpermutedSum.UnpermutedRecordVariant =
+            DomainB.UnpermutedSum.UnpermutedRecordVariant(
                 foo = foo.asPrimitive(),
                 bar = bar.asPrimitive(),
                 metas = metas)
@@ -9592,8 +9592,8 @@ class TestPermuteDomainB private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant =
-            TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant(
+        ): DomainB.UnpermutedSum.UnpermutedRecordVariant =
+            DomainB.UnpermutedSum.UnpermutedRecordVariant(
                 foo = foo,
                 bar = bar,
                 metas = metas)
@@ -9602,24 +9602,24 @@ class TestPermuteDomainB private constructor() {
         // Variants for Sum: SumB 
         override fun willBeUnchanged(
             metas: MetaContainer
-        ): TestPermuteDomainB.SumB.WillBeUnchanged =
-            TestPermuteDomainB.SumB.WillBeUnchanged(
+        ): DomainB.SumB.WillBeUnchanged =
+            DomainB.SumB.WillBeUnchanged(
                 metas = metas)
         
         
         override fun willBeReplaced(
             something: String,
             metas: MetaContainer
-        ): TestPermuteDomainB.SumB.WillBeReplaced =
-            TestPermuteDomainB.SumB.WillBeReplaced(
+        ): DomainB.SumB.WillBeReplaced =
+            DomainB.SumB.WillBeReplaced(
                 something = something.asPrimitive(),
                 metas = metas)
         
         override fun willBeReplaced_(
             something: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer
-        ): TestPermuteDomainB.SumB.WillBeReplaced =
-            TestPermuteDomainB.SumB.WillBeReplaced(
+        ): DomainB.SumB.WillBeReplaced =
+            DomainB.SumB.WillBeReplaced(
                 something = something,
                 metas = metas)
         
@@ -9627,23 +9627,23 @@ class TestPermuteDomainB private constructor() {
         // Variants for Sum: NewSum 
         override fun eek(
             metas: MetaContainer
-        ): TestPermuteDomainB.NewSum.Eek =
-            TestPermuteDomainB.NewSum.Eek(
+        ): DomainB.NewSum.Eek =
+            DomainB.NewSum.Eek(
                 metas = metas)
         
         
         override fun whatever(
             metas: MetaContainer
-        ): TestPermuteDomainB.NewSum.Whatever =
-            TestPermuteDomainB.NewSum.Whatever(
+        ): DomainB.NewSum.Whatever =
+            DomainB.NewSum.Whatever(
                 metas = metas)
     }
     
-    /** Base class for all TestPermuteDomainB types. */
-    abstract class TestPermuteDomainBNode : DomainNode {
-        abstract override fun copyMetas(newMetas: MetaContainer): TestPermuteDomainBNode
+    /** Base class for all DomainB types. */
+    abstract class DomainBNode : DomainNode {
+        abstract override fun copyMetas(newMetas: MetaContainer): DomainBNode
         override fun toString() = toIonElement().toString()
-        abstract override fun withMeta(metaKey: String, metaValue: Any): TestPermuteDomainBNode
+        abstract override fun withMeta(metaKey: String, metaValue: Any): DomainBNode
         abstract override fun toIonElement(): SexpElement
     }
     
@@ -9655,7 +9655,7 @@ class TestPermuteDomainB private constructor() {
         val foo: org.partiql.pig.runtime.SymbolPrimitive,
         val bar: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
-    ): TestPermuteDomainBNode() {
+    ): DomainBNode() {
     
         override fun copyMetas(newMetas: MetaContainer): UnpermutedProduct =
             UnpermutedProduct(
@@ -9712,7 +9712,7 @@ class TestPermuteDomainB private constructor() {
         val foo: org.partiql.pig.runtime.SymbolPrimitive,
         val bar: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
-    ): TestPermuteDomainBNode() {
+    ): DomainBNode() {
     
         override fun copyMetas(newMetas: MetaContainer): UnpermutedRecord =
             UnpermutedRecord(
@@ -9769,7 +9769,7 @@ class TestPermuteDomainB private constructor() {
     class ProductA(
         val one: org.partiql.pig.runtime.SymbolPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
-    ): TestPermuteDomainBNode() {
+    ): DomainBNode() {
     
         override fun copyMetas(newMetas: MetaContainer): ProductA =
             ProductA(
@@ -9818,7 +9818,7 @@ class TestPermuteDomainB private constructor() {
     class RecordA(
         val one: org.partiql.pig.runtime.SymbolPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
-    ): TestPermuteDomainBNode() {
+    ): DomainBNode() {
     
         override fun copyMetas(newMetas: MetaContainer): RecordA =
             RecordA(
@@ -9868,7 +9868,7 @@ class TestPermuteDomainB private constructor() {
     class NewProduct(
         val foo: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
-    ): TestPermuteDomainBNode() {
+    ): DomainBNode() {
     
         override fun copyMetas(newMetas: MetaContainer): NewProduct =
             NewProduct(
@@ -9917,7 +9917,7 @@ class TestPermuteDomainB private constructor() {
     class NewRecord(
         val foo: org.partiql.pig.runtime.LongPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
-    ): TestPermuteDomainBNode() {
+    ): DomainBNode() {
     
         override fun copyMetas(newMetas: MetaContainer): NewRecord =
             NewRecord(
@@ -9969,7 +9969,7 @@ class TestPermuteDomainB private constructor() {
     // Sum Types
     /////////////////////////////////////////////////////////////////////////////
     
-    sealed class UnpermutedSum(override val metas: MetaContainer = emptyMetaContainer()) : TestPermuteDomainBNode() {
+    sealed class UnpermutedSum(override val metas: MetaContainer = emptyMetaContainer()) : DomainBNode() {
         override fun copyMetas(newMetas: MetaContainer): UnpermutedSum =
             when (this) {
                 is UnpermutedProductVariant -> copy(metas = newMetas)
@@ -10093,7 +10093,7 @@ class TestPermuteDomainB private constructor() {
     
     }
     
-    sealed class SumB(override val metas: MetaContainer = emptyMetaContainer()) : TestPermuteDomainBNode() {
+    sealed class SumB(override val metas: MetaContainer = emptyMetaContainer()) : DomainBNode() {
         override fun copyMetas(newMetas: MetaContainer): SumB =
             when (this) {
                 is WillBeUnchanged -> copy(metas = newMetas)
@@ -10187,7 +10187,7 @@ class TestPermuteDomainB private constructor() {
     
     }
     
-    sealed class NewSum(override val metas: MetaContainer = emptyMetaContainer()) : TestPermuteDomainBNode() {
+    sealed class NewSum(override val metas: MetaContainer = emptyMetaContainer()) : DomainBNode() {
         override fun copyMetas(newMetas: MetaContainer): NewSum =
             when (this) {
                 is Eek -> copy(metas = newMetas)
@@ -10273,9 +10273,9 @@ class TestPermuteDomainB private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     
     
-    private class IonElementTransformer : IonElementTransformerBase<TestPermuteDomainBNode>() {
+    private class IonElementTransformer : IonElementTransformerBase<DomainBNode>() {
     
-        override fun innerTransform(sexp: SexpElement): TestPermuteDomainBNode {
+        override fun innerTransform(sexp: SexpElement): DomainBNode {
             return when(sexp.tag) {
                 //////////////////////////////////////
                 // Tuple Types
@@ -10284,7 +10284,7 @@ class TestPermuteDomainB private constructor() {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
                     val foo = sexp.getRequired(0).toSymbolPrimitive()
                     val bar = sexp.getRequired(1).toLongPrimitive()
-                    TestPermuteDomainB.UnpermutedProduct(
+                    DomainB.UnpermutedProduct(
                         foo,
                         bar,
                         metas = sexp.metas)
@@ -10302,7 +10302,7 @@ class TestPermuteDomainB private constructor() {
                 "product_a" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
                     val one = sexp.getRequired(0).toSymbolPrimitive()
-                    TestPermuteDomainB.ProductA(
+                    DomainB.ProductA(
                         one,
                         metas = sexp.metas)
                 }
@@ -10318,7 +10318,7 @@ class TestPermuteDomainB private constructor() {
                 "new_product" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
                     val foo = sexp.getRequired(0).toLongPrimitive()
-                    TestPermuteDomainB.NewProduct(
+                    DomainB.NewProduct(
                         foo,
                         metas = sexp.metas)
                 }
@@ -10338,7 +10338,7 @@ class TestPermuteDomainB private constructor() {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
                     val foo = sexp.getRequired(0).toSymbolPrimitive()
                     val bar = sexp.getRequired(1).toLongPrimitive()
-                    TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant(
+                    DomainB.UnpermutedSum.UnpermutedProductVariant(
                         foo,
                         bar,
                         metas = sexp.metas)
@@ -10358,13 +10358,13 @@ class TestPermuteDomainB private constructor() {
                 //////////////////////////////////////
                 "will_be_unchanged" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    TestPermuteDomainB.SumB.WillBeUnchanged(
+                    DomainB.SumB.WillBeUnchanged(
                         metas = sexp.metas)
                 }
                 "will_be_replaced" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
                     val something = sexp.getRequired(0).toSymbolPrimitive()
-                    TestPermuteDomainB.SumB.WillBeReplaced(
+                    DomainB.SumB.WillBeReplaced(
                         something,
                         metas = sexp.metas)
                 }
@@ -10373,15 +10373,15 @@ class TestPermuteDomainB private constructor() {
                 //////////////////////////////////////
                 "eek" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    TestPermuteDomainB.NewSum.Eek(
+                    DomainB.NewSum.Eek(
                         metas = sexp.metas)
                 }
                 "whatever" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 0))
-                    TestPermuteDomainB.NewSum.Whatever(
+                    DomainB.NewSum.Whatever(
                         metas = sexp.metas)
                 }
-                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'test_permute_domain_b'")
+                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'domain_b'")
             }
         }
     }
@@ -10395,30 +10395,30 @@ class TestPermuteDomainB private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
-        open fun visitUnpermutedProduct(node: TestPermuteDomainB.UnpermutedProduct) { }
-        open fun visitUnpermutedRecord(node: TestPermuteDomainB.UnpermutedRecord) { }
-        open fun visitProductA(node: TestPermuteDomainB.ProductA) { }
-        open fun visitRecordA(node: TestPermuteDomainB.RecordA) { }
-        open fun visitNewProduct(node: TestPermuteDomainB.NewProduct) { }
-        open fun visitNewRecord(node: TestPermuteDomainB.NewRecord) { }
+        open fun visitUnpermutedProduct(node: DomainB.UnpermutedProduct) { }
+        open fun visitUnpermutedRecord(node: DomainB.UnpermutedRecord) { }
+        open fun visitProductA(node: DomainB.ProductA) { }
+        open fun visitRecordA(node: DomainB.RecordA) { }
+        open fun visitNewProduct(node: DomainB.NewProduct) { }
+        open fun visitNewRecord(node: DomainB.NewRecord) { }
         //////////////////////////////////////
         // Sum Type: UnpermutedSum
         //////////////////////////////////////
-        protected open fun visitUnpermutedSum(node: TestPermuteDomainB.UnpermutedSum) { }
-        protected open fun visitUnpermutedSumUnpermutedProductVariant(node: TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant) { }
-        protected open fun visitUnpermutedSumUnpermutedRecordVariant(node: TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant) { }
+        protected open fun visitUnpermutedSum(node: DomainB.UnpermutedSum) { }
+        protected open fun visitUnpermutedSumUnpermutedProductVariant(node: DomainB.UnpermutedSum.UnpermutedProductVariant) { }
+        protected open fun visitUnpermutedSumUnpermutedRecordVariant(node: DomainB.UnpermutedSum.UnpermutedRecordVariant) { }
         //////////////////////////////////////
         // Sum Type: SumB
         //////////////////////////////////////
-        protected open fun visitSumB(node: TestPermuteDomainB.SumB) { }
-        protected open fun visitSumBWillBeUnchanged(node: TestPermuteDomainB.SumB.WillBeUnchanged) { }
-        protected open fun visitSumBWillBeReplaced(node: TestPermuteDomainB.SumB.WillBeReplaced) { }
+        protected open fun visitSumB(node: DomainB.SumB) { }
+        protected open fun visitSumBWillBeUnchanged(node: DomainB.SumB.WillBeUnchanged) { }
+        protected open fun visitSumBWillBeReplaced(node: DomainB.SumB.WillBeReplaced) { }
         //////////////////////////////////////
         // Sum Type: NewSum
         //////////////////////////////////////
-        protected open fun visitNewSum(node: TestPermuteDomainB.NewSum) { }
-        protected open fun visitNewSumEek(node: TestPermuteDomainB.NewSum.Eek) { }
-        protected open fun visitNewSumWhatever(node: TestPermuteDomainB.NewSum.Whatever) { }
+        protected open fun visitNewSum(node: DomainB.NewSum) { }
+        protected open fun visitNewSumEek(node: DomainB.NewSum.Eek) { }
+        protected open fun visitNewSumWhatever(node: DomainB.NewSum.Whatever) { }
     
         ////////////////////////////////////////////////////////////////////////////
         // Walk Functions
@@ -10427,39 +10427,39 @@ class TestPermuteDomainB private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
-        open fun walkUnpermutedProduct(node: TestPermuteDomainB.UnpermutedProduct) {
+        open fun walkUnpermutedProduct(node: DomainB.UnpermutedProduct) {
             visitUnpermutedProduct(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
     
-        open fun walkUnpermutedRecord(node: TestPermuteDomainB.UnpermutedRecord) {
+        open fun walkUnpermutedRecord(node: DomainB.UnpermutedRecord) {
             visitUnpermutedRecord(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
     
-        open fun walkProductA(node: TestPermuteDomainB.ProductA) {
+        open fun walkProductA(node: DomainB.ProductA) {
             visitProductA(node)
             walkSymbolPrimitive(node.one)
             walkMetas(node.metas)
         }
     
-        open fun walkRecordA(node: TestPermuteDomainB.RecordA) {
+        open fun walkRecordA(node: DomainB.RecordA) {
             visitRecordA(node)
             walkSymbolPrimitive(node.one)
             walkMetas(node.metas)
         }
     
-        open fun walkNewProduct(node: TestPermuteDomainB.NewProduct) {
+        open fun walkNewProduct(node: DomainB.NewProduct) {
             visitNewProduct(node)
             walkLongPrimitive(node.foo)
             walkMetas(node.metas)
         }
     
-        open fun walkNewRecord(node: TestPermuteDomainB.NewRecord) {
+        open fun walkNewRecord(node: DomainB.NewRecord) {
             visitNewRecord(node)
             walkLongPrimitive(node.foo)
             walkMetas(node.metas)
@@ -10468,22 +10468,22 @@ class TestPermuteDomainB private constructor() {
         //////////////////////////////////////
         // Sum Type: UnpermutedSum
         //////////////////////////////////////
-        open fun walkUnpermutedSum(node: TestPermuteDomainB.UnpermutedSum) {
+        open fun walkUnpermutedSum(node: DomainB.UnpermutedSum) {
             visitUnpermutedSum(node)
             when(node) {
-                is TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant -> walkUnpermutedSumUnpermutedProductVariant(node)
-                is TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant -> walkUnpermutedSumUnpermutedRecordVariant(node)
+                is DomainB.UnpermutedSum.UnpermutedProductVariant -> walkUnpermutedSumUnpermutedProductVariant(node)
+                is DomainB.UnpermutedSum.UnpermutedRecordVariant -> walkUnpermutedSumUnpermutedRecordVariant(node)
             }
         }
     
-        open fun walkUnpermutedSumUnpermutedProductVariant(node: TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant) {
+        open fun walkUnpermutedSumUnpermutedProductVariant(node: DomainB.UnpermutedSum.UnpermutedProductVariant) {
             visitUnpermutedSumUnpermutedProductVariant(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
     
-        open fun walkUnpermutedSumUnpermutedRecordVariant(node: TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant) {
+        open fun walkUnpermutedSumUnpermutedRecordVariant(node: DomainB.UnpermutedSum.UnpermutedRecordVariant) {
             visitUnpermutedSumUnpermutedRecordVariant(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
@@ -10493,20 +10493,20 @@ class TestPermuteDomainB private constructor() {
         //////////////////////////////////////
         // Sum Type: SumB
         //////////////////////////////////////
-        open fun walkSumB(node: TestPermuteDomainB.SumB) {
+        open fun walkSumB(node: DomainB.SumB) {
             visitSumB(node)
             when(node) {
-                is TestPermuteDomainB.SumB.WillBeUnchanged -> walkSumBWillBeUnchanged(node)
-                is TestPermuteDomainB.SumB.WillBeReplaced -> walkSumBWillBeReplaced(node)
+                is DomainB.SumB.WillBeUnchanged -> walkSumBWillBeUnchanged(node)
+                is DomainB.SumB.WillBeReplaced -> walkSumBWillBeReplaced(node)
             }
         }
     
-        open fun walkSumBWillBeUnchanged(node: TestPermuteDomainB.SumB.WillBeUnchanged) {
+        open fun walkSumBWillBeUnchanged(node: DomainB.SumB.WillBeUnchanged) {
             visitSumBWillBeUnchanged(node)
             walkMetas(node.metas)
         }
     
-        open fun walkSumBWillBeReplaced(node: TestPermuteDomainB.SumB.WillBeReplaced) {
+        open fun walkSumBWillBeReplaced(node: DomainB.SumB.WillBeReplaced) {
             visitSumBWillBeReplaced(node)
             walkSymbolPrimitive(node.something)
             walkMetas(node.metas)
@@ -10515,20 +10515,20 @@ class TestPermuteDomainB private constructor() {
         //////////////////////////////////////
         // Sum Type: NewSum
         //////////////////////////////////////
-        open fun walkNewSum(node: TestPermuteDomainB.NewSum) {
+        open fun walkNewSum(node: DomainB.NewSum) {
             visitNewSum(node)
             when(node) {
-                is TestPermuteDomainB.NewSum.Eek -> walkNewSumEek(node)
-                is TestPermuteDomainB.NewSum.Whatever -> walkNewSumWhatever(node)
+                is DomainB.NewSum.Eek -> walkNewSumEek(node)
+                is DomainB.NewSum.Whatever -> walkNewSumWhatever(node)
             }
         }
     
-        open fun walkNewSumEek(node: TestPermuteDomainB.NewSum.Eek) {
+        open fun walkNewSumEek(node: DomainB.NewSum.Eek) {
             visitNewSumEek(node)
             walkMetas(node.metas)
         }
     
-        open fun walkNewSumWhatever(node: TestPermuteDomainB.NewSum.Whatever) {
+        open fun walkNewSumWhatever(node: DomainB.NewSum.Whatever) {
             visitNewSumWhatever(node)
             walkMetas(node.metas)
         }
@@ -10544,30 +10544,30 @@ class TestPermuteDomainB private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
-        open protected fun visitUnpermutedProduct(node: TestPermuteDomainB.UnpermutedProduct, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedRecord(node: TestPermuteDomainB.UnpermutedRecord, accumulator: T): T = accumulator
-        open protected fun visitProductA(node: TestPermuteDomainB.ProductA, accumulator: T): T = accumulator
-        open protected fun visitRecordA(node: TestPermuteDomainB.RecordA, accumulator: T): T = accumulator
-        open protected fun visitNewProduct(node: TestPermuteDomainB.NewProduct, accumulator: T): T = accumulator
-        open protected fun visitNewRecord(node: TestPermuteDomainB.NewRecord, accumulator: T): T = accumulator
+        open protected fun visitUnpermutedProduct(node: DomainB.UnpermutedProduct, accumulator: T): T = accumulator
+        open protected fun visitUnpermutedRecord(node: DomainB.UnpermutedRecord, accumulator: T): T = accumulator
+        open protected fun visitProductA(node: DomainB.ProductA, accumulator: T): T = accumulator
+        open protected fun visitRecordA(node: DomainB.RecordA, accumulator: T): T = accumulator
+        open protected fun visitNewProduct(node: DomainB.NewProduct, accumulator: T): T = accumulator
+        open protected fun visitNewRecord(node: DomainB.NewRecord, accumulator: T): T = accumulator
         //////////////////////////////////////
         // Sum Type: UnpermutedSum
         //////////////////////////////////////
-        open protected fun visitUnpermutedSum(node: TestPermuteDomainB.UnpermutedSum, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedSumUnpermutedProductVariant(node: TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedSumUnpermutedRecordVariant(node: TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant, accumulator: T): T = accumulator
+        open protected fun visitUnpermutedSum(node: DomainB.UnpermutedSum, accumulator: T): T = accumulator
+        open protected fun visitUnpermutedSumUnpermutedProductVariant(node: DomainB.UnpermutedSum.UnpermutedProductVariant, accumulator: T): T = accumulator
+        open protected fun visitUnpermutedSumUnpermutedRecordVariant(node: DomainB.UnpermutedSum.UnpermutedRecordVariant, accumulator: T): T = accumulator
         //////////////////////////////////////
         // Sum Type: SumB
         //////////////////////////////////////
-        open protected fun visitSumB(node: TestPermuteDomainB.SumB, accumulator: T): T = accumulator
-        open protected fun visitSumBWillBeUnchanged(node: TestPermuteDomainB.SumB.WillBeUnchanged, accumulator: T): T = accumulator
-        open protected fun visitSumBWillBeReplaced(node: TestPermuteDomainB.SumB.WillBeReplaced, accumulator: T): T = accumulator
+        open protected fun visitSumB(node: DomainB.SumB, accumulator: T): T = accumulator
+        open protected fun visitSumBWillBeUnchanged(node: DomainB.SumB.WillBeUnchanged, accumulator: T): T = accumulator
+        open protected fun visitSumBWillBeReplaced(node: DomainB.SumB.WillBeReplaced, accumulator: T): T = accumulator
         //////////////////////////////////////
         // Sum Type: NewSum
         //////////////////////////////////////
-        open protected fun visitNewSum(node: TestPermuteDomainB.NewSum, accumulator: T): T = accumulator
-        open protected fun visitNewSumEek(node: TestPermuteDomainB.NewSum.Eek, accumulator: T): T = accumulator
-        open protected fun visitNewSumWhatever(node: TestPermuteDomainB.NewSum.Whatever, accumulator: T): T = accumulator
+        open protected fun visitNewSum(node: DomainB.NewSum, accumulator: T): T = accumulator
+        open protected fun visitNewSumEek(node: DomainB.NewSum.Eek, accumulator: T): T = accumulator
+        open protected fun visitNewSumWhatever(node: DomainB.NewSum.Whatever, accumulator: T): T = accumulator
     
         ////////////////////////////////////////////////////////////////////////////
         // Walk Functions
@@ -10576,7 +10576,7 @@ class TestPermuteDomainB private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
-        open fun walkUnpermutedProduct(node: TestPermuteDomainB.UnpermutedProduct, accumulator: T): T {
+        open fun walkUnpermutedProduct(node: DomainB.UnpermutedProduct, accumulator: T): T {
             var current = accumulator
             current = visitUnpermutedProduct(node, current)
             current = walkSymbolPrimitive(node.foo, current)
@@ -10585,7 +10585,7 @@ class TestPermuteDomainB private constructor() {
             return current
         }
     
-        open fun walkUnpermutedRecord(node: TestPermuteDomainB.UnpermutedRecord, accumulator: T): T {
+        open fun walkUnpermutedRecord(node: DomainB.UnpermutedRecord, accumulator: T): T {
             var current = accumulator
             current = visitUnpermutedRecord(node, current)
             current = walkSymbolPrimitive(node.foo, current)
@@ -10594,7 +10594,7 @@ class TestPermuteDomainB private constructor() {
             return current
         }
     
-        open fun walkProductA(node: TestPermuteDomainB.ProductA, accumulator: T): T {
+        open fun walkProductA(node: DomainB.ProductA, accumulator: T): T {
             var current = accumulator
             current = visitProductA(node, current)
             current = walkSymbolPrimitive(node.one, current)
@@ -10602,7 +10602,7 @@ class TestPermuteDomainB private constructor() {
             return current
         }
     
-        open fun walkRecordA(node: TestPermuteDomainB.RecordA, accumulator: T): T {
+        open fun walkRecordA(node: DomainB.RecordA, accumulator: T): T {
             var current = accumulator
             current = visitRecordA(node, current)
             current = walkSymbolPrimitive(node.one, current)
@@ -10610,7 +10610,7 @@ class TestPermuteDomainB private constructor() {
             return current
         }
     
-        open fun walkNewProduct(node: TestPermuteDomainB.NewProduct, accumulator: T): T {
+        open fun walkNewProduct(node: DomainB.NewProduct, accumulator: T): T {
             var current = accumulator
             current = visitNewProduct(node, current)
             current = walkLongPrimitive(node.foo, current)
@@ -10618,7 +10618,7 @@ class TestPermuteDomainB private constructor() {
             return current
         }
     
-        open fun walkNewRecord(node: TestPermuteDomainB.NewRecord, accumulator: T): T {
+        open fun walkNewRecord(node: DomainB.NewRecord, accumulator: T): T {
             var current = accumulator
             current = visitNewRecord(node, current)
             current = walkLongPrimitive(node.foo, current)
@@ -10629,15 +10629,15 @@ class TestPermuteDomainB private constructor() {
         //////////////////////////////////////
         // Sum Type: UnpermutedSum
         //////////////////////////////////////
-        open fun walkUnpermutedSum(node: TestPermuteDomainB.UnpermutedSum, accumulator: T): T {
+        open fun walkUnpermutedSum(node: DomainB.UnpermutedSum, accumulator: T): T {
             val current = visitUnpermutedSum(node, accumulator)
             return when(node) {
-                is TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant -> walkUnpermutedSumUnpermutedProductVariant(node, current)
-                is TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant -> walkUnpermutedSumUnpermutedRecordVariant(node, current)
+                is DomainB.UnpermutedSum.UnpermutedProductVariant -> walkUnpermutedSumUnpermutedProductVariant(node, current)
+                is DomainB.UnpermutedSum.UnpermutedRecordVariant -> walkUnpermutedSumUnpermutedRecordVariant(node, current)
             }
         }
     
-        open fun walkUnpermutedSumUnpermutedProductVariant(node: TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant, accumulator: T): T {
+        open fun walkUnpermutedSumUnpermutedProductVariant(node: DomainB.UnpermutedSum.UnpermutedProductVariant, accumulator: T): T {
             var current = accumulator
             current = visitUnpermutedSumUnpermutedProductVariant(node, current)
             current = walkSymbolPrimitive(node.foo, current)
@@ -10646,7 +10646,7 @@ class TestPermuteDomainB private constructor() {
             return current
         }
     
-        open fun walkUnpermutedSumUnpermutedRecordVariant(node: TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant, accumulator: T): T {
+        open fun walkUnpermutedSumUnpermutedRecordVariant(node: DomainB.UnpermutedSum.UnpermutedRecordVariant, accumulator: T): T {
             var current = accumulator
             current = visitUnpermutedSumUnpermutedRecordVariant(node, current)
             current = walkSymbolPrimitive(node.foo, current)
@@ -10658,22 +10658,22 @@ class TestPermuteDomainB private constructor() {
         //////////////////////////////////////
         // Sum Type: SumB
         //////////////////////////////////////
-        open fun walkSumB(node: TestPermuteDomainB.SumB, accumulator: T): T {
+        open fun walkSumB(node: DomainB.SumB, accumulator: T): T {
             val current = visitSumB(node, accumulator)
             return when(node) {
-                is TestPermuteDomainB.SumB.WillBeUnchanged -> walkSumBWillBeUnchanged(node, current)
-                is TestPermuteDomainB.SumB.WillBeReplaced -> walkSumBWillBeReplaced(node, current)
+                is DomainB.SumB.WillBeUnchanged -> walkSumBWillBeUnchanged(node, current)
+                is DomainB.SumB.WillBeReplaced -> walkSumBWillBeReplaced(node, current)
             }
         }
     
-        open fun walkSumBWillBeUnchanged(node: TestPermuteDomainB.SumB.WillBeUnchanged, accumulator: T): T {
+        open fun walkSumBWillBeUnchanged(node: DomainB.SumB.WillBeUnchanged, accumulator: T): T {
             var current = accumulator
             current = visitSumBWillBeUnchanged(node, current)
             current = walkMetas(node.metas, current)
             return current
         }
     
-        open fun walkSumBWillBeReplaced(node: TestPermuteDomainB.SumB.WillBeReplaced, accumulator: T): T {
+        open fun walkSumBWillBeReplaced(node: DomainB.SumB.WillBeReplaced, accumulator: T): T {
             var current = accumulator
             current = visitSumBWillBeReplaced(node, current)
             current = walkSymbolPrimitive(node.something, current)
@@ -10684,22 +10684,22 @@ class TestPermuteDomainB private constructor() {
         //////////////////////////////////////
         // Sum Type: NewSum
         //////////////////////////////////////
-        open fun walkNewSum(node: TestPermuteDomainB.NewSum, accumulator: T): T {
+        open fun walkNewSum(node: DomainB.NewSum, accumulator: T): T {
             val current = visitNewSum(node, accumulator)
             return when(node) {
-                is TestPermuteDomainB.NewSum.Eek -> walkNewSumEek(node, current)
-                is TestPermuteDomainB.NewSum.Whatever -> walkNewSumWhatever(node, current)
+                is DomainB.NewSum.Eek -> walkNewSumEek(node, current)
+                is DomainB.NewSum.Whatever -> walkNewSumWhatever(node, current)
             }
         }
     
-        open fun walkNewSumEek(node: TestPermuteDomainB.NewSum.Eek, accumulator: T): T {
+        open fun walkNewSumEek(node: DomainB.NewSum.Eek, accumulator: T): T {
             var current = accumulator
             current = visitNewSumEek(node, current)
             current = walkMetas(node.metas, current)
             return current
         }
     
-        open fun walkNewSumWhatever(node: TestPermuteDomainB.NewSum.Whatever, accumulator: T): T {
+        open fun walkNewSumWhatever(node: DomainB.NewSum.Whatever, accumulator: T): T {
             var current = accumulator
             current = visitNewSumWhatever(node, current)
             current = walkMetas(node.metas, current)
@@ -10712,199 +10712,199 @@ class TestPermuteDomainB private constructor() {
         // Tuple Types
         //////////////////////////////////////
         // Tuple UnpermutedProduct
-        open fun transformUnpermutedProduct(node: TestPermuteDomainB.UnpermutedProduct): TestPermuteDomainB.UnpermutedProduct {
+        open fun transformUnpermutedProduct(node: DomainB.UnpermutedProduct): DomainB.UnpermutedProduct {
             val new_foo = transformUnpermutedProduct_foo(node)
             val new_bar = transformUnpermutedProduct_bar(node)
             val new_metas = transformUnpermutedProduct_metas(node)
-            return TestPermuteDomainB.UnpermutedProduct(
+            return DomainB.UnpermutedProduct(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
         }
-        open fun transformUnpermutedProduct_foo(node: TestPermuteDomainB.UnpermutedProduct) =
+        open fun transformUnpermutedProduct_foo(node: DomainB.UnpermutedProduct) =
             transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedProduct_bar(node: TestPermuteDomainB.UnpermutedProduct) =
+        open fun transformUnpermutedProduct_bar(node: DomainB.UnpermutedProduct) =
             transformLongPrimitive(node.bar)
-        open fun transformUnpermutedProduct_metas(node: TestPermuteDomainB.UnpermutedProduct) =
+        open fun transformUnpermutedProduct_metas(node: DomainB.UnpermutedProduct) =
             transformMetas(node.metas)
     
         // Tuple UnpermutedRecord
-        open fun transformUnpermutedRecord(node: TestPermuteDomainB.UnpermutedRecord): TestPermuteDomainB.UnpermutedRecord {
+        open fun transformUnpermutedRecord(node: DomainB.UnpermutedRecord): DomainB.UnpermutedRecord {
             val new_foo = transformUnpermutedRecord_foo(node)
             val new_bar = transformUnpermutedRecord_bar(node)
             val new_metas = transformUnpermutedRecord_metas(node)
-            return TestPermuteDomainB.UnpermutedRecord(
+            return DomainB.UnpermutedRecord(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
         }
-        open fun transformUnpermutedRecord_foo(node: TestPermuteDomainB.UnpermutedRecord) =
+        open fun transformUnpermutedRecord_foo(node: DomainB.UnpermutedRecord) =
             transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedRecord_bar(node: TestPermuteDomainB.UnpermutedRecord) =
+        open fun transformUnpermutedRecord_bar(node: DomainB.UnpermutedRecord) =
             transformLongPrimitive(node.bar)
-        open fun transformUnpermutedRecord_metas(node: TestPermuteDomainB.UnpermutedRecord) =
+        open fun transformUnpermutedRecord_metas(node: DomainB.UnpermutedRecord) =
             transformMetas(node.metas)
     
         // Tuple ProductA
-        open fun transformProductA(node: TestPermuteDomainB.ProductA): TestPermuteDomainB.ProductA {
+        open fun transformProductA(node: DomainB.ProductA): DomainB.ProductA {
             val new_one = transformProductA_one(node)
             val new_metas = transformProductA_metas(node)
-            return TestPermuteDomainB.ProductA(
+            return DomainB.ProductA(
                     one = new_one,
                     metas = new_metas
                 )
         }
-        open fun transformProductA_one(node: TestPermuteDomainB.ProductA) =
+        open fun transformProductA_one(node: DomainB.ProductA) =
             transformSymbolPrimitive(node.one)
-        open fun transformProductA_metas(node: TestPermuteDomainB.ProductA) =
+        open fun transformProductA_metas(node: DomainB.ProductA) =
             transformMetas(node.metas)
     
         // Tuple RecordA
-        open fun transformRecordA(node: TestPermuteDomainB.RecordA): TestPermuteDomainB.RecordA {
+        open fun transformRecordA(node: DomainB.RecordA): DomainB.RecordA {
             val new_one = transformRecordA_one(node)
             val new_metas = transformRecordA_metas(node)
-            return TestPermuteDomainB.RecordA(
+            return DomainB.RecordA(
                     one = new_one,
                     metas = new_metas
                 )
         }
-        open fun transformRecordA_one(node: TestPermuteDomainB.RecordA) =
+        open fun transformRecordA_one(node: DomainB.RecordA) =
             transformSymbolPrimitive(node.one)
-        open fun transformRecordA_metas(node: TestPermuteDomainB.RecordA) =
+        open fun transformRecordA_metas(node: DomainB.RecordA) =
             transformMetas(node.metas)
     
         // Tuple NewProduct
-        open fun transformNewProduct(node: TestPermuteDomainB.NewProduct): TestPermuteDomainB.NewProduct {
+        open fun transformNewProduct(node: DomainB.NewProduct): DomainB.NewProduct {
             val new_foo = transformNewProduct_foo(node)
             val new_metas = transformNewProduct_metas(node)
-            return TestPermuteDomainB.NewProduct(
+            return DomainB.NewProduct(
                     foo = new_foo,
                     metas = new_metas
                 )
         }
-        open fun transformNewProduct_foo(node: TestPermuteDomainB.NewProduct) =
+        open fun transformNewProduct_foo(node: DomainB.NewProduct) =
             transformLongPrimitive(node.foo)
-        open fun transformNewProduct_metas(node: TestPermuteDomainB.NewProduct) =
+        open fun transformNewProduct_metas(node: DomainB.NewProduct) =
             transformMetas(node.metas)
     
         // Tuple NewRecord
-        open fun transformNewRecord(node: TestPermuteDomainB.NewRecord): TestPermuteDomainB.NewRecord {
+        open fun transformNewRecord(node: DomainB.NewRecord): DomainB.NewRecord {
             val new_foo = transformNewRecord_foo(node)
             val new_metas = transformNewRecord_metas(node)
-            return TestPermuteDomainB.NewRecord(
+            return DomainB.NewRecord(
                     foo = new_foo,
                     metas = new_metas
                 )
         }
-        open fun transformNewRecord_foo(node: TestPermuteDomainB.NewRecord) =
+        open fun transformNewRecord_foo(node: DomainB.NewRecord) =
             transformLongPrimitive(node.foo)
-        open fun transformNewRecord_metas(node: TestPermuteDomainB.NewRecord) =
+        open fun transformNewRecord_metas(node: DomainB.NewRecord) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
         // Sum Type: UnpermutedSum
         //////////////////////////////////////
-        open fun transformUnpermutedSum(node: TestPermuteDomainB.UnpermutedSum): TestPermuteDomainB.UnpermutedSum =
+        open fun transformUnpermutedSum(node: DomainB.UnpermutedSum): DomainB.UnpermutedSum =
             when(node) {
-                is TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant -> transformUnpermutedSumUnpermutedProductVariant(node)
-                is TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant -> transformUnpermutedSumUnpermutedRecordVariant(node)
+                is DomainB.UnpermutedSum.UnpermutedProductVariant -> transformUnpermutedSumUnpermutedProductVariant(node)
+                is DomainB.UnpermutedSum.UnpermutedRecordVariant -> transformUnpermutedSumUnpermutedRecordVariant(node)
             }
         // Variant UnpermutedSumUnpermutedProductVariant
-        open fun transformUnpermutedSumUnpermutedProductVariant(node: TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant): TestPermuteDomainB.UnpermutedSum  {
+        open fun transformUnpermutedSumUnpermutedProductVariant(node: DomainB.UnpermutedSum.UnpermutedProductVariant): DomainB.UnpermutedSum  {
             val new_foo = transformUnpermutedSumUnpermutedProductVariant_foo(node)
             val new_bar = transformUnpermutedSumUnpermutedProductVariant_bar(node)
             val new_metas = transformUnpermutedSumUnpermutedProductVariant_metas(node)
-            return TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant(
+            return DomainB.UnpermutedSum.UnpermutedProductVariant(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
         }
-        open fun transformUnpermutedSumUnpermutedProductVariant_foo(node: TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant) =
+        open fun transformUnpermutedSumUnpermutedProductVariant_foo(node: DomainB.UnpermutedSum.UnpermutedProductVariant) =
             transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedSumUnpermutedProductVariant_bar(node: TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant) =
+        open fun transformUnpermutedSumUnpermutedProductVariant_bar(node: DomainB.UnpermutedSum.UnpermutedProductVariant) =
             transformLongPrimitive(node.bar)
-        open fun transformUnpermutedSumUnpermutedProductVariant_metas(node: TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant) =
+        open fun transformUnpermutedSumUnpermutedProductVariant_metas(node: DomainB.UnpermutedSum.UnpermutedProductVariant) =
             transformMetas(node.metas)
     
         // Variant UnpermutedSumUnpermutedRecordVariant
-        open fun transformUnpermutedSumUnpermutedRecordVariant(node: TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant): TestPermuteDomainB.UnpermutedSum  {
+        open fun transformUnpermutedSumUnpermutedRecordVariant(node: DomainB.UnpermutedSum.UnpermutedRecordVariant): DomainB.UnpermutedSum  {
             val new_foo = transformUnpermutedSumUnpermutedRecordVariant_foo(node)
             val new_bar = transformUnpermutedSumUnpermutedRecordVariant_bar(node)
             val new_metas = transformUnpermutedSumUnpermutedRecordVariant_metas(node)
-            return TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant(
+            return DomainB.UnpermutedSum.UnpermutedRecordVariant(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
         }
-        open fun transformUnpermutedSumUnpermutedRecordVariant_foo(node: TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant) =
+        open fun transformUnpermutedSumUnpermutedRecordVariant_foo(node: DomainB.UnpermutedSum.UnpermutedRecordVariant) =
             transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedSumUnpermutedRecordVariant_bar(node: TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant) =
+        open fun transformUnpermutedSumUnpermutedRecordVariant_bar(node: DomainB.UnpermutedSum.UnpermutedRecordVariant) =
             transformLongPrimitive(node.bar)
-        open fun transformUnpermutedSumUnpermutedRecordVariant_metas(node: TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant) =
+        open fun transformUnpermutedSumUnpermutedRecordVariant_metas(node: DomainB.UnpermutedSum.UnpermutedRecordVariant) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
         // Sum Type: SumB
         //////////////////////////////////////
-        open fun transformSumB(node: TestPermuteDomainB.SumB): TestPermuteDomainB.SumB =
+        open fun transformSumB(node: DomainB.SumB): DomainB.SumB =
             when(node) {
-                is TestPermuteDomainB.SumB.WillBeUnchanged -> transformSumBWillBeUnchanged(node)
-                is TestPermuteDomainB.SumB.WillBeReplaced -> transformSumBWillBeReplaced(node)
+                is DomainB.SumB.WillBeUnchanged -> transformSumBWillBeUnchanged(node)
+                is DomainB.SumB.WillBeReplaced -> transformSumBWillBeReplaced(node)
             }
         // Variant SumBWillBeUnchanged
-        open fun transformSumBWillBeUnchanged(node: TestPermuteDomainB.SumB.WillBeUnchanged): TestPermuteDomainB.SumB  {
+        open fun transformSumBWillBeUnchanged(node: DomainB.SumB.WillBeUnchanged): DomainB.SumB  {
             val new_metas = transformSumBWillBeUnchanged_metas(node)
-            return TestPermuteDomainB.SumB.WillBeUnchanged(
+            return DomainB.SumB.WillBeUnchanged(
                     metas = new_metas
                 )
         }
-        open fun transformSumBWillBeUnchanged_metas(node: TestPermuteDomainB.SumB.WillBeUnchanged) =
+        open fun transformSumBWillBeUnchanged_metas(node: DomainB.SumB.WillBeUnchanged) =
             transformMetas(node.metas)
     
         // Variant SumBWillBeReplaced
-        open fun transformSumBWillBeReplaced(node: TestPermuteDomainB.SumB.WillBeReplaced): TestPermuteDomainB.SumB  {
+        open fun transformSumBWillBeReplaced(node: DomainB.SumB.WillBeReplaced): DomainB.SumB  {
             val new_something = transformSumBWillBeReplaced_something(node)
             val new_metas = transformSumBWillBeReplaced_metas(node)
-            return TestPermuteDomainB.SumB.WillBeReplaced(
+            return DomainB.SumB.WillBeReplaced(
                     something = new_something,
                     metas = new_metas
                 )
         }
-        open fun transformSumBWillBeReplaced_something(node: TestPermuteDomainB.SumB.WillBeReplaced) =
+        open fun transformSumBWillBeReplaced_something(node: DomainB.SumB.WillBeReplaced) =
             transformSymbolPrimitive(node.something)
-        open fun transformSumBWillBeReplaced_metas(node: TestPermuteDomainB.SumB.WillBeReplaced) =
+        open fun transformSumBWillBeReplaced_metas(node: DomainB.SumB.WillBeReplaced) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
         // Sum Type: NewSum
         //////////////////////////////////////
-        open fun transformNewSum(node: TestPermuteDomainB.NewSum): TestPermuteDomainB.NewSum =
+        open fun transformNewSum(node: DomainB.NewSum): DomainB.NewSum =
             when(node) {
-                is TestPermuteDomainB.NewSum.Eek -> transformNewSumEek(node)
-                is TestPermuteDomainB.NewSum.Whatever -> transformNewSumWhatever(node)
+                is DomainB.NewSum.Eek -> transformNewSumEek(node)
+                is DomainB.NewSum.Whatever -> transformNewSumWhatever(node)
             }
         // Variant NewSumEek
-        open fun transformNewSumEek(node: TestPermuteDomainB.NewSum.Eek): TestPermuteDomainB.NewSum  {
+        open fun transformNewSumEek(node: DomainB.NewSum.Eek): DomainB.NewSum  {
             val new_metas = transformNewSumEek_metas(node)
-            return TestPermuteDomainB.NewSum.Eek(
+            return DomainB.NewSum.Eek(
                     metas = new_metas
                 )
         }
-        open fun transformNewSumEek_metas(node: TestPermuteDomainB.NewSum.Eek) =
+        open fun transformNewSumEek_metas(node: DomainB.NewSum.Eek) =
             transformMetas(node.metas)
     
         // Variant NewSumWhatever
-        open fun transformNewSumWhatever(node: TestPermuteDomainB.NewSum.Whatever): TestPermuteDomainB.NewSum  {
+        open fun transformNewSumWhatever(node: DomainB.NewSum.Whatever): DomainB.NewSum  {
             val new_metas = transformNewSumWhatever_metas(node)
-            return TestPermuteDomainB.NewSum.Whatever(
+            return DomainB.NewSum.Whatever(
                     metas = new_metas
                 )
         }
-        open fun transformNewSumWhatever_metas(node: TestPermuteDomainB.NewSum.Whatever) =
+        open fun transformNewSumWhatever_metas(node: DomainB.NewSum.Whatever) =
             transformMetas(node.metas)
     
     }
@@ -10916,115 +10916,116 @@ class TestPermuteDomainB private constructor() {
 // Cross domain transforms
 //////////////////////////////////////
 
-abstract class TestPermuteDomainAToTestPermuteDomainBVisitorTransform : DomainVisitorTransformBase() {
+abstract class DomainAToDomainBVisitorTransform : DomainVisitorTransformBase() {
     //////////////////////////////////////
     // Tuple Types
     //////////////////////////////////////
     // Tuple ProductA
-    abstract fun transformProductA(node:TestPermuteDomainA.ProductA): TestPermuteDomainB.ProductA
+    abstract fun transformProductA(node:DomainA.ProductA): DomainB.ProductA
     // Tuple RecordA
-    abstract fun transformRecordA(node:TestPermuteDomainA.RecordA): TestPermuteDomainB.RecordA
+    abstract fun transformRecordA(node:DomainA.RecordA): DomainB.RecordA
     // Tuple UnpermutedProduct
-    open fun transformUnpermutedProduct(node: TestPermuteDomainA.UnpermutedProduct): TestPermuteDomainB.UnpermutedProduct {
+    open fun transformUnpermutedProduct(node: DomainA.UnpermutedProduct): DomainB.UnpermutedProduct {
         val new_foo = transformUnpermutedProduct_foo(node)
         val new_bar = transformUnpermutedProduct_bar(node)
         val new_metas = transformUnpermutedProduct_metas(node)
-        return TestPermuteDomainB.UnpermutedProduct(
+        return DomainB.UnpermutedProduct(
                 foo = new_foo,
                 bar = new_bar,
                 metas = new_metas
             )
     }
-    open fun transformUnpermutedProduct_foo(node: TestPermuteDomainA.UnpermutedProduct) =
+    open fun transformUnpermutedProduct_foo(node: DomainA.UnpermutedProduct) =
         transformSymbolPrimitive(node.foo)
-    open fun transformUnpermutedProduct_bar(node: TestPermuteDomainA.UnpermutedProduct) =
+    open fun transformUnpermutedProduct_bar(node: DomainA.UnpermutedProduct) =
         transformLongPrimitive(node.bar)
-    open fun transformUnpermutedProduct_metas(node: TestPermuteDomainA.UnpermutedProduct) =
+    open fun transformUnpermutedProduct_metas(node: DomainA.UnpermutedProduct) =
         transformMetas(node.metas)
 
     // Tuple UnpermutedRecord
-    open fun transformUnpermutedRecord(node: TestPermuteDomainA.UnpermutedRecord): TestPermuteDomainB.UnpermutedRecord {
+    open fun transformUnpermutedRecord(node: DomainA.UnpermutedRecord): DomainB.UnpermutedRecord {
         val new_foo = transformUnpermutedRecord_foo(node)
         val new_bar = transformUnpermutedRecord_bar(node)
         val new_metas = transformUnpermutedRecord_metas(node)
-        return TestPermuteDomainB.UnpermutedRecord(
+        return DomainB.UnpermutedRecord(
                 foo = new_foo,
                 bar = new_bar,
                 metas = new_metas
             )
     }
-    open fun transformUnpermutedRecord_foo(node: TestPermuteDomainA.UnpermutedRecord) =
+    open fun transformUnpermutedRecord_foo(node: DomainA.UnpermutedRecord) =
         transformSymbolPrimitive(node.foo)
-    open fun transformUnpermutedRecord_bar(node: TestPermuteDomainA.UnpermutedRecord) =
+    open fun transformUnpermutedRecord_bar(node: DomainA.UnpermutedRecord) =
         transformLongPrimitive(node.bar)
-    open fun transformUnpermutedRecord_metas(node: TestPermuteDomainA.UnpermutedRecord) =
+    open fun transformUnpermutedRecord_metas(node: DomainA.UnpermutedRecord) =
         transformMetas(node.metas)
 
     //////////////////////////////////////
     // Sum Type: SumB
     //////////////////////////////////////
-    open fun transformSumB(node: TestPermuteDomainA.SumB): TestPermuteDomainB.SumB =
+    open fun transformSumB(node: DomainA.SumB): DomainB.SumB =
         when(node) {
-            is TestPermuteDomainA.SumB.WillBeUnchanged -> transformSumBWillBeUnchanged(node)
-            is TestPermuteDomainA.SumB.WillBeRemoved -> transformSumBWillBeRemoved(node)
-            is TestPermuteDomainA.SumB.WillBeReplaced -> transformSumBWillBeReplaced(node)
+            is DomainA.SumB.WillBeUnchanged -> transformSumBWillBeUnchanged(node)
+            is DomainA.SumB.WillBeRemoved -> transformSumBWillBeRemoved(node)
+            is DomainA.SumB.WillBeReplaced -> transformSumBWillBeReplaced(node)
         }
     // Variant SumBWillBeUnchanged
-    open fun transformSumBWillBeUnchanged(node: TestPermuteDomainA.SumB.WillBeUnchanged): TestPermuteDomainB.SumB  {
+    open fun transformSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged): DomainB.SumB  {
         val new_metas = transformSumBWillBeUnchanged_metas(node)
-        return TestPermuteDomainB.SumB.WillBeUnchanged(
+        return DomainB.SumB.WillBeUnchanged(
                 metas = new_metas
             )
     }
-    open fun transformSumBWillBeUnchanged_metas(node: TestPermuteDomainA.SumB.WillBeUnchanged) =
+    open fun transformSumBWillBeUnchanged_metas(node: DomainA.SumB.WillBeUnchanged) =
         transformMetas(node.metas)
 
     // Variant SumBWillBeRemoved
-    abstract fun transformSumBWillBeRemoved(node: TestPermuteDomainA.SumB.WillBeRemoved): TestPermuteDomainB.SumB
+    abstract fun transformSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved): DomainB.SumB
     // Variant SumBWillBeReplaced
-    abstract fun transformSumBWillBeReplaced(node: TestPermuteDomainA.SumB.WillBeReplaced): TestPermuteDomainB.SumB
+    abstract fun transformSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced): DomainB.SumB
     //////////////////////////////////////
     // Sum Type: UnpermutedSum
     //////////////////////////////////////
-    open fun transformUnpermutedSum(node: TestPermuteDomainA.UnpermutedSum): TestPermuteDomainB.UnpermutedSum =
+    open fun transformUnpermutedSum(node: DomainA.UnpermutedSum): DomainB.UnpermutedSum =
         when(node) {
-            is TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant -> transformUnpermutedSumUnpermutedProductVariant(node)
-            is TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant -> transformUnpermutedSumUnpermutedRecordVariant(node)
+            is DomainA.UnpermutedSum.UnpermutedProductVariant -> transformUnpermutedSumUnpermutedProductVariant(node)
+            is DomainA.UnpermutedSum.UnpermutedRecordVariant -> transformUnpermutedSumUnpermutedRecordVariant(node)
         }
     // Variant UnpermutedSumUnpermutedProductVariant
-    open fun transformUnpermutedSumUnpermutedProductVariant(node: TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant): TestPermuteDomainB.UnpermutedSum  {
+    open fun transformUnpermutedSumUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant): DomainB.UnpermutedSum  {
         val new_foo = transformUnpermutedSumUnpermutedProductVariant_foo(node)
         val new_bar = transformUnpermutedSumUnpermutedProductVariant_bar(node)
         val new_metas = transformUnpermutedSumUnpermutedProductVariant_metas(node)
-        return TestPermuteDomainB.UnpermutedSum.UnpermutedProductVariant(
+        return DomainB.UnpermutedSum.UnpermutedProductVariant(
                 foo = new_foo,
                 bar = new_bar,
                 metas = new_metas
             )
     }
-    open fun transformUnpermutedSumUnpermutedProductVariant_foo(node: TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant) =
+    open fun transformUnpermutedSumUnpermutedProductVariant_foo(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
         transformSymbolPrimitive(node.foo)
-    open fun transformUnpermutedSumUnpermutedProductVariant_bar(node: TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant) =
+    open fun transformUnpermutedSumUnpermutedProductVariant_bar(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
         transformLongPrimitive(node.bar)
-    open fun transformUnpermutedSumUnpermutedProductVariant_metas(node: TestPermuteDomainA.UnpermutedSum.UnpermutedProductVariant) =
+    open fun transformUnpermutedSumUnpermutedProductVariant_metas(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
         transformMetas(node.metas)
 
     // Variant UnpermutedSumUnpermutedRecordVariant
-    open fun transformUnpermutedSumUnpermutedRecordVariant(node: TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant): TestPermuteDomainB.UnpermutedSum  {
+    open fun transformUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant): DomainB.UnpermutedSum  {
         val new_foo = transformUnpermutedSumUnpermutedRecordVariant_foo(node)
         val new_bar = transformUnpermutedSumUnpermutedRecordVariant_bar(node)
         val new_metas = transformUnpermutedSumUnpermutedRecordVariant_metas(node)
-        return TestPermuteDomainB.UnpermutedSum.UnpermutedRecordVariant(
+        return DomainB.UnpermutedSum.UnpermutedRecordVariant(
                 foo = new_foo,
                 bar = new_bar,
                 metas = new_metas
             )
     }
-    open fun transformUnpermutedSumUnpermutedRecordVariant_foo(node: TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant) =
+    open fun transformUnpermutedSumUnpermutedRecordVariant_foo(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
         transformSymbolPrimitive(node.foo)
-    open fun transformUnpermutedSumUnpermutedRecordVariant_bar(node: TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant) =
+    open fun transformUnpermutedSumUnpermutedRecordVariant_bar(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
         transformLongPrimitive(node.bar)
-    open fun transformUnpermutedSumUnpermutedRecordVariant_metas(node: TestPermuteDomainA.UnpermutedSum.UnpermutedRecordVariant) =
+    open fun transformUnpermutedSumUnpermutedRecordVariant_metas(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
         transformMetas(node.metas)
 
 }
+
