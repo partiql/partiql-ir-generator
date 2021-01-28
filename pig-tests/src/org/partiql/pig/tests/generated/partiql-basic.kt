@@ -26,7 +26,7 @@ class PartiqlBasic private constructor() {
             transform(element.asSexp())
     
         fun transform(element: SexpElement): PartiqlBasicNode =
-            Transformer().transform(element)
+            IonElementTransformer().transform(element)
     }
     
     interface Builder {
@@ -650,7 +650,7 @@ class PartiqlBasic private constructor() {
          * Creates an instance of [PartiqlBasic.Expr.Struct].
          */
         fun struct(
-            fields: kotlin.collections.List<ExprPair>,
+            fields: kotlin.collections.List<ExprPair> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Struct
         
@@ -667,7 +667,7 @@ class PartiqlBasic private constructor() {
          * Creates an instance of [PartiqlBasic.Expr.Bag].
          */
         fun bag(
-            values: kotlin.collections.List<Expr>,
+            values: kotlin.collections.List<Expr> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Bag
         
@@ -684,7 +684,7 @@ class PartiqlBasic private constructor() {
          * Creates an instance of [PartiqlBasic.Expr.List].
          */
         fun list(
-            values: kotlin.collections.List<Expr>,
+            values: kotlin.collections.List<Expr> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.List
         
@@ -1235,7 +1235,7 @@ class PartiqlBasic private constructor() {
             metas: MetaContainer
         ): PartiqlBasic.Expr.Call =
             PartiqlBasic.Expr.Call(
-                name = name.asPrimitive(),
+                name = name?.asPrimitive(),
                 args = listOf(args0) + args.toList(),
                 metas = metas)
         
@@ -3713,11 +3713,11 @@ class PartiqlBasic private constructor() {
     }
     
     /////////////////////////////////////////////////////////////////////////////
-    // Transformer
+    // IonElementTransformer
     /////////////////////////////////////////////////////////////////////////////
     
     
-    private class Transformer : IonElementTransformerBase<PartiqlBasicNode>() {
+    private class IonElementTransformer : IonElementTransformerBase<PartiqlBasicNode>() {
     
         override fun innerTransform(sexp: SexpElement): PartiqlBasicNode {
             return when(sexp.tag) {
@@ -5171,180 +5171,154 @@ class PartiqlBasic private constructor() {
         }
     
     }
-    
-    
-    open class VisitorTransform : DomainVisitorTransformBase() {
+    abstract class VisitorTransform : DomainVisitorTransformBase() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
         // Tuple ExprPair
-        open fun transformExprPair(node: ExprPair): ExprPair {
+        open fun transformExprPair(node: PartiqlBasic.ExprPair): PartiqlBasic.ExprPair {
             val new_first = transformExprPair_first(node)
             val new_second = transformExprPair_second(node)
             val new_metas = transformExprPair_metas(node)
-            return build {
-                ExprPair(
+            return PartiqlBasic.ExprPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
-            }
         }
-        open fun transformExprPair_first(node: ExprPair) =
+        open fun transformExprPair_first(node: PartiqlBasic.ExprPair) =
             transformExpr(node.first)
-        open fun transformExprPair_second(node: ExprPair) =
+        open fun transformExprPair_second(node: PartiqlBasic.ExprPair) =
             transformExpr(node.second)
-        open fun transformExprPair_metas(node: ExprPair) =
+        open fun transformExprPair_metas(node: PartiqlBasic.ExprPair) =
             transformMetas(node.metas)
     
         // Tuple GroupByItem
-        open fun transformGroupByItem(node: GroupByItem): GroupByItem {
+        open fun transformGroupByItem(node: PartiqlBasic.GroupByItem): PartiqlBasic.GroupByItem {
             val new_value = transformGroupByItem_value(node)
             val new_asAlias = transformGroupByItem_asAlias(node)
             val new_metas = transformGroupByItem_metas(node)
-            return build {
-                GroupByItem(
+            return PartiqlBasic.GroupByItem(
                     value = new_value,
                     asAlias = new_asAlias,
                     metas = new_metas
                 )
-            }
         }
-        open fun transformGroupByItem_value(node: GroupByItem) =
+        open fun transformGroupByItem_value(node: PartiqlBasic.GroupByItem) =
             transformExpr(node.value)
-        open fun transformGroupByItem_asAlias(node: GroupByItem) =
+        open fun transformGroupByItem_asAlias(node: PartiqlBasic.GroupByItem) =
             node.asAlias?.let { transformSymbolPrimitive(it) }
-        open fun transformGroupByItem_metas(node: GroupByItem) =
+        open fun transformGroupByItem_metas(node: PartiqlBasic.GroupByItem) =
             transformMetas(node.metas)
     
         // Tuple GroupByList
-        open fun transformGroupByList(node: GroupByList): GroupByList {
+        open fun transformGroupByList(node: PartiqlBasic.GroupByList): PartiqlBasic.GroupByList {
             val new_items = transformGroupByList_items(node)
             val new_metas = transformGroupByList_metas(node)
-            return build {
-                GroupByList(
+            return PartiqlBasic.GroupByList(
                     items = new_items,
                     metas = new_metas
                 )
-            }
         }
-        open fun transformGroupByList_items(node: GroupByList) =
+        open fun transformGroupByList_items(node: PartiqlBasic.GroupByList) =
             node.items.map { transformGroupByItem(it) }
-        open fun transformGroupByList_metas(node: GroupByList) =
+        open fun transformGroupByList_metas(node: PartiqlBasic.GroupByList) =
             transformMetas(node.metas)
     
         // Tuple GroupBy
-        open fun transformGroupBy(node: GroupBy): GroupBy {
+        open fun transformGroupBy(node: PartiqlBasic.GroupBy): PartiqlBasic.GroupBy {
             val new_items = transformGroupBy_items(node)
             val new_groupAsAlias = transformGroupBy_groupAsAlias(node)
             val new_metas = transformGroupBy_metas(node)
-            return build {
-                GroupBy(
+            return PartiqlBasic.GroupBy(
                     items = new_items,
                     groupAsAlias = new_groupAsAlias,
                     metas = new_metas
                 )
-            }
         }
-        open fun transformGroupBy_items(node: GroupBy) =
+        open fun transformGroupBy_items(node: PartiqlBasic.GroupBy) =
             transformGroupByList(node.items)
-        open fun transformGroupBy_groupAsAlias(node: GroupBy) =
+        open fun transformGroupBy_groupAsAlias(node: PartiqlBasic.GroupBy) =
             node.groupAsAlias?.let { transformSymbolPrimitive(it) }
-        open fun transformGroupBy_metas(node: GroupBy) =
+        open fun transformGroupBy_metas(node: PartiqlBasic.GroupBy) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
         // Sum Type: Projection
         //////////////////////////////////////
-        open fun transformProjection(node: PartiqlBasic.Projection) =
+        open fun transformProjection(node: PartiqlBasic.Projection): PartiqlBasic.Projection =
             when(node) {
                 is PartiqlBasic.Projection.ProjectList -> transformProjectionProjectList(node)
                 is PartiqlBasic.Projection.ProjectValue -> transformProjectionProjectValue(node)
             }
         // Variant ProjectionProjectList
-        open fun transformProjectionProjectList(node: PartiqlBasic.Projection.ProjectList): PartiqlBasic.Projection {
+        open fun transformProjectionProjectList(node: PartiqlBasic.Projection.ProjectList): PartiqlBasic.Projection  {
             val new_items = transformProjectionProjectList_items(node)
             val new_metas = transformProjectionProjectList_metas(node)
-            return build {
-                Projection.ProjectList(
+            return PartiqlBasic.Projection.ProjectList(
                     items = new_items,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformProjectionProjectList_items(node: Projection.ProjectList) =
+        open fun transformProjectionProjectList_items(node: PartiqlBasic.Projection.ProjectList) =
             node.items.map { transformProjectItem(it) }
-        open fun transformProjectionProjectList_metas(node: Projection.ProjectList) =
+        open fun transformProjectionProjectList_metas(node: PartiqlBasic.Projection.ProjectList) =
             transformMetas(node.metas)
     
-    
         // Variant ProjectionProjectValue
-        open fun transformProjectionProjectValue(node: PartiqlBasic.Projection.ProjectValue): PartiqlBasic.Projection {
+        open fun transformProjectionProjectValue(node: PartiqlBasic.Projection.ProjectValue): PartiqlBasic.Projection  {
             val new_value = transformProjectionProjectValue_value(node)
             val new_metas = transformProjectionProjectValue_metas(node)
-            return build {
-                Projection.ProjectValue(
+            return PartiqlBasic.Projection.ProjectValue(
                     value = new_value,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformProjectionProjectValue_value(node: Projection.ProjectValue) =
+        open fun transformProjectionProjectValue_value(node: PartiqlBasic.Projection.ProjectValue) =
             transformExpr(node.value)
-        open fun transformProjectionProjectValue_metas(node: Projection.ProjectValue) =
+        open fun transformProjectionProjectValue_metas(node: PartiqlBasic.Projection.ProjectValue) =
             transformMetas(node.metas)
-    
     
         //////////////////////////////////////
         // Sum Type: ProjectItem
         //////////////////////////////////////
-        open fun transformProjectItem(node: PartiqlBasic.ProjectItem) =
+        open fun transformProjectItem(node: PartiqlBasic.ProjectItem): PartiqlBasic.ProjectItem =
             when(node) {
                 is PartiqlBasic.ProjectItem.ProjectAll -> transformProjectItemProjectAll(node)
                 is PartiqlBasic.ProjectItem.ProjectExpr -> transformProjectItemProjectExpr(node)
             }
         // Variant ProjectItemProjectAll
-        open fun transformProjectItemProjectAll(node: PartiqlBasic.ProjectItem.ProjectAll): PartiqlBasic.ProjectItem {
+        open fun transformProjectItemProjectAll(node: PartiqlBasic.ProjectItem.ProjectAll): PartiqlBasic.ProjectItem  {
             val new_metas = transformProjectItemProjectAll_metas(node)
-            return build {
-                ProjectItem.ProjectAll(
+            return PartiqlBasic.ProjectItem.ProjectAll(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformProjectItemProjectAll_metas(node: ProjectItem.ProjectAll) =
+        open fun transformProjectItemProjectAll_metas(node: PartiqlBasic.ProjectItem.ProjectAll) =
             transformMetas(node.metas)
     
-    
         // Variant ProjectItemProjectExpr
-        open fun transformProjectItemProjectExpr(node: PartiqlBasic.ProjectItem.ProjectExpr): PartiqlBasic.ProjectItem {
+        open fun transformProjectItemProjectExpr(node: PartiqlBasic.ProjectItem.ProjectExpr): PartiqlBasic.ProjectItem  {
             val new_value = transformProjectItemProjectExpr_value(node)
             val new_asAlias = transformProjectItemProjectExpr_asAlias(node)
             val new_metas = transformProjectItemProjectExpr_metas(node)
-            return build {
-                ProjectItem.ProjectExpr(
+            return PartiqlBasic.ProjectItem.ProjectExpr(
                     value = new_value,
                     asAlias = new_asAlias,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformProjectItemProjectExpr_value(node: ProjectItem.ProjectExpr) =
+        open fun transformProjectItemProjectExpr_value(node: PartiqlBasic.ProjectItem.ProjectExpr) =
             transformExpr(node.value)
-        open fun transformProjectItemProjectExpr_asAlias(node: ProjectItem.ProjectExpr) =
+        open fun transformProjectItemProjectExpr_asAlias(node: PartiqlBasic.ProjectItem.ProjectExpr) =
             node.asAlias?.let { transformSymbolPrimitive(it) }
-        open fun transformProjectItemProjectExpr_metas(node: ProjectItem.ProjectExpr) =
+        open fun transformProjectItemProjectExpr_metas(node: PartiqlBasic.ProjectItem.ProjectExpr) =
             transformMetas(node.metas)
-    
     
         //////////////////////////////////////
         // Sum Type: JoinType
         //////////////////////////////////////
-        open fun transformJoinType(node: PartiqlBasic.JoinType) =
+        open fun transformJoinType(node: PartiqlBasic.JoinType): PartiqlBasic.JoinType =
             when(node) {
                 is PartiqlBasic.JoinType.Inner -> transformJoinTypeInner(node)
                 is PartiqlBasic.JoinType.Left -> transformJoinTypeLeft(node)
@@ -5352,296 +5326,236 @@ class PartiqlBasic private constructor() {
                 is PartiqlBasic.JoinType.Outer -> transformJoinTypeOuter(node)
             }
         // Variant JoinTypeInner
-        open fun transformJoinTypeInner(node: PartiqlBasic.JoinType.Inner): PartiqlBasic.JoinType {
+        open fun transformJoinTypeInner(node: PartiqlBasic.JoinType.Inner): PartiqlBasic.JoinType  {
             val new_metas = transformJoinTypeInner_metas(node)
-            return build {
-                JoinType.Inner(
+            return PartiqlBasic.JoinType.Inner(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformJoinTypeInner_metas(node: JoinType.Inner) =
+        open fun transformJoinTypeInner_metas(node: PartiqlBasic.JoinType.Inner) =
             transformMetas(node.metas)
-    
     
         // Variant JoinTypeLeft
-        open fun transformJoinTypeLeft(node: PartiqlBasic.JoinType.Left): PartiqlBasic.JoinType {
+        open fun transformJoinTypeLeft(node: PartiqlBasic.JoinType.Left): PartiqlBasic.JoinType  {
             val new_metas = transformJoinTypeLeft_metas(node)
-            return build {
-                JoinType.Left(
+            return PartiqlBasic.JoinType.Left(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformJoinTypeLeft_metas(node: JoinType.Left) =
+        open fun transformJoinTypeLeft_metas(node: PartiqlBasic.JoinType.Left) =
             transformMetas(node.metas)
-    
     
         // Variant JoinTypeRight
-        open fun transformJoinTypeRight(node: PartiqlBasic.JoinType.Right): PartiqlBasic.JoinType {
+        open fun transformJoinTypeRight(node: PartiqlBasic.JoinType.Right): PartiqlBasic.JoinType  {
             val new_metas = transformJoinTypeRight_metas(node)
-            return build {
-                JoinType.Right(
+            return PartiqlBasic.JoinType.Right(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformJoinTypeRight_metas(node: JoinType.Right) =
+        open fun transformJoinTypeRight_metas(node: PartiqlBasic.JoinType.Right) =
             transformMetas(node.metas)
-    
     
         // Variant JoinTypeOuter
-        open fun transformJoinTypeOuter(node: PartiqlBasic.JoinType.Outer): PartiqlBasic.JoinType {
+        open fun transformJoinTypeOuter(node: PartiqlBasic.JoinType.Outer): PartiqlBasic.JoinType  {
             val new_metas = transformJoinTypeOuter_metas(node)
-            return build {
-                JoinType.Outer(
+            return PartiqlBasic.JoinType.Outer(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformJoinTypeOuter_metas(node: JoinType.Outer) =
+        open fun transformJoinTypeOuter_metas(node: PartiqlBasic.JoinType.Outer) =
             transformMetas(node.metas)
-    
     
         //////////////////////////////////////
         // Sum Type: FromSource
         //////////////////////////////////////
-        open fun transformFromSource(node: PartiqlBasic.FromSource) =
+        open fun transformFromSource(node: PartiqlBasic.FromSource): PartiqlBasic.FromSource =
             when(node) {
                 is PartiqlBasic.FromSource.Scan -> transformFromSourceScan(node)
                 is PartiqlBasic.FromSource.Join -> transformFromSourceJoin(node)
             }
         // Variant FromSourceScan
-        open fun transformFromSourceScan(node: PartiqlBasic.FromSource.Scan): PartiqlBasic.FromSource {
+        open fun transformFromSourceScan(node: PartiqlBasic.FromSource.Scan): PartiqlBasic.FromSource  {
             val new_expr = transformFromSourceScan_expr(node)
             val new_asAlias = transformFromSourceScan_asAlias(node)
             val new_atAlias = transformFromSourceScan_atAlias(node)
             val new_byAlias = transformFromSourceScan_byAlias(node)
             val new_metas = transformFromSourceScan_metas(node)
-            return build {
-                FromSource.Scan(
+            return PartiqlBasic.FromSource.Scan(
                     expr = new_expr,
                     asAlias = new_asAlias,
                     atAlias = new_atAlias,
                     byAlias = new_byAlias,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformFromSourceScan_expr(node: FromSource.Scan) =
+        open fun transformFromSourceScan_expr(node: PartiqlBasic.FromSource.Scan) =
             transformExpr(node.expr)
-        open fun transformFromSourceScan_asAlias(node: FromSource.Scan) =
+        open fun transformFromSourceScan_asAlias(node: PartiqlBasic.FromSource.Scan) =
             node.asAlias?.let { transformSymbolPrimitive(it) }
-        open fun transformFromSourceScan_atAlias(node: FromSource.Scan) =
+        open fun transformFromSourceScan_atAlias(node: PartiqlBasic.FromSource.Scan) =
             node.atAlias?.let { transformSymbolPrimitive(it) }
-        open fun transformFromSourceScan_byAlias(node: FromSource.Scan) =
+        open fun transformFromSourceScan_byAlias(node: PartiqlBasic.FromSource.Scan) =
             node.byAlias?.let { transformSymbolPrimitive(it) }
-        open fun transformFromSourceScan_metas(node: FromSource.Scan) =
+        open fun transformFromSourceScan_metas(node: PartiqlBasic.FromSource.Scan) =
             transformMetas(node.metas)
     
-    
         // Variant FromSourceJoin
-        open fun transformFromSourceJoin(node: PartiqlBasic.FromSource.Join): PartiqlBasic.FromSource {
+        open fun transformFromSourceJoin(node: PartiqlBasic.FromSource.Join): PartiqlBasic.FromSource  {
             val new_type = transformFromSourceJoin_type(node)
             val new_left = transformFromSourceJoin_left(node)
             val new_right = transformFromSourceJoin_right(node)
             val new_predicate = transformFromSourceJoin_predicate(node)
             val new_metas = transformFromSourceJoin_metas(node)
-            return build {
-                FromSource.Join(
+            return PartiqlBasic.FromSource.Join(
                     type = new_type,
                     left = new_left,
                     right = new_right,
                     predicate = new_predicate,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformFromSourceJoin_type(node: FromSource.Join) =
+        open fun transformFromSourceJoin_type(node: PartiqlBasic.FromSource.Join) =
             transformJoinType(node.type)
-        open fun transformFromSourceJoin_left(node: FromSource.Join) =
+        open fun transformFromSourceJoin_left(node: PartiqlBasic.FromSource.Join) =
             transformFromSource(node.left)
-        open fun transformFromSourceJoin_right(node: FromSource.Join) =
+        open fun transformFromSourceJoin_right(node: PartiqlBasic.FromSource.Join) =
             transformFromSource(node.right)
-        open fun transformFromSourceJoin_predicate(node: FromSource.Join) =
+        open fun transformFromSourceJoin_predicate(node: PartiqlBasic.FromSource.Join) =
             node.predicate?.let { transformExpr(it) }
-        open fun transformFromSourceJoin_metas(node: FromSource.Join) =
+        open fun transformFromSourceJoin_metas(node: PartiqlBasic.FromSource.Join) =
             transformMetas(node.metas)
-    
     
         //////////////////////////////////////
         // Sum Type: CaseSensitivity
         //////////////////////////////////////
-        open fun transformCaseSensitivity(node: PartiqlBasic.CaseSensitivity) =
+        open fun transformCaseSensitivity(node: PartiqlBasic.CaseSensitivity): PartiqlBasic.CaseSensitivity =
             when(node) {
                 is PartiqlBasic.CaseSensitivity.CaseSensitive -> transformCaseSensitivityCaseSensitive(node)
                 is PartiqlBasic.CaseSensitivity.CaseInsensitive -> transformCaseSensitivityCaseInsensitive(node)
             }
         // Variant CaseSensitivityCaseSensitive
-        open fun transformCaseSensitivityCaseSensitive(node: PartiqlBasic.CaseSensitivity.CaseSensitive): PartiqlBasic.CaseSensitivity {
+        open fun transformCaseSensitivityCaseSensitive(node: PartiqlBasic.CaseSensitivity.CaseSensitive): PartiqlBasic.CaseSensitivity  {
             val new_metas = transformCaseSensitivityCaseSensitive_metas(node)
-            return build {
-                CaseSensitivity.CaseSensitive(
+            return PartiqlBasic.CaseSensitivity.CaseSensitive(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformCaseSensitivityCaseSensitive_metas(node: CaseSensitivity.CaseSensitive) =
+        open fun transformCaseSensitivityCaseSensitive_metas(node: PartiqlBasic.CaseSensitivity.CaseSensitive) =
             transformMetas(node.metas)
-    
     
         // Variant CaseSensitivityCaseInsensitive
-        open fun transformCaseSensitivityCaseInsensitive(node: PartiqlBasic.CaseSensitivity.CaseInsensitive): PartiqlBasic.CaseSensitivity {
+        open fun transformCaseSensitivityCaseInsensitive(node: PartiqlBasic.CaseSensitivity.CaseInsensitive): PartiqlBasic.CaseSensitivity  {
             val new_metas = transformCaseSensitivityCaseInsensitive_metas(node)
-            return build {
-                CaseSensitivity.CaseInsensitive(
+            return PartiqlBasic.CaseSensitivity.CaseInsensitive(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformCaseSensitivityCaseInsensitive_metas(node: CaseSensitivity.CaseInsensitive) =
+        open fun transformCaseSensitivityCaseInsensitive_metas(node: PartiqlBasic.CaseSensitivity.CaseInsensitive) =
             transformMetas(node.metas)
-    
     
         //////////////////////////////////////
         // Sum Type: ScopeQualifier
         //////////////////////////////////////
-        open fun transformScopeQualifier(node: PartiqlBasic.ScopeQualifier) =
+        open fun transformScopeQualifier(node: PartiqlBasic.ScopeQualifier): PartiqlBasic.ScopeQualifier =
             when(node) {
                 is PartiqlBasic.ScopeQualifier.Unqualified -> transformScopeQualifierUnqualified(node)
                 is PartiqlBasic.ScopeQualifier.Qualified -> transformScopeQualifierQualified(node)
             }
         // Variant ScopeQualifierUnqualified
-        open fun transformScopeQualifierUnqualified(node: PartiqlBasic.ScopeQualifier.Unqualified): PartiqlBasic.ScopeQualifier {
+        open fun transformScopeQualifierUnqualified(node: PartiqlBasic.ScopeQualifier.Unqualified): PartiqlBasic.ScopeQualifier  {
             val new_metas = transformScopeQualifierUnqualified_metas(node)
-            return build {
-                ScopeQualifier.Unqualified(
+            return PartiqlBasic.ScopeQualifier.Unqualified(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformScopeQualifierUnqualified_metas(node: ScopeQualifier.Unqualified) =
+        open fun transformScopeQualifierUnqualified_metas(node: PartiqlBasic.ScopeQualifier.Unqualified) =
             transformMetas(node.metas)
-    
     
         // Variant ScopeQualifierQualified
-        open fun transformScopeQualifierQualified(node: PartiqlBasic.ScopeQualifier.Qualified): PartiqlBasic.ScopeQualifier {
+        open fun transformScopeQualifierQualified(node: PartiqlBasic.ScopeQualifier.Qualified): PartiqlBasic.ScopeQualifier  {
             val new_metas = transformScopeQualifierQualified_metas(node)
-            return build {
-                ScopeQualifier.Qualified(
+            return PartiqlBasic.ScopeQualifier.Qualified(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformScopeQualifierQualified_metas(node: ScopeQualifier.Qualified) =
+        open fun transformScopeQualifierQualified_metas(node: PartiqlBasic.ScopeQualifier.Qualified) =
             transformMetas(node.metas)
-    
     
         //////////////////////////////////////
         // Sum Type: SetQuantifier
         //////////////////////////////////////
-        open fun transformSetQuantifier(node: PartiqlBasic.SetQuantifier) =
+        open fun transformSetQuantifier(node: PartiqlBasic.SetQuantifier): PartiqlBasic.SetQuantifier =
             when(node) {
                 is PartiqlBasic.SetQuantifier.All -> transformSetQuantifierAll(node)
                 is PartiqlBasic.SetQuantifier.Distinct -> transformSetQuantifierDistinct(node)
             }
         // Variant SetQuantifierAll
-        open fun transformSetQuantifierAll(node: PartiqlBasic.SetQuantifier.All): PartiqlBasic.SetQuantifier {
+        open fun transformSetQuantifierAll(node: PartiqlBasic.SetQuantifier.All): PartiqlBasic.SetQuantifier  {
             val new_metas = transformSetQuantifierAll_metas(node)
-            return build {
-                SetQuantifier.All(
+            return PartiqlBasic.SetQuantifier.All(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformSetQuantifierAll_metas(node: SetQuantifier.All) =
+        open fun transformSetQuantifierAll_metas(node: PartiqlBasic.SetQuantifier.All) =
             transformMetas(node.metas)
-    
     
         // Variant SetQuantifierDistinct
-        open fun transformSetQuantifierDistinct(node: PartiqlBasic.SetQuantifier.Distinct): PartiqlBasic.SetQuantifier {
+        open fun transformSetQuantifierDistinct(node: PartiqlBasic.SetQuantifier.Distinct): PartiqlBasic.SetQuantifier  {
             val new_metas = transformSetQuantifierDistinct_metas(node)
-            return build {
-                SetQuantifier.Distinct(
+            return PartiqlBasic.SetQuantifier.Distinct(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformSetQuantifierDistinct_metas(node: SetQuantifier.Distinct) =
+        open fun transformSetQuantifierDistinct_metas(node: PartiqlBasic.SetQuantifier.Distinct) =
             transformMetas(node.metas)
-    
     
         //////////////////////////////////////
         // Sum Type: PathElement
         //////////////////////////////////////
-        open fun transformPathElement(node: PartiqlBasic.PathElement) =
+        open fun transformPathElement(node: PartiqlBasic.PathElement): PartiqlBasic.PathElement =
             when(node) {
                 is PartiqlBasic.PathElement.PathExpr -> transformPathElementPathExpr(node)
                 is PartiqlBasic.PathElement.PathWildcard -> transformPathElementPathWildcard(node)
                 is PartiqlBasic.PathElement.PathUnpivot -> transformPathElementPathUnpivot(node)
             }
         // Variant PathElementPathExpr
-        open fun transformPathElementPathExpr(node: PartiqlBasic.PathElement.PathExpr): PartiqlBasic.PathElement {
+        open fun transformPathElementPathExpr(node: PartiqlBasic.PathElement.PathExpr): PartiqlBasic.PathElement  {
             val new_expr = transformPathElementPathExpr_expr(node)
             val new_metas = transformPathElementPathExpr_metas(node)
-            return build {
-                PathElement.PathExpr(
+            return PartiqlBasic.PathElement.PathExpr(
                     expr = new_expr,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformPathElementPathExpr_expr(node: PathElement.PathExpr) =
+        open fun transformPathElementPathExpr_expr(node: PartiqlBasic.PathElement.PathExpr) =
             transformExpr(node.expr)
-        open fun transformPathElementPathExpr_metas(node: PathElement.PathExpr) =
+        open fun transformPathElementPathExpr_metas(node: PartiqlBasic.PathElement.PathExpr) =
             transformMetas(node.metas)
-    
     
         // Variant PathElementPathWildcard
-        open fun transformPathElementPathWildcard(node: PartiqlBasic.PathElement.PathWildcard): PartiqlBasic.PathElement {
+        open fun transformPathElementPathWildcard(node: PartiqlBasic.PathElement.PathWildcard): PartiqlBasic.PathElement  {
             val new_metas = transformPathElementPathWildcard_metas(node)
-            return build {
-                PathElement.PathWildcard(
+            return PartiqlBasic.PathElement.PathWildcard(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformPathElementPathWildcard_metas(node: PathElement.PathWildcard) =
+        open fun transformPathElementPathWildcard_metas(node: PartiqlBasic.PathElement.PathWildcard) =
             transformMetas(node.metas)
-    
     
         // Variant PathElementPathUnpivot
-        open fun transformPathElementPathUnpivot(node: PartiqlBasic.PathElement.PathUnpivot): PartiqlBasic.PathElement {
+        open fun transformPathElementPathUnpivot(node: PartiqlBasic.PathElement.PathUnpivot): PartiqlBasic.PathElement  {
             val new_metas = transformPathElementPathUnpivot_metas(node)
-            return build {
-                PathElement.PathUnpivot(
+            return PartiqlBasic.PathElement.PathUnpivot(
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformPathElementPathUnpivot_metas(node: PathElement.PathUnpivot) =
+        open fun transformPathElementPathUnpivot_metas(node: PartiqlBasic.PathElement.PathUnpivot) =
             transformMetas(node.metas)
-    
     
         //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
-        open fun transformExpr(node: PartiqlBasic.Expr) =
+        open fun transformExpr(node: PartiqlBasic.Expr): PartiqlBasic.Expr =
             when(node) {
                 is PartiqlBasic.Expr.Lit -> transformExprLit(node)
                 is PartiqlBasic.Expr.Id -> transformExprId(node)
@@ -5666,411 +5580,331 @@ class PartiqlBasic private constructor() {
                 is PartiqlBasic.Expr.Select -> transformExprSelect(node)
             }
         // Variant ExprLit
-        open fun transformExprLit(node: PartiqlBasic.Expr.Lit): PartiqlBasic.Expr {
+        open fun transformExprLit(node: PartiqlBasic.Expr.Lit): PartiqlBasic.Expr  {
             val new_value = transformExprLit_value(node)
             val new_metas = transformExprLit_metas(node)
-            return build {
-                Expr.Lit(
+            return PartiqlBasic.Expr.Lit(
                     value = new_value,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprLit_value(node: Expr.Lit) =
+        open fun transformExprLit_value(node: PartiqlBasic.Expr.Lit) =
             transformAnyElement(node.value)
-        open fun transformExprLit_metas(node: Expr.Lit) =
+        open fun transformExprLit_metas(node: PartiqlBasic.Expr.Lit) =
             transformMetas(node.metas)
     
-    
         // Variant ExprId
-        open fun transformExprId(node: PartiqlBasic.Expr.Id): PartiqlBasic.Expr {
+        open fun transformExprId(node: PartiqlBasic.Expr.Id): PartiqlBasic.Expr  {
             val new_name = transformExprId_name(node)
             val new_case = transformExprId_case(node)
             val new_scopeQualifier = transformExprId_scopeQualifier(node)
             val new_metas = transformExprId_metas(node)
-            return build {
-                Expr.Id(
+            return PartiqlBasic.Expr.Id(
                     name = new_name,
                     case = new_case,
                     scopeQualifier = new_scopeQualifier,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprId_name(node: Expr.Id) =
+        open fun transformExprId_name(node: PartiqlBasic.Expr.Id) =
             transformSymbolPrimitive(node.name)
-        open fun transformExprId_case(node: Expr.Id) =
+        open fun transformExprId_case(node: PartiqlBasic.Expr.Id) =
             transformCaseSensitivity(node.case)
-        open fun transformExprId_scopeQualifier(node: Expr.Id) =
+        open fun transformExprId_scopeQualifier(node: PartiqlBasic.Expr.Id) =
             transformScopeQualifier(node.scopeQualifier)
-        open fun transformExprId_metas(node: Expr.Id) =
+        open fun transformExprId_metas(node: PartiqlBasic.Expr.Id) =
             transformMetas(node.metas)
     
-    
         // Variant ExprParameter
-        open fun transformExprParameter(node: PartiqlBasic.Expr.Parameter): PartiqlBasic.Expr {
+        open fun transformExprParameter(node: PartiqlBasic.Expr.Parameter): PartiqlBasic.Expr  {
             val new_index = transformExprParameter_index(node)
             val new_metas = transformExprParameter_metas(node)
-            return build {
-                Expr.Parameter(
+            return PartiqlBasic.Expr.Parameter(
                     index = new_index,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprParameter_index(node: Expr.Parameter) =
+        open fun transformExprParameter_index(node: PartiqlBasic.Expr.Parameter) =
             transformLongPrimitive(node.index)
-        open fun transformExprParameter_metas(node: Expr.Parameter) =
+        open fun transformExprParameter_metas(node: PartiqlBasic.Expr.Parameter) =
             transformMetas(node.metas)
     
-    
         // Variant ExprNot
-        open fun transformExprNot(node: PartiqlBasic.Expr.Not): PartiqlBasic.Expr {
+        open fun transformExprNot(node: PartiqlBasic.Expr.Not): PartiqlBasic.Expr  {
             val new_expr = transformExprNot_expr(node)
             val new_metas = transformExprNot_metas(node)
-            return build {
-                Expr.Not(
+            return PartiqlBasic.Expr.Not(
                     expr = new_expr,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprNot_expr(node: Expr.Not) =
+        open fun transformExprNot_expr(node: PartiqlBasic.Expr.Not) =
             transformExpr(node.expr)
-        open fun transformExprNot_metas(node: Expr.Not) =
+        open fun transformExprNot_metas(node: PartiqlBasic.Expr.Not) =
             transformMetas(node.metas)
-    
     
         // Variant ExprPlus
-        open fun transformExprPlus(node: PartiqlBasic.Expr.Plus): PartiqlBasic.Expr {
+        open fun transformExprPlus(node: PartiqlBasic.Expr.Plus): PartiqlBasic.Expr  {
             val new_operands = transformExprPlus_operands(node)
             val new_metas = transformExprPlus_metas(node)
-            return build {
-                Expr.Plus(
+            return PartiqlBasic.Expr.Plus(
                     operands = new_operands,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprPlus_operands(node: Expr.Plus) =
+        open fun transformExprPlus_operands(node: PartiqlBasic.Expr.Plus) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprPlus_metas(node: Expr.Plus) =
+        open fun transformExprPlus_metas(node: PartiqlBasic.Expr.Plus) =
             transformMetas(node.metas)
-    
     
         // Variant ExprMinus
-        open fun transformExprMinus(node: PartiqlBasic.Expr.Minus): PartiqlBasic.Expr {
+        open fun transformExprMinus(node: PartiqlBasic.Expr.Minus): PartiqlBasic.Expr  {
             val new_operands = transformExprMinus_operands(node)
             val new_metas = transformExprMinus_metas(node)
-            return build {
-                Expr.Minus(
+            return PartiqlBasic.Expr.Minus(
                     operands = new_operands,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprMinus_operands(node: Expr.Minus) =
+        open fun transformExprMinus_operands(node: PartiqlBasic.Expr.Minus) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprMinus_metas(node: Expr.Minus) =
+        open fun transformExprMinus_metas(node: PartiqlBasic.Expr.Minus) =
             transformMetas(node.metas)
-    
     
         // Variant ExprTimes
-        open fun transformExprTimes(node: PartiqlBasic.Expr.Times): PartiqlBasic.Expr {
+        open fun transformExprTimes(node: PartiqlBasic.Expr.Times): PartiqlBasic.Expr  {
             val new_operands = transformExprTimes_operands(node)
             val new_metas = transformExprTimes_metas(node)
-            return build {
-                Expr.Times(
+            return PartiqlBasic.Expr.Times(
                     operands = new_operands,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprTimes_operands(node: Expr.Times) =
+        open fun transformExprTimes_operands(node: PartiqlBasic.Expr.Times) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprTimes_metas(node: Expr.Times) =
+        open fun transformExprTimes_metas(node: PartiqlBasic.Expr.Times) =
             transformMetas(node.metas)
-    
     
         // Variant ExprDivide
-        open fun transformExprDivide(node: PartiqlBasic.Expr.Divide): PartiqlBasic.Expr {
+        open fun transformExprDivide(node: PartiqlBasic.Expr.Divide): PartiqlBasic.Expr  {
             val new_operands = transformExprDivide_operands(node)
             val new_metas = transformExprDivide_metas(node)
-            return build {
-                Expr.Divide(
+            return PartiqlBasic.Expr.Divide(
                     operands = new_operands,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprDivide_operands(node: Expr.Divide) =
+        open fun transformExprDivide_operands(node: PartiqlBasic.Expr.Divide) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprDivide_metas(node: Expr.Divide) =
+        open fun transformExprDivide_metas(node: PartiqlBasic.Expr.Divide) =
             transformMetas(node.metas)
-    
     
         // Variant ExprModulo
-        open fun transformExprModulo(node: PartiqlBasic.Expr.Modulo): PartiqlBasic.Expr {
+        open fun transformExprModulo(node: PartiqlBasic.Expr.Modulo): PartiqlBasic.Expr  {
             val new_operands = transformExprModulo_operands(node)
             val new_metas = transformExprModulo_metas(node)
-            return build {
-                Expr.Modulo(
+            return PartiqlBasic.Expr.Modulo(
                     operands = new_operands,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprModulo_operands(node: Expr.Modulo) =
+        open fun transformExprModulo_operands(node: PartiqlBasic.Expr.Modulo) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprModulo_metas(node: Expr.Modulo) =
+        open fun transformExprModulo_metas(node: PartiqlBasic.Expr.Modulo) =
             transformMetas(node.metas)
-    
     
         // Variant ExprConcat
-        open fun transformExprConcat(node: PartiqlBasic.Expr.Concat): PartiqlBasic.Expr {
+        open fun transformExprConcat(node: PartiqlBasic.Expr.Concat): PartiqlBasic.Expr  {
             val new_operands = transformExprConcat_operands(node)
             val new_metas = transformExprConcat_metas(node)
-            return build {
-                Expr.Concat(
+            return PartiqlBasic.Expr.Concat(
                     operands = new_operands,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprConcat_operands(node: Expr.Concat) =
+        open fun transformExprConcat_operands(node: PartiqlBasic.Expr.Concat) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprConcat_metas(node: Expr.Concat) =
+        open fun transformExprConcat_metas(node: PartiqlBasic.Expr.Concat) =
             transformMetas(node.metas)
     
-    
         // Variant ExprLike
-        open fun transformExprLike(node: PartiqlBasic.Expr.Like): PartiqlBasic.Expr {
+        open fun transformExprLike(node: PartiqlBasic.Expr.Like): PartiqlBasic.Expr  {
             val new_left = transformExprLike_left(node)
             val new_right = transformExprLike_right(node)
             val new_escape = transformExprLike_escape(node)
             val new_metas = transformExprLike_metas(node)
-            return build {
-                Expr.Like(
+            return PartiqlBasic.Expr.Like(
                     left = new_left,
                     right = new_right,
                     escape = new_escape,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprLike_left(node: Expr.Like) =
+        open fun transformExprLike_left(node: PartiqlBasic.Expr.Like) =
             transformExpr(node.left)
-        open fun transformExprLike_right(node: Expr.Like) =
+        open fun transformExprLike_right(node: PartiqlBasic.Expr.Like) =
             transformExpr(node.right)
-        open fun transformExprLike_escape(node: Expr.Like) =
+        open fun transformExprLike_escape(node: PartiqlBasic.Expr.Like) =
             transformExpr(node.escape)
-        open fun transformExprLike_metas(node: Expr.Like) =
+        open fun transformExprLike_metas(node: PartiqlBasic.Expr.Like) =
             transformMetas(node.metas)
     
-    
         // Variant ExprBetween
-        open fun transformExprBetween(node: PartiqlBasic.Expr.Between): PartiqlBasic.Expr {
+        open fun transformExprBetween(node: PartiqlBasic.Expr.Between): PartiqlBasic.Expr  {
             val new_value = transformExprBetween_value(node)
             val new_from = transformExprBetween_from(node)
             val new_to = transformExprBetween_to(node)
             val new_metas = transformExprBetween_metas(node)
-            return build {
-                Expr.Between(
+            return PartiqlBasic.Expr.Between(
                     value = new_value,
                     from = new_from,
                     to = new_to,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprBetween_value(node: Expr.Between) =
+        open fun transformExprBetween_value(node: PartiqlBasic.Expr.Between) =
             transformExpr(node.value)
-        open fun transformExprBetween_from(node: Expr.Between) =
+        open fun transformExprBetween_from(node: PartiqlBasic.Expr.Between) =
             transformExpr(node.from)
-        open fun transformExprBetween_to(node: Expr.Between) =
+        open fun transformExprBetween_to(node: PartiqlBasic.Expr.Between) =
             transformExpr(node.to)
-        open fun transformExprBetween_metas(node: Expr.Between) =
+        open fun transformExprBetween_metas(node: PartiqlBasic.Expr.Between) =
             transformMetas(node.metas)
     
-    
         // Variant ExprPath
-        open fun transformExprPath(node: PartiqlBasic.Expr.Path): PartiqlBasic.Expr {
+        open fun transformExprPath(node: PartiqlBasic.Expr.Path): PartiqlBasic.Expr  {
             val new_root = transformExprPath_root(node)
             val new_elements = transformExprPath_elements(node)
             val new_metas = transformExprPath_metas(node)
-            return build {
-                Expr.Path(
+            return PartiqlBasic.Expr.Path(
                     root = new_root,
                     elements = new_elements,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprPath_root(node: Expr.Path) =
+        open fun transformExprPath_root(node: PartiqlBasic.Expr.Path) =
             transformExpr(node.root)
-        open fun transformExprPath_elements(node: Expr.Path) =
+        open fun transformExprPath_elements(node: PartiqlBasic.Expr.Path) =
             node.elements.map { transformPathElement(it) }
-        open fun transformExprPath_metas(node: Expr.Path) =
+        open fun transformExprPath_metas(node: PartiqlBasic.Expr.Path) =
             transformMetas(node.metas)
     
-    
         // Variant ExprCall
-        open fun transformExprCall(node: PartiqlBasic.Expr.Call): PartiqlBasic.Expr {
+        open fun transformExprCall(node: PartiqlBasic.Expr.Call): PartiqlBasic.Expr  {
             val new_name = transformExprCall_name(node)
             val new_args = transformExprCall_args(node)
             val new_metas = transformExprCall_metas(node)
-            return build {
-                Expr.Call(
+            return PartiqlBasic.Expr.Call(
                     name = new_name,
                     args = new_args,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprCall_name(node: Expr.Call) =
+        open fun transformExprCall_name(node: PartiqlBasic.Expr.Call) =
             transformSymbolPrimitive(node.name)
-        open fun transformExprCall_args(node: Expr.Call) =
+        open fun transformExprCall_args(node: PartiqlBasic.Expr.Call) =
             node.args.map { transformExpr(it) }
-        open fun transformExprCall_metas(node: Expr.Call) =
+        open fun transformExprCall_metas(node: PartiqlBasic.Expr.Call) =
             transformMetas(node.metas)
     
-    
         // Variant ExprCallAgg
-        open fun transformExprCallAgg(node: PartiqlBasic.Expr.CallAgg): PartiqlBasic.Expr {
+        open fun transformExprCallAgg(node: PartiqlBasic.Expr.CallAgg): PartiqlBasic.Expr  {
             val new_name = transformExprCallAgg_name(node)
             val new_setQuantifier = transformExprCallAgg_setQuantifier(node)
             val new_arg = transformExprCallAgg_arg(node)
             val new_metas = transformExprCallAgg_metas(node)
-            return build {
-                Expr.CallAgg(
+            return PartiqlBasic.Expr.CallAgg(
                     name = new_name,
                     setQuantifier = new_setQuantifier,
                     arg = new_arg,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprCallAgg_name(node: Expr.CallAgg) =
+        open fun transformExprCallAgg_name(node: PartiqlBasic.Expr.CallAgg) =
             transformSymbolPrimitive(node.name)
-        open fun transformExprCallAgg_setQuantifier(node: Expr.CallAgg) =
+        open fun transformExprCallAgg_setQuantifier(node: PartiqlBasic.Expr.CallAgg) =
             transformSetQuantifier(node.setQuantifier)
-        open fun transformExprCallAgg_arg(node: Expr.CallAgg) =
+        open fun transformExprCallAgg_arg(node: PartiqlBasic.Expr.CallAgg) =
             transformExpr(node.arg)
-        open fun transformExprCallAgg_metas(node: Expr.CallAgg) =
+        open fun transformExprCallAgg_metas(node: PartiqlBasic.Expr.CallAgg) =
             transformMetas(node.metas)
     
-    
         // Variant ExprSimpleCase
-        open fun transformExprSimpleCase(node: PartiqlBasic.Expr.SimpleCase): PartiqlBasic.Expr {
+        open fun transformExprSimpleCase(node: PartiqlBasic.Expr.SimpleCase): PartiqlBasic.Expr  {
             val new_value = transformExprSimpleCase_value(node)
             val new_branches = transformExprSimpleCase_branches(node)
             val new_metas = transformExprSimpleCase_metas(node)
-            return build {
-                Expr.SimpleCase(
+            return PartiqlBasic.Expr.SimpleCase(
                     value = new_value,
                     branches = new_branches,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprSimpleCase_value(node: Expr.SimpleCase) =
+        open fun transformExprSimpleCase_value(node: PartiqlBasic.Expr.SimpleCase) =
             transformExpr(node.value)
-        open fun transformExprSimpleCase_branches(node: Expr.SimpleCase) =
+        open fun transformExprSimpleCase_branches(node: PartiqlBasic.Expr.SimpleCase) =
             node.branches.map { transformExprPair(it) }
-        open fun transformExprSimpleCase_metas(node: Expr.SimpleCase) =
+        open fun transformExprSimpleCase_metas(node: PartiqlBasic.Expr.SimpleCase) =
             transformMetas(node.metas)
     
-    
         // Variant ExprSearchedCase
-        open fun transformExprSearchedCase(node: PartiqlBasic.Expr.SearchedCase): PartiqlBasic.Expr {
+        open fun transformExprSearchedCase(node: PartiqlBasic.Expr.SearchedCase): PartiqlBasic.Expr  {
             val new_branches = transformExprSearchedCase_branches(node)
             val new_metas = transformExprSearchedCase_metas(node)
-            return build {
-                Expr.SearchedCase(
+            return PartiqlBasic.Expr.SearchedCase(
                     branches = new_branches,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprSearchedCase_branches(node: Expr.SearchedCase) =
+        open fun transformExprSearchedCase_branches(node: PartiqlBasic.Expr.SearchedCase) =
             node.branches.map { transformExprPair(it) }
-        open fun transformExprSearchedCase_metas(node: Expr.SearchedCase) =
+        open fun transformExprSearchedCase_metas(node: PartiqlBasic.Expr.SearchedCase) =
             transformMetas(node.metas)
     
-    
         // Variant ExprStruct
-        open fun transformExprStruct(node: PartiqlBasic.Expr.Struct): PartiqlBasic.Expr {
+        open fun transformExprStruct(node: PartiqlBasic.Expr.Struct): PartiqlBasic.Expr  {
             val new_fields = transformExprStruct_fields(node)
             val new_metas = transformExprStruct_metas(node)
-            return build {
-                Expr.Struct(
+            return PartiqlBasic.Expr.Struct(
                     fields = new_fields,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprStruct_fields(node: Expr.Struct) =
+        open fun transformExprStruct_fields(node: PartiqlBasic.Expr.Struct) =
             node.fields.map { transformExprPair(it) }
-        open fun transformExprStruct_metas(node: Expr.Struct) =
+        open fun transformExprStruct_metas(node: PartiqlBasic.Expr.Struct) =
             transformMetas(node.metas)
-    
     
         // Variant ExprBag
-        open fun transformExprBag(node: PartiqlBasic.Expr.Bag): PartiqlBasic.Expr {
+        open fun transformExprBag(node: PartiqlBasic.Expr.Bag): PartiqlBasic.Expr  {
             val new_values = transformExprBag_values(node)
             val new_metas = transformExprBag_metas(node)
-            return build {
-                Expr.Bag(
+            return PartiqlBasic.Expr.Bag(
                     values = new_values,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprBag_values(node: Expr.Bag) =
+        open fun transformExprBag_values(node: PartiqlBasic.Expr.Bag) =
             node.values.map { transformExpr(it) }
-        open fun transformExprBag_metas(node: Expr.Bag) =
+        open fun transformExprBag_metas(node: PartiqlBasic.Expr.Bag) =
             transformMetas(node.metas)
-    
     
         // Variant ExprList
-        open fun transformExprList(node: PartiqlBasic.Expr.List): PartiqlBasic.Expr {
+        open fun transformExprList(node: PartiqlBasic.Expr.List): PartiqlBasic.Expr  {
             val new_values = transformExprList_values(node)
             val new_metas = transformExprList_metas(node)
-            return build {
-                Expr.List(
+            return PartiqlBasic.Expr.List(
                     values = new_values,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprList_values(node: Expr.List) =
+        open fun transformExprList_values(node: PartiqlBasic.Expr.List) =
             node.values.map { transformExpr(it) }
-        open fun transformExprList_metas(node: Expr.List) =
+        open fun transformExprList_metas(node: PartiqlBasic.Expr.List) =
             transformMetas(node.metas)
     
-    
         // Variant ExprSelect
-        open fun transformExprSelect(node: PartiqlBasic.Expr.Select): PartiqlBasic.Expr {
+        open fun transformExprSelect(node: PartiqlBasic.Expr.Select): PartiqlBasic.Expr  {
             val new_setq = transformExprSelect_setq(node)
             val new_project = transformExprSelect_project(node)
             val new_from = transformExprSelect_from(node)
@@ -6079,8 +5913,7 @@ class PartiqlBasic private constructor() {
             val new_having = transformExprSelect_having(node)
             val new_limit = transformExprSelect_limit(node)
             val new_metas = transformExprSelect_metas(node)
-            return build {
-                Expr.Select(
+            return PartiqlBasic.Expr.Select(
                     setq = new_setq,
                     project = new_project,
                     from = new_from,
@@ -6090,27 +5923,30 @@ class PartiqlBasic private constructor() {
                     limit = new_limit,
                     metas = new_metas
                 )
-            }
         }
-    
-        open fun transformExprSelect_setq(node: Expr.Select) =
+        open fun transformExprSelect_setq(node: PartiqlBasic.Expr.Select) =
             node.setq?.let { transformSetQuantifier(it) }
-        open fun transformExprSelect_project(node: Expr.Select) =
+        open fun transformExprSelect_project(node: PartiqlBasic.Expr.Select) =
             transformProjection(node.project)
-        open fun transformExprSelect_from(node: Expr.Select) =
+        open fun transformExprSelect_from(node: PartiqlBasic.Expr.Select) =
             transformFromSource(node.from)
-        open fun transformExprSelect_where(node: Expr.Select) =
+        open fun transformExprSelect_where(node: PartiqlBasic.Expr.Select) =
             node.where?.let { transformExpr(it) }
-        open fun transformExprSelect_group(node: Expr.Select) =
+        open fun transformExprSelect_group(node: PartiqlBasic.Expr.Select) =
             node.group?.let { transformGroupBy(it) }
-        open fun transformExprSelect_having(node: Expr.Select) =
+        open fun transformExprSelect_having(node: PartiqlBasic.Expr.Select) =
             node.having?.let { transformExpr(it) }
-        open fun transformExprSelect_limit(node: Expr.Select) =
+        open fun transformExprSelect_limit(node: PartiqlBasic.Expr.Select) =
             node.limit?.let { transformExpr(it) }
-        open fun transformExprSelect_metas(node: Expr.Select) =
+        open fun transformExprSelect_metas(node: PartiqlBasic.Expr.Select) =
             transformMetas(node.metas)
-    
     
     }
 }
+
+
+
+//////////////////////////////////////
+// Cross domain transforms
+//////////////////////////////////////
 

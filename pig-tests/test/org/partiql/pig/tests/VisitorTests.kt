@@ -43,9 +43,9 @@ class VisitorTests {
             stringAccumulator += node.text
         }
 
-        override fun visitMetas(node: MetaContainer) {
-            if(node.containsKey(NUMBER_KEY)) {
-                numberAccumulator += node[NUMBER_KEY] as Int
+        override fun visitMetas(metas: MetaContainer) {
+            if(metas.containsKey(NUMBER_KEY)) {
+                numberAccumulator += metas[NUMBER_KEY] as Int
             }
         }
     }
