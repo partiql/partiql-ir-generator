@@ -15,7 +15,7 @@
         - Product with no fields (definitely possible for sum variants--possible with top-level products too?)- with only required fields
         - with only optional fields
         - with only a variadic field
-        - with required and optiona field
+        - with required and optional field
         - with required and variadic fields.  (TODO:  not supported yet)
         - Note:  products cannot have both optional and variadic fields.
     - Sum variants...
