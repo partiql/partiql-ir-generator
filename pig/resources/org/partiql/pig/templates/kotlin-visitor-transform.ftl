@@ -72,7 +72,6 @@ abstract class ${class_name} : DomainVisitorTransformBase() {
 [/#list]
 [/#list]
 }
-
 [/#macro]
 
 [#--Always generate a visitor transform for domain to same domain --]

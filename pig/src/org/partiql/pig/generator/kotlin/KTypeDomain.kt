@@ -24,7 +24,6 @@ import org.partiql.pig.domain.model.TypeDomain
   results to an instance of this domain model.  This helps keep the template much simpler than it would
   otherwise be.
  */
-
 data class KTypeUniverse(val domains: List<KTypeDomain>, val transforms: List<KTransform>)
 
 /**

@@ -3373,7 +3373,6 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
         transformMetas(node.metas)
 
 }
-
 abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformBase() {
     //////////////////////////////////////
     // Sum Type: Expr
@@ -3531,4 +3530,3 @@ abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformB
     // Variant ExprLet
     abstract fun transformExprLet(node: ToyLangIndexed.Expr.Let): ToyLang.Expr
 }
-
