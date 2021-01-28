@@ -78,7 +78,7 @@ private class KTypeDomainConverter(
                                     superClass = it.tag.snakeToPascalCase(),
                                     constructorName = "${it.tag.snakeToPascalCase()}.${v.tag.snakeToPascalCase()}")
                             },
-                            isRemoved = it.isDifferent
+                            isTransformAbstract = it.isDifferent
                         ))
             }
         }
@@ -104,6 +104,7 @@ private class KTypeDomainConverter(
                 TupleType.PRODUCT -> false
                 TupleType.RECORD -> true
             },
+            hasVariadicElement = hasVariadicElement(),
             isTransformAbstract = this.isDifferent)
     }
 
@@ -113,6 +114,9 @@ private class KTypeDomainConverter(
     private fun isKotlinPrimitive(element: NamedElement) = typeDomain.resolveTypeRef(element.typeReference).isPrimitive
 
     private fun DataType.UserType.Tuple.hasPrimitiveElement() = this.namedElements.any { isKotlinPrimitive(it) }
+
+    private fun DataType.UserType.Tuple.hasVariadicElement() =
+        this.namedElements.any { it.typeReference.arity is Arity.Variadic }
 
     private fun computeBuilderFunctions(tuple: DataType.UserType.Tuple): List<KBuilderFunction> {
         val hasPrimitiveElement = tuple.hasPrimitiveElement()

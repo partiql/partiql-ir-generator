@@ -23,7 +23,6 @@ import org.partiql.pig.runtime.LongPrimitive
 import org.partiql.pig.runtime.SymbolPrimitive
 import org.partiql.pig.tests.generated.TestDomain
 import org.partiql.pig.tests.generated.ToyLang
-import org.partiql.pig.tests.generated.ToyLangToToyLangNamelessVisitorTransform
 
 const val INDEX_META_KEY = "index"
 

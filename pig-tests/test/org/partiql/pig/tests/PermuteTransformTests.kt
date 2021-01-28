@@ -19,9 +19,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.fail
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ArgumentsSource
-import org.partiql.pig.tests.generated.TestPermuteDomainA
-import org.partiql.pig.tests.generated.TestPermuteDomainAToTestPermuteDomainBVisitorTransform
-import org.partiql.pig.tests.generated.TestPermuteDomainB
+import org.partiql.pig.tests.generated.DomainA
+import org.partiql.pig.tests.generated.DomainB
+import org.partiql.pig.tests.generated.DomainAToDomainBVisitorTransform
 
 /**
  * Test cases for the 5 basic scenarios for domain permutation.
@@ -41,30 +41,30 @@ import org.partiql.pig.tests.generated.TestPermuteDomainB
  * - A new domain-level type is introduced in the permuted domain. Demonstrated with: new_product, new_record, new_sum.
  *
  * The latter two scenarios are "implicitly" tested.  The simple fact that the generated code for
- * test_permute_domain_b and the [TestPermuteDomainAToTestPermuteDomainBVisitorTransform] compiles is the test.
+ * test_permute_domain_b and the [DomainAToDomainBVisitorTransform] compiles is the test.
  */
 class PermuteTransformTests {
 
-    class TestTransform : TestPermuteDomainAToTestPermuteDomainBVisitorTransform() {
-        override fun transformProductA(node: TestPermuteDomainA.ProductA): TestPermuteDomainB.ProductA =
-            TestPermuteDomainB.build {
+    class TestTransform : DomainAToDomainBVisitorTransform() {
+        override fun transformProductA(node: DomainA.ProductA): DomainB.ProductA =
+            DomainB.build {
                 productA(node.one.value.toString())
             }
 
 
-        override fun transformRecordA(node: TestPermuteDomainA.RecordA): TestPermuteDomainB.RecordA =
-            TestPermuteDomainB.build {
+        override fun transformRecordA(node: DomainA.RecordA): DomainB.RecordA =
+            DomainB.build {
                 recordA(node.one.value.toString())
             }
 
-        override fun transformSumBWillBeRemoved(node: TestPermuteDomainA.SumB.WillBeRemoved): TestPermuteDomainB.SumB =
-            TestPermuteDomainB.build {
+        override fun transformSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved): DomainB.SumB =
+            DomainB.build {
                 willBeUnchanged()
             }
 
 
-        override fun transformSumBWillBeReplaced(node: TestPermuteDomainA.SumB.WillBeReplaced): TestPermuteDomainB.SumB =
-            TestPermuteDomainB.build {
+        override fun transformSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced): DomainB.SumB =
+            DomainB.build {
                 willBeReplaced(node.something.value.toString())
             }
     }
@@ -72,22 +72,21 @@ class PermuteTransformTests {
     private val tt = TestTransform()
 
     data class TestCase(
-        val input: TestPermuteDomainA.TestPermuteDomainANode,
-        val expected: TestPermuteDomainB.TestPermuteDomainBNode)
+        val input: DomainA.DomainANode,
+        val expected: DomainB.DomainBNode)
 
     @ParameterizedTest
     @ArgumentsSource(TestArguments::class)
     fun testPermute(tc: TestCase) {
         // this `when` expression is needed because at this time there is no method we can call
-        // on the generated visitor transform that will transform *any* [TestPermuteDomainA.TestPermuteDomainANode].
+        // on the generated visitor transform that will transform *any* [DomainA.DomainANode].
         // It is possible that one may be added in the future.
         // https://github.com/partiql/partiql-ir-generator/issues/66
         val actual = when(tc.input) {
-            is TestPermuteDomainA.ProductA -> tt.transformProductA(tc.input)
-            is TestPermuteDomainA.RecordA -> tt.transformRecordA(tc.input)
-            is TestPermuteDomainA.SumB -> tt.transformSumB(tc.input)
-
-            // `else` is needed since TestPermuteDomainA.TestPermuteDomainANode is not currently a sealed class
+            is DomainA.ProductA -> tt.transformProductA(tc.input)
+            is DomainA.RecordA -> tt.transformRecordA(tc.input)
+            is DomainA.SumB -> tt.transformSumB(tc.input)
+            // `else` is needed since DomainA.DomainANode is not currently a sealed class
             else -> fail("unexpected type")
         }
 
@@ -97,51 +96,50 @@ class PermuteTransformTests {
     class TestArguments : ArgumentsProviderBase() {
         override fun getParameters(): List<Any> = listOf(
             TestCase(
-                TestPermuteDomainA.build {
+                DomainA.build {
                     productA(42)
                 },
-                TestPermuteDomainB.build {
+                DomainB.build {
                     productA("42")
                 }
             ),
             TestCase(
-                TestPermuteDomainA.build {
+                DomainA.build {
                     recordA(43)
                 },
-                TestPermuteDomainB.build {
+                DomainB.build {
                     recordA("43")
                 }
             ),
             TestCase(
-                TestPermuteDomainA.build {
+                DomainA.build {
                     willBeRemoved()
                 },
-                TestPermuteDomainB.build {
+                DomainB.build {
                     willBeUnchanged()
                 }
             ),
             TestCase(
-                TestPermuteDomainA.build {
+                DomainA.build {
                     willBeReplaced(44)
                 },
-                TestPermuteDomainB.build {
+                DomainB.build {
                     willBeReplaced("44")
                 }
             ),
-            ///
             TestCase(
-                TestPermuteDomainA.build {
+                DomainA.build {
                     productA(42)
                 },
-                TestPermuteDomainB.build {
+                DomainB.build {
                     productA("42")
                 }
             ),
             TestCase(
-                TestPermuteDomainA.build {
+                DomainA.build {
                     productA(42)
                 },
-                TestPermuteDomainB.build {
+                DomainB.build {
                     productA("42")
                 }
             )

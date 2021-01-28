@@ -122,7 +122,7 @@
 // Permute domain tests
 //////////////////////////////////////////////////////////////////////////////
 
-(define test_permute_domain_a
+(define domain_a
     (domain
         // These will be removed (but not replaced) in the permuted domain
         (product product_to_remove whatever::symbol)
@@ -154,8 +154,8 @@
             (unpermuted_record_variant (foo symbol) (bar int)))
 ))
 
-(define test_permute_domain_b
-    (permute_domain test_permute_domain_a
+(define domain_b
+    (permute_domain domain_a
         (exclude
             // these will not be replaced
             product_to_remove
@@ -182,5 +182,5 @@
         )
 ))
 
-(transform test_permute_domain_a test_permute_domain_b)
+(transform domain_a domain_b)
 
