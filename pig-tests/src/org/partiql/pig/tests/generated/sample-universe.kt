@@ -26,7 +26,7 @@ class TestDomain private constructor() {
             transform(element.asSexp())
     
         fun transform(element: SexpElement): TestDomainNode =
-            IonElementTransformer().transform(element)
+            Transformer().transform(element)
     }
     
     interface Builder {
@@ -3313,11 +3313,11 @@ class TestDomain private constructor() {
     }
     
     /////////////////////////////////////////////////////////////////////////////
-    // IonElementTransformer
+    // Transformer
     /////////////////////////////////////////////////////////////////////////////
     
     
-    private class IonElementTransformer : IonElementTransformerBase<TestDomainNode>() {
+    private class Transformer : IonElementTransformerBase<TestDomainNode>() {
     
         override fun innerTransform(sexp: SexpElement): TestDomainNode {
             return when(sexp.tag) {
@@ -4393,634 +4393,721 @@ class TestDomain private constructor() {
         }
     
     }
-    abstract class VisitorTransform : DomainVisitorTransformBase() {
+    
+    
+    open class VisitorTransform : DomainVisitorTransformBase() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
         // Tuple IntPair
-        open fun transformIntPair(node: TestDomain.IntPair): TestDomain.IntPair {
+        open fun transformIntPair(node: IntPair): IntPair {
             val new_first = transformIntPair_first(node)
             val new_second = transformIntPair_second(node)
             val new_metas = transformIntPair_metas(node)
-            return TestDomain.IntPair(
+            return build {
+                IntPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformIntPair_first(node: TestDomain.IntPair) =
+        open fun transformIntPair_first(node: IntPair) =
             transformLongPrimitive(node.first)
-        open fun transformIntPair_second(node: TestDomain.IntPair) =
+        open fun transformIntPair_second(node: IntPair) =
             transformLongPrimitive(node.second)
-        open fun transformIntPair_metas(node: TestDomain.IntPair) =
+        open fun transformIntPair_metas(node: IntPair) =
             transformMetas(node.metas)
     
         // Tuple SymbolPair
-        open fun transformSymbolPair(node: TestDomain.SymbolPair): TestDomain.SymbolPair {
+        open fun transformSymbolPair(node: SymbolPair): SymbolPair {
             val new_first = transformSymbolPair_first(node)
             val new_second = transformSymbolPair_second(node)
             val new_metas = transformSymbolPair_metas(node)
-            return TestDomain.SymbolPair(
+            return build {
+                SymbolPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformSymbolPair_first(node: TestDomain.SymbolPair) =
+        open fun transformSymbolPair_first(node: SymbolPair) =
             transformSymbolPrimitive(node.first)
-        open fun transformSymbolPair_second(node: TestDomain.SymbolPair) =
+        open fun transformSymbolPair_second(node: SymbolPair) =
             transformSymbolPrimitive(node.second)
-        open fun transformSymbolPair_metas(node: TestDomain.SymbolPair) =
+        open fun transformSymbolPair_metas(node: SymbolPair) =
             transformMetas(node.metas)
     
         // Tuple IonPair
-        open fun transformIonPair(node: TestDomain.IonPair): TestDomain.IonPair {
+        open fun transformIonPair(node: IonPair): IonPair {
             val new_first = transformIonPair_first(node)
             val new_second = transformIonPair_second(node)
             val new_metas = transformIonPair_metas(node)
-            return TestDomain.IonPair(
+            return build {
+                IonPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformIonPair_first(node: TestDomain.IonPair) =
+        open fun transformIonPair_first(node: IonPair) =
             transformAnyElement(node.first)
-        open fun transformIonPair_second(node: TestDomain.IonPair) =
+        open fun transformIonPair_second(node: IonPair) =
             transformAnyElement(node.second)
-        open fun transformIonPair_metas(node: TestDomain.IonPair) =
+        open fun transformIonPair_metas(node: IonPair) =
             transformMetas(node.metas)
     
         // Tuple IntSymbolPair
-        open fun transformIntSymbolPair(node: TestDomain.IntSymbolPair): TestDomain.IntSymbolPair {
+        open fun transformIntSymbolPair(node: IntSymbolPair): IntSymbolPair {
             val new_first = transformIntSymbolPair_first(node)
             val new_second = transformIntSymbolPair_second(node)
             val new_metas = transformIntSymbolPair_metas(node)
-            return TestDomain.IntSymbolPair(
+            return build {
+                IntSymbolPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformIntSymbolPair_first(node: TestDomain.IntSymbolPair) =
+        open fun transformIntSymbolPair_first(node: IntSymbolPair) =
             transformLongPrimitive(node.first)
-        open fun transformIntSymbolPair_second(node: TestDomain.IntSymbolPair) =
+        open fun transformIntSymbolPair_second(node: IntSymbolPair) =
             transformSymbolPrimitive(node.second)
-        open fun transformIntSymbolPair_metas(node: TestDomain.IntSymbolPair) =
+        open fun transformIntSymbolPair_metas(node: IntSymbolPair) =
             transformMetas(node.metas)
     
         // Tuple SymbolIntPair
-        open fun transformSymbolIntPair(node: TestDomain.SymbolIntPair): TestDomain.SymbolIntPair {
+        open fun transformSymbolIntPair(node: SymbolIntPair): SymbolIntPair {
             val new_first = transformSymbolIntPair_first(node)
             val new_second = transformSymbolIntPair_second(node)
             val new_metas = transformSymbolIntPair_metas(node)
-            return TestDomain.SymbolIntPair(
+            return build {
+                SymbolIntPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformSymbolIntPair_first(node: TestDomain.SymbolIntPair) =
+        open fun transformSymbolIntPair_first(node: SymbolIntPair) =
             transformSymbolPrimitive(node.first)
-        open fun transformSymbolIntPair_second(node: TestDomain.SymbolIntPair) =
+        open fun transformSymbolIntPair_second(node: SymbolIntPair) =
             transformLongPrimitive(node.second)
-        open fun transformSymbolIntPair_metas(node: TestDomain.SymbolIntPair) =
+        open fun transformSymbolIntPair_metas(node: SymbolIntPair) =
             transformMetas(node.metas)
     
         // Tuple IonIntPair
-        open fun transformIonIntPair(node: TestDomain.IonIntPair): TestDomain.IonIntPair {
+        open fun transformIonIntPair(node: IonIntPair): IonIntPair {
             val new_first = transformIonIntPair_first(node)
             val new_second = transformIonIntPair_second(node)
             val new_metas = transformIonIntPair_metas(node)
-            return TestDomain.IonIntPair(
+            return build {
+                IonIntPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformIonIntPair_first(node: TestDomain.IonIntPair) =
+        open fun transformIonIntPair_first(node: IonIntPair) =
             transformAnyElement(node.first)
-        open fun transformIonIntPair_second(node: TestDomain.IonIntPair) =
+        open fun transformIonIntPair_second(node: IonIntPair) =
             transformLongPrimitive(node.second)
-        open fun transformIonIntPair_metas(node: TestDomain.IonIntPair) =
+        open fun transformIonIntPair_metas(node: IonIntPair) =
             transformMetas(node.metas)
     
         // Tuple IonSymbolPair
-        open fun transformIonSymbolPair(node: TestDomain.IonSymbolPair): TestDomain.IonSymbolPair {
+        open fun transformIonSymbolPair(node: IonSymbolPair): IonSymbolPair {
             val new_first = transformIonSymbolPair_first(node)
             val new_second = transformIonSymbolPair_second(node)
             val new_metas = transformIonSymbolPair_metas(node)
-            return TestDomain.IonSymbolPair(
+            return build {
+                IonSymbolPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformIonSymbolPair_first(node: TestDomain.IonSymbolPair) =
+        open fun transformIonSymbolPair_first(node: IonSymbolPair) =
             transformAnyElement(node.first)
-        open fun transformIonSymbolPair_second(node: TestDomain.IonSymbolPair) =
+        open fun transformIonSymbolPair_second(node: IonSymbolPair) =
             transformAnyElement(node.second)
-        open fun transformIonSymbolPair_metas(node: TestDomain.IonSymbolPair) =
+        open fun transformIonSymbolPair_metas(node: IonSymbolPair) =
             transformMetas(node.metas)
     
         // Tuple IntPairPair
-        open fun transformIntPairPair(node: TestDomain.IntPairPair): TestDomain.IntPairPair {
+        open fun transformIntPairPair(node: IntPairPair): IntPairPair {
             val new_first = transformIntPairPair_first(node)
             val new_second = transformIntPairPair_second(node)
             val new_metas = transformIntPairPair_metas(node)
-            return TestDomain.IntPairPair(
+            return build {
+                IntPairPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformIntPairPair_first(node: TestDomain.IntPairPair) =
+        open fun transformIntPairPair_first(node: IntPairPair) =
             transformIntPair(node.first)
-        open fun transformIntPairPair_second(node: TestDomain.IntPairPair) =
+        open fun transformIntPairPair_second(node: IntPairPair) =
             transformIntPair(node.second)
-        open fun transformIntPairPair_metas(node: TestDomain.IntPairPair) =
+        open fun transformIntPairPair_metas(node: IntPairPair) =
             transformMetas(node.metas)
     
         // Tuple SymbolPairPair
-        open fun transformSymbolPairPair(node: TestDomain.SymbolPairPair): TestDomain.SymbolPairPair {
+        open fun transformSymbolPairPair(node: SymbolPairPair): SymbolPairPair {
             val new_first = transformSymbolPairPair_first(node)
             val new_second = transformSymbolPairPair_second(node)
             val new_metas = transformSymbolPairPair_metas(node)
-            return TestDomain.SymbolPairPair(
+            return build {
+                SymbolPairPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformSymbolPairPair_first(node: TestDomain.SymbolPairPair) =
+        open fun transformSymbolPairPair_first(node: SymbolPairPair) =
             transformSymbolPair(node.first)
-        open fun transformSymbolPairPair_second(node: TestDomain.SymbolPairPair) =
+        open fun transformSymbolPairPair_second(node: SymbolPairPair) =
             transformSymbolPair(node.second)
-        open fun transformSymbolPairPair_metas(node: TestDomain.SymbolPairPair) =
+        open fun transformSymbolPairPair_metas(node: SymbolPairPair) =
             transformMetas(node.metas)
     
         // Tuple IonPairPair
-        open fun transformIonPairPair(node: TestDomain.IonPairPair): TestDomain.IonPairPair {
+        open fun transformIonPairPair(node: IonPairPair): IonPairPair {
             val new_first = transformIonPairPair_first(node)
             val new_second = transformIonPairPair_second(node)
             val new_metas = transformIonPairPair_metas(node)
-            return TestDomain.IonPairPair(
+            return build {
+                IonPairPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformIonPairPair_first(node: TestDomain.IonPairPair) =
+        open fun transformIonPairPair_first(node: IonPairPair) =
             transformIonPair(node.first)
-        open fun transformIonPairPair_second(node: TestDomain.IonPairPair) =
+        open fun transformIonPairPair_second(node: IonPairPair) =
             transformIonPair(node.second)
-        open fun transformIonPairPair_metas(node: TestDomain.IonPairPair) =
+        open fun transformIonPairPair_metas(node: IonPairPair) =
             transformMetas(node.metas)
     
         // Tuple RecursivePair
-        open fun transformRecursivePair(node: TestDomain.RecursivePair): TestDomain.RecursivePair {
+        open fun transformRecursivePair(node: RecursivePair): RecursivePair {
             val new_first = transformRecursivePair_first(node)
             val new_second = transformRecursivePair_second(node)
             val new_metas = transformRecursivePair_metas(node)
-            return TestDomain.RecursivePair(
+            return build {
+                RecursivePair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformRecursivePair_first(node: TestDomain.RecursivePair) =
+        open fun transformRecursivePair_first(node: RecursivePair) =
             transformLongPrimitive(node.first)
-        open fun transformRecursivePair_second(node: TestDomain.RecursivePair) =
+        open fun transformRecursivePair_second(node: RecursivePair) =
             node.second?.let { transformRecursivePair(it) }
-        open fun transformRecursivePair_metas(node: TestDomain.RecursivePair) =
+        open fun transformRecursivePair_metas(node: RecursivePair) =
             transformMetas(node.metas)
     
         // Tuple AnswerPair
-        open fun transformAnswerPair(node: TestDomain.AnswerPair): TestDomain.AnswerPair {
+        open fun transformAnswerPair(node: AnswerPair): AnswerPair {
             val new_first = transformAnswerPair_first(node)
             val new_second = transformAnswerPair_second(node)
             val new_metas = transformAnswerPair_metas(node)
-            return TestDomain.AnswerPair(
+            return build {
+                AnswerPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAnswerPair_first(node: TestDomain.AnswerPair) =
+        open fun transformAnswerPair_first(node: AnswerPair) =
             transformAnswer(node.first)
-        open fun transformAnswerPair_second(node: TestDomain.AnswerPair) =
+        open fun transformAnswerPair_second(node: AnswerPair) =
             transformAnswer(node.second)
-        open fun transformAnswerPair_metas(node: TestDomain.AnswerPair) =
+        open fun transformAnswerPair_metas(node: AnswerPair) =
             transformMetas(node.metas)
     
         // Tuple AnswerIntPair
-        open fun transformAnswerIntPair(node: TestDomain.AnswerIntPair): TestDomain.AnswerIntPair {
+        open fun transformAnswerIntPair(node: AnswerIntPair): AnswerIntPair {
             val new_first = transformAnswerIntPair_first(node)
             val new_second = transformAnswerIntPair_second(node)
             val new_metas = transformAnswerIntPair_metas(node)
-            return TestDomain.AnswerIntPair(
+            return build {
+                AnswerIntPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAnswerIntPair_first(node: TestDomain.AnswerIntPair) =
+        open fun transformAnswerIntPair_first(node: AnswerIntPair) =
             transformAnswer(node.first)
-        open fun transformAnswerIntPair_second(node: TestDomain.AnswerIntPair) =
+        open fun transformAnswerIntPair_second(node: AnswerIntPair) =
             transformLongPrimitive(node.second)
-        open fun transformAnswerIntPair_metas(node: TestDomain.AnswerIntPair) =
+        open fun transformAnswerIntPair_metas(node: AnswerIntPair) =
             transformMetas(node.metas)
     
         // Tuple IntAnswerPair
-        open fun transformIntAnswerPair(node: TestDomain.IntAnswerPair): TestDomain.IntAnswerPair {
+        open fun transformIntAnswerPair(node: IntAnswerPair): IntAnswerPair {
             val new_first = transformIntAnswerPair_first(node)
             val new_second = transformIntAnswerPair_second(node)
             val new_metas = transformIntAnswerPair_metas(node)
-            return TestDomain.IntAnswerPair(
+            return build {
+                IntAnswerPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformIntAnswerPair_first(node: TestDomain.IntAnswerPair) =
+        open fun transformIntAnswerPair_first(node: IntAnswerPair) =
             transformLongPrimitive(node.first)
-        open fun transformIntAnswerPair_second(node: TestDomain.IntAnswerPair) =
+        open fun transformIntAnswerPair_second(node: IntAnswerPair) =
             transformAnswer(node.second)
-        open fun transformIntAnswerPair_metas(node: TestDomain.IntAnswerPair) =
+        open fun transformIntAnswerPair_metas(node: IntAnswerPair) =
             transformMetas(node.metas)
     
         // Tuple SymbolAnswerPair
-        open fun transformSymbolAnswerPair(node: TestDomain.SymbolAnswerPair): TestDomain.SymbolAnswerPair {
+        open fun transformSymbolAnswerPair(node: SymbolAnswerPair): SymbolAnswerPair {
             val new_first = transformSymbolAnswerPair_first(node)
             val new_second = transformSymbolAnswerPair_second(node)
             val new_metas = transformSymbolAnswerPair_metas(node)
-            return TestDomain.SymbolAnswerPair(
+            return build {
+                SymbolAnswerPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformSymbolAnswerPair_first(node: TestDomain.SymbolAnswerPair) =
+        open fun transformSymbolAnswerPair_first(node: SymbolAnswerPair) =
             transformSymbolPrimitive(node.first)
-        open fun transformSymbolAnswerPair_second(node: TestDomain.SymbolAnswerPair) =
+        open fun transformSymbolAnswerPair_second(node: SymbolAnswerPair) =
             transformAnswer(node.second)
-        open fun transformSymbolAnswerPair_metas(node: TestDomain.SymbolAnswerPair) =
+        open fun transformSymbolAnswerPair_metas(node: SymbolAnswerPair) =
             transformMetas(node.metas)
     
         // Tuple AnswerSymbolPair
-        open fun transformAnswerSymbolPair(node: TestDomain.AnswerSymbolPair): TestDomain.AnswerSymbolPair {
+        open fun transformAnswerSymbolPair(node: AnswerSymbolPair): AnswerSymbolPair {
             val new_first = transformAnswerSymbolPair_first(node)
             val new_second = transformAnswerSymbolPair_second(node)
             val new_metas = transformAnswerSymbolPair_metas(node)
-            return TestDomain.AnswerSymbolPair(
+            return build {
+                AnswerSymbolPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAnswerSymbolPair_first(node: TestDomain.AnswerSymbolPair) =
+        open fun transformAnswerSymbolPair_first(node: AnswerSymbolPair) =
             transformAnswer(node.first)
-        open fun transformAnswerSymbolPair_second(node: TestDomain.AnswerSymbolPair) =
+        open fun transformAnswerSymbolPair_second(node: AnswerSymbolPair) =
             transformSymbolPrimitive(node.second)
-        open fun transformAnswerSymbolPair_metas(node: TestDomain.AnswerSymbolPair) =
+        open fun transformAnswerSymbolPair_metas(node: AnswerSymbolPair) =
             transformMetas(node.metas)
     
         // Tuple VariadicMin0
-        open fun transformVariadicMin0(node: TestDomain.VariadicMin0): TestDomain.VariadicMin0 {
+        open fun transformVariadicMin0(node: VariadicMin0): VariadicMin0 {
             val new_ints = transformVariadicMin0_ints(node)
             val new_metas = transformVariadicMin0_metas(node)
-            return TestDomain.VariadicMin0(
+            return build {
+                VariadicMin0(
                     ints = new_ints,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformVariadicMin0_ints(node: TestDomain.VariadicMin0) =
+        open fun transformVariadicMin0_ints(node: VariadicMin0) =
             node.ints.map { transformLongPrimitive(it) }
-        open fun transformVariadicMin0_metas(node: TestDomain.VariadicMin0) =
+        open fun transformVariadicMin0_metas(node: VariadicMin0) =
             transformMetas(node.metas)
     
         // Tuple VariadicMin1
-        open fun transformVariadicMin1(node: TestDomain.VariadicMin1): TestDomain.VariadicMin1 {
+        open fun transformVariadicMin1(node: VariadicMin1): VariadicMin1 {
             val new_ints = transformVariadicMin1_ints(node)
             val new_metas = transformVariadicMin1_metas(node)
-            return TestDomain.VariadicMin1(
+            return build {
+                VariadicMin1(
                     ints = new_ints,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformVariadicMin1_ints(node: TestDomain.VariadicMin1) =
+        open fun transformVariadicMin1_ints(node: VariadicMin1) =
             node.ints.map { transformLongPrimitive(it) }
-        open fun transformVariadicMin1_metas(node: TestDomain.VariadicMin1) =
+        open fun transformVariadicMin1_metas(node: VariadicMin1) =
             transformMetas(node.metas)
     
         // Tuple ElementVariadic
-        open fun transformElementVariadic(node: TestDomain.ElementVariadic): TestDomain.ElementVariadic {
+        open fun transformElementVariadic(node: ElementVariadic): ElementVariadic {
             val new_name = transformElementVariadic_name(node)
             val new_ints = transformElementVariadic_ints(node)
             val new_metas = transformElementVariadic_metas(node)
-            return TestDomain.ElementVariadic(
+            return build {
+                ElementVariadic(
                     name = new_name,
                     ints = new_ints,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformElementVariadic_name(node: TestDomain.ElementVariadic) =
+        open fun transformElementVariadic_name(node: ElementVariadic) =
             transformSymbolPrimitive(node.name)
-        open fun transformElementVariadic_ints(node: TestDomain.ElementVariadic) =
+        open fun transformElementVariadic_ints(node: ElementVariadic) =
             node.ints.map { transformLongPrimitive(it) }
-        open fun transformElementVariadic_metas(node: TestDomain.ElementVariadic) =
+        open fun transformElementVariadic_metas(node: ElementVariadic) =
             transformMetas(node.metas)
     
         // Tuple Optional1
-        open fun transformOptional1(node: TestDomain.Optional1): TestDomain.Optional1 {
+        open fun transformOptional1(node: Optional1): Optional1 {
             val new_value = transformOptional1_value(node)
             val new_metas = transformOptional1_metas(node)
-            return TestDomain.Optional1(
+            return build {
+                Optional1(
                     value = new_value,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformOptional1_value(node: TestDomain.Optional1) =
+        open fun transformOptional1_value(node: Optional1) =
             node.value?.let { transformLongPrimitive(it) }
-        open fun transformOptional1_metas(node: TestDomain.Optional1) =
+        open fun transformOptional1_metas(node: Optional1) =
             transformMetas(node.metas)
     
         // Tuple Optional2
-        open fun transformOptional2(node: TestDomain.Optional2): TestDomain.Optional2 {
+        open fun transformOptional2(node: Optional2): Optional2 {
             val new_first = transformOptional2_first(node)
             val new_second = transformOptional2_second(node)
             val new_metas = transformOptional2_metas(node)
-            return TestDomain.Optional2(
+            return build {
+                Optional2(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformOptional2_first(node: TestDomain.Optional2) =
+        open fun transformOptional2_first(node: Optional2) =
             node.first?.let { transformLongPrimitive(it) }
-        open fun transformOptional2_second(node: TestDomain.Optional2) =
+        open fun transformOptional2_second(node: Optional2) =
             node.second?.let { transformLongPrimitive(it) }
-        open fun transformOptional2_metas(node: TestDomain.Optional2) =
+        open fun transformOptional2_metas(node: Optional2) =
             transformMetas(node.metas)
     
         // Tuple DomainLevelRecord
-        open fun transformDomainLevelRecord(node: TestDomain.DomainLevelRecord): TestDomain.DomainLevelRecord {
+        open fun transformDomainLevelRecord(node: DomainLevelRecord): DomainLevelRecord {
             val new_someField = transformDomainLevelRecord_someField(node)
             val new_anotherField = transformDomainLevelRecord_anotherField(node)
             val new_optionalField = transformDomainLevelRecord_optionalField(node)
             val new_metas = transformDomainLevelRecord_metas(node)
-            return TestDomain.DomainLevelRecord(
+            return build {
+                DomainLevelRecord(
                     someField = new_someField,
                     anotherField = new_anotherField,
                     optionalField = new_optionalField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformDomainLevelRecord_someField(node: TestDomain.DomainLevelRecord) =
+        open fun transformDomainLevelRecord_someField(node: DomainLevelRecord) =
             transformLongPrimitive(node.someField)
-        open fun transformDomainLevelRecord_anotherField(node: TestDomain.DomainLevelRecord) =
+        open fun transformDomainLevelRecord_anotherField(node: DomainLevelRecord) =
             transformSymbolPrimitive(node.anotherField)
-        open fun transformDomainLevelRecord_optionalField(node: TestDomain.DomainLevelRecord) =
+        open fun transformDomainLevelRecord_optionalField(node: DomainLevelRecord) =
             node.optionalField?.let { transformLongPrimitive(it) }
-        open fun transformDomainLevelRecord_metas(node: TestDomain.DomainLevelRecord) =
+        open fun transformDomainLevelRecord_metas(node: DomainLevelRecord) =
             transformMetas(node.metas)
     
         // Tuple ProductWithRecord
-        open fun transformProductWithRecord(node: TestDomain.ProductWithRecord): TestDomain.ProductWithRecord {
+        open fun transformProductWithRecord(node: ProductWithRecord): ProductWithRecord {
             val new_value = transformProductWithRecord_value(node)
             val new_dlr = transformProductWithRecord_dlr(node)
             val new_metas = transformProductWithRecord_metas(node)
-            return TestDomain.ProductWithRecord(
+            return build {
+                ProductWithRecord(
                     value = new_value,
                     dlr = new_dlr,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformProductWithRecord_value(node: TestDomain.ProductWithRecord) =
+        open fun transformProductWithRecord_value(node: ProductWithRecord) =
             transformLongPrimitive(node.value)
-        open fun transformProductWithRecord_dlr(node: TestDomain.ProductWithRecord) =
+        open fun transformProductWithRecord_dlr(node: ProductWithRecord) =
             transformDomainLevelRecord(node.dlr)
-        open fun transformProductWithRecord_metas(node: TestDomain.ProductWithRecord) =
+        open fun transformProductWithRecord_metas(node: ProductWithRecord) =
             transformMetas(node.metas)
     
         // Tuple TestSumTriplet
-        open fun transformTestSumTriplet(node: TestDomain.TestSumTriplet): TestDomain.TestSumTriplet {
+        open fun transformTestSumTriplet(node: TestSumTriplet): TestSumTriplet {
             val new_a = transformTestSumTriplet_a(node)
             val new_b = transformTestSumTriplet_b(node)
             val new_c = transformTestSumTriplet_c(node)
             val new_metas = transformTestSumTriplet_metas(node)
-            return TestDomain.TestSumTriplet(
+            return build {
+                TestSumTriplet(
                     a = new_a,
                     b = new_b,
                     c = new_c,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformTestSumTriplet_a(node: TestDomain.TestSumTriplet) =
+        open fun transformTestSumTriplet_a(node: TestSumTriplet) =
             transformTestSum(node.a)
-        open fun transformTestSumTriplet_b(node: TestDomain.TestSumTriplet) =
+        open fun transformTestSumTriplet_b(node: TestSumTriplet) =
             transformTestSum(node.b)
-        open fun transformTestSumTriplet_c(node: TestDomain.TestSumTriplet) =
+        open fun transformTestSumTriplet_c(node: TestSumTriplet) =
             transformTestSum(node.c)
-        open fun transformTestSumTriplet_metas(node: TestDomain.TestSumTriplet) =
+        open fun transformTestSumTriplet_metas(node: TestSumTriplet) =
             transformMetas(node.metas)
     
         // Tuple EntityPair
-        open fun transformEntityPair(node: TestDomain.EntityPair): TestDomain.EntityPair {
+        open fun transformEntityPair(node: EntityPair): EntityPair {
             val new_first = transformEntityPair_first(node)
             val new_second = transformEntityPair_second(node)
             val new_metas = transformEntityPair_metas(node)
-            return TestDomain.EntityPair(
+            return build {
+                EntityPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformEntityPair_first(node: TestDomain.EntityPair) =
+        open fun transformEntityPair_first(node: EntityPair) =
             transformEntity(node.first)
-        open fun transformEntityPair_second(node: TestDomain.EntityPair) =
+        open fun transformEntityPair_second(node: EntityPair) =
             transformEntity(node.second)
-        open fun transformEntityPair_metas(node: TestDomain.EntityPair) =
+        open fun transformEntityPair_metas(node: EntityPair) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
         // Sum Type: Answer
         //////////////////////////////////////
-        open fun transformAnswer(node: TestDomain.Answer): TestDomain.Answer =
+        open fun transformAnswer(node: TestDomain.Answer) =
             when(node) {
                 is TestDomain.Answer.No -> transformAnswerNo(node)
                 is TestDomain.Answer.Yes -> transformAnswerYes(node)
             }
         // Variant AnswerNo
-        open fun transformAnswerNo(node: TestDomain.Answer.No): TestDomain.Answer  {
+        open fun transformAnswerNo(node: TestDomain.Answer.No): TestDomain.Answer {
             val new_metas = transformAnswerNo_metas(node)
-            return TestDomain.Answer.No(
+            return build {
+                Answer.No(
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAnswerNo_metas(node: TestDomain.Answer.No) =
+    
+        open fun transformAnswerNo_metas(node: Answer.No) =
             transformMetas(node.metas)
     
+    
         // Variant AnswerYes
-        open fun transformAnswerYes(node: TestDomain.Answer.Yes): TestDomain.Answer  {
+        open fun transformAnswerYes(node: TestDomain.Answer.Yes): TestDomain.Answer {
             val new_metas = transformAnswerYes_metas(node)
-            return TestDomain.Answer.Yes(
+            return build {
+                Answer.Yes(
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAnswerYes_metas(node: TestDomain.Answer.Yes) =
+    
+        open fun transformAnswerYes_metas(node: Answer.Yes) =
             transformMetas(node.metas)
+    
     
         //////////////////////////////////////
         // Sum Type: SumWithRecord
         //////////////////////////////////////
-        open fun transformSumWithRecord(node: TestDomain.SumWithRecord): TestDomain.SumWithRecord =
+        open fun transformSumWithRecord(node: TestDomain.SumWithRecord) =
             when(node) {
                 is TestDomain.SumWithRecord.VariantWithRecord -> transformSumWithRecordVariantWithRecord(node)
             }
         // Variant SumWithRecordVariantWithRecord
-        open fun transformSumWithRecordVariantWithRecord(node: TestDomain.SumWithRecord.VariantWithRecord): TestDomain.SumWithRecord  {
+        open fun transformSumWithRecordVariantWithRecord(node: TestDomain.SumWithRecord.VariantWithRecord): TestDomain.SumWithRecord {
             val new_value = transformSumWithRecordVariantWithRecord_value(node)
             val new_dlr = transformSumWithRecordVariantWithRecord_dlr(node)
             val new_metas = transformSumWithRecordVariantWithRecord_metas(node)
-            return TestDomain.SumWithRecord.VariantWithRecord(
+            return build {
+                SumWithRecord.VariantWithRecord(
                     value = new_value,
                     dlr = new_dlr,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformSumWithRecordVariantWithRecord_value(node: TestDomain.SumWithRecord.VariantWithRecord) =
+    
+        open fun transformSumWithRecordVariantWithRecord_value(node: SumWithRecord.VariantWithRecord) =
             transformLongPrimitive(node.value)
-        open fun transformSumWithRecordVariantWithRecord_dlr(node: TestDomain.SumWithRecord.VariantWithRecord) =
+        open fun transformSumWithRecordVariantWithRecord_dlr(node: SumWithRecord.VariantWithRecord) =
             transformDomainLevelRecord(node.dlr)
-        open fun transformSumWithRecordVariantWithRecord_metas(node: TestDomain.SumWithRecord.VariantWithRecord) =
+        open fun transformSumWithRecordVariantWithRecord_metas(node: SumWithRecord.VariantWithRecord) =
             transformMetas(node.metas)
+    
     
         //////////////////////////////////////
         // Sum Type: TestSum
         //////////////////////////////////////
-        open fun transformTestSum(node: TestDomain.TestSum): TestDomain.TestSum =
+        open fun transformTestSum(node: TestDomain.TestSum) =
             when(node) {
                 is TestDomain.TestSum.One -> transformTestSumOne(node)
                 is TestDomain.TestSum.Two -> transformTestSumTwo(node)
                 is TestDomain.TestSum.Three -> transformTestSumThree(node)
             }
         // Variant TestSumOne
-        open fun transformTestSumOne(node: TestDomain.TestSum.One): TestDomain.TestSum  {
+        open fun transformTestSumOne(node: TestDomain.TestSum.One): TestDomain.TestSum {
             val new_a = transformTestSumOne_a(node)
             val new_metas = transformTestSumOne_metas(node)
-            return TestDomain.TestSum.One(
+            return build {
+                TestSum.One(
                     a = new_a,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformTestSumOne_a(node: TestDomain.TestSum.One) =
+    
+        open fun transformTestSumOne_a(node: TestSum.One) =
             transformLongPrimitive(node.a)
-        open fun transformTestSumOne_metas(node: TestDomain.TestSum.One) =
+        open fun transformTestSumOne_metas(node: TestSum.One) =
             transformMetas(node.metas)
     
+    
         // Variant TestSumTwo
-        open fun transformTestSumTwo(node: TestDomain.TestSum.Two): TestDomain.TestSum  {
+        open fun transformTestSumTwo(node: TestDomain.TestSum.Two): TestDomain.TestSum {
             val new_a = transformTestSumTwo_a(node)
             val new_b = transformTestSumTwo_b(node)
             val new_metas = transformTestSumTwo_metas(node)
-            return TestDomain.TestSum.Two(
+            return build {
+                TestSum.Two(
                     a = new_a,
                     b = new_b,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformTestSumTwo_a(node: TestDomain.TestSum.Two) =
+    
+        open fun transformTestSumTwo_a(node: TestSum.Two) =
             transformLongPrimitive(node.a)
-        open fun transformTestSumTwo_b(node: TestDomain.TestSum.Two) =
+        open fun transformTestSumTwo_b(node: TestSum.Two) =
             transformLongPrimitive(node.b)
-        open fun transformTestSumTwo_metas(node: TestDomain.TestSum.Two) =
+        open fun transformTestSumTwo_metas(node: TestSum.Two) =
             transformMetas(node.metas)
     
+    
         // Variant TestSumThree
-        open fun transformTestSumThree(node: TestDomain.TestSum.Three): TestDomain.TestSum  {
+        open fun transformTestSumThree(node: TestDomain.TestSum.Three): TestDomain.TestSum {
             val new_a = transformTestSumThree_a(node)
             val new_b = transformTestSumThree_b(node)
             val new_c = transformTestSumThree_c(node)
             val new_metas = transformTestSumThree_metas(node)
-            return TestDomain.TestSum.Three(
+            return build {
+                TestSum.Three(
                     a = new_a,
                     b = new_b,
                     c = new_c,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformTestSumThree_a(node: TestDomain.TestSum.Three) =
+    
+        open fun transformTestSumThree_a(node: TestSum.Three) =
             transformLongPrimitive(node.a)
-        open fun transformTestSumThree_b(node: TestDomain.TestSum.Three) =
+        open fun transformTestSumThree_b(node: TestSum.Three) =
             transformLongPrimitive(node.b)
-        open fun transformTestSumThree_c(node: TestDomain.TestSum.Three) =
+        open fun transformTestSumThree_c(node: TestSum.Three) =
             transformLongPrimitive(node.c)
-        open fun transformTestSumThree_metas(node: TestDomain.TestSum.Three) =
+        open fun transformTestSumThree_metas(node: TestSum.Three) =
             transformMetas(node.metas)
+    
     
         //////////////////////////////////////
         // Sum Type: Entity
         //////////////////////////////////////
-        open fun transformEntity(node: TestDomain.Entity): TestDomain.Entity =
+        open fun transformEntity(node: TestDomain.Entity) =
             when(node) {
                 is TestDomain.Entity.Slug -> transformEntitySlug(node)
                 is TestDomain.Entity.Android -> transformEntityAndroid(node)
                 is TestDomain.Entity.Human -> transformEntityHuman(node)
             }
         // Variant EntitySlug
-        open fun transformEntitySlug(node: TestDomain.Entity.Slug): TestDomain.Entity  {
+        open fun transformEntitySlug(node: TestDomain.Entity.Slug): TestDomain.Entity {
             val new_metas = transformEntitySlug_metas(node)
-            return TestDomain.Entity.Slug(
+            return build {
+                Entity.Slug(
                     metas = new_metas
                 )
+            }
         }
-        open fun transformEntitySlug_metas(node: TestDomain.Entity.Slug) =
+    
+        open fun transformEntitySlug_metas(node: Entity.Slug) =
             transformMetas(node.metas)
     
+    
         // Variant EntityAndroid
-        open fun transformEntityAndroid(node: TestDomain.Entity.Android): TestDomain.Entity  {
+        open fun transformEntityAndroid(node: TestDomain.Entity.Android): TestDomain.Entity {
             val new_id = transformEntityAndroid_id(node)
             val new_metas = transformEntityAndroid_metas(node)
-            return TestDomain.Entity.Android(
+            return build {
+                Entity.Android(
                     id = new_id,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformEntityAndroid_id(node: TestDomain.Entity.Android) =
+    
+        open fun transformEntityAndroid_id(node: Entity.Android) =
             transformLongPrimitive(node.id)
-        open fun transformEntityAndroid_metas(node: TestDomain.Entity.Android) =
+        open fun transformEntityAndroid_metas(node: Entity.Android) =
             transformMetas(node.metas)
     
+    
         // Variant EntityHuman
-        open fun transformEntityHuman(node: TestDomain.Entity.Human): TestDomain.Entity  {
+        open fun transformEntityHuman(node: TestDomain.Entity.Human): TestDomain.Entity {
             val new_firstName = transformEntityHuman_firstName(node)
             val new_lastName = transformEntityHuman_lastName(node)
             val new_title = transformEntityHuman_title(node)
             val new_parent = transformEntityHuman_parent(node)
             val new_metas = transformEntityHuman_metas(node)
-            return TestDomain.Entity.Human(
+            return build {
+                Entity.Human(
                     firstName = new_firstName,
                     lastName = new_lastName,
                     title = new_title,
                     parent = new_parent,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformEntityHuman_firstName(node: TestDomain.Entity.Human) =
+    
+        open fun transformEntityHuman_firstName(node: Entity.Human) =
             transformSymbolPrimitive(node.firstName)
-        open fun transformEntityHuman_lastName(node: TestDomain.Entity.Human) =
+        open fun transformEntityHuman_lastName(node: Entity.Human) =
             transformSymbolPrimitive(node.lastName)
-        open fun transformEntityHuman_title(node: TestDomain.Entity.Human) =
+        open fun transformEntityHuman_title(node: Entity.Human) =
             node.title?.let { transformSymbolPrimitive(it) }
-        open fun transformEntityHuman_parent(node: TestDomain.Entity.Human) =
+        open fun transformEntityHuman_parent(node: Entity.Human) =
             node.parent?.let { transformEntity(it) }
-        open fun transformEntityHuman_metas(node: TestDomain.Entity.Human) =
+        open fun transformEntityHuman_metas(node: Entity.Human) =
             transformMetas(node.metas)
+    
     
     }
 }
-
 
 class MultiWordDomain private constructor() {
     /////////////////////////////////////////////////////////////////////////////
@@ -5037,7 +5124,7 @@ class MultiWordDomain private constructor() {
             transform(element.asSexp())
     
         fun transform(element: SexpElement): MultiWordDomainNode =
-            IonElementTransformer().transform(element)
+            Transformer().transform(element)
     }
     
     interface Builder {
@@ -6521,11 +6608,11 @@ class MultiWordDomain private constructor() {
     }
     
     /////////////////////////////////////////////////////////////////////////////
-    // IonElementTransformer
+    // Transformer
     /////////////////////////////////////////////////////////////////////////////
     
     
-    private class IonElementTransformer : IonElementTransformerBase<MultiWordDomainNode>() {
+    private class Transformer : IonElementTransformerBase<MultiWordDomainNode>() {
     
         override fun innerTransform(sexp: SexpElement): MultiWordDomainNode {
             return when(sexp.tag) {
@@ -6951,4081 +7038,276 @@ class MultiWordDomain private constructor() {
         }
     
     }
-    abstract class VisitorTransform : DomainVisitorTransformBase() {
+    
+    
+    open class VisitorTransform : DomainVisitorTransformBase() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
         // Tuple AaaAaa
-        open fun transformAaaAaa(node: MultiWordDomain.AaaAaa): MultiWordDomain.AaaAaa {
+        open fun transformAaaAaa(node: AaaAaa): AaaAaa {
             val new_metas = transformAaaAaa_metas(node)
-            return MultiWordDomain.AaaAaa(
+            return build {
+                AaaAaa(
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAaaAaa_metas(node: MultiWordDomain.AaaAaa) =
+        open fun transformAaaAaa_metas(node: AaaAaa) =
             transformMetas(node.metas)
     
         // Tuple AaaAab
-        open fun transformAaaAab(node: MultiWordDomain.AaaAab): MultiWordDomain.AaaAab {
+        open fun transformAaaAab(node: AaaAab): AaaAab {
             val new_dField = transformAaaAab_dField(node)
             val new_metas = transformAaaAab_metas(node)
-            return MultiWordDomain.AaaAab(
+            return build {
+                AaaAab(
                     dField = new_dField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAaaAab_dField(node: MultiWordDomain.AaaAab) =
+        open fun transformAaaAab_dField(node: AaaAab) =
             node.dField?.let { transformLongPrimitive(it) }
-        open fun transformAaaAab_metas(node: MultiWordDomain.AaaAab) =
+        open fun transformAaaAab_metas(node: AaaAab) =
             transformMetas(node.metas)
     
         // Tuple AaaAac
-        open fun transformAaaAac(node: MultiWordDomain.AaaAac): MultiWordDomain.AaaAac {
+        open fun transformAaaAac(node: AaaAac): AaaAac {
             val new_dField = transformAaaAac_dField(node)
             val new_eField = transformAaaAac_eField(node)
             val new_metas = transformAaaAac_metas(node)
-            return MultiWordDomain.AaaAac(
+            return build {
+                AaaAac(
                     dField = new_dField,
                     eField = new_eField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAaaAac_dField(node: MultiWordDomain.AaaAac) =
+        open fun transformAaaAac_dField(node: AaaAac) =
             node.dField?.let { transformLongPrimitive(it) }
-        open fun transformAaaAac_eField(node: MultiWordDomain.AaaAac) =
+        open fun transformAaaAac_eField(node: AaaAac) =
             node.eField?.let { transformSymbolPrimitive(it) }
-        open fun transformAaaAac_metas(node: MultiWordDomain.AaaAac) =
+        open fun transformAaaAac_metas(node: AaaAac) =
             transformMetas(node.metas)
     
         // Tuple AaaAad
-        open fun transformAaaAad(node: MultiWordDomain.AaaAad): MultiWordDomain.AaaAad {
+        open fun transformAaaAad(node: AaaAad): AaaAad {
             val new_dField = transformAaaAad_dField(node)
             val new_metas = transformAaaAad_metas(node)
-            return MultiWordDomain.AaaAad(
+            return build {
+                AaaAad(
                     dField = new_dField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAaaAad_dField(node: MultiWordDomain.AaaAad) =
+        open fun transformAaaAad_dField(node: AaaAad) =
             node.dField.map { transformLongPrimitive(it) }
-        open fun transformAaaAad_metas(node: MultiWordDomain.AaaAad) =
+        open fun transformAaaAad_metas(node: AaaAad) =
             transformMetas(node.metas)
     
         // Tuple AaaAae
-        open fun transformAaaAae(node: MultiWordDomain.AaaAae): MultiWordDomain.AaaAae {
+        open fun transformAaaAae(node: AaaAae): AaaAae {
             val new_dField = transformAaaAae_dField(node)
             val new_metas = transformAaaAae_metas(node)
-            return MultiWordDomain.AaaAae(
+            return build {
+                AaaAae(
                     dField = new_dField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAaaAae_dField(node: MultiWordDomain.AaaAae) =
+        open fun transformAaaAae_dField(node: AaaAae) =
             node.dField.map { transformLongPrimitive(it) }
-        open fun transformAaaAae_metas(node: MultiWordDomain.AaaAae) =
+        open fun transformAaaAae_metas(node: AaaAae) =
             transformMetas(node.metas)
     
         // Tuple AabAaa
-        open fun transformAabAaa(node: MultiWordDomain.AabAaa): MultiWordDomain.AabAaa {
+        open fun transformAabAaa(node: AabAaa): AabAaa {
             val new_bField = transformAabAaa_bField(node)
             val new_cField = transformAabAaa_cField(node)
             val new_metas = transformAabAaa_metas(node)
-            return MultiWordDomain.AabAaa(
+            return build {
+                AabAaa(
                     bField = new_bField,
                     cField = new_cField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAabAaa_bField(node: MultiWordDomain.AabAaa) =
+        open fun transformAabAaa_bField(node: AabAaa) =
             transformLongPrimitive(node.bField)
-        open fun transformAabAaa_cField(node: MultiWordDomain.AabAaa) =
+        open fun transformAabAaa_cField(node: AabAaa) =
             transformSymbolPrimitive(node.cField)
-        open fun transformAabAaa_metas(node: MultiWordDomain.AabAaa) =
+        open fun transformAabAaa_metas(node: AabAaa) =
             transformMetas(node.metas)
     
         // Tuple AabAab
-        open fun transformAabAab(node: MultiWordDomain.AabAab): MultiWordDomain.AabAab {
+        open fun transformAabAab(node: AabAab): AabAab {
             val new_bField = transformAabAab_bField(node)
             val new_cField = transformAabAab_cField(node)
             val new_dField = transformAabAab_dField(node)
             val new_metas = transformAabAab_metas(node)
-            return MultiWordDomain.AabAab(
+            return build {
+                AabAab(
                     bField = new_bField,
                     cField = new_cField,
                     dField = new_dField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAabAab_bField(node: MultiWordDomain.AabAab) =
+        open fun transformAabAab_bField(node: AabAab) =
             transformLongPrimitive(node.bField)
-        open fun transformAabAab_cField(node: MultiWordDomain.AabAab) =
+        open fun transformAabAab_cField(node: AabAab) =
             transformSymbolPrimitive(node.cField)
-        open fun transformAabAab_dField(node: MultiWordDomain.AabAab) =
+        open fun transformAabAab_dField(node: AabAab) =
             node.dField?.let { transformLongPrimitive(it) }
-        open fun transformAabAab_metas(node: MultiWordDomain.AabAab) =
+        open fun transformAabAab_metas(node: AabAab) =
             transformMetas(node.metas)
     
         // Tuple AabAac
-        open fun transformAabAac(node: MultiWordDomain.AabAac): MultiWordDomain.AabAac {
+        open fun transformAabAac(node: AabAac): AabAac {
             val new_bField = transformAabAac_bField(node)
             val new_cField = transformAabAac_cField(node)
             val new_dField = transformAabAac_dField(node)
             val new_eField = transformAabAac_eField(node)
             val new_metas = transformAabAac_metas(node)
-            return MultiWordDomain.AabAac(
+            return build {
+                AabAac(
                     bField = new_bField,
                     cField = new_cField,
                     dField = new_dField,
                     eField = new_eField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAabAac_bField(node: MultiWordDomain.AabAac) =
+        open fun transformAabAac_bField(node: AabAac) =
             transformLongPrimitive(node.bField)
-        open fun transformAabAac_cField(node: MultiWordDomain.AabAac) =
+        open fun transformAabAac_cField(node: AabAac) =
             transformSymbolPrimitive(node.cField)
-        open fun transformAabAac_dField(node: MultiWordDomain.AabAac) =
+        open fun transformAabAac_dField(node: AabAac) =
             node.dField?.let { transformLongPrimitive(it) }
-        open fun transformAabAac_eField(node: MultiWordDomain.AabAac) =
+        open fun transformAabAac_eField(node: AabAac) =
             node.eField?.let { transformSymbolPrimitive(it) }
-        open fun transformAabAac_metas(node: MultiWordDomain.AabAac) =
+        open fun transformAabAac_metas(node: AabAac) =
             transformMetas(node.metas)
     
         // Tuple AabAad
-        open fun transformAabAad(node: MultiWordDomain.AabAad): MultiWordDomain.AabAad {
+        open fun transformAabAad(node: AabAad): AabAad {
             val new_bField = transformAabAad_bField(node)
             val new_cField = transformAabAad_cField(node)
             val new_dField = transformAabAad_dField(node)
             val new_metas = transformAabAad_metas(node)
-            return MultiWordDomain.AabAad(
+            return build {
+                AabAad(
                     bField = new_bField,
                     cField = new_cField,
                     dField = new_dField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAabAad_bField(node: MultiWordDomain.AabAad) =
+        open fun transformAabAad_bField(node: AabAad) =
             transformLongPrimitive(node.bField)
-        open fun transformAabAad_cField(node: MultiWordDomain.AabAad) =
+        open fun transformAabAad_cField(node: AabAad) =
             transformSymbolPrimitive(node.cField)
-        open fun transformAabAad_dField(node: MultiWordDomain.AabAad) =
+        open fun transformAabAad_dField(node: AabAad) =
             node.dField.map { transformLongPrimitive(it) }
-        open fun transformAabAad_metas(node: MultiWordDomain.AabAad) =
+        open fun transformAabAad_metas(node: AabAad) =
             transformMetas(node.metas)
     
         // Tuple AabAae
-        open fun transformAabAae(node: MultiWordDomain.AabAae): MultiWordDomain.AabAae {
+        open fun transformAabAae(node: AabAae): AabAae {
             val new_bField = transformAabAae_bField(node)
             val new_cField = transformAabAae_cField(node)
             val new_dField = transformAabAae_dField(node)
             val new_metas = transformAabAae_metas(node)
-            return MultiWordDomain.AabAae(
+            return build {
+                AabAae(
                     bField = new_bField,
                     cField = new_cField,
                     dField = new_dField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformAabAae_bField(node: MultiWordDomain.AabAae) =
+        open fun transformAabAae_bField(node: AabAae) =
             transformLongPrimitive(node.bField)
-        open fun transformAabAae_cField(node: MultiWordDomain.AabAae) =
+        open fun transformAabAae_cField(node: AabAae) =
             transformSymbolPrimitive(node.cField)
-        open fun transformAabAae_dField(node: MultiWordDomain.AabAae) =
+        open fun transformAabAae_dField(node: AabAae) =
             node.dField.map { transformLongPrimitive(it) }
-        open fun transformAabAae_metas(node: MultiWordDomain.AabAae) =
+        open fun transformAabAae_metas(node: AabAae) =
             transformMetas(node.metas)
     
         // Tuple Rrr
-        open fun transformRrr(node: MultiWordDomain.Rrr): MultiWordDomain.Rrr {
+        open fun transformRrr(node: Rrr): Rrr {
             val new_aField = transformRrr_aField(node)
             val new_bbbField = transformRrr_bbbField(node)
             val new_metas = transformRrr_metas(node)
-            return MultiWordDomain.Rrr(
+            return build {
+                Rrr(
                     aField = new_aField,
                     bbbField = new_bbbField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformRrr_aField(node: MultiWordDomain.Rrr) =
+        open fun transformRrr_aField(node: Rrr) =
             transformLongPrimitive(node.aField)
-        open fun transformRrr_bbbField(node: MultiWordDomain.Rrr) =
+        open fun transformRrr_bbbField(node: Rrr) =
             transformLongPrimitive(node.bbbField)
-        open fun transformRrr_metas(node: MultiWordDomain.Rrr) =
+        open fun transformRrr_metas(node: Rrr) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
         // Sum Type: SssTtt
         //////////////////////////////////////
-        open fun transformSssTtt(node: MultiWordDomain.SssTtt): MultiWordDomain.SssTtt =
+        open fun transformSssTtt(node: MultiWordDomain.SssTtt) =
             when(node) {
                 is MultiWordDomain.SssTtt.Lll -> transformSssTttLll(node)
                 is MultiWordDomain.SssTtt.Mmm -> transformSssTttMmm(node)
             }
         // Variant SssTttLll
-        open fun transformSssTttLll(node: MultiWordDomain.SssTtt.Lll): MultiWordDomain.SssTtt  {
+        open fun transformSssTttLll(node: MultiWordDomain.SssTtt.Lll): MultiWordDomain.SssTtt {
             val new_uField = transformSssTttLll_uField(node)
             val new_metas = transformSssTttLll_metas(node)
-            return MultiWordDomain.SssTtt.Lll(
+            return build {
+                SssTtt.Lll(
                     uField = new_uField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformSssTttLll_uField(node: MultiWordDomain.SssTtt.Lll) =
+    
+        open fun transformSssTttLll_uField(node: SssTtt.Lll) =
             transformLongPrimitive(node.uField)
-        open fun transformSssTttLll_metas(node: MultiWordDomain.SssTtt.Lll) =
+        open fun transformSssTttLll_metas(node: SssTtt.Lll) =
             transformMetas(node.metas)
     
+    
         // Variant SssTttMmm
-        open fun transformSssTttMmm(node: MultiWordDomain.SssTtt.Mmm): MultiWordDomain.SssTtt  {
+        open fun transformSssTttMmm(node: MultiWordDomain.SssTtt.Mmm): MultiWordDomain.SssTtt {
             val new_vField = transformSssTttMmm_vField(node)
             val new_metas = transformSssTttMmm_metas(node)
-            return MultiWordDomain.SssTtt.Mmm(
+            return build {
+                SssTtt.Mmm(
                     vField = new_vField,
                     metas = new_metas
                 )
+            }
         }
-        open fun transformSssTttMmm_vField(node: MultiWordDomain.SssTtt.Mmm) =
+    
+        open fun transformSssTttMmm_vField(node: SssTtt.Mmm) =
             transformSymbolPrimitive(node.vField)
-        open fun transformSssTttMmm_metas(node: MultiWordDomain.SssTtt.Mmm) =
+        open fun transformSssTttMmm_metas(node: SssTtt.Mmm) =
             transformMetas(node.metas)
     
-    }
-}
-
-
-class DomainA private constructor() {
-    /////////////////////////////////////////////////////////////////////////////
-    // Builder
-    /////////////////////////////////////////////////////////////////////////////
-    companion object {
-        @JvmStatic
-        fun BUILDER() : Builder = DomainABuilder
-    
-        fun <T: DomainANode> build(block: Builder.() -> T) =
-            DomainABuilder.block()
-    
-        fun transform(element: AnyElement): DomainANode =
-            transform(element.asSexp())
-    
-        fun transform(element: SexpElement): DomainANode =
-            IonElementTransformer().transform(element)
-    }
-    
-    interface Builder {
-                // Tuples
-        /**
-         * Creates an instance of [DomainA.ProductToRemove].
-         */
-        fun productToRemove(
-            whatever: String,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.ProductToRemove
-        
-        /**
-         * Creates an instance of [DomainA.ProductToRemove].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun productToRemove_(
-            whatever: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.ProductToRemove
-        
-        
-        /**
-         * Creates an instance of [DomainA.RecordToRemove].
-         */
-        fun recordToRemove(
-            irrelevant: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.RecordToRemove
-        
-        /**
-         * Creates an instance of [DomainA.RecordToRemove].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun recordToRemove_(
-            irrelevant: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.RecordToRemove
-        
-        
-        /**
-         * Creates an instance of [DomainA.ProductA].
-         */
-        fun productA(
-            one: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.ProductA
-        
-        /**
-         * Creates an instance of [DomainA.ProductA].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun productA_(
-            one: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.ProductA
-        
-        
-        /**
-         * Creates an instance of [DomainA.RecordA].
-         */
-        fun recordA(
-            one: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.RecordA
-        
-        /**
-         * Creates an instance of [DomainA.RecordA].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun recordA_(
-            one: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.RecordA
-        
-        
-        /**
-         * Creates an instance of [DomainA.UnpermutedProduct].
-         */
-        fun unpermutedProduct(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedProduct
-        
-        /**
-         * Creates an instance of [DomainA.UnpermutedProduct].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun unpermutedProduct_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedProduct
-        
-        
-        /**
-         * Creates an instance of [DomainA.UnpermutedRecord].
-         */
-        fun unpermutedRecord(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedRecord
-        
-        /**
-         * Creates an instance of [DomainA.UnpermutedRecord].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun unpermutedRecord_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedRecord
-        
-        
-        // Variants for Sum: SumToRemove 
-        /**
-         * Creates an instance of [DomainA.SumToRemove.Doesnt].
-         */
-        fun doesnt(
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumToRemove.Doesnt
-        
-        
-        /**
-         * Creates an instance of [DomainA.SumToRemove.Matter].
-         */
-        fun matter(
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumToRemove.Matter
-        
-        
-        // Variants for Sum: SumA 
-        /**
-         * Creates an instance of [DomainA.SumA.Who].
-         */
-        fun who(
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumA.Who
-        
-        
-        /**
-         * Creates an instance of [DomainA.SumA.Cares].
-         */
-        fun cares(
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumA.Cares
-        
-        
-        // Variants for Sum: SumB 
-        /**
-         * Creates an instance of [DomainA.SumB.WillBeUnchanged].
-         */
-        fun willBeUnchanged(
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumB.WillBeUnchanged
-        
-        
-        /**
-         * Creates an instance of [DomainA.SumB.WillBeRemoved].
-         */
-        fun willBeRemoved(
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumB.WillBeRemoved
-        
-        
-        /**
-         * Creates an instance of [DomainA.SumB.WillBeReplaced].
-         */
-        fun willBeReplaced(
-            something: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumB.WillBeReplaced
-        
-        /**
-         * Creates an instance of [DomainA.SumB.WillBeReplaced].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun willBeReplaced_(
-            something: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumB.WillBeReplaced
-        
-        
-        // Variants for Sum: UnpermutedSum 
-        /**
-         * Creates an instance of [DomainA.UnpermutedSum.UnpermutedProductVariant].
-         */
-        fun unpermutedProductVariant(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedSum.UnpermutedProductVariant
-        
-        /**
-         * Creates an instance of [DomainA.UnpermutedSum.UnpermutedProductVariant].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun unpermutedProductVariant_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedSum.UnpermutedProductVariant
-        
-        
-        /**
-         * Creates an instance of [DomainA.UnpermutedSum.UnpermutedRecordVariant].
-         */
-        fun unpermutedRecordVariant(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedSum.UnpermutedRecordVariant
-        
-        /**
-         * Creates an instance of [DomainA.UnpermutedSum.UnpermutedRecordVariant].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun unpermutedRecordVariant_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedSum.UnpermutedRecordVariant
-    }
-    
-    private object DomainABuilder : Builder {
-                // Tuples
-        override fun productToRemove(
-            whatever: String,
-            metas: MetaContainer
-        ): DomainA.ProductToRemove =
-            DomainA.ProductToRemove(
-                whatever = whatever.asPrimitive(),
-                metas = metas)
-        
-        override fun productToRemove_(
-            whatever: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
-        ): DomainA.ProductToRemove =
-            DomainA.ProductToRemove(
-                whatever = whatever,
-                metas = metas)
-        
-        
-        override fun recordToRemove(
-            irrelevant: Long,
-            metas: MetaContainer
-        ): DomainA.RecordToRemove =
-            DomainA.RecordToRemove(
-                irrelevant = irrelevant.asPrimitive(),
-                metas = metas)
-        
-        override fun recordToRemove_(
-            irrelevant: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.RecordToRemove =
-            DomainA.RecordToRemove(
-                irrelevant = irrelevant,
-                metas = metas)
-        
-        
-        override fun productA(
-            one: Long,
-            metas: MetaContainer
-        ): DomainA.ProductA =
-            DomainA.ProductA(
-                one = one.asPrimitive(),
-                metas = metas)
-        
-        override fun productA_(
-            one: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.ProductA =
-            DomainA.ProductA(
-                one = one,
-                metas = metas)
-        
-        
-        override fun recordA(
-            one: Long,
-            metas: MetaContainer
-        ): DomainA.RecordA =
-            DomainA.RecordA(
-                one = one.asPrimitive(),
-                metas = metas)
-        
-        override fun recordA_(
-            one: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.RecordA =
-            DomainA.RecordA(
-                one = one,
-                metas = metas)
-        
-        
-        override fun unpermutedProduct(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainA.UnpermutedProduct =
-            DomainA.UnpermutedProduct(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedProduct_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.UnpermutedProduct =
-            DomainA.UnpermutedProduct(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        override fun unpermutedRecord(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainA.UnpermutedRecord =
-            DomainA.UnpermutedRecord(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedRecord_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.UnpermutedRecord =
-            DomainA.UnpermutedRecord(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        // Variants for Sum: SumToRemove 
-        override fun doesnt(
-            metas: MetaContainer
-        ): DomainA.SumToRemove.Doesnt =
-            DomainA.SumToRemove.Doesnt(
-                metas = metas)
-        
-        
-        override fun matter(
-            metas: MetaContainer
-        ): DomainA.SumToRemove.Matter =
-            DomainA.SumToRemove.Matter(
-                metas = metas)
-        
-        
-        // Variants for Sum: SumA 
-        override fun who(
-            metas: MetaContainer
-        ): DomainA.SumA.Who =
-            DomainA.SumA.Who(
-                metas = metas)
-        
-        
-        override fun cares(
-            metas: MetaContainer
-        ): DomainA.SumA.Cares =
-            DomainA.SumA.Cares(
-                metas = metas)
-        
-        
-        // Variants for Sum: SumB 
-        override fun willBeUnchanged(
-            metas: MetaContainer
-        ): DomainA.SumB.WillBeUnchanged =
-            DomainA.SumB.WillBeUnchanged(
-                metas = metas)
-        
-        
-        override fun willBeRemoved(
-            metas: MetaContainer
-        ): DomainA.SumB.WillBeRemoved =
-            DomainA.SumB.WillBeRemoved(
-                metas = metas)
-        
-        
-        override fun willBeReplaced(
-            something: Long,
-            metas: MetaContainer
-        ): DomainA.SumB.WillBeReplaced =
-            DomainA.SumB.WillBeReplaced(
-                something = something.asPrimitive(),
-                metas = metas)
-        
-        override fun willBeReplaced_(
-            something: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.SumB.WillBeReplaced =
-            DomainA.SumB.WillBeReplaced(
-                something = something,
-                metas = metas)
-        
-        
-        // Variants for Sum: UnpermutedSum 
-        override fun unpermutedProductVariant(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainA.UnpermutedSum.UnpermutedProductVariant =
-            DomainA.UnpermutedSum.UnpermutedProductVariant(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedProductVariant_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.UnpermutedSum.UnpermutedProductVariant =
-            DomainA.UnpermutedSum.UnpermutedProductVariant(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        override fun unpermutedRecordVariant(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainA.UnpermutedSum.UnpermutedRecordVariant =
-            DomainA.UnpermutedSum.UnpermutedRecordVariant(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedRecordVariant_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.UnpermutedSum.UnpermutedRecordVariant =
-            DomainA.UnpermutedSum.UnpermutedRecordVariant(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-    }
-    
-    /** Base class for all DomainA types. */
-    abstract class DomainANode : DomainNode {
-        abstract override fun copyMetas(newMetas: MetaContainer): DomainANode
-        override fun toString() = toIonElement().toString()
-        abstract override fun withMeta(metaKey: String, metaValue: Any): DomainANode
-        abstract override fun toIonElement(): SexpElement
-    }
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Tuple Types
-    /////////////////////////////////////////////////////////////////////////////
-    class ProductToRemove(
-        val whatever: org.partiql.pig.runtime.SymbolPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): DomainANode() {
-    
-        override fun copyMetas(newMetas: MetaContainer): ProductToRemove =
-            ProductToRemove(
-                whatever = whatever,
-                metas = newMetas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): ProductToRemove =
-            ProductToRemove(
-                whatever = whatever,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("product_to_remove"),
-                whatever.toIonElement(),
-                metas = metas)
-            return elements
-        }
-    
-        fun copy(
-            whatever: org.partiql.pig.runtime.SymbolPrimitive = this.whatever,
-            metas: MetaContainer = this.metas
-        ) =
-            ProductToRemove(
-                whatever,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != ProductToRemove::class.java) return false
-    
-            other as ProductToRemove
-            if (whatever != other.whatever) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = whatever.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class RecordToRemove(
-        val irrelevant: org.partiql.pig.runtime.LongPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): DomainANode() {
-    
-        override fun copyMetas(newMetas: MetaContainer): RecordToRemove =
-            RecordToRemove(
-                irrelevant = irrelevant,
-                metas = newMetas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): RecordToRemove =
-            RecordToRemove(
-                irrelevant = irrelevant,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = listOfNotNull(
-                ionSymbol("record_to_remove"),
-                irrelevant?.let { ionSexpOf(ionSymbol("irrelevant"), it.toIonElement()) }
-            )
-    
-            return ionSexpOf(elements, metas = metas)
-        }
-    
-        fun copy(
-            irrelevant: org.partiql.pig.runtime.LongPrimitive = this.irrelevant,
-            metas: MetaContainer = this.metas
-        ) =
-            RecordToRemove(
-                irrelevant,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != RecordToRemove::class.java) return false
-    
-            other as RecordToRemove
-            if (irrelevant != other.irrelevant) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = irrelevant.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class ProductA(
-        val one: org.partiql.pig.runtime.LongPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): DomainANode() {
-    
-        override fun copyMetas(newMetas: MetaContainer): ProductA =
-            ProductA(
-                one = one,
-                metas = newMetas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): ProductA =
-            ProductA(
-                one = one,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("product_a"),
-                one.toIonElement(),
-                metas = metas)
-            return elements
-        }
-    
-        fun copy(
-            one: org.partiql.pig.runtime.LongPrimitive = this.one,
-            metas: MetaContainer = this.metas
-        ) =
-            ProductA(
-                one,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != ProductA::class.java) return false
-    
-            other as ProductA
-            if (one != other.one) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = one.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class RecordA(
-        val one: org.partiql.pig.runtime.LongPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): DomainANode() {
-    
-        override fun copyMetas(newMetas: MetaContainer): RecordA =
-            RecordA(
-                one = one,
-                metas = newMetas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): RecordA =
-            RecordA(
-                one = one,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = listOfNotNull(
-                ionSymbol("record_a"),
-                one?.let { ionSexpOf(ionSymbol("one"), it.toIonElement()) }
-            )
-    
-            return ionSexpOf(elements, metas = metas)
-        }
-    
-        fun copy(
-            one: org.partiql.pig.runtime.LongPrimitive = this.one,
-            metas: MetaContainer = this.metas
-        ) =
-            RecordA(
-                one,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != RecordA::class.java) return false
-    
-            other as RecordA
-            if (one != other.one) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = one.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class UnpermutedProduct(
-        val foo: org.partiql.pig.runtime.SymbolPrimitive,
-        val bar: org.partiql.pig.runtime.LongPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): DomainANode() {
-    
-        override fun copyMetas(newMetas: MetaContainer): UnpermutedProduct =
-            UnpermutedProduct(
-                foo = foo,
-                bar = bar,
-                metas = newMetas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): UnpermutedProduct =
-            UnpermutedProduct(
-                foo = foo,
-                bar = bar,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("unpermuted_product"),
-                foo.toIonElement(),
-                bar.toIonElement(),
-                metas = metas)
-            return elements
-        }
-    
-        fun copy(
-            foo: org.partiql.pig.runtime.SymbolPrimitive = this.foo,
-            bar: org.partiql.pig.runtime.LongPrimitive = this.bar,
-            metas: MetaContainer = this.metas
-        ) =
-            UnpermutedProduct(
-                foo,
-                bar,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != UnpermutedProduct::class.java) return false
-    
-            other as UnpermutedProduct
-            if (foo != other.foo) return false
-            if (bar != other.bar) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = foo.hashCode()
-            hc = 31 * hc + bar.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class UnpermutedRecord(
-        val foo: org.partiql.pig.runtime.SymbolPrimitive,
-        val bar: org.partiql.pig.runtime.LongPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): DomainANode() {
-    
-        override fun copyMetas(newMetas: MetaContainer): UnpermutedRecord =
-            UnpermutedRecord(
-                foo = foo,
-                bar = bar,
-                metas = newMetas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): UnpermutedRecord =
-            UnpermutedRecord(
-                foo = foo,
-                bar = bar,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = listOfNotNull(
-                ionSymbol("unpermuted_record"),
-                foo?.let { ionSexpOf(ionSymbol("foo"), it.toIonElement()) },
-                bar?.let { ionSexpOf(ionSymbol("bar"), it.toIonElement()) }
-            )
-    
-            return ionSexpOf(elements, metas = metas)
-        }
-    
-        fun copy(
-            foo: org.partiql.pig.runtime.SymbolPrimitive = this.foo,
-            bar: org.partiql.pig.runtime.LongPrimitive = this.bar,
-            metas: MetaContainer = this.metas
-        ) =
-            UnpermutedRecord(
-                foo,
-                bar,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != UnpermutedRecord::class.java) return false
-    
-            other as UnpermutedRecord
-            if (foo != other.foo) return false
-            if (bar != other.bar) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = foo.hashCode()
-            hc = 31 * hc + bar.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Sum Types
-    /////////////////////////////////////////////////////////////////////////////
-    
-    sealed class SumToRemove(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
-        override fun copyMetas(newMetas: MetaContainer): SumToRemove =
-            when (this) {
-                is Doesnt -> copy(metas = newMetas)
-                is Matter -> copy(metas = newMetas)
-            }
-    
-        class Doesnt(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): SumToRemove() {
-        
-            override fun copyMetas(newMetas: MetaContainer): Doesnt =
-                Doesnt(
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Doesnt =
-                Doesnt(
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("doesnt"),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Doesnt(
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Doesnt::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 1000
-        }
-    
-        class Matter(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): SumToRemove() {
-        
-            override fun copyMetas(newMetas: MetaContainer): Matter =
-                Matter(
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Matter =
-                Matter(
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("matter"),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Matter(
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Matter::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 1001
-        }
     
     }
-    
-    sealed class SumA(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
-        override fun copyMetas(newMetas: MetaContainer): SumA =
-            when (this) {
-                is Who -> copy(metas = newMetas)
-                is Cares -> copy(metas = newMetas)
-            }
-    
-        class Who(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): SumA() {
-        
-            override fun copyMetas(newMetas: MetaContainer): Who =
-                Who(
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Who =
-                Who(
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("who"),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Who(
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Who::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 2000
-        }
-    
-        class Cares(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): SumA() {
-        
-            override fun copyMetas(newMetas: MetaContainer): Cares =
-                Cares(
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Cares =
-                Cares(
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("cares"),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Cares(
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Cares::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 2001
-        }
-    
-    }
-    
-    sealed class SumB(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
-        override fun copyMetas(newMetas: MetaContainer): SumB =
-            when (this) {
-                is WillBeUnchanged -> copy(metas = newMetas)
-                is WillBeRemoved -> copy(metas = newMetas)
-                is WillBeReplaced -> copy(metas = newMetas)
-            }
-    
-        class WillBeUnchanged(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): SumB() {
-        
-            override fun copyMetas(newMetas: MetaContainer): WillBeUnchanged =
-                WillBeUnchanged(
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): WillBeUnchanged =
-                WillBeUnchanged(
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("will_be_unchanged"),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                WillBeUnchanged(
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != WillBeUnchanged::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 3000
-        }
-    
-        class WillBeRemoved(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): SumB() {
-        
-            override fun copyMetas(newMetas: MetaContainer): WillBeRemoved =
-                WillBeRemoved(
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): WillBeRemoved =
-                WillBeRemoved(
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("will_be_removed"),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                WillBeRemoved(
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != WillBeRemoved::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 3001
-        }
-    
-        class WillBeReplaced(
-            val something: org.partiql.pig.runtime.LongPrimitive,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): SumB() {
-        
-            override fun copyMetas(newMetas: MetaContainer): WillBeReplaced =
-                WillBeReplaced(
-                    something = something,
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): WillBeReplaced =
-                WillBeReplaced(
-                    something = something,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("will_be_replaced"),
-                    something.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                something: org.partiql.pig.runtime.LongPrimitive = this.something,
-                metas: MetaContainer = this.metas
-            ) =
-                WillBeReplaced(
-                    something,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != WillBeReplaced::class.java) return false
-        
-                other as WillBeReplaced
-                if (something != other.something) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = something.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-    }
-    
-    sealed class UnpermutedSum(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
-        override fun copyMetas(newMetas: MetaContainer): UnpermutedSum =
-            when (this) {
-                is UnpermutedProductVariant -> copy(metas = newMetas)
-                is UnpermutedRecordVariant -> copy(metas = newMetas)
-            }
-    
-        class UnpermutedProductVariant(
-            val foo: org.partiql.pig.runtime.SymbolPrimitive,
-            val bar: org.partiql.pig.runtime.LongPrimitive,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): UnpermutedSum() {
-        
-            override fun copyMetas(newMetas: MetaContainer): UnpermutedProductVariant =
-                UnpermutedProductVariant(
-                    foo = foo,
-                    bar = bar,
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): UnpermutedProductVariant =
-                UnpermutedProductVariant(
-                    foo = foo,
-                    bar = bar,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("unpermuted_product_variant"),
-                    foo.toIonElement(),
-                    bar.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                foo: org.partiql.pig.runtime.SymbolPrimitive = this.foo,
-                bar: org.partiql.pig.runtime.LongPrimitive = this.bar,
-                metas: MetaContainer = this.metas
-            ) =
-                UnpermutedProductVariant(
-                    foo,
-                    bar,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != UnpermutedProductVariant::class.java) return false
-        
-                other as UnpermutedProductVariant
-                if (foo != other.foo) return false
-                if (bar != other.bar) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = foo.hashCode()
-                hc = 31 * hc + bar.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class UnpermutedRecordVariant(
-            val foo: org.partiql.pig.runtime.SymbolPrimitive,
-            val bar: org.partiql.pig.runtime.LongPrimitive,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): UnpermutedSum() {
-        
-            override fun copyMetas(newMetas: MetaContainer): UnpermutedRecordVariant =
-                UnpermutedRecordVariant(
-                    foo = foo,
-                    bar = bar,
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): UnpermutedRecordVariant =
-                UnpermutedRecordVariant(
-                    foo = foo,
-                    bar = bar,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = listOfNotNull(
-                    ionSymbol("unpermuted_record_variant"),
-                    foo?.let { ionSexpOf(ionSymbol("foo"), it.toIonElement()) },
-                    bar?.let { ionSexpOf(ionSymbol("bar"), it.toIonElement()) }
-                )
-        
-                return ionSexpOf(elements, metas = metas)
-            }
-        
-            fun copy(
-                foo: org.partiql.pig.runtime.SymbolPrimitive = this.foo,
-                bar: org.partiql.pig.runtime.LongPrimitive = this.bar,
-                metas: MetaContainer = this.metas
-            ) =
-                UnpermutedRecordVariant(
-                    foo,
-                    bar,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != UnpermutedRecordVariant::class.java) return false
-        
-                other as UnpermutedRecordVariant
-                if (foo != other.foo) return false
-                if (bar != other.bar) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = foo.hashCode()
-                hc = 31 * hc + bar.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-    }
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // IonElementTransformer
-    /////////////////////////////////////////////////////////////////////////////
-    
-    
-    private class IonElementTransformer : IonElementTransformerBase<DomainANode>() {
-    
-        override fun innerTransform(sexp: SexpElement): DomainANode {
-            return when(sexp.tag) {
-                //////////////////////////////////////
-                // Tuple Types
-                //////////////////////////////////////
-                "product_to_remove" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val whatever = sexp.getRequired(0).toSymbolPrimitive()
-                    DomainA.ProductToRemove(
-                        whatever,
-                        metas = sexp.metas)
-                }
-                "record_to_remove" -> {
-                    val ir = sexp.transformToIntermediateRecord()
-            
-                    val irrelevant = ir.processRequiredField("irrelevant") { it.toLongPrimitive() }
-            
-                    ir.malformedIfAnyUnprocessedFieldsRemain()
-            
-                    RecordToRemove(irrelevant, metas = sexp.metas)
-                }
-                "product_a" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val one = sexp.getRequired(0).toLongPrimitive()
-                    DomainA.ProductA(
-                        one,
-                        metas = sexp.metas)
-                }
-                "record_a" -> {
-                    val ir = sexp.transformToIntermediateRecord()
-            
-                    val one = ir.processRequiredField("one") { it.toLongPrimitive() }
-            
-                    ir.malformedIfAnyUnprocessedFieldsRemain()
-            
-                    RecordA(one, metas = sexp.metas)
-                }
-                "unpermuted_product" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val foo = sexp.getRequired(0).toSymbolPrimitive()
-                    val bar = sexp.getRequired(1).toLongPrimitive()
-                    DomainA.UnpermutedProduct(
-                        foo,
-                        bar,
-                        metas = sexp.metas)
-                }
-                "unpermuted_record" -> {
-                    val ir = sexp.transformToIntermediateRecord()
-            
-                    val foo = ir.processRequiredField("foo") { it.toSymbolPrimitive() }
-                    val bar = ir.processRequiredField("bar") { it.toLongPrimitive() }
-            
-                    ir.malformedIfAnyUnprocessedFieldsRemain()
-            
-                    UnpermutedRecord(foo, bar, metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'SumToRemove'
-                //////////////////////////////////////
-                "doesnt" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    DomainA.SumToRemove.Doesnt(
-                        metas = sexp.metas)
-                }
-                "matter" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    DomainA.SumToRemove.Matter(
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'SumA'
-                //////////////////////////////////////
-                "who" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    DomainA.SumA.Who(
-                        metas = sexp.metas)
-                }
-                "cares" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    DomainA.SumA.Cares(
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'SumB'
-                //////////////////////////////////////
-                "will_be_unchanged" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    DomainA.SumB.WillBeUnchanged(
-                        metas = sexp.metas)
-                }
-                "will_be_removed" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    DomainA.SumB.WillBeRemoved(
-                        metas = sexp.metas)
-                }
-                "will_be_replaced" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val something = sexp.getRequired(0).toLongPrimitive()
-                    DomainA.SumB.WillBeReplaced(
-                        something,
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'UnpermutedSum'
-                //////////////////////////////////////
-                "unpermuted_product_variant" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val foo = sexp.getRequired(0).toSymbolPrimitive()
-                    val bar = sexp.getRequired(1).toLongPrimitive()
-                    DomainA.UnpermutedSum.UnpermutedProductVariant(
-                        foo,
-                        bar,
-                        metas = sexp.metas)
-                }
-                "unpermuted_record_variant" -> {
-                    val ir = sexp.transformToIntermediateRecord()
-            
-                    val foo = ir.processRequiredField("foo") { it.toSymbolPrimitive() }
-                    val bar = ir.processRequiredField("bar") { it.toLongPrimitive() }
-            
-                    ir.malformedIfAnyUnprocessedFieldsRemain()
-            
-                    UnpermutedSum.UnpermutedRecordVariant(foo, bar, metas = sexp.metas)
-                }
-                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'domain_a'")
-            }
-        }
-    }
-    
-    
-    open class Visitor : DomainVisitorBase() {
-        ////////////////////////////////////////////////////////////////////////////
-        // Visit Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
-        //////////////////////////////////////
-        // Tuple Types
-        //////////////////////////////////////
-        open fun visitProductToRemove(node: DomainA.ProductToRemove) { }
-        open fun visitRecordToRemove(node: DomainA.RecordToRemove) { }
-        open fun visitProductA(node: DomainA.ProductA) { }
-        open fun visitRecordA(node: DomainA.RecordA) { }
-        open fun visitUnpermutedProduct(node: DomainA.UnpermutedProduct) { }
-        open fun visitUnpermutedRecord(node: DomainA.UnpermutedRecord) { }
-        //////////////////////////////////////
-        // Sum Type: SumToRemove
-        //////////////////////////////////////
-        protected open fun visitSumToRemove(node: DomainA.SumToRemove) { }
-        protected open fun visitSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt) { }
-        protected open fun visitSumToRemoveMatter(node: DomainA.SumToRemove.Matter) { }
-        //////////////////////////////////////
-        // Sum Type: SumA
-        //////////////////////////////////////
-        protected open fun visitSumA(node: DomainA.SumA) { }
-        protected open fun visitSumAWho(node: DomainA.SumA.Who) { }
-        protected open fun visitSumACares(node: DomainA.SumA.Cares) { }
-        //////////////////////////////////////
-        // Sum Type: SumB
-        //////////////////////////////////////
-        protected open fun visitSumB(node: DomainA.SumB) { }
-        protected open fun visitSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged) { }
-        protected open fun visitSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved) { }
-        protected open fun visitSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced) { }
-        //////////////////////////////////////
-        // Sum Type: UnpermutedSum
-        //////////////////////////////////////
-        protected open fun visitUnpermutedSum(node: DomainA.UnpermutedSum) { }
-        protected open fun visitUnpermutedSumUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant) { }
-        protected open fun visitUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) { }
-    
-        ////////////////////////////////////////////////////////////////////////////
-        // Walk Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
-        //////////////////////////////////////
-        // Tuple Types
-        //////////////////////////////////////
-        open fun walkProductToRemove(node: DomainA.ProductToRemove) {
-            visitProductToRemove(node)
-            walkSymbolPrimitive(node.whatever)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkRecordToRemove(node: DomainA.RecordToRemove) {
-            visitRecordToRemove(node)
-            walkLongPrimitive(node.irrelevant)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkProductA(node: DomainA.ProductA) {
-            visitProductA(node)
-            walkLongPrimitive(node.one)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkRecordA(node: DomainA.RecordA) {
-            visitRecordA(node)
-            walkLongPrimitive(node.one)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkUnpermutedProduct(node: DomainA.UnpermutedProduct) {
-            visitUnpermutedProduct(node)
-            walkSymbolPrimitive(node.foo)
-            walkLongPrimitive(node.bar)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkUnpermutedRecord(node: DomainA.UnpermutedRecord) {
-            visitUnpermutedRecord(node)
-            walkSymbolPrimitive(node.foo)
-            walkLongPrimitive(node.bar)
-            walkMetas(node.metas)
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: SumToRemove
-        //////////////////////////////////////
-        open fun walkSumToRemove(node: DomainA.SumToRemove) {
-            visitSumToRemove(node)
-            when(node) {
-                is DomainA.SumToRemove.Doesnt -> walkSumToRemoveDoesnt(node)
-                is DomainA.SumToRemove.Matter -> walkSumToRemoveMatter(node)
-            }
-        }
-    
-        open fun walkSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt) {
-            visitSumToRemoveDoesnt(node)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkSumToRemoveMatter(node: DomainA.SumToRemove.Matter) {
-            visitSumToRemoveMatter(node)
-            walkMetas(node.metas)
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: SumA
-        //////////////////////////////////////
-        open fun walkSumA(node: DomainA.SumA) {
-            visitSumA(node)
-            when(node) {
-                is DomainA.SumA.Who -> walkSumAWho(node)
-                is DomainA.SumA.Cares -> walkSumACares(node)
-            }
-        }
-    
-        open fun walkSumAWho(node: DomainA.SumA.Who) {
-            visitSumAWho(node)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkSumACares(node: DomainA.SumA.Cares) {
-            visitSumACares(node)
-            walkMetas(node.metas)
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: SumB
-        //////////////////////////////////////
-        open fun walkSumB(node: DomainA.SumB) {
-            visitSumB(node)
-            when(node) {
-                is DomainA.SumB.WillBeUnchanged -> walkSumBWillBeUnchanged(node)
-                is DomainA.SumB.WillBeRemoved -> walkSumBWillBeRemoved(node)
-                is DomainA.SumB.WillBeReplaced -> walkSumBWillBeReplaced(node)
-            }
-        }
-    
-        open fun walkSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged) {
-            visitSumBWillBeUnchanged(node)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved) {
-            visitSumBWillBeRemoved(node)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced) {
-            visitSumBWillBeReplaced(node)
-            walkLongPrimitive(node.something)
-            walkMetas(node.metas)
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: UnpermutedSum
-        //////////////////////////////////////
-        open fun walkUnpermutedSum(node: DomainA.UnpermutedSum) {
-            visitUnpermutedSum(node)
-            when(node) {
-                is DomainA.UnpermutedSum.UnpermutedProductVariant -> walkUnpermutedSumUnpermutedProductVariant(node)
-                is DomainA.UnpermutedSum.UnpermutedRecordVariant -> walkUnpermutedSumUnpermutedRecordVariant(node)
-            }
-        }
-    
-        open fun walkUnpermutedSumUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant) {
-            visitUnpermutedSumUnpermutedProductVariant(node)
-            walkSymbolPrimitive(node.foo)
-            walkLongPrimitive(node.bar)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) {
-            visitUnpermutedSumUnpermutedRecordVariant(node)
-            walkSymbolPrimitive(node.foo)
-            walkLongPrimitive(node.bar)
-            walkMetas(node.metas)
-        }
-    
-    }
-    
-    
-    open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
-        ////////////////////////////////////////////////////////////////////////////
-        // Visit Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
-        //////////////////////////////////////
-        // Tuple Types
-        //////////////////////////////////////
-        open protected fun visitProductToRemove(node: DomainA.ProductToRemove, accumulator: T): T = accumulator
-        open protected fun visitRecordToRemove(node: DomainA.RecordToRemove, accumulator: T): T = accumulator
-        open protected fun visitProductA(node: DomainA.ProductA, accumulator: T): T = accumulator
-        open protected fun visitRecordA(node: DomainA.RecordA, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedProduct(node: DomainA.UnpermutedProduct, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedRecord(node: DomainA.UnpermutedRecord, accumulator: T): T = accumulator
-        //////////////////////////////////////
-        // Sum Type: SumToRemove
-        //////////////////////////////////////
-        open protected fun visitSumToRemove(node: DomainA.SumToRemove, accumulator: T): T = accumulator
-        open protected fun visitSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt, accumulator: T): T = accumulator
-        open protected fun visitSumToRemoveMatter(node: DomainA.SumToRemove.Matter, accumulator: T): T = accumulator
-        //////////////////////////////////////
-        // Sum Type: SumA
-        //////////////////////////////////////
-        open protected fun visitSumA(node: DomainA.SumA, accumulator: T): T = accumulator
-        open protected fun visitSumAWho(node: DomainA.SumA.Who, accumulator: T): T = accumulator
-        open protected fun visitSumACares(node: DomainA.SumA.Cares, accumulator: T): T = accumulator
-        //////////////////////////////////////
-        // Sum Type: SumB
-        //////////////////////////////////////
-        open protected fun visitSumB(node: DomainA.SumB, accumulator: T): T = accumulator
-        open protected fun visitSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged, accumulator: T): T = accumulator
-        open protected fun visitSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved, accumulator: T): T = accumulator
-        open protected fun visitSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced, accumulator: T): T = accumulator
-        //////////////////////////////////////
-        // Sum Type: UnpermutedSum
-        //////////////////////////////////////
-        open protected fun visitUnpermutedSum(node: DomainA.UnpermutedSum, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedSumUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant, accumulator: T): T = accumulator
-    
-        ////////////////////////////////////////////////////////////////////////////
-        // Walk Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
-        //////////////////////////////////////
-        // Tuple Types
-        //////////////////////////////////////
-        open fun walkProductToRemove(node: DomainA.ProductToRemove, accumulator: T): T {
-            var current = accumulator
-            current = visitProductToRemove(node, current)
-            current = walkSymbolPrimitive(node.whatever, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkRecordToRemove(node: DomainA.RecordToRemove, accumulator: T): T {
-            var current = accumulator
-            current = visitRecordToRemove(node, current)
-            current = walkLongPrimitive(node.irrelevant, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkProductA(node: DomainA.ProductA, accumulator: T): T {
-            var current = accumulator
-            current = visitProductA(node, current)
-            current = walkLongPrimitive(node.one, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkRecordA(node: DomainA.RecordA, accumulator: T): T {
-            var current = accumulator
-            current = visitRecordA(node, current)
-            current = walkLongPrimitive(node.one, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkUnpermutedProduct(node: DomainA.UnpermutedProduct, accumulator: T): T {
-            var current = accumulator
-            current = visitUnpermutedProduct(node, current)
-            current = walkSymbolPrimitive(node.foo, current)
-            current = walkLongPrimitive(node.bar, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkUnpermutedRecord(node: DomainA.UnpermutedRecord, accumulator: T): T {
-            var current = accumulator
-            current = visitUnpermutedRecord(node, current)
-            current = walkSymbolPrimitive(node.foo, current)
-            current = walkLongPrimitive(node.bar, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: SumToRemove
-        //////////////////////////////////////
-        open fun walkSumToRemove(node: DomainA.SumToRemove, accumulator: T): T {
-            val current = visitSumToRemove(node, accumulator)
-            return when(node) {
-                is DomainA.SumToRemove.Doesnt -> walkSumToRemoveDoesnt(node, current)
-                is DomainA.SumToRemove.Matter -> walkSumToRemoveMatter(node, current)
-            }
-        }
-    
-        open fun walkSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt, accumulator: T): T {
-            var current = accumulator
-            current = visitSumToRemoveDoesnt(node, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkSumToRemoveMatter(node: DomainA.SumToRemove.Matter, accumulator: T): T {
-            var current = accumulator
-            current = visitSumToRemoveMatter(node, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: SumA
-        //////////////////////////////////////
-        open fun walkSumA(node: DomainA.SumA, accumulator: T): T {
-            val current = visitSumA(node, accumulator)
-            return when(node) {
-                is DomainA.SumA.Who -> walkSumAWho(node, current)
-                is DomainA.SumA.Cares -> walkSumACares(node, current)
-            }
-        }
-    
-        open fun walkSumAWho(node: DomainA.SumA.Who, accumulator: T): T {
-            var current = accumulator
-            current = visitSumAWho(node, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkSumACares(node: DomainA.SumA.Cares, accumulator: T): T {
-            var current = accumulator
-            current = visitSumACares(node, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: SumB
-        //////////////////////////////////////
-        open fun walkSumB(node: DomainA.SumB, accumulator: T): T {
-            val current = visitSumB(node, accumulator)
-            return when(node) {
-                is DomainA.SumB.WillBeUnchanged -> walkSumBWillBeUnchanged(node, current)
-                is DomainA.SumB.WillBeRemoved -> walkSumBWillBeRemoved(node, current)
-                is DomainA.SumB.WillBeReplaced -> walkSumBWillBeReplaced(node, current)
-            }
-        }
-    
-        open fun walkSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged, accumulator: T): T {
-            var current = accumulator
-            current = visitSumBWillBeUnchanged(node, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved, accumulator: T): T {
-            var current = accumulator
-            current = visitSumBWillBeRemoved(node, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced, accumulator: T): T {
-            var current = accumulator
-            current = visitSumBWillBeReplaced(node, current)
-            current = walkLongPrimitive(node.something, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: UnpermutedSum
-        //////////////////////////////////////
-        open fun walkUnpermutedSum(node: DomainA.UnpermutedSum, accumulator: T): T {
-            val current = visitUnpermutedSum(node, accumulator)
-            return when(node) {
-                is DomainA.UnpermutedSum.UnpermutedProductVariant -> walkUnpermutedSumUnpermutedProductVariant(node, current)
-                is DomainA.UnpermutedSum.UnpermutedRecordVariant -> walkUnpermutedSumUnpermutedRecordVariant(node, current)
-            }
-        }
-    
-        open fun walkUnpermutedSumUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant, accumulator: T): T {
-            var current = accumulator
-            current = visitUnpermutedSumUnpermutedProductVariant(node, current)
-            current = walkSymbolPrimitive(node.foo, current)
-            current = walkLongPrimitive(node.bar, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant, accumulator: T): T {
-            var current = accumulator
-            current = visitUnpermutedSumUnpermutedRecordVariant(node, current)
-            current = walkSymbolPrimitive(node.foo, current)
-            current = walkLongPrimitive(node.bar, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-    }
-    abstract class VisitorTransform : DomainVisitorTransformBase() {
-        //////////////////////////////////////
-        // Tuple Types
-        //////////////////////////////////////
-        // Tuple ProductToRemove
-        open fun transformProductToRemove(node: DomainA.ProductToRemove): DomainA.ProductToRemove {
-            val new_whatever = transformProductToRemove_whatever(node)
-            val new_metas = transformProductToRemove_metas(node)
-            return DomainA.ProductToRemove(
-                    whatever = new_whatever,
-                    metas = new_metas
-                )
-        }
-        open fun transformProductToRemove_whatever(node: DomainA.ProductToRemove) =
-            transformSymbolPrimitive(node.whatever)
-        open fun transformProductToRemove_metas(node: DomainA.ProductToRemove) =
-            transformMetas(node.metas)
-    
-        // Tuple RecordToRemove
-        open fun transformRecordToRemove(node: DomainA.RecordToRemove): DomainA.RecordToRemove {
-            val new_irrelevant = transformRecordToRemove_irrelevant(node)
-            val new_metas = transformRecordToRemove_metas(node)
-            return DomainA.RecordToRemove(
-                    irrelevant = new_irrelevant,
-                    metas = new_metas
-                )
-        }
-        open fun transformRecordToRemove_irrelevant(node: DomainA.RecordToRemove) =
-            transformLongPrimitive(node.irrelevant)
-        open fun transformRecordToRemove_metas(node: DomainA.RecordToRemove) =
-            transformMetas(node.metas)
-    
-        // Tuple ProductA
-        open fun transformProductA(node: DomainA.ProductA): DomainA.ProductA {
-            val new_one = transformProductA_one(node)
-            val new_metas = transformProductA_metas(node)
-            return DomainA.ProductA(
-                    one = new_one,
-                    metas = new_metas
-                )
-        }
-        open fun transformProductA_one(node: DomainA.ProductA) =
-            transformLongPrimitive(node.one)
-        open fun transformProductA_metas(node: DomainA.ProductA) =
-            transformMetas(node.metas)
-    
-        // Tuple RecordA
-        open fun transformRecordA(node: DomainA.RecordA): DomainA.RecordA {
-            val new_one = transformRecordA_one(node)
-            val new_metas = transformRecordA_metas(node)
-            return DomainA.RecordA(
-                    one = new_one,
-                    metas = new_metas
-                )
-        }
-        open fun transformRecordA_one(node: DomainA.RecordA) =
-            transformLongPrimitive(node.one)
-        open fun transformRecordA_metas(node: DomainA.RecordA) =
-            transformMetas(node.metas)
-    
-        // Tuple UnpermutedProduct
-        open fun transformUnpermutedProduct(node: DomainA.UnpermutedProduct): DomainA.UnpermutedProduct {
-            val new_foo = transformUnpermutedProduct_foo(node)
-            val new_bar = transformUnpermutedProduct_bar(node)
-            val new_metas = transformUnpermutedProduct_metas(node)
-            return DomainA.UnpermutedProduct(
-                    foo = new_foo,
-                    bar = new_bar,
-                    metas = new_metas
-                )
-        }
-        open fun transformUnpermutedProduct_foo(node: DomainA.UnpermutedProduct) =
-            transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedProduct_bar(node: DomainA.UnpermutedProduct) =
-            transformLongPrimitive(node.bar)
-        open fun transformUnpermutedProduct_metas(node: DomainA.UnpermutedProduct) =
-            transformMetas(node.metas)
-    
-        // Tuple UnpermutedRecord
-        open fun transformUnpermutedRecord(node: DomainA.UnpermutedRecord): DomainA.UnpermutedRecord {
-            val new_foo = transformUnpermutedRecord_foo(node)
-            val new_bar = transformUnpermutedRecord_bar(node)
-            val new_metas = transformUnpermutedRecord_metas(node)
-            return DomainA.UnpermutedRecord(
-                    foo = new_foo,
-                    bar = new_bar,
-                    metas = new_metas
-                )
-        }
-        open fun transformUnpermutedRecord_foo(node: DomainA.UnpermutedRecord) =
-            transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedRecord_bar(node: DomainA.UnpermutedRecord) =
-            transformLongPrimitive(node.bar)
-        open fun transformUnpermutedRecord_metas(node: DomainA.UnpermutedRecord) =
-            transformMetas(node.metas)
-    
-        //////////////////////////////////////
-        // Sum Type: SumToRemove
-        //////////////////////////////////////
-        open fun transformSumToRemove(node: DomainA.SumToRemove): DomainA.SumToRemove =
-            when(node) {
-                is DomainA.SumToRemove.Doesnt -> transformSumToRemoveDoesnt(node)
-                is DomainA.SumToRemove.Matter -> transformSumToRemoveMatter(node)
-            }
-        // Variant SumToRemoveDoesnt
-        open fun transformSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt): DomainA.SumToRemove  {
-            val new_metas = transformSumToRemoveDoesnt_metas(node)
-            return DomainA.SumToRemove.Doesnt(
-                    metas = new_metas
-                )
-        }
-        open fun transformSumToRemoveDoesnt_metas(node: DomainA.SumToRemove.Doesnt) =
-            transformMetas(node.metas)
-    
-        // Variant SumToRemoveMatter
-        open fun transformSumToRemoveMatter(node: DomainA.SumToRemove.Matter): DomainA.SumToRemove  {
-            val new_metas = transformSumToRemoveMatter_metas(node)
-            return DomainA.SumToRemove.Matter(
-                    metas = new_metas
-                )
-        }
-        open fun transformSumToRemoveMatter_metas(node: DomainA.SumToRemove.Matter) =
-            transformMetas(node.metas)
-    
-        //////////////////////////////////////
-        // Sum Type: SumA
-        //////////////////////////////////////
-        open fun transformSumA(node: DomainA.SumA): DomainA.SumA =
-            when(node) {
-                is DomainA.SumA.Who -> transformSumAWho(node)
-                is DomainA.SumA.Cares -> transformSumACares(node)
-            }
-        // Variant SumAWho
-        open fun transformSumAWho(node: DomainA.SumA.Who): DomainA.SumA  {
-            val new_metas = transformSumAWho_metas(node)
-            return DomainA.SumA.Who(
-                    metas = new_metas
-                )
-        }
-        open fun transformSumAWho_metas(node: DomainA.SumA.Who) =
-            transformMetas(node.metas)
-    
-        // Variant SumACares
-        open fun transformSumACares(node: DomainA.SumA.Cares): DomainA.SumA  {
-            val new_metas = transformSumACares_metas(node)
-            return DomainA.SumA.Cares(
-                    metas = new_metas
-                )
-        }
-        open fun transformSumACares_metas(node: DomainA.SumA.Cares) =
-            transformMetas(node.metas)
-    
-        //////////////////////////////////////
-        // Sum Type: SumB
-        //////////////////////////////////////
-        open fun transformSumB(node: DomainA.SumB): DomainA.SumB =
-            when(node) {
-                is DomainA.SumB.WillBeUnchanged -> transformSumBWillBeUnchanged(node)
-                is DomainA.SumB.WillBeRemoved -> transformSumBWillBeRemoved(node)
-                is DomainA.SumB.WillBeReplaced -> transformSumBWillBeReplaced(node)
-            }
-        // Variant SumBWillBeUnchanged
-        open fun transformSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged): DomainA.SumB  {
-            val new_metas = transformSumBWillBeUnchanged_metas(node)
-            return DomainA.SumB.WillBeUnchanged(
-                    metas = new_metas
-                )
-        }
-        open fun transformSumBWillBeUnchanged_metas(node: DomainA.SumB.WillBeUnchanged) =
-            transformMetas(node.metas)
-    
-        // Variant SumBWillBeRemoved
-        open fun transformSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved): DomainA.SumB  {
-            val new_metas = transformSumBWillBeRemoved_metas(node)
-            return DomainA.SumB.WillBeRemoved(
-                    metas = new_metas
-                )
-        }
-        open fun transformSumBWillBeRemoved_metas(node: DomainA.SumB.WillBeRemoved) =
-            transformMetas(node.metas)
-    
-        // Variant SumBWillBeReplaced
-        open fun transformSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced): DomainA.SumB  {
-            val new_something = transformSumBWillBeReplaced_something(node)
-            val new_metas = transformSumBWillBeReplaced_metas(node)
-            return DomainA.SumB.WillBeReplaced(
-                    something = new_something,
-                    metas = new_metas
-                )
-        }
-        open fun transformSumBWillBeReplaced_something(node: DomainA.SumB.WillBeReplaced) =
-            transformLongPrimitive(node.something)
-        open fun transformSumBWillBeReplaced_metas(node: DomainA.SumB.WillBeReplaced) =
-            transformMetas(node.metas)
-    
-        //////////////////////////////////////
-        // Sum Type: UnpermutedSum
-        //////////////////////////////////////
-        open fun transformUnpermutedSum(node: DomainA.UnpermutedSum): DomainA.UnpermutedSum =
-            when(node) {
-                is DomainA.UnpermutedSum.UnpermutedProductVariant -> transformUnpermutedSumUnpermutedProductVariant(node)
-                is DomainA.UnpermutedSum.UnpermutedRecordVariant -> transformUnpermutedSumUnpermutedRecordVariant(node)
-            }
-        // Variant UnpermutedSumUnpermutedProductVariant
-        open fun transformUnpermutedSumUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant): DomainA.UnpermutedSum  {
-            val new_foo = transformUnpermutedSumUnpermutedProductVariant_foo(node)
-            val new_bar = transformUnpermutedSumUnpermutedProductVariant_bar(node)
-            val new_metas = transformUnpermutedSumUnpermutedProductVariant_metas(node)
-            return DomainA.UnpermutedSum.UnpermutedProductVariant(
-                    foo = new_foo,
-                    bar = new_bar,
-                    metas = new_metas
-                )
-        }
-        open fun transformUnpermutedSumUnpermutedProductVariant_foo(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
-            transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedSumUnpermutedProductVariant_bar(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
-            transformLongPrimitive(node.bar)
-        open fun transformUnpermutedSumUnpermutedProductVariant_metas(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
-            transformMetas(node.metas)
-    
-        // Variant UnpermutedSumUnpermutedRecordVariant
-        open fun transformUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant): DomainA.UnpermutedSum  {
-            val new_foo = transformUnpermutedSumUnpermutedRecordVariant_foo(node)
-            val new_bar = transformUnpermutedSumUnpermutedRecordVariant_bar(node)
-            val new_metas = transformUnpermutedSumUnpermutedRecordVariant_metas(node)
-            return DomainA.UnpermutedSum.UnpermutedRecordVariant(
-                    foo = new_foo,
-                    bar = new_bar,
-                    metas = new_metas
-                )
-        }
-        open fun transformUnpermutedSumUnpermutedRecordVariant_foo(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
-            transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedSumUnpermutedRecordVariant_bar(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
-            transformLongPrimitive(node.bar)
-        open fun transformUnpermutedSumUnpermutedRecordVariant_metas(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
-            transformMetas(node.metas)
-    
-    }
-}
-
-
-class DomainB private constructor() {
-    /////////////////////////////////////////////////////////////////////////////
-    // Builder
-    /////////////////////////////////////////////////////////////////////////////
-    companion object {
-        @JvmStatic
-        fun BUILDER() : Builder = DomainBBuilder
-    
-        fun <T: DomainBNode> build(block: Builder.() -> T) =
-            DomainBBuilder.block()
-    
-        fun transform(element: AnyElement): DomainBNode =
-            transform(element.asSexp())
-    
-        fun transform(element: SexpElement): DomainBNode =
-            IonElementTransformer().transform(element)
-    }
-    
-    interface Builder {
-                // Tuples
-        /**
-         * Creates an instance of [DomainB.UnpermutedProduct].
-         */
-        fun unpermutedProduct(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedProduct
-        
-        /**
-         * Creates an instance of [DomainB.UnpermutedProduct].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun unpermutedProduct_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedProduct
-        
-        
-        /**
-         * Creates an instance of [DomainB.UnpermutedRecord].
-         */
-        fun unpermutedRecord(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedRecord
-        
-        /**
-         * Creates an instance of [DomainB.UnpermutedRecord].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun unpermutedRecord_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedRecord
-        
-        
-        /**
-         * Creates an instance of [DomainB.ProductA].
-         */
-        fun productA(
-            one: String,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.ProductA
-        
-        /**
-         * Creates an instance of [DomainB.ProductA].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun productA_(
-            one: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.ProductA
-        
-        
-        /**
-         * Creates an instance of [DomainB.RecordA].
-         */
-        fun recordA(
-            one: String,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.RecordA
-        
-        /**
-         * Creates an instance of [DomainB.RecordA].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun recordA_(
-            one: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.RecordA
-        
-        
-        /**
-         * Creates an instance of [DomainB.NewProduct].
-         */
-        fun newProduct(
-            foo: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.NewProduct
-        
-        /**
-         * Creates an instance of [DomainB.NewProduct].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun newProduct_(
-            foo: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.NewProduct
-        
-        
-        /**
-         * Creates an instance of [DomainB.NewRecord].
-         */
-        fun newRecord(
-            foo: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.NewRecord
-        
-        /**
-         * Creates an instance of [DomainB.NewRecord].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun newRecord_(
-            foo: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.NewRecord
-        
-        
-        // Variants for Sum: UnpermutedSum 
-        /**
-         * Creates an instance of [DomainB.UnpermutedSum.UnpermutedProductVariant].
-         */
-        fun unpermutedProductVariant(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedSum.UnpermutedProductVariant
-        
-        /**
-         * Creates an instance of [DomainB.UnpermutedSum.UnpermutedProductVariant].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun unpermutedProductVariant_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedSum.UnpermutedProductVariant
-        
-        
-        /**
-         * Creates an instance of [DomainB.UnpermutedSum.UnpermutedRecordVariant].
-         */
-        fun unpermutedRecordVariant(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedSum.UnpermutedRecordVariant
-        
-        /**
-         * Creates an instance of [DomainB.UnpermutedSum.UnpermutedRecordVariant].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun unpermutedRecordVariant_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedSum.UnpermutedRecordVariant
-        
-        
-        // Variants for Sum: SumB 
-        /**
-         * Creates an instance of [DomainB.SumB.WillBeUnchanged].
-         */
-        fun willBeUnchanged(
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.SumB.WillBeUnchanged
-        
-        
-        /**
-         * Creates an instance of [DomainB.SumB.WillBeReplaced].
-         */
-        fun willBeReplaced(
-            something: String,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.SumB.WillBeReplaced
-        
-        /**
-         * Creates an instance of [DomainB.SumB.WillBeReplaced].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun willBeReplaced_(
-            something: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.SumB.WillBeReplaced
-        
-        
-        // Variants for Sum: NewSum 
-        /**
-         * Creates an instance of [DomainB.NewSum.Eek].
-         */
-        fun eek(
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.NewSum.Eek
-        
-        
-        /**
-         * Creates an instance of [DomainB.NewSum.Whatever].
-         */
-        fun whatever(
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.NewSum.Whatever
-    }
-    
-    private object DomainBBuilder : Builder {
-                // Tuples
-        override fun unpermutedProduct(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainB.UnpermutedProduct =
-            DomainB.UnpermutedProduct(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedProduct_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainB.UnpermutedProduct =
-            DomainB.UnpermutedProduct(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        override fun unpermutedRecord(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainB.UnpermutedRecord =
-            DomainB.UnpermutedRecord(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedRecord_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainB.UnpermutedRecord =
-            DomainB.UnpermutedRecord(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        override fun productA(
-            one: String,
-            metas: MetaContainer
-        ): DomainB.ProductA =
-            DomainB.ProductA(
-                one = one.asPrimitive(),
-                metas = metas)
-        
-        override fun productA_(
-            one: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
-        ): DomainB.ProductA =
-            DomainB.ProductA(
-                one = one,
-                metas = metas)
-        
-        
-        override fun recordA(
-            one: String,
-            metas: MetaContainer
-        ): DomainB.RecordA =
-            DomainB.RecordA(
-                one = one.asPrimitive(),
-                metas = metas)
-        
-        override fun recordA_(
-            one: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
-        ): DomainB.RecordA =
-            DomainB.RecordA(
-                one = one,
-                metas = metas)
-        
-        
-        override fun newProduct(
-            foo: Long,
-            metas: MetaContainer
-        ): DomainB.NewProduct =
-            DomainB.NewProduct(
-                foo = foo.asPrimitive(),
-                metas = metas)
-        
-        override fun newProduct_(
-            foo: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainB.NewProduct =
-            DomainB.NewProduct(
-                foo = foo,
-                metas = metas)
-        
-        
-        override fun newRecord(
-            foo: Long,
-            metas: MetaContainer
-        ): DomainB.NewRecord =
-            DomainB.NewRecord(
-                foo = foo.asPrimitive(),
-                metas = metas)
-        
-        override fun newRecord_(
-            foo: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainB.NewRecord =
-            DomainB.NewRecord(
-                foo = foo,
-                metas = metas)
-        
-        
-        // Variants for Sum: UnpermutedSum 
-        override fun unpermutedProductVariant(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainB.UnpermutedSum.UnpermutedProductVariant =
-            DomainB.UnpermutedSum.UnpermutedProductVariant(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedProductVariant_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainB.UnpermutedSum.UnpermutedProductVariant =
-            DomainB.UnpermutedSum.UnpermutedProductVariant(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        override fun unpermutedRecordVariant(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainB.UnpermutedSum.UnpermutedRecordVariant =
-            DomainB.UnpermutedSum.UnpermutedRecordVariant(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedRecordVariant_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainB.UnpermutedSum.UnpermutedRecordVariant =
-            DomainB.UnpermutedSum.UnpermutedRecordVariant(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        // Variants for Sum: SumB 
-        override fun willBeUnchanged(
-            metas: MetaContainer
-        ): DomainB.SumB.WillBeUnchanged =
-            DomainB.SumB.WillBeUnchanged(
-                metas = metas)
-        
-        
-        override fun willBeReplaced(
-            something: String,
-            metas: MetaContainer
-        ): DomainB.SumB.WillBeReplaced =
-            DomainB.SumB.WillBeReplaced(
-                something = something.asPrimitive(),
-                metas = metas)
-        
-        override fun willBeReplaced_(
-            something: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
-        ): DomainB.SumB.WillBeReplaced =
-            DomainB.SumB.WillBeReplaced(
-                something = something,
-                metas = metas)
-        
-        
-        // Variants for Sum: NewSum 
-        override fun eek(
-            metas: MetaContainer
-        ): DomainB.NewSum.Eek =
-            DomainB.NewSum.Eek(
-                metas = metas)
-        
-        
-        override fun whatever(
-            metas: MetaContainer
-        ): DomainB.NewSum.Whatever =
-            DomainB.NewSum.Whatever(
-                metas = metas)
-    }
-    
-    /** Base class for all DomainB types. */
-    abstract class DomainBNode : DomainNode {
-        abstract override fun copyMetas(newMetas: MetaContainer): DomainBNode
-        override fun toString() = toIonElement().toString()
-        abstract override fun withMeta(metaKey: String, metaValue: Any): DomainBNode
-        abstract override fun toIonElement(): SexpElement
-    }
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Tuple Types
-    /////////////////////////////////////////////////////////////////////////////
-    class UnpermutedProduct(
-        val foo: org.partiql.pig.runtime.SymbolPrimitive,
-        val bar: org.partiql.pig.runtime.LongPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): DomainBNode() {
-    
-        override fun copyMetas(newMetas: MetaContainer): UnpermutedProduct =
-            UnpermutedProduct(
-                foo = foo,
-                bar = bar,
-                metas = newMetas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): UnpermutedProduct =
-            UnpermutedProduct(
-                foo = foo,
-                bar = bar,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("unpermuted_product"),
-                foo.toIonElement(),
-                bar.toIonElement(),
-                metas = metas)
-            return elements
-        }
-    
-        fun copy(
-            foo: org.partiql.pig.runtime.SymbolPrimitive = this.foo,
-            bar: org.partiql.pig.runtime.LongPrimitive = this.bar,
-            metas: MetaContainer = this.metas
-        ) =
-            UnpermutedProduct(
-                foo,
-                bar,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != UnpermutedProduct::class.java) return false
-    
-            other as UnpermutedProduct
-            if (foo != other.foo) return false
-            if (bar != other.bar) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = foo.hashCode()
-            hc = 31 * hc + bar.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class UnpermutedRecord(
-        val foo: org.partiql.pig.runtime.SymbolPrimitive,
-        val bar: org.partiql.pig.runtime.LongPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): DomainBNode() {
-    
-        override fun copyMetas(newMetas: MetaContainer): UnpermutedRecord =
-            UnpermutedRecord(
-                foo = foo,
-                bar = bar,
-                metas = newMetas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): UnpermutedRecord =
-            UnpermutedRecord(
-                foo = foo,
-                bar = bar,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = listOfNotNull(
-                ionSymbol("unpermuted_record"),
-                foo?.let { ionSexpOf(ionSymbol("foo"), it.toIonElement()) },
-                bar?.let { ionSexpOf(ionSymbol("bar"), it.toIonElement()) }
-            )
-    
-            return ionSexpOf(elements, metas = metas)
-        }
-    
-        fun copy(
-            foo: org.partiql.pig.runtime.SymbolPrimitive = this.foo,
-            bar: org.partiql.pig.runtime.LongPrimitive = this.bar,
-            metas: MetaContainer = this.metas
-        ) =
-            UnpermutedRecord(
-                foo,
-                bar,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != UnpermutedRecord::class.java) return false
-    
-            other as UnpermutedRecord
-            if (foo != other.foo) return false
-            if (bar != other.bar) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = foo.hashCode()
-            hc = 31 * hc + bar.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class ProductA(
-        val one: org.partiql.pig.runtime.SymbolPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): DomainBNode() {
-    
-        override fun copyMetas(newMetas: MetaContainer): ProductA =
-            ProductA(
-                one = one,
-                metas = newMetas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): ProductA =
-            ProductA(
-                one = one,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("product_a"),
-                one.toIonElement(),
-                metas = metas)
-            return elements
-        }
-    
-        fun copy(
-            one: org.partiql.pig.runtime.SymbolPrimitive = this.one,
-            metas: MetaContainer = this.metas
-        ) =
-            ProductA(
-                one,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != ProductA::class.java) return false
-    
-            other as ProductA
-            if (one != other.one) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = one.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class RecordA(
-        val one: org.partiql.pig.runtime.SymbolPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): DomainBNode() {
-    
-        override fun copyMetas(newMetas: MetaContainer): RecordA =
-            RecordA(
-                one = one,
-                metas = newMetas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): RecordA =
-            RecordA(
-                one = one,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = listOfNotNull(
-                ionSymbol("record_a"),
-                one?.let { ionSexpOf(ionSymbol("one"), it.toIonElement()) }
-            )
-    
-            return ionSexpOf(elements, metas = metas)
-        }
-    
-        fun copy(
-            one: org.partiql.pig.runtime.SymbolPrimitive = this.one,
-            metas: MetaContainer = this.metas
-        ) =
-            RecordA(
-                one,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != RecordA::class.java) return false
-    
-            other as RecordA
-            if (one != other.one) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = one.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class NewProduct(
-        val foo: org.partiql.pig.runtime.LongPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): DomainBNode() {
-    
-        override fun copyMetas(newMetas: MetaContainer): NewProduct =
-            NewProduct(
-                foo = foo,
-                metas = newMetas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): NewProduct =
-            NewProduct(
-                foo = foo,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("new_product"),
-                foo.toIonElement(),
-                metas = metas)
-            return elements
-        }
-    
-        fun copy(
-            foo: org.partiql.pig.runtime.LongPrimitive = this.foo,
-            metas: MetaContainer = this.metas
-        ) =
-            NewProduct(
-                foo,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != NewProduct::class.java) return false
-    
-            other as NewProduct
-            if (foo != other.foo) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = foo.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class NewRecord(
-        val foo: org.partiql.pig.runtime.LongPrimitive,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): DomainBNode() {
-    
-        override fun copyMetas(newMetas: MetaContainer): NewRecord =
-            NewRecord(
-                foo = foo,
-                metas = newMetas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): NewRecord =
-            NewRecord(
-                foo = foo,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = listOfNotNull(
-                ionSymbol("new_record"),
-                foo?.let { ionSexpOf(ionSymbol("foo"), it.toIonElement()) }
-            )
-    
-            return ionSexpOf(elements, metas = metas)
-        }
-    
-        fun copy(
-            foo: org.partiql.pig.runtime.LongPrimitive = this.foo,
-            metas: MetaContainer = this.metas
-        ) =
-            NewRecord(
-                foo,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != NewRecord::class.java) return false
-    
-            other as NewRecord
-            if (foo != other.foo) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-            var hc = foo.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // Sum Types
-    /////////////////////////////////////////////////////////////////////////////
-    
-    sealed class UnpermutedSum(override val metas: MetaContainer = emptyMetaContainer()) : DomainBNode() {
-        override fun copyMetas(newMetas: MetaContainer): UnpermutedSum =
-            when (this) {
-                is UnpermutedProductVariant -> copy(metas = newMetas)
-                is UnpermutedRecordVariant -> copy(metas = newMetas)
-            }
-    
-        class UnpermutedProductVariant(
-            val foo: org.partiql.pig.runtime.SymbolPrimitive,
-            val bar: org.partiql.pig.runtime.LongPrimitive,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): UnpermutedSum() {
-        
-            override fun copyMetas(newMetas: MetaContainer): UnpermutedProductVariant =
-                UnpermutedProductVariant(
-                    foo = foo,
-                    bar = bar,
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): UnpermutedProductVariant =
-                UnpermutedProductVariant(
-                    foo = foo,
-                    bar = bar,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("unpermuted_product_variant"),
-                    foo.toIonElement(),
-                    bar.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                foo: org.partiql.pig.runtime.SymbolPrimitive = this.foo,
-                bar: org.partiql.pig.runtime.LongPrimitive = this.bar,
-                metas: MetaContainer = this.metas
-            ) =
-                UnpermutedProductVariant(
-                    foo,
-                    bar,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != UnpermutedProductVariant::class.java) return false
-        
-                other as UnpermutedProductVariant
-                if (foo != other.foo) return false
-                if (bar != other.bar) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = foo.hashCode()
-                hc = 31 * hc + bar.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class UnpermutedRecordVariant(
-            val foo: org.partiql.pig.runtime.SymbolPrimitive,
-            val bar: org.partiql.pig.runtime.LongPrimitive,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): UnpermutedSum() {
-        
-            override fun copyMetas(newMetas: MetaContainer): UnpermutedRecordVariant =
-                UnpermutedRecordVariant(
-                    foo = foo,
-                    bar = bar,
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): UnpermutedRecordVariant =
-                UnpermutedRecordVariant(
-                    foo = foo,
-                    bar = bar,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = listOfNotNull(
-                    ionSymbol("unpermuted_record_variant"),
-                    foo?.let { ionSexpOf(ionSymbol("foo"), it.toIonElement()) },
-                    bar?.let { ionSexpOf(ionSymbol("bar"), it.toIonElement()) }
-                )
-        
-                return ionSexpOf(elements, metas = metas)
-            }
-        
-            fun copy(
-                foo: org.partiql.pig.runtime.SymbolPrimitive = this.foo,
-                bar: org.partiql.pig.runtime.LongPrimitive = this.bar,
-                metas: MetaContainer = this.metas
-            ) =
-                UnpermutedRecordVariant(
-                    foo,
-                    bar,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != UnpermutedRecordVariant::class.java) return false
-        
-                other as UnpermutedRecordVariant
-                if (foo != other.foo) return false
-                if (bar != other.bar) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = foo.hashCode()
-                hc = 31 * hc + bar.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-    }
-    
-    sealed class SumB(override val metas: MetaContainer = emptyMetaContainer()) : DomainBNode() {
-        override fun copyMetas(newMetas: MetaContainer): SumB =
-            when (this) {
-                is WillBeUnchanged -> copy(metas = newMetas)
-                is WillBeReplaced -> copy(metas = newMetas)
-            }
-    
-        class WillBeUnchanged(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): SumB() {
-        
-            override fun copyMetas(newMetas: MetaContainer): WillBeUnchanged =
-                WillBeUnchanged(
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): WillBeUnchanged =
-                WillBeUnchanged(
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("will_be_unchanged"),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                WillBeUnchanged(
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != WillBeUnchanged::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 2000
-        }
-    
-        class WillBeReplaced(
-            val something: org.partiql.pig.runtime.SymbolPrimitive,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): SumB() {
-        
-            override fun copyMetas(newMetas: MetaContainer): WillBeReplaced =
-                WillBeReplaced(
-                    something = something,
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): WillBeReplaced =
-                WillBeReplaced(
-                    something = something,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("will_be_replaced"),
-                    something.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                something: org.partiql.pig.runtime.SymbolPrimitive = this.something,
-                metas: MetaContainer = this.metas
-            ) =
-                WillBeReplaced(
-                    something,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != WillBeReplaced::class.java) return false
-        
-                other as WillBeReplaced
-                if (something != other.something) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = something.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-    }
-    
-    sealed class NewSum(override val metas: MetaContainer = emptyMetaContainer()) : DomainBNode() {
-        override fun copyMetas(newMetas: MetaContainer): NewSum =
-            when (this) {
-                is Eek -> copy(metas = newMetas)
-                is Whatever -> copy(metas = newMetas)
-            }
-    
-        class Eek(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): NewSum() {
-        
-            override fun copyMetas(newMetas: MetaContainer): Eek =
-                Eek(
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Eek =
-                Eek(
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("eek"),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Eek(
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Eek::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 3000
-        }
-    
-        class Whatever(
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): NewSum() {
-        
-            override fun copyMetas(newMetas: MetaContainer): Whatever =
-                Whatever(
-                    metas = newMetas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Whatever =
-                Whatever(
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("whatever"),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Whatever(
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Whatever::class.java) return false
-        
-                return true
-            }
-        
-            override fun hashCode(): Int = 3001
-        }
-    
-    }
-    
-    /////////////////////////////////////////////////////////////////////////////
-    // IonElementTransformer
-    /////////////////////////////////////////////////////////////////////////////
-    
-    
-    private class IonElementTransformer : IonElementTransformerBase<DomainBNode>() {
-    
-        override fun innerTransform(sexp: SexpElement): DomainBNode {
-            return when(sexp.tag) {
-                //////////////////////////////////////
-                // Tuple Types
-                //////////////////////////////////////
-                "unpermuted_product" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val foo = sexp.getRequired(0).toSymbolPrimitive()
-                    val bar = sexp.getRequired(1).toLongPrimitive()
-                    DomainB.UnpermutedProduct(
-                        foo,
-                        bar,
-                        metas = sexp.metas)
-                }
-                "unpermuted_record" -> {
-                    val ir = sexp.transformToIntermediateRecord()
-            
-                    val foo = ir.processRequiredField("foo") { it.toSymbolPrimitive() }
-                    val bar = ir.processRequiredField("bar") { it.toLongPrimitive() }
-            
-                    ir.malformedIfAnyUnprocessedFieldsRemain()
-            
-                    UnpermutedRecord(foo, bar, metas = sexp.metas)
-                }
-                "product_a" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val one = sexp.getRequired(0).toSymbolPrimitive()
-                    DomainB.ProductA(
-                        one,
-                        metas = sexp.metas)
-                }
-                "record_a" -> {
-                    val ir = sexp.transformToIntermediateRecord()
-            
-                    val one = ir.processRequiredField("one") { it.toSymbolPrimitive() }
-            
-                    ir.malformedIfAnyUnprocessedFieldsRemain()
-            
-                    RecordA(one, metas = sexp.metas)
-                }
-                "new_product" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val foo = sexp.getRequired(0).toLongPrimitive()
-                    DomainB.NewProduct(
-                        foo,
-                        metas = sexp.metas)
-                }
-                "new_record" -> {
-                    val ir = sexp.transformToIntermediateRecord()
-            
-                    val foo = ir.processRequiredField("foo") { it.toLongPrimitive() }
-            
-                    ir.malformedIfAnyUnprocessedFieldsRemain()
-            
-                    NewRecord(foo, metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'UnpermutedSum'
-                //////////////////////////////////////
-                "unpermuted_product_variant" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val foo = sexp.getRequired(0).toSymbolPrimitive()
-                    val bar = sexp.getRequired(1).toLongPrimitive()
-                    DomainB.UnpermutedSum.UnpermutedProductVariant(
-                        foo,
-                        bar,
-                        metas = sexp.metas)
-                }
-                "unpermuted_record_variant" -> {
-                    val ir = sexp.transformToIntermediateRecord()
-            
-                    val foo = ir.processRequiredField("foo") { it.toSymbolPrimitive() }
-                    val bar = ir.processRequiredField("bar") { it.toLongPrimitive() }
-            
-                    ir.malformedIfAnyUnprocessedFieldsRemain()
-            
-                    UnpermutedSum.UnpermutedRecordVariant(foo, bar, metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'SumB'
-                //////////////////////////////////////
-                "will_be_unchanged" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    DomainB.SumB.WillBeUnchanged(
-                        metas = sexp.metas)
-                }
-                "will_be_replaced" -> {
-                    sexp.requireArityOrMalformed(IntRange(1, 1))
-                    val something = sexp.getRequired(0).toSymbolPrimitive()
-                    DomainB.SumB.WillBeReplaced(
-                        something,
-                        metas = sexp.metas)
-                }
-                //////////////////////////////////////
-                // Variants for Sum Type 'NewSum'
-                //////////////////////////////////////
-                "eek" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    DomainB.NewSum.Eek(
-                        metas = sexp.metas)
-                }
-                "whatever" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 0))
-                    DomainB.NewSum.Whatever(
-                        metas = sexp.metas)
-                }
-                else -> errMalformed(sexp.head.metas.location, "Unknown tag '${sexp.tag}' for domain 'domain_b'")
-            }
-        }
-    }
-    
-    
-    open class Visitor : DomainVisitorBase() {
-        ////////////////////////////////////////////////////////////////////////////
-        // Visit Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
-        //////////////////////////////////////
-        // Tuple Types
-        //////////////////////////////////////
-        open fun visitUnpermutedProduct(node: DomainB.UnpermutedProduct) { }
-        open fun visitUnpermutedRecord(node: DomainB.UnpermutedRecord) { }
-        open fun visitProductA(node: DomainB.ProductA) { }
-        open fun visitRecordA(node: DomainB.RecordA) { }
-        open fun visitNewProduct(node: DomainB.NewProduct) { }
-        open fun visitNewRecord(node: DomainB.NewRecord) { }
-        //////////////////////////////////////
-        // Sum Type: UnpermutedSum
-        //////////////////////////////////////
-        protected open fun visitUnpermutedSum(node: DomainB.UnpermutedSum) { }
-        protected open fun visitUnpermutedSumUnpermutedProductVariant(node: DomainB.UnpermutedSum.UnpermutedProductVariant) { }
-        protected open fun visitUnpermutedSumUnpermutedRecordVariant(node: DomainB.UnpermutedSum.UnpermutedRecordVariant) { }
-        //////////////////////////////////////
-        // Sum Type: SumB
-        //////////////////////////////////////
-        protected open fun visitSumB(node: DomainB.SumB) { }
-        protected open fun visitSumBWillBeUnchanged(node: DomainB.SumB.WillBeUnchanged) { }
-        protected open fun visitSumBWillBeReplaced(node: DomainB.SumB.WillBeReplaced) { }
-        //////////////////////////////////////
-        // Sum Type: NewSum
-        //////////////////////////////////////
-        protected open fun visitNewSum(node: DomainB.NewSum) { }
-        protected open fun visitNewSumEek(node: DomainB.NewSum.Eek) { }
-        protected open fun visitNewSumWhatever(node: DomainB.NewSum.Whatever) { }
-    
-        ////////////////////////////////////////////////////////////////////////////
-        // Walk Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
-        //////////////////////////////////////
-        // Tuple Types
-        //////////////////////////////////////
-        open fun walkUnpermutedProduct(node: DomainB.UnpermutedProduct) {
-            visitUnpermutedProduct(node)
-            walkSymbolPrimitive(node.foo)
-            walkLongPrimitive(node.bar)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkUnpermutedRecord(node: DomainB.UnpermutedRecord) {
-            visitUnpermutedRecord(node)
-            walkSymbolPrimitive(node.foo)
-            walkLongPrimitive(node.bar)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkProductA(node: DomainB.ProductA) {
-            visitProductA(node)
-            walkSymbolPrimitive(node.one)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkRecordA(node: DomainB.RecordA) {
-            visitRecordA(node)
-            walkSymbolPrimitive(node.one)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkNewProduct(node: DomainB.NewProduct) {
-            visitNewProduct(node)
-            walkLongPrimitive(node.foo)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkNewRecord(node: DomainB.NewRecord) {
-            visitNewRecord(node)
-            walkLongPrimitive(node.foo)
-            walkMetas(node.metas)
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: UnpermutedSum
-        //////////////////////////////////////
-        open fun walkUnpermutedSum(node: DomainB.UnpermutedSum) {
-            visitUnpermutedSum(node)
-            when(node) {
-                is DomainB.UnpermutedSum.UnpermutedProductVariant -> walkUnpermutedSumUnpermutedProductVariant(node)
-                is DomainB.UnpermutedSum.UnpermutedRecordVariant -> walkUnpermutedSumUnpermutedRecordVariant(node)
-            }
-        }
-    
-        open fun walkUnpermutedSumUnpermutedProductVariant(node: DomainB.UnpermutedSum.UnpermutedProductVariant) {
-            visitUnpermutedSumUnpermutedProductVariant(node)
-            walkSymbolPrimitive(node.foo)
-            walkLongPrimitive(node.bar)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkUnpermutedSumUnpermutedRecordVariant(node: DomainB.UnpermutedSum.UnpermutedRecordVariant) {
-            visitUnpermutedSumUnpermutedRecordVariant(node)
-            walkSymbolPrimitive(node.foo)
-            walkLongPrimitive(node.bar)
-            walkMetas(node.metas)
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: SumB
-        //////////////////////////////////////
-        open fun walkSumB(node: DomainB.SumB) {
-            visitSumB(node)
-            when(node) {
-                is DomainB.SumB.WillBeUnchanged -> walkSumBWillBeUnchanged(node)
-                is DomainB.SumB.WillBeReplaced -> walkSumBWillBeReplaced(node)
-            }
-        }
-    
-        open fun walkSumBWillBeUnchanged(node: DomainB.SumB.WillBeUnchanged) {
-            visitSumBWillBeUnchanged(node)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkSumBWillBeReplaced(node: DomainB.SumB.WillBeReplaced) {
-            visitSumBWillBeReplaced(node)
-            walkSymbolPrimitive(node.something)
-            walkMetas(node.metas)
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: NewSum
-        //////////////////////////////////////
-        open fun walkNewSum(node: DomainB.NewSum) {
-            visitNewSum(node)
-            when(node) {
-                is DomainB.NewSum.Eek -> walkNewSumEek(node)
-                is DomainB.NewSum.Whatever -> walkNewSumWhatever(node)
-            }
-        }
-    
-        open fun walkNewSumEek(node: DomainB.NewSum.Eek) {
-            visitNewSumEek(node)
-            walkMetas(node.metas)
-        }
-    
-        open fun walkNewSumWhatever(node: DomainB.NewSum.Whatever) {
-            visitNewSumWhatever(node)
-            walkMetas(node.metas)
-        }
-    
-    }
-    
-    
-    open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
-        ////////////////////////////////////////////////////////////////////////////
-        // Visit Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
-        //////////////////////////////////////
-        // Tuple Types
-        //////////////////////////////////////
-        open protected fun visitUnpermutedProduct(node: DomainB.UnpermutedProduct, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedRecord(node: DomainB.UnpermutedRecord, accumulator: T): T = accumulator
-        open protected fun visitProductA(node: DomainB.ProductA, accumulator: T): T = accumulator
-        open protected fun visitRecordA(node: DomainB.RecordA, accumulator: T): T = accumulator
-        open protected fun visitNewProduct(node: DomainB.NewProduct, accumulator: T): T = accumulator
-        open protected fun visitNewRecord(node: DomainB.NewRecord, accumulator: T): T = accumulator
-        //////////////////////////////////////
-        // Sum Type: UnpermutedSum
-        //////////////////////////////////////
-        open protected fun visitUnpermutedSum(node: DomainB.UnpermutedSum, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedSumUnpermutedProductVariant(node: DomainB.UnpermutedSum.UnpermutedProductVariant, accumulator: T): T = accumulator
-        open protected fun visitUnpermutedSumUnpermutedRecordVariant(node: DomainB.UnpermutedSum.UnpermutedRecordVariant, accumulator: T): T = accumulator
-        //////////////////////////////////////
-        // Sum Type: SumB
-        //////////////////////////////////////
-        open protected fun visitSumB(node: DomainB.SumB, accumulator: T): T = accumulator
-        open protected fun visitSumBWillBeUnchanged(node: DomainB.SumB.WillBeUnchanged, accumulator: T): T = accumulator
-        open protected fun visitSumBWillBeReplaced(node: DomainB.SumB.WillBeReplaced, accumulator: T): T = accumulator
-        //////////////////////////////////////
-        // Sum Type: NewSum
-        //////////////////////////////////////
-        open protected fun visitNewSum(node: DomainB.NewSum, accumulator: T): T = accumulator
-        open protected fun visitNewSumEek(node: DomainB.NewSum.Eek, accumulator: T): T = accumulator
-        open protected fun visitNewSumWhatever(node: DomainB.NewSum.Whatever, accumulator: T): T = accumulator
-    
-        ////////////////////////////////////////////////////////////////////////////
-        // Walk Functions
-        ////////////////////////////////////////////////////////////////////////////
-    
-        //////////////////////////////////////
-        // Tuple Types
-        //////////////////////////////////////
-        open fun walkUnpermutedProduct(node: DomainB.UnpermutedProduct, accumulator: T): T {
-            var current = accumulator
-            current = visitUnpermutedProduct(node, current)
-            current = walkSymbolPrimitive(node.foo, current)
-            current = walkLongPrimitive(node.bar, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkUnpermutedRecord(node: DomainB.UnpermutedRecord, accumulator: T): T {
-            var current = accumulator
-            current = visitUnpermutedRecord(node, current)
-            current = walkSymbolPrimitive(node.foo, current)
-            current = walkLongPrimitive(node.bar, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkProductA(node: DomainB.ProductA, accumulator: T): T {
-            var current = accumulator
-            current = visitProductA(node, current)
-            current = walkSymbolPrimitive(node.one, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkRecordA(node: DomainB.RecordA, accumulator: T): T {
-            var current = accumulator
-            current = visitRecordA(node, current)
-            current = walkSymbolPrimitive(node.one, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkNewProduct(node: DomainB.NewProduct, accumulator: T): T {
-            var current = accumulator
-            current = visitNewProduct(node, current)
-            current = walkLongPrimitive(node.foo, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkNewRecord(node: DomainB.NewRecord, accumulator: T): T {
-            var current = accumulator
-            current = visitNewRecord(node, current)
-            current = walkLongPrimitive(node.foo, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: UnpermutedSum
-        //////////////////////////////////////
-        open fun walkUnpermutedSum(node: DomainB.UnpermutedSum, accumulator: T): T {
-            val current = visitUnpermutedSum(node, accumulator)
-            return when(node) {
-                is DomainB.UnpermutedSum.UnpermutedProductVariant -> walkUnpermutedSumUnpermutedProductVariant(node, current)
-                is DomainB.UnpermutedSum.UnpermutedRecordVariant -> walkUnpermutedSumUnpermutedRecordVariant(node, current)
-            }
-        }
-    
-        open fun walkUnpermutedSumUnpermutedProductVariant(node: DomainB.UnpermutedSum.UnpermutedProductVariant, accumulator: T): T {
-            var current = accumulator
-            current = visitUnpermutedSumUnpermutedProductVariant(node, current)
-            current = walkSymbolPrimitive(node.foo, current)
-            current = walkLongPrimitive(node.bar, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkUnpermutedSumUnpermutedRecordVariant(node: DomainB.UnpermutedSum.UnpermutedRecordVariant, accumulator: T): T {
-            var current = accumulator
-            current = visitUnpermutedSumUnpermutedRecordVariant(node, current)
-            current = walkSymbolPrimitive(node.foo, current)
-            current = walkLongPrimitive(node.bar, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: SumB
-        //////////////////////////////////////
-        open fun walkSumB(node: DomainB.SumB, accumulator: T): T {
-            val current = visitSumB(node, accumulator)
-            return when(node) {
-                is DomainB.SumB.WillBeUnchanged -> walkSumBWillBeUnchanged(node, current)
-                is DomainB.SumB.WillBeReplaced -> walkSumBWillBeReplaced(node, current)
-            }
-        }
-    
-        open fun walkSumBWillBeUnchanged(node: DomainB.SumB.WillBeUnchanged, accumulator: T): T {
-            var current = accumulator
-            current = visitSumBWillBeUnchanged(node, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkSumBWillBeReplaced(node: DomainB.SumB.WillBeReplaced, accumulator: T): T {
-            var current = accumulator
-            current = visitSumBWillBeReplaced(node, current)
-            current = walkSymbolPrimitive(node.something, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        //////////////////////////////////////
-        // Sum Type: NewSum
-        //////////////////////////////////////
-        open fun walkNewSum(node: DomainB.NewSum, accumulator: T): T {
-            val current = visitNewSum(node, accumulator)
-            return when(node) {
-                is DomainB.NewSum.Eek -> walkNewSumEek(node, current)
-                is DomainB.NewSum.Whatever -> walkNewSumWhatever(node, current)
-            }
-        }
-    
-        open fun walkNewSumEek(node: DomainB.NewSum.Eek, accumulator: T): T {
-            var current = accumulator
-            current = visitNewSumEek(node, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkNewSumWhatever(node: DomainB.NewSum.Whatever, accumulator: T): T {
-            var current = accumulator
-            current = visitNewSumWhatever(node, current)
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-    }
-    abstract class VisitorTransform : DomainVisitorTransformBase() {
-        //////////////////////////////////////
-        // Tuple Types
-        //////////////////////////////////////
-        // Tuple UnpermutedProduct
-        open fun transformUnpermutedProduct(node: DomainB.UnpermutedProduct): DomainB.UnpermutedProduct {
-            val new_foo = transformUnpermutedProduct_foo(node)
-            val new_bar = transformUnpermutedProduct_bar(node)
-            val new_metas = transformUnpermutedProduct_metas(node)
-            return DomainB.UnpermutedProduct(
-                    foo = new_foo,
-                    bar = new_bar,
-                    metas = new_metas
-                )
-        }
-        open fun transformUnpermutedProduct_foo(node: DomainB.UnpermutedProduct) =
-            transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedProduct_bar(node: DomainB.UnpermutedProduct) =
-            transformLongPrimitive(node.bar)
-        open fun transformUnpermutedProduct_metas(node: DomainB.UnpermutedProduct) =
-            transformMetas(node.metas)
-    
-        // Tuple UnpermutedRecord
-        open fun transformUnpermutedRecord(node: DomainB.UnpermutedRecord): DomainB.UnpermutedRecord {
-            val new_foo = transformUnpermutedRecord_foo(node)
-            val new_bar = transformUnpermutedRecord_bar(node)
-            val new_metas = transformUnpermutedRecord_metas(node)
-            return DomainB.UnpermutedRecord(
-                    foo = new_foo,
-                    bar = new_bar,
-                    metas = new_metas
-                )
-        }
-        open fun transformUnpermutedRecord_foo(node: DomainB.UnpermutedRecord) =
-            transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedRecord_bar(node: DomainB.UnpermutedRecord) =
-            transformLongPrimitive(node.bar)
-        open fun transformUnpermutedRecord_metas(node: DomainB.UnpermutedRecord) =
-            transformMetas(node.metas)
-    
-        // Tuple ProductA
-        open fun transformProductA(node: DomainB.ProductA): DomainB.ProductA {
-            val new_one = transformProductA_one(node)
-            val new_metas = transformProductA_metas(node)
-            return DomainB.ProductA(
-                    one = new_one,
-                    metas = new_metas
-                )
-        }
-        open fun transformProductA_one(node: DomainB.ProductA) =
-            transformSymbolPrimitive(node.one)
-        open fun transformProductA_metas(node: DomainB.ProductA) =
-            transformMetas(node.metas)
-    
-        // Tuple RecordA
-        open fun transformRecordA(node: DomainB.RecordA): DomainB.RecordA {
-            val new_one = transformRecordA_one(node)
-            val new_metas = transformRecordA_metas(node)
-            return DomainB.RecordA(
-                    one = new_one,
-                    metas = new_metas
-                )
-        }
-        open fun transformRecordA_one(node: DomainB.RecordA) =
-            transformSymbolPrimitive(node.one)
-        open fun transformRecordA_metas(node: DomainB.RecordA) =
-            transformMetas(node.metas)
-    
-        // Tuple NewProduct
-        open fun transformNewProduct(node: DomainB.NewProduct): DomainB.NewProduct {
-            val new_foo = transformNewProduct_foo(node)
-            val new_metas = transformNewProduct_metas(node)
-            return DomainB.NewProduct(
-                    foo = new_foo,
-                    metas = new_metas
-                )
-        }
-        open fun transformNewProduct_foo(node: DomainB.NewProduct) =
-            transformLongPrimitive(node.foo)
-        open fun transformNewProduct_metas(node: DomainB.NewProduct) =
-            transformMetas(node.metas)
-    
-        // Tuple NewRecord
-        open fun transformNewRecord(node: DomainB.NewRecord): DomainB.NewRecord {
-            val new_foo = transformNewRecord_foo(node)
-            val new_metas = transformNewRecord_metas(node)
-            return DomainB.NewRecord(
-                    foo = new_foo,
-                    metas = new_metas
-                )
-        }
-        open fun transformNewRecord_foo(node: DomainB.NewRecord) =
-            transformLongPrimitive(node.foo)
-        open fun transformNewRecord_metas(node: DomainB.NewRecord) =
-            transformMetas(node.metas)
-    
-        //////////////////////////////////////
-        // Sum Type: UnpermutedSum
-        //////////////////////////////////////
-        open fun transformUnpermutedSum(node: DomainB.UnpermutedSum): DomainB.UnpermutedSum =
-            when(node) {
-                is DomainB.UnpermutedSum.UnpermutedProductVariant -> transformUnpermutedSumUnpermutedProductVariant(node)
-                is DomainB.UnpermutedSum.UnpermutedRecordVariant -> transformUnpermutedSumUnpermutedRecordVariant(node)
-            }
-        // Variant UnpermutedSumUnpermutedProductVariant
-        open fun transformUnpermutedSumUnpermutedProductVariant(node: DomainB.UnpermutedSum.UnpermutedProductVariant): DomainB.UnpermutedSum  {
-            val new_foo = transformUnpermutedSumUnpermutedProductVariant_foo(node)
-            val new_bar = transformUnpermutedSumUnpermutedProductVariant_bar(node)
-            val new_metas = transformUnpermutedSumUnpermutedProductVariant_metas(node)
-            return DomainB.UnpermutedSum.UnpermutedProductVariant(
-                    foo = new_foo,
-                    bar = new_bar,
-                    metas = new_metas
-                )
-        }
-        open fun transformUnpermutedSumUnpermutedProductVariant_foo(node: DomainB.UnpermutedSum.UnpermutedProductVariant) =
-            transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedSumUnpermutedProductVariant_bar(node: DomainB.UnpermutedSum.UnpermutedProductVariant) =
-            transformLongPrimitive(node.bar)
-        open fun transformUnpermutedSumUnpermutedProductVariant_metas(node: DomainB.UnpermutedSum.UnpermutedProductVariant) =
-            transformMetas(node.metas)
-    
-        // Variant UnpermutedSumUnpermutedRecordVariant
-        open fun transformUnpermutedSumUnpermutedRecordVariant(node: DomainB.UnpermutedSum.UnpermutedRecordVariant): DomainB.UnpermutedSum  {
-            val new_foo = transformUnpermutedSumUnpermutedRecordVariant_foo(node)
-            val new_bar = transformUnpermutedSumUnpermutedRecordVariant_bar(node)
-            val new_metas = transformUnpermutedSumUnpermutedRecordVariant_metas(node)
-            return DomainB.UnpermutedSum.UnpermutedRecordVariant(
-                    foo = new_foo,
-                    bar = new_bar,
-                    metas = new_metas
-                )
-        }
-        open fun transformUnpermutedSumUnpermutedRecordVariant_foo(node: DomainB.UnpermutedSum.UnpermutedRecordVariant) =
-            transformSymbolPrimitive(node.foo)
-        open fun transformUnpermutedSumUnpermutedRecordVariant_bar(node: DomainB.UnpermutedSum.UnpermutedRecordVariant) =
-            transformLongPrimitive(node.bar)
-        open fun transformUnpermutedSumUnpermutedRecordVariant_metas(node: DomainB.UnpermutedSum.UnpermutedRecordVariant) =
-            transformMetas(node.metas)
-    
-        //////////////////////////////////////
-        // Sum Type: SumB
-        //////////////////////////////////////
-        open fun transformSumB(node: DomainB.SumB): DomainB.SumB =
-            when(node) {
-                is DomainB.SumB.WillBeUnchanged -> transformSumBWillBeUnchanged(node)
-                is DomainB.SumB.WillBeReplaced -> transformSumBWillBeReplaced(node)
-            }
-        // Variant SumBWillBeUnchanged
-        open fun transformSumBWillBeUnchanged(node: DomainB.SumB.WillBeUnchanged): DomainB.SumB  {
-            val new_metas = transformSumBWillBeUnchanged_metas(node)
-            return DomainB.SumB.WillBeUnchanged(
-                    metas = new_metas
-                )
-        }
-        open fun transformSumBWillBeUnchanged_metas(node: DomainB.SumB.WillBeUnchanged) =
-            transformMetas(node.metas)
-    
-        // Variant SumBWillBeReplaced
-        open fun transformSumBWillBeReplaced(node: DomainB.SumB.WillBeReplaced): DomainB.SumB  {
-            val new_something = transformSumBWillBeReplaced_something(node)
-            val new_metas = transformSumBWillBeReplaced_metas(node)
-            return DomainB.SumB.WillBeReplaced(
-                    something = new_something,
-                    metas = new_metas
-                )
-        }
-        open fun transformSumBWillBeReplaced_something(node: DomainB.SumB.WillBeReplaced) =
-            transformSymbolPrimitive(node.something)
-        open fun transformSumBWillBeReplaced_metas(node: DomainB.SumB.WillBeReplaced) =
-            transformMetas(node.metas)
-    
-        //////////////////////////////////////
-        // Sum Type: NewSum
-        //////////////////////////////////////
-        open fun transformNewSum(node: DomainB.NewSum): DomainB.NewSum =
-            when(node) {
-                is DomainB.NewSum.Eek -> transformNewSumEek(node)
-                is DomainB.NewSum.Whatever -> transformNewSumWhatever(node)
-            }
-        // Variant NewSumEek
-        open fun transformNewSumEek(node: DomainB.NewSum.Eek): DomainB.NewSum  {
-            val new_metas = transformNewSumEek_metas(node)
-            return DomainB.NewSum.Eek(
-                    metas = new_metas
-                )
-        }
-        open fun transformNewSumEek_metas(node: DomainB.NewSum.Eek) =
-            transformMetas(node.metas)
-    
-        // Variant NewSumWhatever
-        open fun transformNewSumWhatever(node: DomainB.NewSum.Whatever): DomainB.NewSum  {
-            val new_metas = transformNewSumWhatever_metas(node)
-            return DomainB.NewSum.Whatever(
-                    metas = new_metas
-                )
-        }
-        open fun transformNewSumWhatever_metas(node: DomainB.NewSum.Whatever) =
-            transformMetas(node.metas)
-    
-    }
-}
-
-
-
-//////////////////////////////////////
-// Cross domain transforms
-//////////////////////////////////////
-
-abstract class DomainAToDomainBVisitorTransform : DomainVisitorTransformBase() {
-    //////////////////////////////////////
-    // Tuple Types
-    //////////////////////////////////////
-    // Tuple ProductA
-    abstract fun transformProductA(node:DomainA.ProductA): DomainB.ProductA
-    // Tuple RecordA
-    abstract fun transformRecordA(node:DomainA.RecordA): DomainB.RecordA
-    // Tuple UnpermutedProduct
-    open fun transformUnpermutedProduct(node: DomainA.UnpermutedProduct): DomainB.UnpermutedProduct {
-        val new_foo = transformUnpermutedProduct_foo(node)
-        val new_bar = transformUnpermutedProduct_bar(node)
-        val new_metas = transformUnpermutedProduct_metas(node)
-        return DomainB.UnpermutedProduct(
-                foo = new_foo,
-                bar = new_bar,
-                metas = new_metas
-            )
-    }
-    open fun transformUnpermutedProduct_foo(node: DomainA.UnpermutedProduct) =
-        transformSymbolPrimitive(node.foo)
-    open fun transformUnpermutedProduct_bar(node: DomainA.UnpermutedProduct) =
-        transformLongPrimitive(node.bar)
-    open fun transformUnpermutedProduct_metas(node: DomainA.UnpermutedProduct) =
-        transformMetas(node.metas)
-
-    // Tuple UnpermutedRecord
-    open fun transformUnpermutedRecord(node: DomainA.UnpermutedRecord): DomainB.UnpermutedRecord {
-        val new_foo = transformUnpermutedRecord_foo(node)
-        val new_bar = transformUnpermutedRecord_bar(node)
-        val new_metas = transformUnpermutedRecord_metas(node)
-        return DomainB.UnpermutedRecord(
-                foo = new_foo,
-                bar = new_bar,
-                metas = new_metas
-            )
-    }
-    open fun transformUnpermutedRecord_foo(node: DomainA.UnpermutedRecord) =
-        transformSymbolPrimitive(node.foo)
-    open fun transformUnpermutedRecord_bar(node: DomainA.UnpermutedRecord) =
-        transformLongPrimitive(node.bar)
-    open fun transformUnpermutedRecord_metas(node: DomainA.UnpermutedRecord) =
-        transformMetas(node.metas)
-
-    //////////////////////////////////////
-    // Sum Type: SumB
-    //////////////////////////////////////
-    open fun transformSumB(node: DomainA.SumB): DomainB.SumB =
-        when(node) {
-            is DomainA.SumB.WillBeUnchanged -> transformSumBWillBeUnchanged(node)
-            is DomainA.SumB.WillBeRemoved -> transformSumBWillBeRemoved(node)
-            is DomainA.SumB.WillBeReplaced -> transformSumBWillBeReplaced(node)
-        }
-    // Variant SumBWillBeUnchanged
-    open fun transformSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged): DomainB.SumB  {
-        val new_metas = transformSumBWillBeUnchanged_metas(node)
-        return DomainB.SumB.WillBeUnchanged(
-                metas = new_metas
-            )
-    }
-    open fun transformSumBWillBeUnchanged_metas(node: DomainA.SumB.WillBeUnchanged) =
-        transformMetas(node.metas)
-
-    // Variant SumBWillBeRemoved
-    abstract fun transformSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved): DomainB.SumB
-    // Variant SumBWillBeReplaced
-    abstract fun transformSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced): DomainB.SumB
-    //////////////////////////////////////
-    // Sum Type: UnpermutedSum
-    //////////////////////////////////////
-    open fun transformUnpermutedSum(node: DomainA.UnpermutedSum): DomainB.UnpermutedSum =
-        when(node) {
-            is DomainA.UnpermutedSum.UnpermutedProductVariant -> transformUnpermutedSumUnpermutedProductVariant(node)
-            is DomainA.UnpermutedSum.UnpermutedRecordVariant -> transformUnpermutedSumUnpermutedRecordVariant(node)
-        }
-    // Variant UnpermutedSumUnpermutedProductVariant
-    open fun transformUnpermutedSumUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant): DomainB.UnpermutedSum  {
-        val new_foo = transformUnpermutedSumUnpermutedProductVariant_foo(node)
-        val new_bar = transformUnpermutedSumUnpermutedProductVariant_bar(node)
-        val new_metas = transformUnpermutedSumUnpermutedProductVariant_metas(node)
-        return DomainB.UnpermutedSum.UnpermutedProductVariant(
-                foo = new_foo,
-                bar = new_bar,
-                metas = new_metas
-            )
-    }
-    open fun transformUnpermutedSumUnpermutedProductVariant_foo(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
-        transformSymbolPrimitive(node.foo)
-    open fun transformUnpermutedSumUnpermutedProductVariant_bar(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
-        transformLongPrimitive(node.bar)
-    open fun transformUnpermutedSumUnpermutedProductVariant_metas(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
-        transformMetas(node.metas)
-
-    // Variant UnpermutedSumUnpermutedRecordVariant
-    open fun transformUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant): DomainB.UnpermutedSum  {
-        val new_foo = transformUnpermutedSumUnpermutedRecordVariant_foo(node)
-        val new_bar = transformUnpermutedSumUnpermutedRecordVariant_bar(node)
-        val new_metas = transformUnpermutedSumUnpermutedRecordVariant_metas(node)
-        return DomainB.UnpermutedSum.UnpermutedRecordVariant(
-                foo = new_foo,
-                bar = new_bar,
-                metas = new_metas
-            )
-    }
-    open fun transformUnpermutedSumUnpermutedRecordVariant_foo(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
-        transformSymbolPrimitive(node.foo)
-    open fun transformUnpermutedSumUnpermutedRecordVariant_bar(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
-        transformLongPrimitive(node.bar)
-    open fun transformUnpermutedSumUnpermutedRecordVariant_metas(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
-        transformMetas(node.metas)
-
 }
 
