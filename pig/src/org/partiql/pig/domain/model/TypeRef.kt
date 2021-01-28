@@ -21,7 +21,7 @@ import com.amazon.ionelement.api.ionInt
 import com.amazon.ionelement.api.ionSexpOf
 import com.amazon.ionelement.api.ionSymbol
 
-class TypeRef(val typeName: String, val arity: Arity, val metas: MetaContainer) {
+data class TypeRef(val typeName: String, val arity: Arity, val metas: MetaContainer) {
     /**
      * Generates an s-expression representation of this [TypeRef].
      *
@@ -34,4 +34,23 @@ class TypeRef(val typeName: String, val arity: Arity, val metas: MetaContainer) 
             Arity.Optional -> ionSexpOf(ionSymbol("?"), ionSymbol(typeName))
             is Arity.Variadic -> ionSexpOf(ionSymbol("*"), ionSymbol(typeName), ionInt(arity.minimumArity.toLong()))
         }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is TypeRef) return false
+
+        if (typeName != other.typeName) return false
+        if (arity != other.arity) return false
+        // Metas intentionally omitted here
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = typeName.hashCode()
+        result = 31 * result + arity.hashCode()
+        // Metas intentionally omitted here
+
+        return result
+    }
 }

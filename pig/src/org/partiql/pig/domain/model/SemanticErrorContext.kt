@@ -97,6 +97,12 @@ sealed class SemanticErrorContext(val msgFormatter: () -> String): ErrorContext 
 
     data class EmptySumType(val sumTypeName: String)
         : SemanticErrorContext({ "Sum type '$sumTypeName' is empty" })
+
+    data class SourceDomainDoesNotExist(val name: String)
+        : SemanticErrorContext({ "Source domain '$name' does not exist" })
+
+    data class DestinationDomainDoesNotExist(val name: String)
+        : SemanticErrorContext({ "Destination domain '$name' does not exist" })
 }
 
 /**

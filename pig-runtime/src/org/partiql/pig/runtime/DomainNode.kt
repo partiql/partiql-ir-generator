@@ -19,19 +19,16 @@ import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
 
 /** All generated domain classes must implement this interface. */
-interface DomainNode {
-
-    /** This node's collection of metadata. */
-    val metas: MetaContainer
+interface DomainNode : MetaContainingNode {
 
     /** Creates a copy of the current node with [newMetas] as the new metas. */
     fun copyMetas(newMetas : MetaContainer): DomainNode
 
-    /** Creates a copy of the current node with the specified [key] and [value] as metadata.*/
-    fun withMeta(metaKey: String, metaValue: Any): DomainNode
-
     /** Converts the current node to an instance of `IonElement`. */
     fun toIonElement(): IonElement
+
+    /** This override narrows the return type of [MetaContainingNode.wtihMeta]. */
+    override fun withMeta(metaKey: String, metaValue: Any): DomainNode
 
     /** Converts the current node to a String.  Most nodes should simply call `toIonElement().toString()`. */
     override fun toString(): String

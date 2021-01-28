@@ -32,7 +32,7 @@ open class DomainVisitorBase {
         // default does nothing
     }
 
-    protected open fun visitMetas(node: MetaContainer) {
+    protected open fun visitMetas(metas: MetaContainer) {
         // default does nothing.
     }
 
@@ -53,7 +53,7 @@ open class DomainVisitorBase {
         walkMetas(node.metas)
     }
 
-    open fun walkMetas(node: MetaContainer) {
-        visitMetas(node)
+    open fun walkMetas(metas: MetaContainer) {
+        visitMetas(metas)
     }
 }

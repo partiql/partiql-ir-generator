@@ -172,7 +172,9 @@ assertEquals(onePlusOne, anotherOnePlusOne)
 
 ```
 // Top level
-type_universe ::= '(' 'define' symbol <domain_definition> ')'...
+type_universe ::= <stmt>...
+definition ::= '(' 'define' symbol <domain_definition> ')'
+stmt ::=  <definition> | <transform>
 
 // Domain
 domain_definition ::= <domain> | <permute_domain>
@@ -210,6 +212,9 @@ with ::=
             | '(' 'include' ( '(' <product_body> ')' )... ')' 
         )...
     ')'
+    
+// Transforms
+transform ::= '(' 'transform' symbol symbol ')'
 
 // Type references
 type_ref ::= ion_type

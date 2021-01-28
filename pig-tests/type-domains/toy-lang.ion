@@ -18,10 +18,15 @@
         (function var_name::symbol body::expr))))
 
 // Define another type domain which extends "toy_lang" by removing named variables and adding DeBruijn indices:
-(define toy_lang_nameless
+(define toy_lang_indexed
   (permute_domain toy_lang
     (with expr
       (exclude variable let)
       (include
-        (variable index::int)
-        (let index::int value::expr body::expr)))))
+        // We are adding the `index` element here.
+        (variable name::symbol index::int)
+        (let name::symbol index::int value::expr body::expr)))))
+
+(transform toy_lang toy_lang_indexed)
+(transform toy_lang_indexed toy_lang)
+

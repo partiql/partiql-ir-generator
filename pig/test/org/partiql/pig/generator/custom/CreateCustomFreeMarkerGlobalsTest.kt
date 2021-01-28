@@ -36,16 +36,16 @@ class CreateCustomFreeMarkerGlobalsTest {
                     TypeDomain(
                         tag = "test_domain",
                         userTypes = listOf(
-                            DataType.Tuple(
+                            DataType.UserType.Tuple(
                                 tag = "foo",
                                 tupleType = TupleType.PRODUCT,
                                 namedElements = listOf(
                                     NamedElement("bat", "baz", TypeRef("int", Arity.Required, em), em)),
                                 metas = em),
-                            DataType.Sum(
+                            DataType.UserType.Sum(
                                 "some_sum",
                                 variants = listOf(
-                                    DataType.Tuple(
+                                    DataType.UserType.Tuple(
                                         tag = "bar",
                                         tupleType = TupleType.PRODUCT,
                                         namedElements = listOf(
