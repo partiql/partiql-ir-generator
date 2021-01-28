@@ -111,7 +111,7 @@ class PermuteTransformSmokeTests {
                 }
         }
 
-        val rountTripped = indexedToUnindexed.transformExpr(indexed)
-        assertEquals(unindexed, rountTripped)
+        val roundTripped = indexedToUnindexed.transformExpr(indexed)
+        assertEquals(unindexed, roundTripped)
     }
 }
