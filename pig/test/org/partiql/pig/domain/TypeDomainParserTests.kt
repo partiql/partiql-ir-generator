@@ -22,9 +22,7 @@ import com.amazon.ionelement.api.ionSymbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.partiql.pig.domain.model.TypeDomain
 import org.partiql.pig.util.parseTypeUniverseInString
-import kotlin.test.assertTrue
 
 class TypeDomainParserTests {
     private val loader = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))

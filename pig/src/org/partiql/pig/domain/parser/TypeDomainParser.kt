@@ -55,7 +55,7 @@ fun parseTypeUniverseFile(path: String): TypeUniverse {
     return parser.parseTypeUniverse(path)
 }
 
-private class Parser(
+internal class Parser(
     val inputSource: InputSource
 ) {
     /** This contains every file the parser has "seen" and is used detect and prevent import cycles. */
@@ -107,7 +107,7 @@ private class Parser(
     private fun parseImport(sexp: SexpElement): List<Statement> {
         requireArityForTag(sexp, 1)
         val relativePath = sexp.tail.single().asString().textValue
-        
+
         val workingDirectory = File(this.qualifedSourceStack.peek()).parentFile
         val qualifiedSourcePath = File(workingDirectory, relativePath).canonicalPath
         return if(!parseHistory.contains(qualifiedSourcePath)) {

@@ -36,6 +36,7 @@ fun parseTypeUniverseInString(topUnvierseText: String, includes: Map<String, Str
     return parser.parseTypeUniverse("root.ion")
 }
 
+/** A minimal faux file system backed by a Map<String, String>.  Used only for testing. */
 class StringSource(val sources: Map<String, String>) : InputSource {
     override fun openStream(sourceName: String): InputStream {
         val text: String = sources[sourceName] ?: throw FileNotFoundException("$sourceName does not exist")
@@ -43,8 +44,6 @@ class StringSource(val sources: Map<String, String>) : InputSource {
         return ByteArrayInputStream(text.toByteArray(Charsets.UTF_8))
     }
 
-    override fun getCanonicalName(sourceName: String): String {
-        TODO("not implemented")
-    }
+    override fun getCanonicalName(sourceName: String): String = sourceName
 }
 
