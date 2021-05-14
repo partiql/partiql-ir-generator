@@ -39,7 +39,7 @@ internal interface InputSource {
 }
 
 internal val FILE_SYSTEM_SOURCE = object : InputSource {
-    override fun openStream(qualifiedSource: String) = FileInputStream(qualifiedSource)
+    override fun openStream(sourceName: String) = FileInputStream(sourceName)
 
     override fun getCanonicalName(sourceName: String): String = File(sourceName).canonicalFile.toString()
 }
