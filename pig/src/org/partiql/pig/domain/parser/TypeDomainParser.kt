@@ -107,8 +107,7 @@ private class Parser(
     private fun parseImport(sexp: SexpElement): List<Statement> {
         requireArityForTag(sexp, 1)
         val relativePath = sexp.tail.single().asString().textValue
-        // TODO: need to report proper error to user if file does not exist.
-
+        
         val workingDirectory = File(this.qualifedSourceStack.peek()).parentFile
         val qualifiedSourcePath = File(workingDirectory, relativePath).canonicalPath
         return if(!parseHistory.contains(qualifiedSourcePath)) {

@@ -412,7 +412,7 @@ It is possible to split type universe definitions among multiple files:
 (import "b.ion")
 ```
 
-The resulting type universe will contain all type domains from both `a.ion` and `b.ion`, `root.ion` may also 
+The resulting type universe will contain all type domains from both `a.ion` and `b.ion`.  `root.ion` may also 
 define additional type domains.  The primary purpose of this is to be able to permute domains defined in another 
 file.
 
