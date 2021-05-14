@@ -42,6 +42,9 @@ sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
         override fun hashCode(): Int = 0
     }
 
+    data class CouldNotFindImportedTypeUniverse(val tag: String)
+        : ParserErrorContext({ "Could not find imported type universe: $tag" })
+
     data class UnknownConstructor(val tag: String)
         : ParserErrorContext({ "Unknown constructor: '$tag' (expected constructors are 'domain' or 'permute_domain')" })
 
@@ -79,8 +82,7 @@ sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
         : ParserErrorContext({ "Element has multiple name annotations"})
 }
 
-
-fun parseError(blame: IonLocation?, context: ErrorContext): Nothing =
+fun parseError(blame: SourceLocation?, context: ErrorContext): Nothing =
     PigError(blame, context).let {
         throw when (context) {
             is ParserErrorContext.IonElementError -> {
@@ -90,9 +92,4 @@ fun parseError(blame: IonLocation?, context: ErrorContext): Nothing =
             else -> PigException(it)
         }
     }
-
-fun parseError(blame: IonElement, context: ErrorContext): Nothing {
-    val loc = blame.metas.location
-    parseError(loc, context)
-}
 

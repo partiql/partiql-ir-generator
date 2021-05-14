@@ -145,7 +145,7 @@ class CommandLineParser {
                         LanguageTargetType.CUSTOM -> TargetLanguage.Custom(optSet.valueOf(templateOpt))
                     }
 
-                    Command.Generate(typeUniverseFile, outputFile, target)
+                    Command.Generate(typeUniverseFile.toString(), outputFile.toString(), target)
                 }
             }
         } catch(ex: OptionException) {

@@ -21,7 +21,7 @@ import org.partiql.pig.cmdline.CommandLineParser
 import org.partiql.pig.cmdline.TargetLanguage
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.domain.model.TypeUniverse
-import org.partiql.pig.domain.parser.parseTypeUniverse
+import org.partiql.pig.domain.parser.parseTypeUniverseFile
 import org.partiql.pig.generator.custom.applyCustomTemplate
 import org.partiql.pig.generator.html.applyHtmlTemplate
 import org.partiql.pig.generator.kotlin.applyKotlinTemplate
@@ -65,9 +65,7 @@ fun generateCode(command: Command.Generate) {
     progress("output file  : ${command.outputFile}")
 
     progress("parsing the universe...")
-    val typeUniverse: TypeUniverse = FileInputStream(command.typeUniverseFile).use { inputStream ->
-        IonReaderBuilder.standard().build(inputStream).use { ionReader -> parseTypeUniverse(ionReader) }
-    }
+    val typeUniverse: TypeUniverse = parseTypeUniverseFile(command.typeUniverseFile)
 
     progress("permuting domains...")
 

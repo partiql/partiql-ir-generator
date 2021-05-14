@@ -15,8 +15,7 @@
 
 package org.partiql.pig.errors
 
-import com.amazon.ionelement.api.IonLocation
-import com.amazon.ionelement.api.locationToString
+import org.partiql.pig.domain.parser.SourceLocation
 
 /**
  * [ErrorContext] instances provide information about an error message which can later be used
@@ -29,7 +28,7 @@ interface ErrorContext {
     val message: String
 }
 
-data class PigError(val location: IonLocation?, val context: ErrorContext) {
-    override fun toString(): String = "${locationToString(location)}: ${context.message}"
+data class PigError(val location: SourceLocation?, val context: ErrorContext) {
+    override fun toString(): String = "${location?.toString() ?: "<unknown path>"}: ${context.message}"
 }
 

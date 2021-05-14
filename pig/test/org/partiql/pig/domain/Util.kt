@@ -29,11 +29,12 @@ import org.partiql.pig.domain.model.Transform
 import org.partiql.pig.domain.model.TupleType
 import org.partiql.pig.domain.model.TypeDomain
 import org.partiql.pig.domain.model.TypeUniverse
+import org.partiql.pig.domain.parser.SourceLocation
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
 
 fun makeErr(line: Int, col: Int, errorContext: ErrorContext) =
-    PigError(IonTextLocation(line.toLong(), col.toLong()), errorContext)
+    PigError(SourceLocation("root.ion", IonTextLocation(line.toLong(), col.toLong())), errorContext)
 
 fun makeErr(errorContext: ErrorContext) =
     PigError(null, errorContext)

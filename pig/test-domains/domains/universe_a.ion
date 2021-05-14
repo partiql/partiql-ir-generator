@@ -1,0 +1,3 @@
+
+(define domain_a (domain (product foo)))
+(import "import_b.ion")

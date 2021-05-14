@@ -67,12 +67,12 @@ class CommandLineParserTests {
             ////////////////////////////////////////////////////////
             // long parameter names
             TestCase(
-                Command.Generate(File("input.ion"), File("output.kt"), TargetLanguage.Kotlin("some.package")),
+                Command.Generate("input.ion", "output.kt", TargetLanguage.Kotlin("some.package")),
                 "--universe=input.ion", "--target=kotlin", "--output=output.kt", "--namespace=some.package"),
 
             // short parameter names
             TestCase(
-                Command.Generate(File("input.ion"), File("output.kt"), TargetLanguage.Kotlin("some.package")),
+                Command.Generate("input.ion", "output.kt", TargetLanguage.Kotlin("some.package")),
                 "-u=input.ion", "-t=kotlin", "-o=output.kt", "-n=some.package"),
 
             // missing the --namespace argument
@@ -85,12 +85,12 @@ class CommandLineParserTests {
             ////////////////////////////////////////////////////////
             // long parameter names
             TestCase(
-                Command.Generate(File("input.ion"), File("output.html"), TargetLanguage.Html),
+                Command.Generate("input.ion", "output.html", TargetLanguage.Html),
                 "--universe=input.ion", "--target=html", "--output=output.html"),
 
             // short parameter names
             TestCase(
-                Command.Generate(File("input.ion"), File("output.html"), TargetLanguage.Html),
+                Command.Generate("input.ion", "output.html", TargetLanguage.Html),
                 "-u=input.ion", "-target=html", "--output=output.html"),
 
             ////////////////////////////////////////////////////////
@@ -98,12 +98,12 @@ class CommandLineParserTests {
             ////////////////////////////////////////////////////////
             // long parameter names
             TestCase(
-                Command.Generate(File("input.ion"), File("output.txt"), TargetLanguage.Custom(File("template.ftl"))),
+                Command.Generate("input.ion", "output.txt", TargetLanguage.Custom(File("template.ftl"))),
                 "--universe=input.ion", "--target=custom", "--output=output.txt", "--template=template.ftl"),
 
             // short parameter names
             TestCase(
-                Command.Generate(File("input.ion"), File("output.txt"), TargetLanguage.Custom(File("template.ftl"))),
+                Command.Generate("input.ion", "output.txt", TargetLanguage.Custom(File("template.ftl"))),
                 "-u=input.ion", "-t=custom", "-o=output.txt", "-e=template.ftl"),
 
             // missing the --template argument

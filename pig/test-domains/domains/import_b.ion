@@ -1,0 +1,4 @@
+
+// import file with a relative path
+(import "../other/universe_b.ion")
+

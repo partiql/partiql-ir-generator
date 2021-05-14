@@ -18,6 +18,8 @@ package org.partiql.pig.domain.model
 import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.location
+import org.partiql.pig.domain.parser.SourceLocation
+import org.partiql.pig.domain.parser.sourceLocation
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
@@ -109,9 +111,9 @@ sealed class SemanticErrorContext(val msgFormatter: () -> String): ErrorContext 
  * Shortcut for throwing [PigException] with the specified metas and [PigError].
  */
 fun semanticError(blame: MetaContainer, context: ErrorContext): Nothing =
-    semanticError(blame.location, context)
+    semanticError(blame.sourceLocation, context)
 /**
  * Shortcut for throwing [PigException] with the specified metas and [PigError].
  */
-fun semanticError(blame: IonLocation?, context: ErrorContext): Nothing =
+fun semanticError(blame: SourceLocation?, context: ErrorContext): Nothing =
     throw PigException(PigError(blame, context))

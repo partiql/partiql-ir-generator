@@ -174,7 +174,9 @@ assertEquals(onePlusOne, anotherOnePlusOne)
 // Top level
 type_universe ::= <stmt>...
 definition ::= '(' 'define' symbol <domain_definition> ')'
-stmt ::=  <definition> | <transform>
+stmt ::=  <definition> | <transform> | <include>
+
+import ::= `(import <path-to-include)`
 
 // Domain
 domain_definition ::= <domain> | <permute_domain>
@@ -399,6 +401,20 @@ Unlike record elements, product element defintions must include identifiers.
 ```      
 (product int_pair first::int second::int)
 ```
+
+#### Imports
+
+It is possible to split type universe definitions among multiple files:
+
+```
+// root.ion:
+(import "a.ion")
+(import "b.ion")
+```
+
+The resulting type universe will contain all type domains from both `a.ion` and `b.ion`, `root.ion` may also 
+define additional type domains.  The primary purpose of this is to be able to permute domains defined in another 
+file.
 
 
 #### Using PIG In Your Project
