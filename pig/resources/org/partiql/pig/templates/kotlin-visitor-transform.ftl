@@ -1,17 +1,29 @@
 [#ftl output_format="plainText"]
 [#-- @ftlvariable name="universe" type="org.partiql.pig.generator.kotlin.KTypeUniverse" --]
 
-[#macro transform_fun_body destDomainName t transformFuncName]
+[#macro transform_fun_body destDomainName t transformFuncName avoidCopyingUnchangedNodes]
     [#list t.properties as p]
         val new_${p.kotlinName} = transform${transformFuncName}_${p.kotlinName}(node)
     [/#list]
         val new_metas = transform${transformFuncName}_metas(node)
-        return ${destDomainName}.${t.constructorName}(
+        return [#if avoidCopyingUnchangedNodes]if (
+            [#list t.properties as p]
+            node.${p.kotlinName} !== new_${p.kotlinName} ||
+            [/#list]
+            node.metas !== new_metas
+        ) {
+            [/#if]
+            ${destDomainName}.${t.constructorName}(
                 [#list t.properties as p]
                 ${p.kotlinName} = new_${p.kotlinName},
                 [/#list]
                 metas = new_metas
             )
+[#if avoidCopyingUnchangedNodes]
+        } else {
+            node
+        }
+[/#if]
 [/#macro]
 
 [#macro transform_property_functions source_domain tuple sumName]
@@ -41,7 +53,7 @@ abstract class ${class_name} : DomainVisitorTransformBase() {
     // Tuple ${tuple.kotlinName}
     [#if !tuple.transformAbstract]
     open fun transform${tuple.kotlinName}(node: ${source_domain.kotlinName}.${tuple.kotlinName}): ${dest_domain_name}.${tuple.kotlinName} {
-        [@transform_fun_body dest_domain_name tuple tuple.kotlinName /]
+        [@transform_fun_body dest_domain_name tuple tuple.kotlinName source_domain.kotlinName == dest_domain_name/]
     }
     [@transform_property_functions source_domain tuple ""/]
     [#else]
@@ -63,7 +75,7 @@ abstract class ${class_name} : DomainVisitorTransformBase() {
     // Variant ${s.kotlinName}${tuple.kotlinName}
     [#if !tuple.transformAbstract]
     open fun transform${s.kotlinName}${tuple.kotlinName}(node: ${source_domain.kotlinName}.${s.kotlinName}.${tuple.kotlinName}): ${dest_domain_name}.${s.kotlinName}  {
-        [@transform_fun_body dest_domain_name, tuple, "${s.kotlinName}${tuple.kotlinName}" /]
+        [@transform_fun_body dest_domain_name, tuple, "${s.kotlinName}${tuple.kotlinName}" source_domain.kotlinName == dest_domain_name/]
     }
     [@transform_property_functions source_domain tuple s.kotlinName /]
     [#else]

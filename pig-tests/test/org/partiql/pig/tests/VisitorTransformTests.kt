@@ -23,10 +23,12 @@ import org.partiql.pig.runtime.LongPrimitive
 import org.partiql.pig.runtime.SymbolPrimitive
 import org.partiql.pig.tests.generated.TestDomain
 import org.partiql.pig.tests.generated.ToyLang
+import kotlin.test.assertNotSame
+import kotlin.test.assertSame
 
 const val INDEX_META_KEY = "index"
 
-class VisitorTransformSmokeTests {
+class VisitorTransformTests {
 
     /** 
     * This is a VisitorTransform implementation that transforms variable references from names to indexes.
@@ -131,6 +133,47 @@ class VisitorTransformSmokeTests {
         val output = longIncrementer.transformTestSum(input)
         val expectedAst = TestDomain.build { three(2, 4, 6) }
         assertEquals(expectedAst, output)
+    }
+
+    @Test
+    fun doesNotMakeUneccessaryCopiesWithWithLongPrimitives() {
+        val input = TestDomain.build { intPair(1, 2) }
+        val output = object : TestDomain.VisitorTransform() { }.transformIntPair(input)
+        assertSame(input, output, "Expected same instance of IntPair to be returned from a VisitorTransform " +
+            "that doesn't change it.")
+    }
+
+    @Test
+    fun doesNotMakeUneccessaryCopiesWithWithSymbolPrimitives() {
+        val input = TestDomain.build { symbolPair("a", "b") }
+        val output = object : TestDomain.VisitorTransform() { }.transformSymbolPair(input)
+        assertSame(input, output, "Expected same instance of SymbolPair to be returned from a VisitorTransform " +
+            "that doesn't change it.")
+    }
+
+    @Test
+    fun onlyCopiesChangedNodesInNestedStructures() {
+        val input = TestDomain.build { intPairPair(intPair(1, 2), intPair(3, 4)) }
+
+        // Create a transform that changes any 4 to a 5.
+        val output = object : TestDomain.VisitorTransform() {
+            override fun transformLongPrimitive(lng: LongPrimitive): LongPrimitive =
+                if(lng.value == 4L) {
+                    lng.copy(value = 5L)
+                } else {
+                    super.transformLongPrimitive(lng)
+                }
+        }.transformIntPairPair(input)
+
+        assertEquals(5L, output.second.second.value, "The transform should have actually changed the 4 to a 5.")
+
+        assertNotSame(input, output, "The root node has a changed child, therefore it should also be changed.")
+
+        assertSame(input.first, output.first,
+            "The `first` element of the root is unchanged from its original, therefore should not be changed.")
+
+        assertNotSame(input.second, output.second,
+            "The `second` element is changed, and therefore should be a new instance.")
     }
 
     private val nameMangler = object : TestDomain.VisitorTransform() {

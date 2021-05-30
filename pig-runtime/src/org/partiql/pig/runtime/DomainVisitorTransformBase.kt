@@ -26,23 +26,39 @@ import com.amazon.ionelement.api.MetaContainer
 abstract class DomainVisitorTransformBase {
     open fun transformMetas(metas: MetaContainer) = metas
 
-    open fun transformAnyElement(node: AnyElement): AnyElement =
-        // TODO:  remove .asAnyElement() below when https://github.com/amzn/ion-element-kotlin/issues/36 is fixed.
-        node.copy(metas = transformMetas(node.metas)).asAnyElement()
+    open fun transformAnyElement(node: AnyElement): AnyElement {
+        val newMetas = transformMetas(node.metas)
+        return if(node.metas !== newMetas) {
+            // TODO:  remove .asAnyElement() below when https://github.com/amzn/ion-element-kotlin/issues/36 is fixed.
+            node.copy(metas = newMetas).asAnyElement()
+        } else {
+            node
+        }
+    }
 
-    open fun transformSymbolPrimitive(sym: SymbolPrimitive) =
-        SymbolPrimitive(
-            transformSymbolPrimitiveText(sym),
-            transformSymbolPrimitiveMetas(sym))
+    open fun transformSymbolPrimitive(sym: SymbolPrimitive): SymbolPrimitive {
+        val newText = transformSymbolPrimitiveText(sym)
+        val newMetas = transformSymbolPrimitiveMetas(sym)
+        return if(sym.text != newText || sym.metas !== newMetas) {
+            SymbolPrimitive(newText, newMetas)
+        } else {
+            sym
+        }
+    }
 
     open fun transformSymbolPrimitiveText(sym: SymbolPrimitive) = sym.text
 
     open fun transformSymbolPrimitiveMetas(sym: SymbolPrimitive) = transformMetas(sym.metas)
 
-    open fun transformLongPrimitive(lng: LongPrimitive) =
-        LongPrimitive(
-            transformLongPrimitiveValue(lng),
-            transformLongPrimitiveMetas(lng))
+    open fun transformLongPrimitive(lng: LongPrimitive): LongPrimitive {
+        val newValue = transformLongPrimitiveValue(lng)
+        val newMetas = transformLongPrimitiveMetas(lng)
+        return if(lng.value != newValue || lng.metas !== newMetas) {
+            LongPrimitive(newValue, newMetas)
+        } else {
+            lng
+        }
+    }
 
     open fun transformLongPrimitiveValue(sym: LongPrimitive): Long = sym.value
 
