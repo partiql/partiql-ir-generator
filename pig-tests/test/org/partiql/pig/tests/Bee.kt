@@ -13,22 +13,6 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.parser
+package org.partiql.pig.tests
 
-import com.amazon.ion.IonReader
-import com.amazon.ion.system.IonReaderBuilder
-import java.io.Closeable
-import java.io.File
-import java.io.FileInputStream
-import java.nio.file.Path
-
-//class ImportSource(
-//    val fullyQualifiedName: String,
-//    val reader: IonReader
-//) : Closeable {
-//    override fun close() {
-//        reader.close()
-//    }
-//}
-
-// TODO: names
+class Bee(val a: Aye)

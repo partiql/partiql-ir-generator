@@ -15,14 +15,12 @@
 
 package org.partiql.pig.domain.model
 
-import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.MetaContainer
-import com.amazon.ionelement.api.location
 import org.partiql.pig.domain.parser.SourceLocation
 import org.partiql.pig.domain.parser.sourceLocation
-import org.partiql.pig.errors.PigException
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
+import org.partiql.pig.errors.PigException
 
 /**
  * Encapsulates all error context information in an easily testable way.

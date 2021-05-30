@@ -26,6 +26,7 @@ import org.partiql.pig.domain.parser.ParserErrorContext
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.util.parseTypeUniverseInString
+import java.io.File
 
 class TypeDomainParserErrorsTest {
 

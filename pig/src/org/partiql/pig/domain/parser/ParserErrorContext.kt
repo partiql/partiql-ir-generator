@@ -15,14 +15,11 @@
 
 package org.partiql.pig.domain.parser
 
-import com.amazon.ionelement.api.IonElement
-import com.amazon.ionelement.api.IonLocation
-import com.amazon.ionelement.api.location
 import com.amazon.ionelement.api.ElementType
 import com.amazon.ionelement.api.IonElementException
-import org.partiql.pig.errors.PigException
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
+import org.partiql.pig.errors.PigException
 
 /**
  * Variants of [ParserErrorContext] contain details about various parse errors that can be encountered
@@ -33,7 +30,7 @@ import org.partiql.pig.errors.PigError
 sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
     override val message: String get() = msgFormatter()
 
-    /** Indicates that an []IonElectrolyteException] was thrown during parsing of a type universe. */
+    /** Indicates that an [IonElectrolyteException] was thrown during parsing of a type universe. */
     data class IonElementError(val ex: IonElementException)
         : ParserErrorContext({ ex.message!! }) {
         // This is for unit tests... we don't include IonElectrolyteException here since it doesn't implement

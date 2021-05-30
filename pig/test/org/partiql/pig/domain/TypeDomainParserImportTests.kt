@@ -26,11 +26,10 @@ class TypeDomainParserImportTests {
     @Test
     fun testImport() {
         val universe = parseTypeUniverseFile("test-domains/main.ion")
-        println(universe.toIonElement())
-
         val allDomains = universe.statements.filterIsInstance<TypeDomain>()
 
         // If 4 domains are loaded correctly, then we deal with relative paths and circular references correctly.
+        // see documentation at top of test-domains/main.ion
         Assertions.assertEquals(4, allDomains.size)
         assertTrue(allDomains.any { it.tag == "domain_a" })
         assertTrue(allDomains.any { it.tag == "domain_b" })

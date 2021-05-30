@@ -174,9 +174,9 @@ assertEquals(onePlusOne, anotherOnePlusOne)
 // Top level
 type_universe ::= <stmt>...
 definition ::= '(' 'define' symbol <domain_definition> ')'
-stmt ::=  <definition> | <transform> | <include>
+stmt ::=  <definition> | <transform> | <import>
 
-import ::= `(import <path-to-include)`
+import ::= `(import <path-to-import)`
 
 // Domain
 domain_definition ::= <domain> | <permute_domain>
@@ -415,6 +415,13 @@ It is possible to split type universe definitions among multiple files:
 The resulting type universe will contain all type domains from both `a.ion` and `b.ion`.  `root.ion` may also 
 define additional type domains.  The primary purpose of this is to be able to permute domains defined in another 
 file.
+
+Paths are relative to the directory containing the current type universe:
+
+```
+(import "subdir/partiql.ion")
+(import "../other/some-universe.ion")
+```
 
 
 #### Using PIG In Your Project
