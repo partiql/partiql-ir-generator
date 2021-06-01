@@ -105,7 +105,12 @@ class TypeDomainParserErrorsTest {
 
             TestCase( // Covers second place in parser this can be thrown
                 "(define huh (domain (product huh x::int y::42)))",
-                makeErr(1, 41, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT)))
+                makeErr(1, 41, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT))),
+
+            TestCase(
+                "(include_file \"some-non-existing-file.ion\")",
+                makeErr(1, 1, ParserErrorContext.CouldNotFindImportedTypeUniverse(
+                    File("some-non-existing-file.ion").canonicalPath)))
         )
     }
 }

@@ -1,4 +1,4 @@
 
 (define domain_c (domain (product foo)))
 // make a circular reference
-(import "circular_universe_d.ion")
+(include_file "circular_universe_d.ion")

@@ -1,4 +1,3 @@
 
-(import "domains/universe_a.ion")
-(import "domains/circular_universe_c.ion")
-
+(include_file "domains/universe_a.ion")
+(include_file "domains/circular_universe_c.ion")

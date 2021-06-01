@@ -77,7 +77,7 @@ internal class Parser(
                         when (topLevelSexp.tag) {
                             "define" -> listOf(parseDefine(topLevelSexp))
                             "transform" -> listOf(parseTransform(topLevelSexp))
-                            "import" -> parseImport(topLevelSexp)
+                            "include_file" -> parseIncludeFile(topLevelSexp)
                             else -> parseError(
                                 topLevelSexp.head,
                                 ParserErrorContext.InvalidTopLevelTag(topLevelSexp.tag))
@@ -104,7 +104,7 @@ internal class Parser(
         metaContainerOf(SOURCE_LOCATION_META_TAG to it.toSourceLocation())
     } ?: emptyMetaContainer()
 
-    private fun parseImport(sexp: SexpElement): List<Statement> {
+    private fun parseIncludeFile(sexp: SexpElement): List<Statement> {
         requireArityForTag(sexp, 1)
         val relativePath = sexp.tail.single().asString().textValue
 
