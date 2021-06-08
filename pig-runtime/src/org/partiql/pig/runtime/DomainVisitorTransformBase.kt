@@ -29,7 +29,6 @@ abstract class DomainVisitorTransformBase {
     open fun transformAnyElement(node: AnyElement): AnyElement {
         val newMetas = transformMetas(node.metas)
         return if(node.metas !== newMetas) {
-            // TODO:  remove .asAnyElement() below when https://github.com/amzn/ion-element-kotlin/issues/36 is fixed.
             node.copy(metas = newMetas).asAnyElement()
         } else {
             node
