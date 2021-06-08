@@ -136,7 +136,7 @@ class VisitorTransformTests {
     }
 
     @Test
-    fun doesNotMakeUneccessaryCopiesWithWithLongPrimitives() {
+    fun doesNotMakeUnnecessaryCopiesWithWithLongPrimitives() {
         val input = TestDomain.build { intPair(1, 2) }
         val output = object : TestDomain.VisitorTransform() { }.transformIntPair(input)
         assertSame(input, output, "Expected same instance of IntPair to be returned from a VisitorTransform " +
@@ -144,7 +144,7 @@ class VisitorTransformTests {
     }
 
     @Test
-    fun doesNotMakeUneccessaryCopiesWithWithSymbolPrimitives() {
+    fun doesNotMakeUnnecessaryCopiesWithWithSymbolPrimitives() {
         val input = TestDomain.build { symbolPair("a", "b") }
         val output = object : TestDomain.VisitorTransform() { }.transformSymbolPair(input)
         assertSame(input, output, "Expected same instance of SymbolPair to be returned from a VisitorTransform " +
