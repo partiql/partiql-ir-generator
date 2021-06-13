@@ -1419,10 +1419,17 @@ class ToyLang private constructor() {
         open fun transformExprLit(node: ToyLang.Expr.Lit): ToyLang.Expr  {
             val new_value = transformExprLit_value(node)
             val new_metas = transformExprLit_metas(node)
-            return ToyLang.Expr.Lit(
+            return if (
+                node.value !== new_value ||
+                node.metas !== new_metas
+            ) {
+                ToyLang.Expr.Lit(
                     value = new_value,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprLit_value(node: ToyLang.Expr.Lit) =
             transformAnyElement(node.value)
@@ -1433,10 +1440,17 @@ class ToyLang private constructor() {
         open fun transformExprVariable(node: ToyLang.Expr.Variable): ToyLang.Expr  {
             val new_name = transformExprVariable_name(node)
             val new_metas = transformExprVariable_metas(node)
-            return ToyLang.Expr.Variable(
+            return if (
+                node.name !== new_name ||
+                node.metas !== new_metas
+            ) {
+                ToyLang.Expr.Variable(
                     name = new_name,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprVariable_name(node: ToyLang.Expr.Variable) =
             transformSymbolPrimitive(node.name)
@@ -1447,10 +1461,17 @@ class ToyLang private constructor() {
         open fun transformExprNot(node: ToyLang.Expr.Not): ToyLang.Expr  {
             val new_expr = transformExprNot_expr(node)
             val new_metas = transformExprNot_metas(node)
-            return ToyLang.Expr.Not(
+            return if (
+                node.expr !== new_expr ||
+                node.metas !== new_metas
+            ) {
+                ToyLang.Expr.Not(
                     expr = new_expr,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprNot_expr(node: ToyLang.Expr.Not) =
             transformExpr(node.expr)
@@ -1461,10 +1482,17 @@ class ToyLang private constructor() {
         open fun transformExprPlus(node: ToyLang.Expr.Plus): ToyLang.Expr  {
             val new_operands = transformExprPlus_operands(node)
             val new_metas = transformExprPlus_metas(node)
-            return ToyLang.Expr.Plus(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                ToyLang.Expr.Plus(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprPlus_operands(node: ToyLang.Expr.Plus) =
             node.operands.map { transformExpr(it) }
@@ -1475,10 +1503,17 @@ class ToyLang private constructor() {
         open fun transformExprMinus(node: ToyLang.Expr.Minus): ToyLang.Expr  {
             val new_operands = transformExprMinus_operands(node)
             val new_metas = transformExprMinus_metas(node)
-            return ToyLang.Expr.Minus(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                ToyLang.Expr.Minus(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprMinus_operands(node: ToyLang.Expr.Minus) =
             node.operands.map { transformExpr(it) }
@@ -1489,10 +1524,17 @@ class ToyLang private constructor() {
         open fun transformExprTimes(node: ToyLang.Expr.Times): ToyLang.Expr  {
             val new_operands = transformExprTimes_operands(node)
             val new_metas = transformExprTimes_metas(node)
-            return ToyLang.Expr.Times(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                ToyLang.Expr.Times(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprTimes_operands(node: ToyLang.Expr.Times) =
             node.operands.map { transformExpr(it) }
@@ -1503,10 +1545,17 @@ class ToyLang private constructor() {
         open fun transformExprDivide(node: ToyLang.Expr.Divide): ToyLang.Expr  {
             val new_operands = transformExprDivide_operands(node)
             val new_metas = transformExprDivide_metas(node)
-            return ToyLang.Expr.Divide(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                ToyLang.Expr.Divide(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprDivide_operands(node: ToyLang.Expr.Divide) =
             node.operands.map { transformExpr(it) }
@@ -1517,10 +1566,17 @@ class ToyLang private constructor() {
         open fun transformExprModulo(node: ToyLang.Expr.Modulo): ToyLang.Expr  {
             val new_operands = transformExprModulo_operands(node)
             val new_metas = transformExprModulo_metas(node)
-            return ToyLang.Expr.Modulo(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                ToyLang.Expr.Modulo(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprModulo_operands(node: ToyLang.Expr.Modulo) =
             node.operands.map { transformExpr(it) }
@@ -1532,11 +1588,19 @@ class ToyLang private constructor() {
             val new_name = transformExprCall_name(node)
             val new_argument = transformExprCall_argument(node)
             val new_metas = transformExprCall_metas(node)
-            return ToyLang.Expr.Call(
+            return if (
+                node.name !== new_name ||
+                node.argument !== new_argument ||
+                node.metas !== new_metas
+            ) {
+                ToyLang.Expr.Call(
                     name = new_name,
                     argument = new_argument,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprCall_name(node: ToyLang.Expr.Call) =
             transformSymbolPrimitive(node.name)
@@ -1551,12 +1615,21 @@ class ToyLang private constructor() {
             val new_value = transformExprLet_value(node)
             val new_body = transformExprLet_body(node)
             val new_metas = transformExprLet_metas(node)
-            return ToyLang.Expr.Let(
+            return if (
+                node.name !== new_name ||
+                node.value !== new_value ||
+                node.body !== new_body ||
+                node.metas !== new_metas
+            ) {
+                ToyLang.Expr.Let(
                     name = new_name,
                     value = new_value,
                     body = new_body,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprLet_name(node: ToyLang.Expr.Let) =
             transformSymbolPrimitive(node.name)
@@ -1572,11 +1645,19 @@ class ToyLang private constructor() {
             val new_varName = transformExprFunction_varName(node)
             val new_body = transformExprFunction_body(node)
             val new_metas = transformExprFunction_metas(node)
-            return ToyLang.Expr.Function(
+            return if (
+                node.varName !== new_varName ||
+                node.body !== new_body ||
+                node.metas !== new_metas
+            ) {
+                ToyLang.Expr.Function(
                     varName = new_varName,
                     body = new_body,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprFunction_varName(node: ToyLang.Expr.Function) =
             transformSymbolPrimitive(node.varName)
@@ -3033,10 +3114,17 @@ class ToyLangIndexed private constructor() {
         open fun transformExprLit(node: ToyLangIndexed.Expr.Lit): ToyLangIndexed.Expr  {
             val new_value = transformExprLit_value(node)
             val new_metas = transformExprLit_metas(node)
-            return ToyLangIndexed.Expr.Lit(
+            return if (
+                node.value !== new_value ||
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Expr.Lit(
                     value = new_value,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprLit_value(node: ToyLangIndexed.Expr.Lit) =
             transformAnyElement(node.value)
@@ -3047,10 +3135,17 @@ class ToyLangIndexed private constructor() {
         open fun transformExprNot(node: ToyLangIndexed.Expr.Not): ToyLangIndexed.Expr  {
             val new_expr = transformExprNot_expr(node)
             val new_metas = transformExprNot_metas(node)
-            return ToyLangIndexed.Expr.Not(
+            return if (
+                node.expr !== new_expr ||
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Expr.Not(
                     expr = new_expr,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprNot_expr(node: ToyLangIndexed.Expr.Not) =
             transformExpr(node.expr)
@@ -3061,10 +3156,17 @@ class ToyLangIndexed private constructor() {
         open fun transformExprPlus(node: ToyLangIndexed.Expr.Plus): ToyLangIndexed.Expr  {
             val new_operands = transformExprPlus_operands(node)
             val new_metas = transformExprPlus_metas(node)
-            return ToyLangIndexed.Expr.Plus(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Expr.Plus(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprPlus_operands(node: ToyLangIndexed.Expr.Plus) =
             node.operands.map { transformExpr(it) }
@@ -3075,10 +3177,17 @@ class ToyLangIndexed private constructor() {
         open fun transformExprMinus(node: ToyLangIndexed.Expr.Minus): ToyLangIndexed.Expr  {
             val new_operands = transformExprMinus_operands(node)
             val new_metas = transformExprMinus_metas(node)
-            return ToyLangIndexed.Expr.Minus(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Expr.Minus(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprMinus_operands(node: ToyLangIndexed.Expr.Minus) =
             node.operands.map { transformExpr(it) }
@@ -3089,10 +3198,17 @@ class ToyLangIndexed private constructor() {
         open fun transformExprTimes(node: ToyLangIndexed.Expr.Times): ToyLangIndexed.Expr  {
             val new_operands = transformExprTimes_operands(node)
             val new_metas = transformExprTimes_metas(node)
-            return ToyLangIndexed.Expr.Times(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Expr.Times(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprTimes_operands(node: ToyLangIndexed.Expr.Times) =
             node.operands.map { transformExpr(it) }
@@ -3103,10 +3219,17 @@ class ToyLangIndexed private constructor() {
         open fun transformExprDivide(node: ToyLangIndexed.Expr.Divide): ToyLangIndexed.Expr  {
             val new_operands = transformExprDivide_operands(node)
             val new_metas = transformExprDivide_metas(node)
-            return ToyLangIndexed.Expr.Divide(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Expr.Divide(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprDivide_operands(node: ToyLangIndexed.Expr.Divide) =
             node.operands.map { transformExpr(it) }
@@ -3117,10 +3240,17 @@ class ToyLangIndexed private constructor() {
         open fun transformExprModulo(node: ToyLangIndexed.Expr.Modulo): ToyLangIndexed.Expr  {
             val new_operands = transformExprModulo_operands(node)
             val new_metas = transformExprModulo_metas(node)
-            return ToyLangIndexed.Expr.Modulo(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Expr.Modulo(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprModulo_operands(node: ToyLangIndexed.Expr.Modulo) =
             node.operands.map { transformExpr(it) }
@@ -3132,11 +3262,19 @@ class ToyLangIndexed private constructor() {
             val new_name = transformExprCall_name(node)
             val new_argument = transformExprCall_argument(node)
             val new_metas = transformExprCall_metas(node)
-            return ToyLangIndexed.Expr.Call(
+            return if (
+                node.name !== new_name ||
+                node.argument !== new_argument ||
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Expr.Call(
                     name = new_name,
                     argument = new_argument,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprCall_name(node: ToyLangIndexed.Expr.Call) =
             transformSymbolPrimitive(node.name)
@@ -3150,11 +3288,19 @@ class ToyLangIndexed private constructor() {
             val new_varName = transformExprFunction_varName(node)
             val new_body = transformExprFunction_body(node)
             val new_metas = transformExprFunction_metas(node)
-            return ToyLangIndexed.Expr.Function(
+            return if (
+                node.varName !== new_varName ||
+                node.body !== new_body ||
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Expr.Function(
                     varName = new_varName,
                     body = new_body,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprFunction_varName(node: ToyLangIndexed.Expr.Function) =
             transformSymbolPrimitive(node.varName)
@@ -3168,11 +3314,19 @@ class ToyLangIndexed private constructor() {
             val new_name = transformExprVariable_name(node)
             val new_index = transformExprVariable_index(node)
             val new_metas = transformExprVariable_metas(node)
-            return ToyLangIndexed.Expr.Variable(
+            return if (
+                node.name !== new_name ||
+                node.index !== new_index ||
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Expr.Variable(
                     name = new_name,
                     index = new_index,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprVariable_name(node: ToyLangIndexed.Expr.Variable) =
             transformSymbolPrimitive(node.name)
@@ -3188,13 +3342,23 @@ class ToyLangIndexed private constructor() {
             val new_value = transformExprLet_value(node)
             val new_body = transformExprLet_body(node)
             val new_metas = transformExprLet_metas(node)
-            return ToyLangIndexed.Expr.Let(
+            return if (
+                node.name !== new_name ||
+                node.index !== new_index ||
+                node.value !== new_value ||
+                node.body !== new_body ||
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Expr.Let(
                     name = new_name,
                     index = new_index,
                     value = new_value,
                     body = new_body,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprLet_name(node: ToyLangIndexed.Expr.Let) =
             transformSymbolPrimitive(node.name)
@@ -3238,7 +3402,7 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
     open fun transformExprLit(node: ToyLang.Expr.Lit): ToyLangIndexed.Expr  {
         val new_value = transformExprLit_value(node)
         val new_metas = transformExprLit_metas(node)
-        return ToyLangIndexed.Expr.Lit(
+        return             ToyLangIndexed.Expr.Lit(
                 value = new_value,
                 metas = new_metas
             )
@@ -3254,7 +3418,7 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
     open fun transformExprNot(node: ToyLang.Expr.Not): ToyLangIndexed.Expr  {
         val new_expr = transformExprNot_expr(node)
         val new_metas = transformExprNot_metas(node)
-        return ToyLangIndexed.Expr.Not(
+        return             ToyLangIndexed.Expr.Not(
                 expr = new_expr,
                 metas = new_metas
             )
@@ -3268,7 +3432,7 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
     open fun transformExprPlus(node: ToyLang.Expr.Plus): ToyLangIndexed.Expr  {
         val new_operands = transformExprPlus_operands(node)
         val new_metas = transformExprPlus_metas(node)
-        return ToyLangIndexed.Expr.Plus(
+        return             ToyLangIndexed.Expr.Plus(
                 operands = new_operands,
                 metas = new_metas
             )
@@ -3282,7 +3446,7 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
     open fun transformExprMinus(node: ToyLang.Expr.Minus): ToyLangIndexed.Expr  {
         val new_operands = transformExprMinus_operands(node)
         val new_metas = transformExprMinus_metas(node)
-        return ToyLangIndexed.Expr.Minus(
+        return             ToyLangIndexed.Expr.Minus(
                 operands = new_operands,
                 metas = new_metas
             )
@@ -3296,7 +3460,7 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
     open fun transformExprTimes(node: ToyLang.Expr.Times): ToyLangIndexed.Expr  {
         val new_operands = transformExprTimes_operands(node)
         val new_metas = transformExprTimes_metas(node)
-        return ToyLangIndexed.Expr.Times(
+        return             ToyLangIndexed.Expr.Times(
                 operands = new_operands,
                 metas = new_metas
             )
@@ -3310,7 +3474,7 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
     open fun transformExprDivide(node: ToyLang.Expr.Divide): ToyLangIndexed.Expr  {
         val new_operands = transformExprDivide_operands(node)
         val new_metas = transformExprDivide_metas(node)
-        return ToyLangIndexed.Expr.Divide(
+        return             ToyLangIndexed.Expr.Divide(
                 operands = new_operands,
                 metas = new_metas
             )
@@ -3324,7 +3488,7 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
     open fun transformExprModulo(node: ToyLang.Expr.Modulo): ToyLangIndexed.Expr  {
         val new_operands = transformExprModulo_operands(node)
         val new_metas = transformExprModulo_metas(node)
-        return ToyLangIndexed.Expr.Modulo(
+        return             ToyLangIndexed.Expr.Modulo(
                 operands = new_operands,
                 metas = new_metas
             )
@@ -3339,7 +3503,7 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
         val new_name = transformExprCall_name(node)
         val new_argument = transformExprCall_argument(node)
         val new_metas = transformExprCall_metas(node)
-        return ToyLangIndexed.Expr.Call(
+        return             ToyLangIndexed.Expr.Call(
                 name = new_name,
                 argument = new_argument,
                 metas = new_metas
@@ -3359,7 +3523,7 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
         val new_varName = transformExprFunction_varName(node)
         val new_body = transformExprFunction_body(node)
         val new_metas = transformExprFunction_metas(node)
-        return ToyLangIndexed.Expr.Function(
+        return             ToyLangIndexed.Expr.Function(
                 varName = new_varName,
                 body = new_body,
                 metas = new_metas
@@ -3395,7 +3559,7 @@ abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformB
     open fun transformExprLit(node: ToyLangIndexed.Expr.Lit): ToyLang.Expr  {
         val new_value = transformExprLit_value(node)
         val new_metas = transformExprLit_metas(node)
-        return ToyLang.Expr.Lit(
+        return             ToyLang.Expr.Lit(
                 value = new_value,
                 metas = new_metas
             )
@@ -3409,7 +3573,7 @@ abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformB
     open fun transformExprNot(node: ToyLangIndexed.Expr.Not): ToyLang.Expr  {
         val new_expr = transformExprNot_expr(node)
         val new_metas = transformExprNot_metas(node)
-        return ToyLang.Expr.Not(
+        return             ToyLang.Expr.Not(
                 expr = new_expr,
                 metas = new_metas
             )
@@ -3423,7 +3587,7 @@ abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformB
     open fun transformExprPlus(node: ToyLangIndexed.Expr.Plus): ToyLang.Expr  {
         val new_operands = transformExprPlus_operands(node)
         val new_metas = transformExprPlus_metas(node)
-        return ToyLang.Expr.Plus(
+        return             ToyLang.Expr.Plus(
                 operands = new_operands,
                 metas = new_metas
             )
@@ -3437,7 +3601,7 @@ abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformB
     open fun transformExprMinus(node: ToyLangIndexed.Expr.Minus): ToyLang.Expr  {
         val new_operands = transformExprMinus_operands(node)
         val new_metas = transformExprMinus_metas(node)
-        return ToyLang.Expr.Minus(
+        return             ToyLang.Expr.Minus(
                 operands = new_operands,
                 metas = new_metas
             )
@@ -3451,7 +3615,7 @@ abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformB
     open fun transformExprTimes(node: ToyLangIndexed.Expr.Times): ToyLang.Expr  {
         val new_operands = transformExprTimes_operands(node)
         val new_metas = transformExprTimes_metas(node)
-        return ToyLang.Expr.Times(
+        return             ToyLang.Expr.Times(
                 operands = new_operands,
                 metas = new_metas
             )
@@ -3465,7 +3629,7 @@ abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformB
     open fun transformExprDivide(node: ToyLangIndexed.Expr.Divide): ToyLang.Expr  {
         val new_operands = transformExprDivide_operands(node)
         val new_metas = transformExprDivide_metas(node)
-        return ToyLang.Expr.Divide(
+        return             ToyLang.Expr.Divide(
                 operands = new_operands,
                 metas = new_metas
             )
@@ -3479,7 +3643,7 @@ abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformB
     open fun transformExprModulo(node: ToyLangIndexed.Expr.Modulo): ToyLang.Expr  {
         val new_operands = transformExprModulo_operands(node)
         val new_metas = transformExprModulo_metas(node)
-        return ToyLang.Expr.Modulo(
+        return             ToyLang.Expr.Modulo(
                 operands = new_operands,
                 metas = new_metas
             )
@@ -3494,7 +3658,7 @@ abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformB
         val new_name = transformExprCall_name(node)
         val new_argument = transformExprCall_argument(node)
         val new_metas = transformExprCall_metas(node)
-        return ToyLang.Expr.Call(
+        return             ToyLang.Expr.Call(
                 name = new_name,
                 argument = new_argument,
                 metas = new_metas
@@ -3512,7 +3676,7 @@ abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformB
         val new_varName = transformExprFunction_varName(node)
         val new_body = transformExprFunction_body(node)
         val new_metas = transformExprFunction_metas(node)
-        return ToyLang.Expr.Function(
+        return             ToyLang.Expr.Function(
                 varName = new_varName,
                 body = new_body,
                 metas = new_metas

@@ -4419,11 +4419,19 @@ class TestDomain private constructor() {
             val new_first = transformIntPair_first(node)
             val new_second = transformIntPair_second(node)
             val new_metas = transformIntPair_metas(node)
-            return TestDomain.IntPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.IntPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformIntPair_first(node: TestDomain.IntPair) =
             transformLongPrimitive(node.first)
@@ -4437,11 +4445,19 @@ class TestDomain private constructor() {
             val new_first = transformSymbolPair_first(node)
             val new_second = transformSymbolPair_second(node)
             val new_metas = transformSymbolPair_metas(node)
-            return TestDomain.SymbolPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.SymbolPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSymbolPair_first(node: TestDomain.SymbolPair) =
             transformSymbolPrimitive(node.first)
@@ -4455,11 +4471,19 @@ class TestDomain private constructor() {
             val new_first = transformIonPair_first(node)
             val new_second = transformIonPair_second(node)
             val new_metas = transformIonPair_metas(node)
-            return TestDomain.IonPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.IonPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformIonPair_first(node: TestDomain.IonPair) =
             transformAnyElement(node.first)
@@ -4473,11 +4497,19 @@ class TestDomain private constructor() {
             val new_first = transformIntSymbolPair_first(node)
             val new_second = transformIntSymbolPair_second(node)
             val new_metas = transformIntSymbolPair_metas(node)
-            return TestDomain.IntSymbolPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.IntSymbolPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformIntSymbolPair_first(node: TestDomain.IntSymbolPair) =
             transformLongPrimitive(node.first)
@@ -4491,11 +4523,19 @@ class TestDomain private constructor() {
             val new_first = transformSymbolIntPair_first(node)
             val new_second = transformSymbolIntPair_second(node)
             val new_metas = transformSymbolIntPair_metas(node)
-            return TestDomain.SymbolIntPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.SymbolIntPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSymbolIntPair_first(node: TestDomain.SymbolIntPair) =
             transformSymbolPrimitive(node.first)
@@ -4509,11 +4549,19 @@ class TestDomain private constructor() {
             val new_first = transformIonIntPair_first(node)
             val new_second = transformIonIntPair_second(node)
             val new_metas = transformIonIntPair_metas(node)
-            return TestDomain.IonIntPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.IonIntPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformIonIntPair_first(node: TestDomain.IonIntPair) =
             transformAnyElement(node.first)
@@ -4527,11 +4575,19 @@ class TestDomain private constructor() {
             val new_first = transformIonSymbolPair_first(node)
             val new_second = transformIonSymbolPair_second(node)
             val new_metas = transformIonSymbolPair_metas(node)
-            return TestDomain.IonSymbolPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.IonSymbolPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformIonSymbolPair_first(node: TestDomain.IonSymbolPair) =
             transformAnyElement(node.first)
@@ -4545,11 +4601,19 @@ class TestDomain private constructor() {
             val new_first = transformIntPairPair_first(node)
             val new_second = transformIntPairPair_second(node)
             val new_metas = transformIntPairPair_metas(node)
-            return TestDomain.IntPairPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.IntPairPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformIntPairPair_first(node: TestDomain.IntPairPair) =
             transformIntPair(node.first)
@@ -4563,11 +4627,19 @@ class TestDomain private constructor() {
             val new_first = transformSymbolPairPair_first(node)
             val new_second = transformSymbolPairPair_second(node)
             val new_metas = transformSymbolPairPair_metas(node)
-            return TestDomain.SymbolPairPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.SymbolPairPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSymbolPairPair_first(node: TestDomain.SymbolPairPair) =
             transformSymbolPair(node.first)
@@ -4581,11 +4653,19 @@ class TestDomain private constructor() {
             val new_first = transformIonPairPair_first(node)
             val new_second = transformIonPairPair_second(node)
             val new_metas = transformIonPairPair_metas(node)
-            return TestDomain.IonPairPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.IonPairPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformIonPairPair_first(node: TestDomain.IonPairPair) =
             transformIonPair(node.first)
@@ -4599,11 +4679,19 @@ class TestDomain private constructor() {
             val new_first = transformRecursivePair_first(node)
             val new_second = transformRecursivePair_second(node)
             val new_metas = transformRecursivePair_metas(node)
-            return TestDomain.RecursivePair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.RecursivePair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformRecursivePair_first(node: TestDomain.RecursivePair) =
             transformLongPrimitive(node.first)
@@ -4617,11 +4705,19 @@ class TestDomain private constructor() {
             val new_first = transformAnswerPair_first(node)
             val new_second = transformAnswerPair_second(node)
             val new_metas = transformAnswerPair_metas(node)
-            return TestDomain.AnswerPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.AnswerPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAnswerPair_first(node: TestDomain.AnswerPair) =
             transformAnswer(node.first)
@@ -4635,11 +4731,19 @@ class TestDomain private constructor() {
             val new_first = transformAnswerIntPair_first(node)
             val new_second = transformAnswerIntPair_second(node)
             val new_metas = transformAnswerIntPair_metas(node)
-            return TestDomain.AnswerIntPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.AnswerIntPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAnswerIntPair_first(node: TestDomain.AnswerIntPair) =
             transformAnswer(node.first)
@@ -4653,11 +4757,19 @@ class TestDomain private constructor() {
             val new_first = transformIntAnswerPair_first(node)
             val new_second = transformIntAnswerPair_second(node)
             val new_metas = transformIntAnswerPair_metas(node)
-            return TestDomain.IntAnswerPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.IntAnswerPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformIntAnswerPair_first(node: TestDomain.IntAnswerPair) =
             transformLongPrimitive(node.first)
@@ -4671,11 +4783,19 @@ class TestDomain private constructor() {
             val new_first = transformSymbolAnswerPair_first(node)
             val new_second = transformSymbolAnswerPair_second(node)
             val new_metas = transformSymbolAnswerPair_metas(node)
-            return TestDomain.SymbolAnswerPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.SymbolAnswerPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSymbolAnswerPair_first(node: TestDomain.SymbolAnswerPair) =
             transformSymbolPrimitive(node.first)
@@ -4689,11 +4809,19 @@ class TestDomain private constructor() {
             val new_first = transformAnswerSymbolPair_first(node)
             val new_second = transformAnswerSymbolPair_second(node)
             val new_metas = transformAnswerSymbolPair_metas(node)
-            return TestDomain.AnswerSymbolPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.AnswerSymbolPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAnswerSymbolPair_first(node: TestDomain.AnswerSymbolPair) =
             transformAnswer(node.first)
@@ -4706,10 +4834,17 @@ class TestDomain private constructor() {
         open fun transformVariadicMin0(node: TestDomain.VariadicMin0): TestDomain.VariadicMin0 {
             val new_ints = transformVariadicMin0_ints(node)
             val new_metas = transformVariadicMin0_metas(node)
-            return TestDomain.VariadicMin0(
+            return if (
+                node.ints !== new_ints ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.VariadicMin0(
                     ints = new_ints,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformVariadicMin0_ints(node: TestDomain.VariadicMin0) =
             node.ints.map { transformLongPrimitive(it) }
@@ -4720,10 +4855,17 @@ class TestDomain private constructor() {
         open fun transformVariadicMin1(node: TestDomain.VariadicMin1): TestDomain.VariadicMin1 {
             val new_ints = transformVariadicMin1_ints(node)
             val new_metas = transformVariadicMin1_metas(node)
-            return TestDomain.VariadicMin1(
+            return if (
+                node.ints !== new_ints ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.VariadicMin1(
                     ints = new_ints,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformVariadicMin1_ints(node: TestDomain.VariadicMin1) =
             node.ints.map { transformLongPrimitive(it) }
@@ -4735,11 +4877,19 @@ class TestDomain private constructor() {
             val new_name = transformElementVariadic_name(node)
             val new_ints = transformElementVariadic_ints(node)
             val new_metas = transformElementVariadic_metas(node)
-            return TestDomain.ElementVariadic(
+            return if (
+                node.name !== new_name ||
+                node.ints !== new_ints ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.ElementVariadic(
                     name = new_name,
                     ints = new_ints,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformElementVariadic_name(node: TestDomain.ElementVariadic) =
             transformSymbolPrimitive(node.name)
@@ -4752,10 +4902,17 @@ class TestDomain private constructor() {
         open fun transformOptional1(node: TestDomain.Optional1): TestDomain.Optional1 {
             val new_value = transformOptional1_value(node)
             val new_metas = transformOptional1_metas(node)
-            return TestDomain.Optional1(
+            return if (
+                node.value !== new_value ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.Optional1(
                     value = new_value,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformOptional1_value(node: TestDomain.Optional1) =
             node.value?.let { transformLongPrimitive(it) }
@@ -4767,11 +4924,19 @@ class TestDomain private constructor() {
             val new_first = transformOptional2_first(node)
             val new_second = transformOptional2_second(node)
             val new_metas = transformOptional2_metas(node)
-            return TestDomain.Optional2(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.Optional2(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformOptional2_first(node: TestDomain.Optional2) =
             node.first?.let { transformLongPrimitive(it) }
@@ -4786,12 +4951,21 @@ class TestDomain private constructor() {
             val new_anotherField = transformDomainLevelRecord_anotherField(node)
             val new_optionalField = transformDomainLevelRecord_optionalField(node)
             val new_metas = transformDomainLevelRecord_metas(node)
-            return TestDomain.DomainLevelRecord(
+            return if (
+                node.someField !== new_someField ||
+                node.anotherField !== new_anotherField ||
+                node.optionalField !== new_optionalField ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.DomainLevelRecord(
                     someField = new_someField,
                     anotherField = new_anotherField,
                     optionalField = new_optionalField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformDomainLevelRecord_someField(node: TestDomain.DomainLevelRecord) =
             transformLongPrimitive(node.someField)
@@ -4807,11 +4981,19 @@ class TestDomain private constructor() {
             val new_value = transformProductWithRecord_value(node)
             val new_dlr = transformProductWithRecord_dlr(node)
             val new_metas = transformProductWithRecord_metas(node)
-            return TestDomain.ProductWithRecord(
+            return if (
+                node.value !== new_value ||
+                node.dlr !== new_dlr ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.ProductWithRecord(
                     value = new_value,
                     dlr = new_dlr,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformProductWithRecord_value(node: TestDomain.ProductWithRecord) =
             transformLongPrimitive(node.value)
@@ -4826,12 +5008,21 @@ class TestDomain private constructor() {
             val new_b = transformTestSumTriplet_b(node)
             val new_c = transformTestSumTriplet_c(node)
             val new_metas = transformTestSumTriplet_metas(node)
-            return TestDomain.TestSumTriplet(
+            return if (
+                node.a !== new_a ||
+                node.b !== new_b ||
+                node.c !== new_c ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.TestSumTriplet(
                     a = new_a,
                     b = new_b,
                     c = new_c,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformTestSumTriplet_a(node: TestDomain.TestSumTriplet) =
             transformTestSum(node.a)
@@ -4847,11 +5038,19 @@ class TestDomain private constructor() {
             val new_first = transformEntityPair_first(node)
             val new_second = transformEntityPair_second(node)
             val new_metas = transformEntityPair_metas(node)
-            return TestDomain.EntityPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.EntityPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformEntityPair_first(node: TestDomain.EntityPair) =
             transformEntity(node.first)
@@ -4871,9 +5070,15 @@ class TestDomain private constructor() {
         // Variant AnswerNo
         open fun transformAnswerNo(node: TestDomain.Answer.No): TestDomain.Answer  {
             val new_metas = transformAnswerNo_metas(node)
-            return TestDomain.Answer.No(
+            return if (
+                node.metas !== new_metas
+            ) {
+                TestDomain.Answer.No(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAnswerNo_metas(node: TestDomain.Answer.No) =
             transformMetas(node.metas)
@@ -4881,9 +5086,15 @@ class TestDomain private constructor() {
         // Variant AnswerYes
         open fun transformAnswerYes(node: TestDomain.Answer.Yes): TestDomain.Answer  {
             val new_metas = transformAnswerYes_metas(node)
-            return TestDomain.Answer.Yes(
+            return if (
+                node.metas !== new_metas
+            ) {
+                TestDomain.Answer.Yes(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAnswerYes_metas(node: TestDomain.Answer.Yes) =
             transformMetas(node.metas)
@@ -4900,11 +5111,19 @@ class TestDomain private constructor() {
             val new_value = transformSumWithRecordVariantWithRecord_value(node)
             val new_dlr = transformSumWithRecordVariantWithRecord_dlr(node)
             val new_metas = transformSumWithRecordVariantWithRecord_metas(node)
-            return TestDomain.SumWithRecord.VariantWithRecord(
+            return if (
+                node.value !== new_value ||
+                node.dlr !== new_dlr ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.SumWithRecord.VariantWithRecord(
                     value = new_value,
                     dlr = new_dlr,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSumWithRecordVariantWithRecord_value(node: TestDomain.SumWithRecord.VariantWithRecord) =
             transformLongPrimitive(node.value)
@@ -4926,10 +5145,17 @@ class TestDomain private constructor() {
         open fun transformTestSumOne(node: TestDomain.TestSum.One): TestDomain.TestSum  {
             val new_a = transformTestSumOne_a(node)
             val new_metas = transformTestSumOne_metas(node)
-            return TestDomain.TestSum.One(
+            return if (
+                node.a !== new_a ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.TestSum.One(
                     a = new_a,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformTestSumOne_a(node: TestDomain.TestSum.One) =
             transformLongPrimitive(node.a)
@@ -4941,11 +5167,19 @@ class TestDomain private constructor() {
             val new_a = transformTestSumTwo_a(node)
             val new_b = transformTestSumTwo_b(node)
             val new_metas = transformTestSumTwo_metas(node)
-            return TestDomain.TestSum.Two(
+            return if (
+                node.a !== new_a ||
+                node.b !== new_b ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.TestSum.Two(
                     a = new_a,
                     b = new_b,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformTestSumTwo_a(node: TestDomain.TestSum.Two) =
             transformLongPrimitive(node.a)
@@ -4960,12 +5194,21 @@ class TestDomain private constructor() {
             val new_b = transformTestSumThree_b(node)
             val new_c = transformTestSumThree_c(node)
             val new_metas = transformTestSumThree_metas(node)
-            return TestDomain.TestSum.Three(
+            return if (
+                node.a !== new_a ||
+                node.b !== new_b ||
+                node.c !== new_c ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.TestSum.Three(
                     a = new_a,
                     b = new_b,
                     c = new_c,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformTestSumThree_a(node: TestDomain.TestSum.Three) =
             transformLongPrimitive(node.a)
@@ -4988,9 +5231,15 @@ class TestDomain private constructor() {
         // Variant EntitySlug
         open fun transformEntitySlug(node: TestDomain.Entity.Slug): TestDomain.Entity  {
             val new_metas = transformEntitySlug_metas(node)
-            return TestDomain.Entity.Slug(
+            return if (
+                node.metas !== new_metas
+            ) {
+                TestDomain.Entity.Slug(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformEntitySlug_metas(node: TestDomain.Entity.Slug) =
             transformMetas(node.metas)
@@ -4999,10 +5248,17 @@ class TestDomain private constructor() {
         open fun transformEntityAndroid(node: TestDomain.Entity.Android): TestDomain.Entity  {
             val new_id = transformEntityAndroid_id(node)
             val new_metas = transformEntityAndroid_metas(node)
-            return TestDomain.Entity.Android(
+            return if (
+                node.id !== new_id ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.Entity.Android(
                     id = new_id,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformEntityAndroid_id(node: TestDomain.Entity.Android) =
             transformLongPrimitive(node.id)
@@ -5017,7 +5273,15 @@ class TestDomain private constructor() {
             val new_title = transformEntityHuman_title(node)
             val new_parent = transformEntityHuman_parent(node)
             val new_metas = transformEntityHuman_metas(node)
-            return TestDomain.Entity.Human(
+            return if (
+                node.firstName !== new_firstName ||
+                node.middleNames !== new_middleNames ||
+                node.lastName !== new_lastName ||
+                node.title !== new_title ||
+                node.parent !== new_parent ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.Entity.Human(
                     firstName = new_firstName,
                     middleNames = new_middleNames,
                     lastName = new_lastName,
@@ -5025,6 +5289,9 @@ class TestDomain private constructor() {
                     parent = new_parent,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformEntityHuman_firstName(node: TestDomain.Entity.Human) =
             transformSymbolPrimitive(node.firstName)
@@ -6979,9 +7246,15 @@ class MultiWordDomain private constructor() {
         // Tuple AaaAaa
         open fun transformAaaAaa(node: MultiWordDomain.AaaAaa): MultiWordDomain.AaaAaa {
             val new_metas = transformAaaAaa_metas(node)
-            return MultiWordDomain.AaaAaa(
+            return if (
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.AaaAaa(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAaaAaa_metas(node: MultiWordDomain.AaaAaa) =
             transformMetas(node.metas)
@@ -6990,10 +7263,17 @@ class MultiWordDomain private constructor() {
         open fun transformAaaAab(node: MultiWordDomain.AaaAab): MultiWordDomain.AaaAab {
             val new_dField = transformAaaAab_dField(node)
             val new_metas = transformAaaAab_metas(node)
-            return MultiWordDomain.AaaAab(
+            return if (
+                node.dField !== new_dField ||
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.AaaAab(
                     dField = new_dField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAaaAab_dField(node: MultiWordDomain.AaaAab) =
             node.dField?.let { transformLongPrimitive(it) }
@@ -7005,11 +7285,19 @@ class MultiWordDomain private constructor() {
             val new_dField = transformAaaAac_dField(node)
             val new_eField = transformAaaAac_eField(node)
             val new_metas = transformAaaAac_metas(node)
-            return MultiWordDomain.AaaAac(
+            return if (
+                node.dField !== new_dField ||
+                node.eField !== new_eField ||
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.AaaAac(
                     dField = new_dField,
                     eField = new_eField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAaaAac_dField(node: MultiWordDomain.AaaAac) =
             node.dField?.let { transformLongPrimitive(it) }
@@ -7022,10 +7310,17 @@ class MultiWordDomain private constructor() {
         open fun transformAaaAad(node: MultiWordDomain.AaaAad): MultiWordDomain.AaaAad {
             val new_dField = transformAaaAad_dField(node)
             val new_metas = transformAaaAad_metas(node)
-            return MultiWordDomain.AaaAad(
+            return if (
+                node.dField !== new_dField ||
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.AaaAad(
                     dField = new_dField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAaaAad_dField(node: MultiWordDomain.AaaAad) =
             node.dField.map { transformLongPrimitive(it) }
@@ -7036,10 +7331,17 @@ class MultiWordDomain private constructor() {
         open fun transformAaaAae(node: MultiWordDomain.AaaAae): MultiWordDomain.AaaAae {
             val new_dField = transformAaaAae_dField(node)
             val new_metas = transformAaaAae_metas(node)
-            return MultiWordDomain.AaaAae(
+            return if (
+                node.dField !== new_dField ||
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.AaaAae(
                     dField = new_dField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAaaAae_dField(node: MultiWordDomain.AaaAae) =
             node.dField.map { transformLongPrimitive(it) }
@@ -7051,11 +7353,19 @@ class MultiWordDomain private constructor() {
             val new_bField = transformAabAaa_bField(node)
             val new_cField = transformAabAaa_cField(node)
             val new_metas = transformAabAaa_metas(node)
-            return MultiWordDomain.AabAaa(
+            return if (
+                node.bField !== new_bField ||
+                node.cField !== new_cField ||
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.AabAaa(
                     bField = new_bField,
                     cField = new_cField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAabAaa_bField(node: MultiWordDomain.AabAaa) =
             transformLongPrimitive(node.bField)
@@ -7070,12 +7380,21 @@ class MultiWordDomain private constructor() {
             val new_cField = transformAabAab_cField(node)
             val new_dField = transformAabAab_dField(node)
             val new_metas = transformAabAab_metas(node)
-            return MultiWordDomain.AabAab(
+            return if (
+                node.bField !== new_bField ||
+                node.cField !== new_cField ||
+                node.dField !== new_dField ||
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.AabAab(
                     bField = new_bField,
                     cField = new_cField,
                     dField = new_dField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAabAab_bField(node: MultiWordDomain.AabAab) =
             transformLongPrimitive(node.bField)
@@ -7093,13 +7412,23 @@ class MultiWordDomain private constructor() {
             val new_dField = transformAabAac_dField(node)
             val new_eField = transformAabAac_eField(node)
             val new_metas = transformAabAac_metas(node)
-            return MultiWordDomain.AabAac(
+            return if (
+                node.bField !== new_bField ||
+                node.cField !== new_cField ||
+                node.dField !== new_dField ||
+                node.eField !== new_eField ||
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.AabAac(
                     bField = new_bField,
                     cField = new_cField,
                     dField = new_dField,
                     eField = new_eField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAabAac_bField(node: MultiWordDomain.AabAac) =
             transformLongPrimitive(node.bField)
@@ -7118,12 +7447,21 @@ class MultiWordDomain private constructor() {
             val new_cField = transformAabAad_cField(node)
             val new_dField = transformAabAad_dField(node)
             val new_metas = transformAabAad_metas(node)
-            return MultiWordDomain.AabAad(
+            return if (
+                node.bField !== new_bField ||
+                node.cField !== new_cField ||
+                node.dField !== new_dField ||
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.AabAad(
                     bField = new_bField,
                     cField = new_cField,
                     dField = new_dField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAabAad_bField(node: MultiWordDomain.AabAad) =
             transformLongPrimitive(node.bField)
@@ -7140,12 +7478,21 @@ class MultiWordDomain private constructor() {
             val new_cField = transformAabAae_cField(node)
             val new_dField = transformAabAae_dField(node)
             val new_metas = transformAabAae_metas(node)
-            return MultiWordDomain.AabAae(
+            return if (
+                node.bField !== new_bField ||
+                node.cField !== new_cField ||
+                node.dField !== new_dField ||
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.AabAae(
                     bField = new_bField,
                     cField = new_cField,
                     dField = new_dField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformAabAae_bField(node: MultiWordDomain.AabAae) =
             transformLongPrimitive(node.bField)
@@ -7161,11 +7508,19 @@ class MultiWordDomain private constructor() {
             val new_aField = transformRrr_aField(node)
             val new_bbbField = transformRrr_bbbField(node)
             val new_metas = transformRrr_metas(node)
-            return MultiWordDomain.Rrr(
+            return if (
+                node.aField !== new_aField ||
+                node.bbbField !== new_bbbField ||
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.Rrr(
                     aField = new_aField,
                     bbbField = new_bbbField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformRrr_aField(node: MultiWordDomain.Rrr) =
             transformLongPrimitive(node.aField)
@@ -7186,10 +7541,17 @@ class MultiWordDomain private constructor() {
         open fun transformSssTttLll(node: MultiWordDomain.SssTtt.Lll): MultiWordDomain.SssTtt  {
             val new_uField = transformSssTttLll_uField(node)
             val new_metas = transformSssTttLll_metas(node)
-            return MultiWordDomain.SssTtt.Lll(
+            return if (
+                node.uField !== new_uField ||
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.SssTtt.Lll(
                     uField = new_uField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSssTttLll_uField(node: MultiWordDomain.SssTtt.Lll) =
             transformLongPrimitive(node.uField)
@@ -7200,10 +7562,17 @@ class MultiWordDomain private constructor() {
         open fun transformSssTttMmm(node: MultiWordDomain.SssTtt.Mmm): MultiWordDomain.SssTtt  {
             val new_vField = transformSssTttMmm_vField(node)
             val new_metas = transformSssTttMmm_metas(node)
-            return MultiWordDomain.SssTtt.Mmm(
+            return if (
+                node.vField !== new_vField ||
+                node.metas !== new_metas
+            ) {
+                MultiWordDomain.SssTtt.Mmm(
                     vField = new_vField,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSssTttMmm_vField(node: MultiWordDomain.SssTtt.Mmm) =
             transformSymbolPrimitive(node.vField)
@@ -8986,10 +9355,17 @@ class DomainA private constructor() {
         open fun transformProductToRemove(node: DomainA.ProductToRemove): DomainA.ProductToRemove {
             val new_whatever = transformProductToRemove_whatever(node)
             val new_metas = transformProductToRemove_metas(node)
-            return DomainA.ProductToRemove(
+            return if (
+                node.whatever !== new_whatever ||
+                node.metas !== new_metas
+            ) {
+                DomainA.ProductToRemove(
                     whatever = new_whatever,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformProductToRemove_whatever(node: DomainA.ProductToRemove) =
             transformSymbolPrimitive(node.whatever)
@@ -9000,10 +9376,17 @@ class DomainA private constructor() {
         open fun transformRecordToRemove(node: DomainA.RecordToRemove): DomainA.RecordToRemove {
             val new_irrelevant = transformRecordToRemove_irrelevant(node)
             val new_metas = transformRecordToRemove_metas(node)
-            return DomainA.RecordToRemove(
+            return if (
+                node.irrelevant !== new_irrelevant ||
+                node.metas !== new_metas
+            ) {
+                DomainA.RecordToRemove(
                     irrelevant = new_irrelevant,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformRecordToRemove_irrelevant(node: DomainA.RecordToRemove) =
             transformLongPrimitive(node.irrelevant)
@@ -9014,10 +9397,17 @@ class DomainA private constructor() {
         open fun transformProductA(node: DomainA.ProductA): DomainA.ProductA {
             val new_one = transformProductA_one(node)
             val new_metas = transformProductA_metas(node)
-            return DomainA.ProductA(
+            return if (
+                node.one !== new_one ||
+                node.metas !== new_metas
+            ) {
+                DomainA.ProductA(
                     one = new_one,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformProductA_one(node: DomainA.ProductA) =
             transformLongPrimitive(node.one)
@@ -9028,10 +9418,17 @@ class DomainA private constructor() {
         open fun transformRecordA(node: DomainA.RecordA): DomainA.RecordA {
             val new_one = transformRecordA_one(node)
             val new_metas = transformRecordA_metas(node)
-            return DomainA.RecordA(
+            return if (
+                node.one !== new_one ||
+                node.metas !== new_metas
+            ) {
+                DomainA.RecordA(
                     one = new_one,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformRecordA_one(node: DomainA.RecordA) =
             transformLongPrimitive(node.one)
@@ -9043,11 +9440,19 @@ class DomainA private constructor() {
             val new_foo = transformUnpermutedProduct_foo(node)
             val new_bar = transformUnpermutedProduct_bar(node)
             val new_metas = transformUnpermutedProduct_metas(node)
-            return DomainA.UnpermutedProduct(
+            return if (
+                node.foo !== new_foo ||
+                node.bar !== new_bar ||
+                node.metas !== new_metas
+            ) {
+                DomainA.UnpermutedProduct(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformUnpermutedProduct_foo(node: DomainA.UnpermutedProduct) =
             transformSymbolPrimitive(node.foo)
@@ -9061,11 +9466,19 @@ class DomainA private constructor() {
             val new_foo = transformUnpermutedRecord_foo(node)
             val new_bar = transformUnpermutedRecord_bar(node)
             val new_metas = transformUnpermutedRecord_metas(node)
-            return DomainA.UnpermutedRecord(
+            return if (
+                node.foo !== new_foo ||
+                node.bar !== new_bar ||
+                node.metas !== new_metas
+            ) {
+                DomainA.UnpermutedRecord(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformUnpermutedRecord_foo(node: DomainA.UnpermutedRecord) =
             transformSymbolPrimitive(node.foo)
@@ -9085,9 +9498,15 @@ class DomainA private constructor() {
         // Variant SumToRemoveDoesnt
         open fun transformSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt): DomainA.SumToRemove  {
             val new_metas = transformSumToRemoveDoesnt_metas(node)
-            return DomainA.SumToRemove.Doesnt(
+            return if (
+                node.metas !== new_metas
+            ) {
+                DomainA.SumToRemove.Doesnt(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSumToRemoveDoesnt_metas(node: DomainA.SumToRemove.Doesnt) =
             transformMetas(node.metas)
@@ -9095,9 +9514,15 @@ class DomainA private constructor() {
         // Variant SumToRemoveMatter
         open fun transformSumToRemoveMatter(node: DomainA.SumToRemove.Matter): DomainA.SumToRemove  {
             val new_metas = transformSumToRemoveMatter_metas(node)
-            return DomainA.SumToRemove.Matter(
+            return if (
+                node.metas !== new_metas
+            ) {
+                DomainA.SumToRemove.Matter(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSumToRemoveMatter_metas(node: DomainA.SumToRemove.Matter) =
             transformMetas(node.metas)
@@ -9113,9 +9538,15 @@ class DomainA private constructor() {
         // Variant SumAWho
         open fun transformSumAWho(node: DomainA.SumA.Who): DomainA.SumA  {
             val new_metas = transformSumAWho_metas(node)
-            return DomainA.SumA.Who(
+            return if (
+                node.metas !== new_metas
+            ) {
+                DomainA.SumA.Who(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSumAWho_metas(node: DomainA.SumA.Who) =
             transformMetas(node.metas)
@@ -9123,9 +9554,15 @@ class DomainA private constructor() {
         // Variant SumACares
         open fun transformSumACares(node: DomainA.SumA.Cares): DomainA.SumA  {
             val new_metas = transformSumACares_metas(node)
-            return DomainA.SumA.Cares(
+            return if (
+                node.metas !== new_metas
+            ) {
+                DomainA.SumA.Cares(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSumACares_metas(node: DomainA.SumA.Cares) =
             transformMetas(node.metas)
@@ -9142,9 +9579,15 @@ class DomainA private constructor() {
         // Variant SumBWillBeUnchanged
         open fun transformSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged): DomainA.SumB  {
             val new_metas = transformSumBWillBeUnchanged_metas(node)
-            return DomainA.SumB.WillBeUnchanged(
+            return if (
+                node.metas !== new_metas
+            ) {
+                DomainA.SumB.WillBeUnchanged(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSumBWillBeUnchanged_metas(node: DomainA.SumB.WillBeUnchanged) =
             transformMetas(node.metas)
@@ -9152,9 +9595,15 @@ class DomainA private constructor() {
         // Variant SumBWillBeRemoved
         open fun transformSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved): DomainA.SumB  {
             val new_metas = transformSumBWillBeRemoved_metas(node)
-            return DomainA.SumB.WillBeRemoved(
+            return if (
+                node.metas !== new_metas
+            ) {
+                DomainA.SumB.WillBeRemoved(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSumBWillBeRemoved_metas(node: DomainA.SumB.WillBeRemoved) =
             transformMetas(node.metas)
@@ -9163,10 +9612,17 @@ class DomainA private constructor() {
         open fun transformSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced): DomainA.SumB  {
             val new_something = transformSumBWillBeReplaced_something(node)
             val new_metas = transformSumBWillBeReplaced_metas(node)
-            return DomainA.SumB.WillBeReplaced(
+            return if (
+                node.something !== new_something ||
+                node.metas !== new_metas
+            ) {
+                DomainA.SumB.WillBeReplaced(
                     something = new_something,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSumBWillBeReplaced_something(node: DomainA.SumB.WillBeReplaced) =
             transformLongPrimitive(node.something)
@@ -9186,11 +9642,19 @@ class DomainA private constructor() {
             val new_foo = transformUnpermutedSumUnpermutedProductVariant_foo(node)
             val new_bar = transformUnpermutedSumUnpermutedProductVariant_bar(node)
             val new_metas = transformUnpermutedSumUnpermutedProductVariant_metas(node)
-            return DomainA.UnpermutedSum.UnpermutedProductVariant(
+            return if (
+                node.foo !== new_foo ||
+                node.bar !== new_bar ||
+                node.metas !== new_metas
+            ) {
+                DomainA.UnpermutedSum.UnpermutedProductVariant(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformUnpermutedSumUnpermutedProductVariant_foo(node: DomainA.UnpermutedSum.UnpermutedProductVariant) =
             transformSymbolPrimitive(node.foo)
@@ -9204,11 +9668,19 @@ class DomainA private constructor() {
             val new_foo = transformUnpermutedSumUnpermutedRecordVariant_foo(node)
             val new_bar = transformUnpermutedSumUnpermutedRecordVariant_bar(node)
             val new_metas = transformUnpermutedSumUnpermutedRecordVariant_metas(node)
-            return DomainA.UnpermutedSum.UnpermutedRecordVariant(
+            return if (
+                node.foo !== new_foo ||
+                node.bar !== new_bar ||
+                node.metas !== new_metas
+            ) {
+                DomainA.UnpermutedSum.UnpermutedRecordVariant(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformUnpermutedSumUnpermutedRecordVariant_foo(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) =
             transformSymbolPrimitive(node.foo)
@@ -10737,11 +11209,19 @@ class DomainB private constructor() {
             val new_foo = transformUnpermutedProduct_foo(node)
             val new_bar = transformUnpermutedProduct_bar(node)
             val new_metas = transformUnpermutedProduct_metas(node)
-            return DomainB.UnpermutedProduct(
+            return if (
+                node.foo !== new_foo ||
+                node.bar !== new_bar ||
+                node.metas !== new_metas
+            ) {
+                DomainB.UnpermutedProduct(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformUnpermutedProduct_foo(node: DomainB.UnpermutedProduct) =
             transformSymbolPrimitive(node.foo)
@@ -10755,11 +11235,19 @@ class DomainB private constructor() {
             val new_foo = transformUnpermutedRecord_foo(node)
             val new_bar = transformUnpermutedRecord_bar(node)
             val new_metas = transformUnpermutedRecord_metas(node)
-            return DomainB.UnpermutedRecord(
+            return if (
+                node.foo !== new_foo ||
+                node.bar !== new_bar ||
+                node.metas !== new_metas
+            ) {
+                DomainB.UnpermutedRecord(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformUnpermutedRecord_foo(node: DomainB.UnpermutedRecord) =
             transformSymbolPrimitive(node.foo)
@@ -10772,10 +11260,17 @@ class DomainB private constructor() {
         open fun transformProductA(node: DomainB.ProductA): DomainB.ProductA {
             val new_one = transformProductA_one(node)
             val new_metas = transformProductA_metas(node)
-            return DomainB.ProductA(
+            return if (
+                node.one !== new_one ||
+                node.metas !== new_metas
+            ) {
+                DomainB.ProductA(
                     one = new_one,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformProductA_one(node: DomainB.ProductA) =
             transformSymbolPrimitive(node.one)
@@ -10786,10 +11281,17 @@ class DomainB private constructor() {
         open fun transformRecordA(node: DomainB.RecordA): DomainB.RecordA {
             val new_one = transformRecordA_one(node)
             val new_metas = transformRecordA_metas(node)
-            return DomainB.RecordA(
+            return if (
+                node.one !== new_one ||
+                node.metas !== new_metas
+            ) {
+                DomainB.RecordA(
                     one = new_one,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformRecordA_one(node: DomainB.RecordA) =
             transformSymbolPrimitive(node.one)
@@ -10800,10 +11302,17 @@ class DomainB private constructor() {
         open fun transformNewProduct(node: DomainB.NewProduct): DomainB.NewProduct {
             val new_foo = transformNewProduct_foo(node)
             val new_metas = transformNewProduct_metas(node)
-            return DomainB.NewProduct(
+            return if (
+                node.foo !== new_foo ||
+                node.metas !== new_metas
+            ) {
+                DomainB.NewProduct(
                     foo = new_foo,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformNewProduct_foo(node: DomainB.NewProduct) =
             transformLongPrimitive(node.foo)
@@ -10814,10 +11323,17 @@ class DomainB private constructor() {
         open fun transformNewRecord(node: DomainB.NewRecord): DomainB.NewRecord {
             val new_foo = transformNewRecord_foo(node)
             val new_metas = transformNewRecord_metas(node)
-            return DomainB.NewRecord(
+            return if (
+                node.foo !== new_foo ||
+                node.metas !== new_metas
+            ) {
+                DomainB.NewRecord(
                     foo = new_foo,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformNewRecord_foo(node: DomainB.NewRecord) =
             transformLongPrimitive(node.foo)
@@ -10837,11 +11353,19 @@ class DomainB private constructor() {
             val new_foo = transformUnpermutedSumUnpermutedProductVariant_foo(node)
             val new_bar = transformUnpermutedSumUnpermutedProductVariant_bar(node)
             val new_metas = transformUnpermutedSumUnpermutedProductVariant_metas(node)
-            return DomainB.UnpermutedSum.UnpermutedProductVariant(
+            return if (
+                node.foo !== new_foo ||
+                node.bar !== new_bar ||
+                node.metas !== new_metas
+            ) {
+                DomainB.UnpermutedSum.UnpermutedProductVariant(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformUnpermutedSumUnpermutedProductVariant_foo(node: DomainB.UnpermutedSum.UnpermutedProductVariant) =
             transformSymbolPrimitive(node.foo)
@@ -10855,11 +11379,19 @@ class DomainB private constructor() {
             val new_foo = transformUnpermutedSumUnpermutedRecordVariant_foo(node)
             val new_bar = transformUnpermutedSumUnpermutedRecordVariant_bar(node)
             val new_metas = transformUnpermutedSumUnpermutedRecordVariant_metas(node)
-            return DomainB.UnpermutedSum.UnpermutedRecordVariant(
+            return if (
+                node.foo !== new_foo ||
+                node.bar !== new_bar ||
+                node.metas !== new_metas
+            ) {
+                DomainB.UnpermutedSum.UnpermutedRecordVariant(
                     foo = new_foo,
                     bar = new_bar,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformUnpermutedSumUnpermutedRecordVariant_foo(node: DomainB.UnpermutedSum.UnpermutedRecordVariant) =
             transformSymbolPrimitive(node.foo)
@@ -10879,9 +11411,15 @@ class DomainB private constructor() {
         // Variant SumBWillBeUnchanged
         open fun transformSumBWillBeUnchanged(node: DomainB.SumB.WillBeUnchanged): DomainB.SumB  {
             val new_metas = transformSumBWillBeUnchanged_metas(node)
-            return DomainB.SumB.WillBeUnchanged(
+            return if (
+                node.metas !== new_metas
+            ) {
+                DomainB.SumB.WillBeUnchanged(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSumBWillBeUnchanged_metas(node: DomainB.SumB.WillBeUnchanged) =
             transformMetas(node.metas)
@@ -10890,10 +11428,17 @@ class DomainB private constructor() {
         open fun transformSumBWillBeReplaced(node: DomainB.SumB.WillBeReplaced): DomainB.SumB  {
             val new_something = transformSumBWillBeReplaced_something(node)
             val new_metas = transformSumBWillBeReplaced_metas(node)
-            return DomainB.SumB.WillBeReplaced(
+            return if (
+                node.something !== new_something ||
+                node.metas !== new_metas
+            ) {
+                DomainB.SumB.WillBeReplaced(
                     something = new_something,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSumBWillBeReplaced_something(node: DomainB.SumB.WillBeReplaced) =
             transformSymbolPrimitive(node.something)
@@ -10911,9 +11456,15 @@ class DomainB private constructor() {
         // Variant NewSumEek
         open fun transformNewSumEek(node: DomainB.NewSum.Eek): DomainB.NewSum  {
             val new_metas = transformNewSumEek_metas(node)
-            return DomainB.NewSum.Eek(
+            return if (
+                node.metas !== new_metas
+            ) {
+                DomainB.NewSum.Eek(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformNewSumEek_metas(node: DomainB.NewSum.Eek) =
             transformMetas(node.metas)
@@ -10921,9 +11472,15 @@ class DomainB private constructor() {
         // Variant NewSumWhatever
         open fun transformNewSumWhatever(node: DomainB.NewSum.Whatever): DomainB.NewSum  {
             val new_metas = transformNewSumWhatever_metas(node)
-            return DomainB.NewSum.Whatever(
+            return if (
+                node.metas !== new_metas
+            ) {
+                DomainB.NewSum.Whatever(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformNewSumWhatever_metas(node: DomainB.NewSum.Whatever) =
             transformMetas(node.metas)
@@ -10950,7 +11507,7 @@ abstract class DomainAToDomainBVisitorTransform : DomainVisitorTransformBase() {
         val new_foo = transformUnpermutedProduct_foo(node)
         val new_bar = transformUnpermutedProduct_bar(node)
         val new_metas = transformUnpermutedProduct_metas(node)
-        return DomainB.UnpermutedProduct(
+        return             DomainB.UnpermutedProduct(
                 foo = new_foo,
                 bar = new_bar,
                 metas = new_metas
@@ -10968,7 +11525,7 @@ abstract class DomainAToDomainBVisitorTransform : DomainVisitorTransformBase() {
         val new_foo = transformUnpermutedRecord_foo(node)
         val new_bar = transformUnpermutedRecord_bar(node)
         val new_metas = transformUnpermutedRecord_metas(node)
-        return DomainB.UnpermutedRecord(
+        return             DomainB.UnpermutedRecord(
                 foo = new_foo,
                 bar = new_bar,
                 metas = new_metas
@@ -10993,7 +11550,7 @@ abstract class DomainAToDomainBVisitorTransform : DomainVisitorTransformBase() {
     // Variant SumBWillBeUnchanged
     open fun transformSumBWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged): DomainB.SumB  {
         val new_metas = transformSumBWillBeUnchanged_metas(node)
-        return DomainB.SumB.WillBeUnchanged(
+        return             DomainB.SumB.WillBeUnchanged(
                 metas = new_metas
             )
     }
@@ -11017,7 +11574,7 @@ abstract class DomainAToDomainBVisitorTransform : DomainVisitorTransformBase() {
         val new_foo = transformUnpermutedSumUnpermutedProductVariant_foo(node)
         val new_bar = transformUnpermutedSumUnpermutedProductVariant_bar(node)
         val new_metas = transformUnpermutedSumUnpermutedProductVariant_metas(node)
-        return DomainB.UnpermutedSum.UnpermutedProductVariant(
+        return             DomainB.UnpermutedSum.UnpermutedProductVariant(
                 foo = new_foo,
                 bar = new_bar,
                 metas = new_metas
@@ -11035,7 +11592,7 @@ abstract class DomainAToDomainBVisitorTransform : DomainVisitorTransformBase() {
         val new_foo = transformUnpermutedSumUnpermutedRecordVariant_foo(node)
         val new_bar = transformUnpermutedSumUnpermutedRecordVariant_bar(node)
         val new_metas = transformUnpermutedSumUnpermutedRecordVariant_metas(node)
-        return DomainB.UnpermutedSum.UnpermutedRecordVariant(
+        return             DomainB.UnpermutedSum.UnpermutedRecordVariant(
                 foo = new_foo,
                 bar = new_bar,
                 metas = new_metas

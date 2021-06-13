@@ -5180,11 +5180,19 @@ class PartiqlBasic private constructor() {
             val new_first = transformExprPair_first(node)
             val new_second = transformExprPair_second(node)
             val new_metas = transformExprPair_metas(node)
-            return PartiqlBasic.ExprPair(
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.ExprPair(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprPair_first(node: PartiqlBasic.ExprPair) =
             transformExpr(node.first)
@@ -5198,11 +5206,19 @@ class PartiqlBasic private constructor() {
             val new_value = transformGroupByItem_value(node)
             val new_asAlias = transformGroupByItem_asAlias(node)
             val new_metas = transformGroupByItem_metas(node)
-            return PartiqlBasic.GroupByItem(
+            return if (
+                node.value !== new_value ||
+                node.asAlias !== new_asAlias ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.GroupByItem(
                     value = new_value,
                     asAlias = new_asAlias,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformGroupByItem_value(node: PartiqlBasic.GroupByItem) =
             transformExpr(node.value)
@@ -5215,10 +5231,17 @@ class PartiqlBasic private constructor() {
         open fun transformGroupByList(node: PartiqlBasic.GroupByList): PartiqlBasic.GroupByList {
             val new_items = transformGroupByList_items(node)
             val new_metas = transformGroupByList_metas(node)
-            return PartiqlBasic.GroupByList(
+            return if (
+                node.items !== new_items ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.GroupByList(
                     items = new_items,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformGroupByList_items(node: PartiqlBasic.GroupByList) =
             node.items.map { transformGroupByItem(it) }
@@ -5230,11 +5253,19 @@ class PartiqlBasic private constructor() {
             val new_items = transformGroupBy_items(node)
             val new_groupAsAlias = transformGroupBy_groupAsAlias(node)
             val new_metas = transformGroupBy_metas(node)
-            return PartiqlBasic.GroupBy(
+            return if (
+                node.items !== new_items ||
+                node.groupAsAlias !== new_groupAsAlias ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.GroupBy(
                     items = new_items,
                     groupAsAlias = new_groupAsAlias,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformGroupBy_items(node: PartiqlBasic.GroupBy) =
             transformGroupByList(node.items)
@@ -5255,10 +5286,17 @@ class PartiqlBasic private constructor() {
         open fun transformProjectionProjectList(node: PartiqlBasic.Projection.ProjectList): PartiqlBasic.Projection  {
             val new_items = transformProjectionProjectList_items(node)
             val new_metas = transformProjectionProjectList_metas(node)
-            return PartiqlBasic.Projection.ProjectList(
+            return if (
+                node.items !== new_items ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Projection.ProjectList(
                     items = new_items,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformProjectionProjectList_items(node: PartiqlBasic.Projection.ProjectList) =
             node.items.map { transformProjectItem(it) }
@@ -5269,10 +5307,17 @@ class PartiqlBasic private constructor() {
         open fun transformProjectionProjectValue(node: PartiqlBasic.Projection.ProjectValue): PartiqlBasic.Projection  {
             val new_value = transformProjectionProjectValue_value(node)
             val new_metas = transformProjectionProjectValue_metas(node)
-            return PartiqlBasic.Projection.ProjectValue(
+            return if (
+                node.value !== new_value ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Projection.ProjectValue(
                     value = new_value,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformProjectionProjectValue_value(node: PartiqlBasic.Projection.ProjectValue) =
             transformExpr(node.value)
@@ -5290,9 +5335,15 @@ class PartiqlBasic private constructor() {
         // Variant ProjectItemProjectAll
         open fun transformProjectItemProjectAll(node: PartiqlBasic.ProjectItem.ProjectAll): PartiqlBasic.ProjectItem  {
             val new_metas = transformProjectItemProjectAll_metas(node)
-            return PartiqlBasic.ProjectItem.ProjectAll(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.ProjectItem.ProjectAll(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformProjectItemProjectAll_metas(node: PartiqlBasic.ProjectItem.ProjectAll) =
             transformMetas(node.metas)
@@ -5302,11 +5353,19 @@ class PartiqlBasic private constructor() {
             val new_value = transformProjectItemProjectExpr_value(node)
             val new_asAlias = transformProjectItemProjectExpr_asAlias(node)
             val new_metas = transformProjectItemProjectExpr_metas(node)
-            return PartiqlBasic.ProjectItem.ProjectExpr(
+            return if (
+                node.value !== new_value ||
+                node.asAlias !== new_asAlias ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.ProjectItem.ProjectExpr(
                     value = new_value,
                     asAlias = new_asAlias,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformProjectItemProjectExpr_value(node: PartiqlBasic.ProjectItem.ProjectExpr) =
             transformExpr(node.value)
@@ -5328,9 +5387,15 @@ class PartiqlBasic private constructor() {
         // Variant JoinTypeInner
         open fun transformJoinTypeInner(node: PartiqlBasic.JoinType.Inner): PartiqlBasic.JoinType  {
             val new_metas = transformJoinTypeInner_metas(node)
-            return PartiqlBasic.JoinType.Inner(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.JoinType.Inner(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformJoinTypeInner_metas(node: PartiqlBasic.JoinType.Inner) =
             transformMetas(node.metas)
@@ -5338,9 +5403,15 @@ class PartiqlBasic private constructor() {
         // Variant JoinTypeLeft
         open fun transformJoinTypeLeft(node: PartiqlBasic.JoinType.Left): PartiqlBasic.JoinType  {
             val new_metas = transformJoinTypeLeft_metas(node)
-            return PartiqlBasic.JoinType.Left(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.JoinType.Left(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformJoinTypeLeft_metas(node: PartiqlBasic.JoinType.Left) =
             transformMetas(node.metas)
@@ -5348,9 +5419,15 @@ class PartiqlBasic private constructor() {
         // Variant JoinTypeRight
         open fun transformJoinTypeRight(node: PartiqlBasic.JoinType.Right): PartiqlBasic.JoinType  {
             val new_metas = transformJoinTypeRight_metas(node)
-            return PartiqlBasic.JoinType.Right(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.JoinType.Right(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformJoinTypeRight_metas(node: PartiqlBasic.JoinType.Right) =
             transformMetas(node.metas)
@@ -5358,9 +5435,15 @@ class PartiqlBasic private constructor() {
         // Variant JoinTypeOuter
         open fun transformJoinTypeOuter(node: PartiqlBasic.JoinType.Outer): PartiqlBasic.JoinType  {
             val new_metas = transformJoinTypeOuter_metas(node)
-            return PartiqlBasic.JoinType.Outer(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.JoinType.Outer(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformJoinTypeOuter_metas(node: PartiqlBasic.JoinType.Outer) =
             transformMetas(node.metas)
@@ -5380,13 +5463,23 @@ class PartiqlBasic private constructor() {
             val new_atAlias = transformFromSourceScan_atAlias(node)
             val new_byAlias = transformFromSourceScan_byAlias(node)
             val new_metas = transformFromSourceScan_metas(node)
-            return PartiqlBasic.FromSource.Scan(
+            return if (
+                node.expr !== new_expr ||
+                node.asAlias !== new_asAlias ||
+                node.atAlias !== new_atAlias ||
+                node.byAlias !== new_byAlias ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.FromSource.Scan(
                     expr = new_expr,
                     asAlias = new_asAlias,
                     atAlias = new_atAlias,
                     byAlias = new_byAlias,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformFromSourceScan_expr(node: PartiqlBasic.FromSource.Scan) =
             transformExpr(node.expr)
@@ -5406,13 +5499,23 @@ class PartiqlBasic private constructor() {
             val new_right = transformFromSourceJoin_right(node)
             val new_predicate = transformFromSourceJoin_predicate(node)
             val new_metas = transformFromSourceJoin_metas(node)
-            return PartiqlBasic.FromSource.Join(
+            return if (
+                node.type !== new_type ||
+                node.left !== new_left ||
+                node.right !== new_right ||
+                node.predicate !== new_predicate ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.FromSource.Join(
                     type = new_type,
                     left = new_left,
                     right = new_right,
                     predicate = new_predicate,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformFromSourceJoin_type(node: PartiqlBasic.FromSource.Join) =
             transformJoinType(node.type)
@@ -5436,9 +5539,15 @@ class PartiqlBasic private constructor() {
         // Variant CaseSensitivityCaseSensitive
         open fun transformCaseSensitivityCaseSensitive(node: PartiqlBasic.CaseSensitivity.CaseSensitive): PartiqlBasic.CaseSensitivity  {
             val new_metas = transformCaseSensitivityCaseSensitive_metas(node)
-            return PartiqlBasic.CaseSensitivity.CaseSensitive(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.CaseSensitivity.CaseSensitive(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformCaseSensitivityCaseSensitive_metas(node: PartiqlBasic.CaseSensitivity.CaseSensitive) =
             transformMetas(node.metas)
@@ -5446,9 +5555,15 @@ class PartiqlBasic private constructor() {
         // Variant CaseSensitivityCaseInsensitive
         open fun transformCaseSensitivityCaseInsensitive(node: PartiqlBasic.CaseSensitivity.CaseInsensitive): PartiqlBasic.CaseSensitivity  {
             val new_metas = transformCaseSensitivityCaseInsensitive_metas(node)
-            return PartiqlBasic.CaseSensitivity.CaseInsensitive(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.CaseSensitivity.CaseInsensitive(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformCaseSensitivityCaseInsensitive_metas(node: PartiqlBasic.CaseSensitivity.CaseInsensitive) =
             transformMetas(node.metas)
@@ -5464,9 +5579,15 @@ class PartiqlBasic private constructor() {
         // Variant ScopeQualifierUnqualified
         open fun transformScopeQualifierUnqualified(node: PartiqlBasic.ScopeQualifier.Unqualified): PartiqlBasic.ScopeQualifier  {
             val new_metas = transformScopeQualifierUnqualified_metas(node)
-            return PartiqlBasic.ScopeQualifier.Unqualified(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.ScopeQualifier.Unqualified(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformScopeQualifierUnqualified_metas(node: PartiqlBasic.ScopeQualifier.Unqualified) =
             transformMetas(node.metas)
@@ -5474,9 +5595,15 @@ class PartiqlBasic private constructor() {
         // Variant ScopeQualifierQualified
         open fun transformScopeQualifierQualified(node: PartiqlBasic.ScopeQualifier.Qualified): PartiqlBasic.ScopeQualifier  {
             val new_metas = transformScopeQualifierQualified_metas(node)
-            return PartiqlBasic.ScopeQualifier.Qualified(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.ScopeQualifier.Qualified(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformScopeQualifierQualified_metas(node: PartiqlBasic.ScopeQualifier.Qualified) =
             transformMetas(node.metas)
@@ -5492,9 +5619,15 @@ class PartiqlBasic private constructor() {
         // Variant SetQuantifierAll
         open fun transformSetQuantifierAll(node: PartiqlBasic.SetQuantifier.All): PartiqlBasic.SetQuantifier  {
             val new_metas = transformSetQuantifierAll_metas(node)
-            return PartiqlBasic.SetQuantifier.All(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.SetQuantifier.All(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSetQuantifierAll_metas(node: PartiqlBasic.SetQuantifier.All) =
             transformMetas(node.metas)
@@ -5502,9 +5635,15 @@ class PartiqlBasic private constructor() {
         // Variant SetQuantifierDistinct
         open fun transformSetQuantifierDistinct(node: PartiqlBasic.SetQuantifier.Distinct): PartiqlBasic.SetQuantifier  {
             val new_metas = transformSetQuantifierDistinct_metas(node)
-            return PartiqlBasic.SetQuantifier.Distinct(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.SetQuantifier.Distinct(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformSetQuantifierDistinct_metas(node: PartiqlBasic.SetQuantifier.Distinct) =
             transformMetas(node.metas)
@@ -5522,10 +5661,17 @@ class PartiqlBasic private constructor() {
         open fun transformPathElementPathExpr(node: PartiqlBasic.PathElement.PathExpr): PartiqlBasic.PathElement  {
             val new_expr = transformPathElementPathExpr_expr(node)
             val new_metas = transformPathElementPathExpr_metas(node)
-            return PartiqlBasic.PathElement.PathExpr(
+            return if (
+                node.expr !== new_expr ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.PathElement.PathExpr(
                     expr = new_expr,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformPathElementPathExpr_expr(node: PartiqlBasic.PathElement.PathExpr) =
             transformExpr(node.expr)
@@ -5535,9 +5681,15 @@ class PartiqlBasic private constructor() {
         // Variant PathElementPathWildcard
         open fun transformPathElementPathWildcard(node: PartiqlBasic.PathElement.PathWildcard): PartiqlBasic.PathElement  {
             val new_metas = transformPathElementPathWildcard_metas(node)
-            return PartiqlBasic.PathElement.PathWildcard(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.PathElement.PathWildcard(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformPathElementPathWildcard_metas(node: PartiqlBasic.PathElement.PathWildcard) =
             transformMetas(node.metas)
@@ -5545,9 +5697,15 @@ class PartiqlBasic private constructor() {
         // Variant PathElementPathUnpivot
         open fun transformPathElementPathUnpivot(node: PartiqlBasic.PathElement.PathUnpivot): PartiqlBasic.PathElement  {
             val new_metas = transformPathElementPathUnpivot_metas(node)
-            return PartiqlBasic.PathElement.PathUnpivot(
+            return if (
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.PathElement.PathUnpivot(
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformPathElementPathUnpivot_metas(node: PartiqlBasic.PathElement.PathUnpivot) =
             transformMetas(node.metas)
@@ -5583,10 +5741,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprLit(node: PartiqlBasic.Expr.Lit): PartiqlBasic.Expr  {
             val new_value = transformExprLit_value(node)
             val new_metas = transformExprLit_metas(node)
-            return PartiqlBasic.Expr.Lit(
+            return if (
+                node.value !== new_value ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Lit(
                     value = new_value,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprLit_value(node: PartiqlBasic.Expr.Lit) =
             transformAnyElement(node.value)
@@ -5599,12 +5764,21 @@ class PartiqlBasic private constructor() {
             val new_case = transformExprId_case(node)
             val new_scopeQualifier = transformExprId_scopeQualifier(node)
             val new_metas = transformExprId_metas(node)
-            return PartiqlBasic.Expr.Id(
+            return if (
+                node.name !== new_name ||
+                node.case !== new_case ||
+                node.scopeQualifier !== new_scopeQualifier ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Id(
                     name = new_name,
                     case = new_case,
                     scopeQualifier = new_scopeQualifier,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprId_name(node: PartiqlBasic.Expr.Id) =
             transformSymbolPrimitive(node.name)
@@ -5619,10 +5793,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprParameter(node: PartiqlBasic.Expr.Parameter): PartiqlBasic.Expr  {
             val new_index = transformExprParameter_index(node)
             val new_metas = transformExprParameter_metas(node)
-            return PartiqlBasic.Expr.Parameter(
+            return if (
+                node.index !== new_index ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Parameter(
                     index = new_index,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprParameter_index(node: PartiqlBasic.Expr.Parameter) =
             transformLongPrimitive(node.index)
@@ -5633,10 +5814,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprNot(node: PartiqlBasic.Expr.Not): PartiqlBasic.Expr  {
             val new_expr = transformExprNot_expr(node)
             val new_metas = transformExprNot_metas(node)
-            return PartiqlBasic.Expr.Not(
+            return if (
+                node.expr !== new_expr ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Not(
                     expr = new_expr,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprNot_expr(node: PartiqlBasic.Expr.Not) =
             transformExpr(node.expr)
@@ -5647,10 +5835,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprPlus(node: PartiqlBasic.Expr.Plus): PartiqlBasic.Expr  {
             val new_operands = transformExprPlus_operands(node)
             val new_metas = transformExprPlus_metas(node)
-            return PartiqlBasic.Expr.Plus(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Plus(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprPlus_operands(node: PartiqlBasic.Expr.Plus) =
             node.operands.map { transformExpr(it) }
@@ -5661,10 +5856,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprMinus(node: PartiqlBasic.Expr.Minus): PartiqlBasic.Expr  {
             val new_operands = transformExprMinus_operands(node)
             val new_metas = transformExprMinus_metas(node)
-            return PartiqlBasic.Expr.Minus(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Minus(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprMinus_operands(node: PartiqlBasic.Expr.Minus) =
             node.operands.map { transformExpr(it) }
@@ -5675,10 +5877,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprTimes(node: PartiqlBasic.Expr.Times): PartiqlBasic.Expr  {
             val new_operands = transformExprTimes_operands(node)
             val new_metas = transformExprTimes_metas(node)
-            return PartiqlBasic.Expr.Times(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Times(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprTimes_operands(node: PartiqlBasic.Expr.Times) =
             node.operands.map { transformExpr(it) }
@@ -5689,10 +5898,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprDivide(node: PartiqlBasic.Expr.Divide): PartiqlBasic.Expr  {
             val new_operands = transformExprDivide_operands(node)
             val new_metas = transformExprDivide_metas(node)
-            return PartiqlBasic.Expr.Divide(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Divide(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprDivide_operands(node: PartiqlBasic.Expr.Divide) =
             node.operands.map { transformExpr(it) }
@@ -5703,10 +5919,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprModulo(node: PartiqlBasic.Expr.Modulo): PartiqlBasic.Expr  {
             val new_operands = transformExprModulo_operands(node)
             val new_metas = transformExprModulo_metas(node)
-            return PartiqlBasic.Expr.Modulo(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Modulo(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprModulo_operands(node: PartiqlBasic.Expr.Modulo) =
             node.operands.map { transformExpr(it) }
@@ -5717,10 +5940,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprConcat(node: PartiqlBasic.Expr.Concat): PartiqlBasic.Expr  {
             val new_operands = transformExprConcat_operands(node)
             val new_metas = transformExprConcat_metas(node)
-            return PartiqlBasic.Expr.Concat(
+            return if (
+                node.operands !== new_operands ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Concat(
                     operands = new_operands,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprConcat_operands(node: PartiqlBasic.Expr.Concat) =
             node.operands.map { transformExpr(it) }
@@ -5733,12 +5963,21 @@ class PartiqlBasic private constructor() {
             val new_right = transformExprLike_right(node)
             val new_escape = transformExprLike_escape(node)
             val new_metas = transformExprLike_metas(node)
-            return PartiqlBasic.Expr.Like(
+            return if (
+                node.left !== new_left ||
+                node.right !== new_right ||
+                node.escape !== new_escape ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Like(
                     left = new_left,
                     right = new_right,
                     escape = new_escape,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprLike_left(node: PartiqlBasic.Expr.Like) =
             transformExpr(node.left)
@@ -5755,12 +5994,21 @@ class PartiqlBasic private constructor() {
             val new_from = transformExprBetween_from(node)
             val new_to = transformExprBetween_to(node)
             val new_metas = transformExprBetween_metas(node)
-            return PartiqlBasic.Expr.Between(
+            return if (
+                node.value !== new_value ||
+                node.from !== new_from ||
+                node.to !== new_to ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Between(
                     value = new_value,
                     from = new_from,
                     to = new_to,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprBetween_value(node: PartiqlBasic.Expr.Between) =
             transformExpr(node.value)
@@ -5776,11 +6024,19 @@ class PartiqlBasic private constructor() {
             val new_root = transformExprPath_root(node)
             val new_elements = transformExprPath_elements(node)
             val new_metas = transformExprPath_metas(node)
-            return PartiqlBasic.Expr.Path(
+            return if (
+                node.root !== new_root ||
+                node.elements !== new_elements ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Path(
                     root = new_root,
                     elements = new_elements,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprPath_root(node: PartiqlBasic.Expr.Path) =
             transformExpr(node.root)
@@ -5794,11 +6050,19 @@ class PartiqlBasic private constructor() {
             val new_name = transformExprCall_name(node)
             val new_args = transformExprCall_args(node)
             val new_metas = transformExprCall_metas(node)
-            return PartiqlBasic.Expr.Call(
+            return if (
+                node.name !== new_name ||
+                node.args !== new_args ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Call(
                     name = new_name,
                     args = new_args,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprCall_name(node: PartiqlBasic.Expr.Call) =
             transformSymbolPrimitive(node.name)
@@ -5813,12 +6077,21 @@ class PartiqlBasic private constructor() {
             val new_setQuantifier = transformExprCallAgg_setQuantifier(node)
             val new_arg = transformExprCallAgg_arg(node)
             val new_metas = transformExprCallAgg_metas(node)
-            return PartiqlBasic.Expr.CallAgg(
+            return if (
+                node.name !== new_name ||
+                node.setQuantifier !== new_setQuantifier ||
+                node.arg !== new_arg ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.CallAgg(
                     name = new_name,
                     setQuantifier = new_setQuantifier,
                     arg = new_arg,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprCallAgg_name(node: PartiqlBasic.Expr.CallAgg) =
             transformSymbolPrimitive(node.name)
@@ -5834,11 +6107,19 @@ class PartiqlBasic private constructor() {
             val new_value = transformExprSimpleCase_value(node)
             val new_branches = transformExprSimpleCase_branches(node)
             val new_metas = transformExprSimpleCase_metas(node)
-            return PartiqlBasic.Expr.SimpleCase(
+            return if (
+                node.value !== new_value ||
+                node.branches !== new_branches ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.SimpleCase(
                     value = new_value,
                     branches = new_branches,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprSimpleCase_value(node: PartiqlBasic.Expr.SimpleCase) =
             transformExpr(node.value)
@@ -5851,10 +6132,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprSearchedCase(node: PartiqlBasic.Expr.SearchedCase): PartiqlBasic.Expr  {
             val new_branches = transformExprSearchedCase_branches(node)
             val new_metas = transformExprSearchedCase_metas(node)
-            return PartiqlBasic.Expr.SearchedCase(
+            return if (
+                node.branches !== new_branches ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.SearchedCase(
                     branches = new_branches,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprSearchedCase_branches(node: PartiqlBasic.Expr.SearchedCase) =
             node.branches.map { transformExprPair(it) }
@@ -5865,10 +6153,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprStruct(node: PartiqlBasic.Expr.Struct): PartiqlBasic.Expr  {
             val new_fields = transformExprStruct_fields(node)
             val new_metas = transformExprStruct_metas(node)
-            return PartiqlBasic.Expr.Struct(
+            return if (
+                node.fields !== new_fields ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Struct(
                     fields = new_fields,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprStruct_fields(node: PartiqlBasic.Expr.Struct) =
             node.fields.map { transformExprPair(it) }
@@ -5879,10 +6174,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprBag(node: PartiqlBasic.Expr.Bag): PartiqlBasic.Expr  {
             val new_values = transformExprBag_values(node)
             val new_metas = transformExprBag_metas(node)
-            return PartiqlBasic.Expr.Bag(
+            return if (
+                node.values !== new_values ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Bag(
                     values = new_values,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprBag_values(node: PartiqlBasic.Expr.Bag) =
             node.values.map { transformExpr(it) }
@@ -5893,10 +6195,17 @@ class PartiqlBasic private constructor() {
         open fun transformExprList(node: PartiqlBasic.Expr.List): PartiqlBasic.Expr  {
             val new_values = transformExprList_values(node)
             val new_metas = transformExprList_metas(node)
-            return PartiqlBasic.Expr.List(
+            return if (
+                node.values !== new_values ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.List(
                     values = new_values,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprList_values(node: PartiqlBasic.Expr.List) =
             node.values.map { transformExpr(it) }
@@ -5913,7 +6222,17 @@ class PartiqlBasic private constructor() {
             val new_having = transformExprSelect_having(node)
             val new_limit = transformExprSelect_limit(node)
             val new_metas = transformExprSelect_metas(node)
-            return PartiqlBasic.Expr.Select(
+            return if (
+                node.setq !== new_setq ||
+                node.project !== new_project ||
+                node.from !== new_from ||
+                node.where !== new_where ||
+                node.group !== new_group ||
+                node.having !== new_having ||
+                node.limit !== new_limit ||
+                node.metas !== new_metas
+            ) {
+                PartiqlBasic.Expr.Select(
                     setq = new_setq,
                     project = new_project,
                     from = new_from,
@@ -5923,6 +6242,9 @@ class PartiqlBasic private constructor() {
                     limit = new_limit,
                     metas = new_metas
                 )
+            } else {
+                node
+            }
         }
         open fun transformExprSelect_setq(node: PartiqlBasic.Expr.Select) =
             node.setq?.let { transformSetQuantifier(it) }
