@@ -15,25 +15,50 @@
 
 package org.partiql.pig.domain
 
+import com.amazon.ionelement.api.IonTextLocation
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.partiql.pig.domain.model.SemanticErrorContext
 import org.partiql.pig.domain.model.TypeDomain
+import org.partiql.pig.domain.parser.ParserErrorContext
+import org.partiql.pig.domain.parser.SourceLocation
 import org.partiql.pig.domain.parser.parseTypeUniverseFile
+import org.partiql.pig.errors.PigError
+import org.partiql.pig.errors.PigException
+import java.io.File
 import kotlin.test.assertTrue
 
-class TypeDomainParserImportTests {
+class TypeDomainParserIncludeFileTests {
 
     @Test
-    fun testImport() {
+    fun `include happy path`() {
         val universe = parseTypeUniverseFile("test-domains/main.ion")
         val allDomains = universe.statements.filterIsInstance<TypeDomain>()
 
         // If 4 domains are loaded correctly, then we deal with relative paths and circular references correctly.
         // see documentation at top of test-domains/main.ion
-        Assertions.assertEquals(4, allDomains.size)
+        assertEquals(4, allDomains.size)
         assertTrue(allDomains.any { it.tag == "domain_a" })
         assertTrue(allDomains.any { it.tag == "domain_b" })
         assertTrue(allDomains.any { it.tag == "domain_c" })
         assertTrue(allDomains.any { it.tag == "domain_d" })
+    }
+
+    @Test
+    fun `missing file`() {
+        val universeFilePath = "test-domains/include-missing-file.ion"
+        val ex = assertThrows<PigException> {
+            parseTypeUniverseFile(universeFilePath)
+        }
+
+        assertEquals(
+            PigError(
+                SourceLocation(File(universeFilePath).canonicalPath, IonTextLocation(4L, 1L)),
+                ParserErrorContext.CouldNotFindImportedTypeUniverse(File("test-domains/domains/doesnotexist.ion").canonicalPath)
+            ),
+            ex.error
+        )
     }
 }

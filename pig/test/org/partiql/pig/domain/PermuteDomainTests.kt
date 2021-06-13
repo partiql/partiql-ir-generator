@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 import org.partiql.pig.domain.model.Arity
 import org.partiql.pig.domain.model.DataType
 import org.partiql.pig.domain.model.TypeUniverse
-import org.partiql.pig.util.parseTypeUniverseInString
+import org.partiql.pig.util.parseTypeUniverseString
 
 class PermuteDomainTests {
     /**
@@ -58,7 +58,7 @@ class PermuteDomainTests {
                         (e b::symbol)))))
         """
 
-        val td: TypeUniverse = parseTypeUniverseInString(typeUniverseWithExtensions)
+        val td: TypeUniverse = parseTypeUniverseString(typeUniverseWithExtensions)
 
         val concretes = td.computeTypeDomains()
 

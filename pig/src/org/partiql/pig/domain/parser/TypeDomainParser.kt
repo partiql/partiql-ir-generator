@@ -49,27 +49,42 @@ import java.io.FileNotFoundException
 import java.io.InputStream
 import java.util.Stack
 
-
-fun parseTypeUniverseFile(path: String): TypeUniverse {
-    val parser = Parser(FILE_SYSTEM_SOURCE)
-    return parser.parseTypeUniverse(path)
+/**
+ * Parses the type universe specified in [universeFilePath].
+ *
+ * Any files included with `include_file` are relative to the directory containing [universeFilePath].
+ */
+internal fun parseTypeUniverseFile(universeFilePath: String): TypeUniverse {
+    val parser = TypeUniverseParser(FILE_IMPORT_SOURCE)
+    return parser.parseTypeUniverse(universeFilePath)
 }
 
-internal class Parser(
-    val inputSource: InputSource
+internal class TypeUniverseParser(
+    private val imporSource: ImportSource
+    //private val imoprtResolver: ImportResolver
 ) {
-    /** This contains every file the parser has "seen" and is used detect and prevent import cycles. */
+    /**
+     * This contains every file the parser has "seen" and is used to detect and ignore any `(include_file ...)`
+     * statement for a file that the parser has previously seen.  Serves two purposes: 1) sidesteps issues arising from
+     * files being included more than once and 2) prevents problems with cyclic includes.
+     */
     private val parseHistory = HashSet<String>()
-    private val qualifedSourceStack = Stack<String>().apply { push(".") }
+
+    /**
+     * The top of this stack is always the path to the input file currently being parsed.  It's pushed and popped
+     * before and after files included with `(include_file ...)` are parsed.
+     */
+    private val inputFilePathStack = Stack<String>()
 
     /** Parses a type universe in the specified [IonReader]. */
     fun parseTypeUniverse(source: String): TypeUniverse {
         val elementLoader = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
-        val qualifiedSource = inputSource.getCanonicalName(source)
-        return inputSource.openStream(qualifiedSource).use { inputStream: InputStream ->
+        //val qualifiedSource = imoprtResolver.resolve(source)
+        val qualifiedSource = File(source).absolutePath
+        return imporSource.openInputStream(qualifiedSource).use { inputStream: InputStream ->
             IonReaderBuilder.standard().build(inputStream).use { reader: IonReader ->
                 this.parseHistory.add(qualifiedSource)
-                this.qualifedSourceStack.push(qualifiedSource)
+                this.inputFilePathStack.push(qualifiedSource)
                 val domains = try {
                     val topLevelElements = elementLoader.loadAllElements(reader)
                     topLevelElements.flatMap { topLevelValue ->
@@ -86,19 +101,19 @@ internal class Parser(
                 } catch (iee: IonElementException) {
                     parseError(iee.location?.toSourceLocation(), ParserErrorContext.IonElementError(iee))
                 }
-                this.qualifedSourceStack.pop()
+                this.inputFilePathStack.pop()
                 TypeUniverse(domains)
             }
         }
 
     }
 
-    fun parseError(blame: IonElement, context: ErrorContext): Nothing {
+    private fun parseError(blame: IonElement, context: ErrorContext): Nothing {
         val loc = blame.metas.location?.toSourceLocation()
         parseError(loc, context)
     }
 
-    private fun IonLocation.toSourceLocation() = SourceLocation(qualifedSourceStack.peek(), this)
+    private fun IonLocation.toSourceLocation() = SourceLocation(inputFilePathStack.peek(), this)
 
     private fun MetaContainer.toSourceLocationMetas(): MetaContainer = this.location?.let {
         metaContainerOf(SOURCE_LOCATION_META_TAG to it.toSourceLocation())
@@ -108,7 +123,7 @@ internal class Parser(
         requireArityForTag(sexp, 1)
         val relativePath = sexp.tail.single().asString().textValue
 
-        val workingDirectory = File(this.qualifedSourceStack.peek()).parentFile
+        val workingDirectory = File(this.inputFilePathStack.peek()).parentFile
         val qualifiedSourcePath = File(workingDirectory, relativePath).canonicalPath
         return if(!parseHistory.contains(qualifiedSourcePath)) {
             try {
@@ -137,7 +152,7 @@ internal class Parser(
         }
     }
 
-    fun parseTransform(sexp: SexpElement): Statement {
+    private fun parseTransform(sexp: SexpElement): Statement {
         requireArityForTag(sexp, 2)
         return Transform(
             sourceDomainTag = sexp.values[1].symbolValue,
@@ -169,9 +184,6 @@ internal class Parser(
             else -> parseError(tlvs.head, ParserErrorContext.InvalidDomainLevelTag(tlvs.tag))
         }
     }
-
-    private fun parseTypeRefs(values: List<IonElement>): List<TypeRef> =
-        values.map { parseSingleTypeRef(it) }
 
     // Parses a sum-variant product or record (depending on the syntax used)
     private fun parseVariant(

@@ -25,7 +25,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.partiql.pig.domain.parser.ParserErrorContext
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
-import org.partiql.pig.util.parseTypeUniverseInString
+import org.partiql.pig.util.parseTypeUniverseString
 import java.io.File
 
 class TypeDomainParserErrorsTest {
@@ -36,7 +36,7 @@ class TypeDomainParserErrorsTest {
     @MethodSource("parametersForErrorsTest")
     fun errorsTest(tc: TestCase) {
         val ex = assertThrows<PigException> {
-            val oops = parseTypeUniverseInString(tc.typeUniverseText)
+            val oops = parseTypeUniverseString(tc.typeUniverseText)
             println("this was erroneously parsed: ${oops.toIonElement()}")
         }
         assertEquals(tc.expectedError, ex.error)

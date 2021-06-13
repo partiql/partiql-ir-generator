@@ -16,34 +16,43 @@
 package org.partiql.pig.util
 
 import org.partiql.pig.domain.model.TypeUniverse
-import org.partiql.pig.domain.parser.InputSource
-import org.partiql.pig.domain.parser.Parser
+import org.partiql.pig.domain.parser.ImportSource
+import org.partiql.pig.domain.parser.TypeUniverseParser
 import java.io.ByteArrayInputStream
+import java.io.File
 import java.io.FileNotFoundException
 import java.io.InputStream
 
 /**
- * For testing purposes, parses the type universe specified in [topUnvierseText].
+ * The name of the "fake" root file used by unit tests.
+ */
+internal const val FAKE_ROOT_FILE = "root.ion"
+
+/**
+ * For unit tests only. Parses the type universe specified in [topUnvierseText].
+ *
+ *
  *
  * [includes] is a map keyed by "fake" filename that will be used instead of a real-file system for looking
  * up the content of imported files.  [includes] must not contain any filename by the name of "root.ion", which
  * is the name given to the type universe specified in [topUnvierseText].
  */
-fun parseTypeUniverseInString(topUnvierseText: String, includes: Map<String, String> = emptyMap()): TypeUniverse {
-    assert(!includes.containsKey("root.ion"))
-    val allIncludes = mapOf("root.ion" to topUnvierseText) + includes
-    val parser = Parser(StringSource(allIncludes))
-    return parser.parseTypeUniverse("root.ion")
+fun parseTypeUniverseString(topUnvierseText: String, includes: Map<String, String> = emptyMap()): TypeUniverse {
+    assert(!includes.containsKey(FAKE_ROOT_FILE))
+
+    val allIncludes = (mapOf(FAKE_ROOT_FILE to topUnvierseText) + includes).map {
+        File(it.key).canonicalPath to it.value
+    }.toMap()
+
+    val parser = TypeUniverseParser(FakeImportSource(allIncludes))
+    return parser.parseTypeUniverse(FAKE_ROOT_FILE)
 }
 
 /** A minimal faux file system backed by a Map<String, String>.  Used only for testing. */
-class StringSource(val sources: Map<String, String>) : InputSource {
-    override fun openStream(sourceName: String): InputStream {
-        val text: String = sources[sourceName] ?: throw FileNotFoundException("$sourceName does not exist")
+class FakeImportSource(val sources: Map<String, String>) : ImportSource {
+    override fun openInputStream(resolvedName: String): InputStream {
+        val text: String = sources[resolvedName] ?: throw FileNotFoundException("$resolvedName does not exist")
 
         return ByteArrayInputStream(text.toByteArray(Charsets.UTF_8))
     }
-
-    override fun getCanonicalName(sourceName: String): String = sourceName
 }
-

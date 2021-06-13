@@ -22,7 +22,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.partiql.pig.domain.model.SemanticErrorContext
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
-import org.partiql.pig.util.parseTypeUniverseInString
+import org.partiql.pig.util.parseTypeUniverseString
 
 class TypeDomainSemanticCheckerTests {
 
@@ -43,7 +43,7 @@ class TypeDomainSemanticCheckerTests {
     fun nameErrorsTest2(tc: TestCase) = runTest(tc)
 
     private fun runTest(tc: TestCase) {
-        val u = parseTypeUniverseInString(tc.typeUniverseText)
+        val u = parseTypeUniverseString(tc.typeUniverseText)
         val ex = assertThrows<PigException> { u.computeTypeDomains() }
         assertEquals(tc.expectedError, ex.error)
     }

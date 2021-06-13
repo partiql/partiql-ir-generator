@@ -17,8 +17,26 @@ package org.partiql.pig.cmdline
 
 import java.io.File
 
+/** Represents command line options specified by the user. */
 sealed class Command {
+
+    /** The `--help` command. */
     object ShowHelp : Command()
+
+    /**
+     * Returned by [CommandLineParser] when the user has specified invalid command-line arguments
+     *
+     * - [message]: an error message to be displayed to the user.
+     */
     data class InvalidCommandLineArguments(val message: String) : Command()
-    data class Generate(val typeUniverseFile: String, val outputFile: String, val target: TargetLanguage) : Command()
+
+    /**
+     * Contains the details of a *valid* command-line specified by the user.
+     *
+     * - [typeUniverseFilePath]: the path to the type universe file.
+     * - [outputFilePath]: the path to the output file.  (This makes the assumption that there is only one output file.)
+     * - [target]: specifies the target language and any other parameters unique to the target language.
+     */
+    data class Generate(val typeUniverseFilePath: File, val outputFilePath: File, val target: TargetLanguage) : Command()
 }
+

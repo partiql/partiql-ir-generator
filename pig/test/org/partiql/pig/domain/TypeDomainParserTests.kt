@@ -22,7 +22,7 @@ import com.amazon.ionelement.api.ionSymbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.partiql.pig.util.parseTypeUniverseInString
+import org.partiql.pig.util.parseTypeUniverseString
 
 class TypeDomainParserTests {
     private val loader = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
@@ -90,7 +90,7 @@ class TypeDomainParserTests {
         }
 
         val parsed = assertDoesNotThrow("parsing type universe") {
-            parseTypeUniverseInString(tc)
+            parseTypeUniverseString(tc)
         }
 
         assertEquals(
