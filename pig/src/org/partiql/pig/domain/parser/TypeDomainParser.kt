@@ -55,24 +55,25 @@ import java.util.Stack
  * Any files included with `include_file` are relative to the directory containing [universeFilePath].
  */
 internal fun parseTypeUniverseFile(universeFilePath: String): TypeUniverse {
-    val parser = TypeUniverseParser(FILE_IMPORT_SOURCE)
+    val parser = TypeUniverseParser(FILE_SYSTEM_INPUT_STREAM_SOURCE)
     return parser.parseTypeUniverse(universeFilePath)
 }
 
 internal class TypeUniverseParser(
-    private val imporSource: ImportSource
+    private val imporSource: InputStreamSource
     //private val imoprtResolver: ImportResolver
 ) {
     /**
      * This contains every file the parser has "seen" and is used to detect and ignore any `(include_file ...)`
-     * statement for a file that the parser has previously seen.  Serves two purposes: 1) sidesteps issues arising from
-     * files being included more than once and 2) prevents problems with cyclic includes.
+     * statement for a file that the parser has previously seen.  This sidesteps issues arising from files being
+     * included more than once, including infinite recursion in the case of cyclic includes.
      */
     private val parseHistory = HashSet<String>()
 
     /**
-     * The top of this stack is always the path to the input file currently being parsed.  It's pushed and popped
-     * before and after files included with `(include_file ...)` are parsed.
+     * The top of this stack is always the path to the input file currently being parsed.
+     *
+     * Kept up to date by the  [parseTypeUniverse] function.
      */
     private val inputFilePathStack = Stack<String>()
 
@@ -105,7 +106,6 @@ internal class TypeUniverseParser(
                 TypeUniverse(domains)
             }
         }
-
     }
 
     private fun parseError(blame: IonElement, context: ErrorContext): Nothing {

@@ -16,7 +16,7 @@
 package org.partiql.pig.util
 
 import org.partiql.pig.domain.model.TypeUniverse
-import org.partiql.pig.domain.parser.ImportSource
+import org.partiql.pig.domain.parser.InputStreamSource
 import org.partiql.pig.domain.parser.TypeUniverseParser
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -44,12 +44,12 @@ fun parseTypeUniverseString(topUnvierseText: String, includes: Map<String, Strin
         File(it.key).canonicalPath to it.value
     }.toMap()
 
-    val parser = TypeUniverseParser(FakeImportSource(allIncludes))
+    val parser = TypeUniverseParser(FakeInputStreamSource(allIncludes))
     return parser.parseTypeUniverse(FAKE_ROOT_FILE)
 }
 
 /** A minimal faux file system backed by a Map<String, String>.  Used only for testing. */
-class FakeImportSource(val sources: Map<String, String>) : ImportSource {
+class FakeInputStreamSource(val sources: Map<String, String>) : InputStreamSource {
     override fun openInputStream(resolvedName: String): InputStream {
         val text: String = sources[resolvedName] ?: throw FileNotFoundException("$resolvedName does not exist")
 

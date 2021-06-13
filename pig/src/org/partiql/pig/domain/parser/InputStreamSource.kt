@@ -15,20 +15,21 @@
 
 package org.partiql.pig.domain.parser
 
-import com.amazon.ionelement.api.IonLocation
-import com.amazon.ionelement.api.MetaContainer
+import java.io.FileInputStream
+import java.io.InputStream
+
 
 /**
- * Used to construct helpful error messages for the end-user, who will be able to know the file, line & column of
- * a given error.
+ * A simple abstraction for opening [InputStream], allows for type domains to be loaded from a file system or an
+ * in-memory data structure.  The latter is useful for unit testing.
  */
-data class SourceLocation(val path: String, val location: IonLocation) {
-    override fun toString(): String {
-        return "$path:$location"
-    }
+internal interface InputStreamSource {
+    /** Opens an input stream for the given filename name. */
+    fun openInputStream(fileName: String): InputStream
 }
 
-internal const val SOURCE_LOCATION_META_TAG = "\$pig_source_location"
+/** An [InputStreamSource] that constructs [FileInputStream] instances. */
+internal val FILE_SYSTEM_INPUT_STREAM_SOURCE = object : InputStreamSource {
+    override fun openInputStream(fileName: String) = FileInputStream(fileName)
+}
 
-internal val MetaContainer.sourceLocation
-    get() = this[SOURCE_LOCATION_META_TAG] as? SourceLocation

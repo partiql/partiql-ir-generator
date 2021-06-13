@@ -30,7 +30,7 @@ import org.partiql.pig.errors.PigException
 sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
     override val message: String get() = msgFormatter()
 
-    /** Indicates that an [IonElectrolyteException] was thrown during parsing of a type universe. */
+    /** Indicates that an [IonElementException] was thrown during parsing of a type universe. */
     data class IonElementError(val ex: IonElementException)
         : ParserErrorContext({ ex.message!! }) {
         // This is for unit tests... we don't include IonElectrolyteException here since it doesn't implement

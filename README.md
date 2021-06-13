@@ -404,7 +404,7 @@ Unlike record elements, product element defintions must include identifiers.
 
 #### Type Domain Includes
 
-It is possible to split type universe definitions among multiple files:
+It is possible to split type universes among multiple files:
 
 ```
 // root.ion:
