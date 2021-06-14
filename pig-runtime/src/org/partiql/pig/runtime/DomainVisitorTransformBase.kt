@@ -63,5 +63,19 @@ abstract class DomainVisitorTransformBase {
 
     open fun transformLongPrimitiveMetas(sym: LongPrimitive) = transformMetas(sym.metas)
 
+   open fun transformBoolPrimitive(b: BoolPrimitive): BoolPrimitive {
+        val newValue = transformBoolPrimitiveValue(b)
+        val newMetas = transformBoolPrimitiveMetas(b)
+        return if(b.value != newValue || b.metas !== newMetas) {
+            BoolPrimitive(newValue, newMetas)
+        } else {
+            b
+        }
+    }
+
+    open fun transformBoolPrimitiveValue(sym: BoolPrimitive): Boolean = sym.value
+
+    open fun transformBoolPrimitiveMetas(sym: BoolPrimitive) = transformMetas(sym.metas)
+
 }
 

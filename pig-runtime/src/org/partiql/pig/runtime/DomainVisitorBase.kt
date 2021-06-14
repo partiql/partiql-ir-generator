@@ -20,6 +20,10 @@ import com.amazon.ionelement.api.MetaContainer
 
 open class DomainVisitorBase {
 
+    protected open fun visitBoolPrimitive(node: BoolPrimitive) {
+        // default does nothing
+    }
+
     protected open fun visitLongPrimitive(node: LongPrimitive) {
         // default does nothing
     }
@@ -37,6 +41,11 @@ open class DomainVisitorBase {
     }
 
     ///////////////////////////////////////////////////////
+
+    open fun walkBoolPrimitive(node: BoolPrimitive) {
+        visitBoolPrimitive(node)
+        walkMetas(node.metas)
+    }
 
     open fun walkLongPrimitive(node: LongPrimitive) {
         visitLongPrimitive(node)

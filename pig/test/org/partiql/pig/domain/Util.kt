@@ -97,6 +97,7 @@ fun PermutedSum.toIonElement(): IonElement =
 
 fun DataType.toIonElement(includeTypeTag: Boolean): IonElement = when(this) {
     DataType.Ion -> ionSymbol("ion")
+    DataType.Bool -> ionSymbol("bool")
     DataType.Int -> ionSymbol("int")
     DataType.Symbol -> ionSymbol("symbol")
     is DataType.UserType.Tuple ->

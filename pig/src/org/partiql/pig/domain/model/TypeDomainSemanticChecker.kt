@@ -69,10 +69,11 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
                 }
                 DataType.Ion,
                 DataType.Int,
+                DataType.Bool,
                 DataType.Symbol -> {
                     /* do nothing, these are always valid */
                 }
-            }
+            }.let{}
         }
     }
 
@@ -126,10 +127,11 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
                 }
                 DataType.Ion,
                 DataType.Int,
+                DataType.Bool,
                 DataType.Symbol -> {
                     /* do nothing, these are always valid */
                 }
-            }
+            }.let {}
         }
     }
 

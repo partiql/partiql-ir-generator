@@ -87,7 +87,24 @@ class IonElementTransformerTests {
     @ArgumentsSource(AllElementTypesTestArgumentProvider::class)
     fun allElementTypesTest(tc: TestCase) = runTestCase(tc)
     class AllElementTypesTestArgumentProvider: ArgumentsProviderBase() {
+        @Suppress("BooleanLiteralArgument")
         override fun getParameters(): List<Any> = listOf(
+            TestCase(
+                TestDomain.build { boolPair(true, true) },
+                "(bool_pair true true)"
+            ),
+            TestCase(
+                TestDomain.build { boolPair(true, false) },
+                "(bool_pair true false)"
+            ),
+            TestCase(
+                TestDomain.build { boolPair(false, true) },
+                "(bool_pair false true)"
+            ),
+            TestCase(
+                TestDomain.build { boolPair(false, false) },
+                "(bool_pair false false)"
+            ),
             TestCase(
                 TestDomain.build { intPair(1, 2) },
                 "(int_pair 1 2)"

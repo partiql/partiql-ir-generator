@@ -40,7 +40,7 @@ class TypeDomain(
 ): Statement() {
 
     /** All data types. (User types + primitives). */
-    val types: List<DataType> = listOf(DataType.Int, DataType.Symbol, DataType.Ion) + userTypes
+    val types: List<DataType> = listOf(DataType.Bool, DataType.Int, DataType.Symbol, DataType.Ion) + userTypes
 
     fun resolveTypeRef(typeRef: TypeRef) =
         /**
