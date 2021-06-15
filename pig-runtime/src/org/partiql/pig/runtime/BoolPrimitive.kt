@@ -31,15 +31,15 @@ class BoolPrimitive(val value: Boolean, override val metas: MetaContainer) : Dom
     fun copy(value: Boolean = this.value, metas: MetaContainer = this.metas): BoolPrimitive =
         BoolPrimitive(value, metas)
 
-    /** Creates a copy of the current [LongPrimitive] with [newMetas] as the new metas. */
+    /** Creates a copy of the current [BoolPrimitive] with [newMetas] as the new metas. */
     override fun copyMetas(newMetas: MetaContainer): BoolPrimitive =
         BoolPrimitive(value, newMetas)
 
-    /** Creates a copy of the current [LongPrimitive] with the specified additional meta. */
+    /** Creates a copy of the current [BoolPrimitive] with the specified additional meta. */
     override fun withMeta(metaKey: String, metaValue: Any): BoolPrimitive =
         BoolPrimitive(this.value, metas + metaContainerOf(metaKey to metaValue))
 
-    /** Creates an `IonElement` representation of the current [LongPrimitive]. */
+    /** Creates an []IonElement] representation of the current [BoolPrimitive]. */
     override fun toIonElement(): IonElement = ionBool(value, metas = metas)
 
     /** Converts [value] to a string. */

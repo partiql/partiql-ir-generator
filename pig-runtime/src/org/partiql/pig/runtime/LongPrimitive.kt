@@ -39,7 +39,7 @@ class LongPrimitive(val value: Long, override val metas: MetaContainer) : Domain
     override fun withMeta(metaKey: String, metaValue: Any): LongPrimitive =
         LongPrimitive(this.value, metas + metaContainerOf(metaKey to metaValue))
 
-    /** Creates an `IonElement` representation of the current [LongPrimitive]. */
+    /** Creates an [IonElement] representation of the current [LongPrimitive]. */
     override fun toIonElement(): IonElement = ionInt(value, metas = metas)
 
     /** Converts [value] to a string. */

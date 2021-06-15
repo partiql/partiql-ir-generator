@@ -39,7 +39,7 @@ class SymbolPrimitive(val text: String, override val metas: MetaContainer) : Dom
     override fun withMeta(metaKey: String, metaValue: Any): SymbolPrimitive =
         SymbolPrimitive(text, metas + metaContainerOf(metaKey to metaValue))
 
-    /** Creates an `IonElement` representation of the current [SymbolPrimitive]. */
+    /** Creates an [IonElement] representation of the current [SymbolPrimitive]. */
     override fun toIonElement(): IonElement = ionSymbol(text, metas = metas)
 
     override fun toString(): String = text
