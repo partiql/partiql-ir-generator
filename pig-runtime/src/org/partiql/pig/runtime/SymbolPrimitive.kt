@@ -31,9 +31,9 @@ class SymbolPrimitive(val text: String, override val metas: MetaContainer) : Dom
     fun copy(text: String = this.text, metas: MetaContainer = this.metas): SymbolPrimitive =
         SymbolPrimitive(text, metas)
 
-    /** Creates a copy of the current [SymbolPrimitive] with [newMetas] as the new metas. */
-    override fun copyMetas(newMetas: MetaContainer): SymbolPrimitive =
-        SymbolPrimitive(text, newMetas)
+    /** Creates a copy of the current [SymbolPrimitive] with [metas] as the new metas. */
+    override fun copy(metas: MetaContainer): SymbolPrimitive =
+        SymbolPrimitive(text, metas)
 
     /** Creates a copy of the current [SymbolPrimitive] with the specified additional meta. */
     override fun withMeta(metaKey: String, metaValue: Any): SymbolPrimitive =

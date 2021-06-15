@@ -19,6 +19,7 @@ import com.amazon.ionelement.api.emptyMetaContainer
 import com.amazon.ionelement.api.metaContainerOf
 import org.junit.jupiter.api.Test
 import org.partiql.pig.runtime.LongPrimitive
+import org.partiql.pig.runtime.asPrimitive
 import org.partiql.pig.tests.generated.TestDomain
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -81,18 +82,18 @@ class CopyTests {
     }
 
     @Test
-    fun `copy only metas test`() {
-        val copiedNode = node.copy(metas = metaContainerOf(NUMBER_KEY to 0))
+    fun `copy metas - override with multiple parameters`() {
+        val copiedNode = node.copy(second = 2L.asPrimitive(), metas = metaContainerOf(NUMBER_KEY to 0))
         assertNotEquals(node.metas, copiedNode.metas)
         assertEquals(node.first, copiedNode.first)
-        assertEquals(node.second, copiedNode.second)
+        assertEquals(2L, copiedNode.second.value)
         assertEquals(node, copiedNode)
         assertNotSame(node, copiedNode)
     }
 
     @Test
-    fun `copyMetas test`() {
-        val copiedNode = node.copyMetas(metaContainerOf(NUMBER_KEY to 0))
+    fun `copy test - override with single metas parameter`() {
+        val copiedNode = node.copy(metaContainerOf(NUMBER_KEY to 0))
         assertNotEquals(node.metas, copiedNode.metas)
         assertEquals(node.first, copiedNode.first)
         assertEquals(node.second, copiedNode.second)

@@ -21,8 +21,8 @@ import com.amazon.ionelement.api.MetaContainer
 /** All generated domain classes must implement this interface. */
 interface DomainNode : MetaContainingNode {
 
-    /** Creates a copy of the current node with [newMetas] as the new metas. */
-    fun copyMetas(newMetas : MetaContainer): DomainNode
+    /** Creates a copy of the current node with [metas] as the new metas. */
+    fun copy(metas : MetaContainer): DomainNode
 
     /** Converts the current node to an instance of `IonElement`. */
     fun toIonElement(): IonElement

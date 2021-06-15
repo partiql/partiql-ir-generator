@@ -1390,7 +1390,7 @@ class PartiqlBasic private constructor() {
     
     /** Base class for all PartiqlBasic types. */
     abstract class PartiqlBasicNode : DomainNode {
-        abstract override fun copyMetas(newMetas: MetaContainer): PartiqlBasicNode
+        abstract override fun copy(metas: MetaContainer): PartiqlBasicNode
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(metaKey: String, metaValue: Any): PartiqlBasicNode
         abstract override fun toIonElement(): SexpElement
@@ -1406,11 +1406,11 @@ class PartiqlBasic private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): PartiqlBasicNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): ExprPair =
+        override fun copy(metas: MetaContainer): ExprPair =
             ExprPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): ExprPair =
             ExprPair(
@@ -1463,11 +1463,11 @@ class PartiqlBasic private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): PartiqlBasicNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): GroupByItem =
+        override fun copy(metas: MetaContainer): GroupByItem =
             GroupByItem(
                 value = value,
                 asAlias = asAlias,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): GroupByItem =
             GroupByItem(
@@ -1519,10 +1519,10 @@ class PartiqlBasic private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): PartiqlBasicNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): GroupByList =
+        override fun copy(metas: MetaContainer): GroupByList =
             GroupByList(
                 items = items,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): GroupByList =
             GroupByList(
@@ -1569,11 +1569,11 @@ class PartiqlBasic private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): PartiqlBasicNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): GroupBy =
+        override fun copy(metas: MetaContainer): GroupBy =
             GroupBy(
                 items = items,
                 groupAsAlias = groupAsAlias,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): GroupBy =
             GroupBy(
@@ -1626,10 +1626,10 @@ class PartiqlBasic private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     
     sealed class Projection(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
-        override fun copyMetas(newMetas: MetaContainer): Projection =
+        override fun copy(metas: MetaContainer): Projection =
             when (this) {
-                is ProjectList -> copy(metas = newMetas)
-                is ProjectValue -> copy(metas = newMetas)
+                is ProjectList -> copy(metas = metas)
+                is ProjectValue -> copy(metas = metas)
             }
     
         class ProjectList(
@@ -1637,10 +1637,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Projection() {
         
-            override fun copyMetas(newMetas: MetaContainer): ProjectList =
+            override fun copy(metas: MetaContainer): ProjectList =
                 ProjectList(
                     items = items,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): ProjectList =
                 ProjectList(
@@ -1686,10 +1686,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Projection() {
         
-            override fun copyMetas(newMetas: MetaContainer): ProjectValue =
+            override fun copy(metas: MetaContainer): ProjectValue =
                 ProjectValue(
                     value = value,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): ProjectValue =
                 ProjectValue(
@@ -1733,19 +1733,19 @@ class PartiqlBasic private constructor() {
     }
     
     sealed class ProjectItem(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
-        override fun copyMetas(newMetas: MetaContainer): ProjectItem =
+        override fun copy(metas: MetaContainer): ProjectItem =
             when (this) {
-                is ProjectAll -> copy(metas = newMetas)
-                is ProjectExpr -> copy(metas = newMetas)
+                is ProjectAll -> copy(metas = metas)
+                is ProjectExpr -> copy(metas = metas)
             }
     
         class ProjectAll(
             override val metas: MetaContainer = emptyMetaContainer()
         ): ProjectItem() {
         
-            override fun copyMetas(newMetas: MetaContainer): ProjectAll =
+            override fun copy(metas: MetaContainer): ProjectAll =
                 ProjectAll(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): ProjectAll =
                 ProjectAll(
@@ -1758,11 +1758,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                ProjectAll(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -1781,11 +1776,11 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): ProjectItem() {
         
-            override fun copyMetas(newMetas: MetaContainer): ProjectExpr =
+            override fun copy(metas: MetaContainer): ProjectExpr =
                 ProjectExpr(
                     value = value,
                     asAlias = asAlias,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): ProjectExpr =
                 ProjectExpr(
@@ -1835,21 +1830,21 @@ class PartiqlBasic private constructor() {
     }
     
     sealed class JoinType(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
-        override fun copyMetas(newMetas: MetaContainer): JoinType =
+        override fun copy(metas: MetaContainer): JoinType =
             when (this) {
-                is Inner -> copy(metas = newMetas)
-                is Left -> copy(metas = newMetas)
-                is Right -> copy(metas = newMetas)
-                is Outer -> copy(metas = newMetas)
+                is Inner -> copy(metas = metas)
+                is Left -> copy(metas = metas)
+                is Right -> copy(metas = metas)
+                is Outer -> copy(metas = metas)
             }
     
         class Inner(
             override val metas: MetaContainer = emptyMetaContainer()
         ): JoinType() {
         
-            override fun copyMetas(newMetas: MetaContainer): Inner =
+            override fun copy(metas: MetaContainer): Inner =
                 Inner(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Inner =
                 Inner(
@@ -1862,11 +1857,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Inner(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -1883,9 +1873,9 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): JoinType() {
         
-            override fun copyMetas(newMetas: MetaContainer): Left =
+            override fun copy(metas: MetaContainer): Left =
                 Left(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Left =
                 Left(
@@ -1898,11 +1888,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Left(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -1919,9 +1904,9 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): JoinType() {
         
-            override fun copyMetas(newMetas: MetaContainer): Right =
+            override fun copy(metas: MetaContainer): Right =
                 Right(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Right =
                 Right(
@@ -1934,11 +1919,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Right(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -1955,9 +1935,9 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): JoinType() {
         
-            override fun copyMetas(newMetas: MetaContainer): Outer =
+            override fun copy(metas: MetaContainer): Outer =
                 Outer(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Outer =
                 Outer(
@@ -1970,11 +1950,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Outer(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -1990,10 +1965,10 @@ class PartiqlBasic private constructor() {
     }
     
     sealed class FromSource(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
-        override fun copyMetas(newMetas: MetaContainer): FromSource =
+        override fun copy(metas: MetaContainer): FromSource =
             when (this) {
-                is Scan -> copy(metas = newMetas)
-                is Join -> copy(metas = newMetas)
+                is Scan -> copy(metas = metas)
+                is Join -> copy(metas = metas)
             }
     
         class Scan(
@@ -2004,13 +1979,13 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): FromSource() {
         
-            override fun copyMetas(newMetas: MetaContainer): Scan =
+            override fun copy(metas: MetaContainer): Scan =
                 Scan(
                     expr = expr,
                     asAlias = asAlias,
                     atAlias = atAlias,
                     byAlias = byAlias,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Scan =
                 Scan(
@@ -2077,13 +2052,13 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): FromSource() {
         
-            override fun copyMetas(newMetas: MetaContainer): Join =
+            override fun copy(metas: MetaContainer): Join =
                 Join(
                     type = type,
                     left = left,
                     right = right,
                     predicate = predicate,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Join =
                 Join(
@@ -2145,19 +2120,19 @@ class PartiqlBasic private constructor() {
     }
     
     sealed class CaseSensitivity(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
-        override fun copyMetas(newMetas: MetaContainer): CaseSensitivity =
+        override fun copy(metas: MetaContainer): CaseSensitivity =
             when (this) {
-                is CaseSensitive -> copy(metas = newMetas)
-                is CaseInsensitive -> copy(metas = newMetas)
+                is CaseSensitive -> copy(metas = metas)
+                is CaseInsensitive -> copy(metas = metas)
             }
     
         class CaseSensitive(
             override val metas: MetaContainer = emptyMetaContainer()
         ): CaseSensitivity() {
         
-            override fun copyMetas(newMetas: MetaContainer): CaseSensitive =
+            override fun copy(metas: MetaContainer): CaseSensitive =
                 CaseSensitive(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): CaseSensitive =
                 CaseSensitive(
@@ -2170,11 +2145,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                CaseSensitive(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -2191,9 +2161,9 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): CaseSensitivity() {
         
-            override fun copyMetas(newMetas: MetaContainer): CaseInsensitive =
+            override fun copy(metas: MetaContainer): CaseInsensitive =
                 CaseInsensitive(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): CaseInsensitive =
                 CaseInsensitive(
@@ -2206,11 +2176,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                CaseInsensitive(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -2226,19 +2191,19 @@ class PartiqlBasic private constructor() {
     }
     
     sealed class ScopeQualifier(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
-        override fun copyMetas(newMetas: MetaContainer): ScopeQualifier =
+        override fun copy(metas: MetaContainer): ScopeQualifier =
             when (this) {
-                is Unqualified -> copy(metas = newMetas)
-                is Qualified -> copy(metas = newMetas)
+                is Unqualified -> copy(metas = metas)
+                is Qualified -> copy(metas = metas)
             }
     
         class Unqualified(
             override val metas: MetaContainer = emptyMetaContainer()
         ): ScopeQualifier() {
         
-            override fun copyMetas(newMetas: MetaContainer): Unqualified =
+            override fun copy(metas: MetaContainer): Unqualified =
                 Unqualified(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Unqualified =
                 Unqualified(
@@ -2251,11 +2216,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Unqualified(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -2272,9 +2232,9 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): ScopeQualifier() {
         
-            override fun copyMetas(newMetas: MetaContainer): Qualified =
+            override fun copy(metas: MetaContainer): Qualified =
                 Qualified(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Qualified =
                 Qualified(
@@ -2287,11 +2247,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Qualified(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -2307,19 +2262,19 @@ class PartiqlBasic private constructor() {
     }
     
     sealed class SetQuantifier(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
-        override fun copyMetas(newMetas: MetaContainer): SetQuantifier =
+        override fun copy(metas: MetaContainer): SetQuantifier =
             when (this) {
-                is All -> copy(metas = newMetas)
-                is Distinct -> copy(metas = newMetas)
+                is All -> copy(metas = metas)
+                is Distinct -> copy(metas = metas)
             }
     
         class All(
             override val metas: MetaContainer = emptyMetaContainer()
         ): SetQuantifier() {
         
-            override fun copyMetas(newMetas: MetaContainer): All =
+            override fun copy(metas: MetaContainer): All =
                 All(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): All =
                 All(
@@ -2332,11 +2287,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                All(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -2353,9 +2303,9 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): SetQuantifier() {
         
-            override fun copyMetas(newMetas: MetaContainer): Distinct =
+            override fun copy(metas: MetaContainer): Distinct =
                 Distinct(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Distinct =
                 Distinct(
@@ -2368,11 +2318,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Distinct(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -2388,11 +2333,11 @@ class PartiqlBasic private constructor() {
     }
     
     sealed class PathElement(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
-        override fun copyMetas(newMetas: MetaContainer): PathElement =
+        override fun copy(metas: MetaContainer): PathElement =
             when (this) {
-                is PathExpr -> copy(metas = newMetas)
-                is PathWildcard -> copy(metas = newMetas)
-                is PathUnpivot -> copy(metas = newMetas)
+                is PathExpr -> copy(metas = metas)
+                is PathWildcard -> copy(metas = metas)
+                is PathUnpivot -> copy(metas = metas)
             }
     
         class PathExpr(
@@ -2400,10 +2345,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): PathElement() {
         
-            override fun copyMetas(newMetas: MetaContainer): PathExpr =
+            override fun copy(metas: MetaContainer): PathExpr =
                 PathExpr(
                     expr = expr,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): PathExpr =
                 PathExpr(
@@ -2448,9 +2393,9 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): PathElement() {
         
-            override fun copyMetas(newMetas: MetaContainer): PathWildcard =
+            override fun copy(metas: MetaContainer): PathWildcard =
                 PathWildcard(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): PathWildcard =
                 PathWildcard(
@@ -2463,11 +2408,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                PathWildcard(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -2484,9 +2424,9 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): PathElement() {
         
-            override fun copyMetas(newMetas: MetaContainer): PathUnpivot =
+            override fun copy(metas: MetaContainer): PathUnpivot =
                 PathUnpivot(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): PathUnpivot =
                 PathUnpivot(
@@ -2499,11 +2439,6 @@ class PartiqlBasic private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                PathUnpivot(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -2519,29 +2454,29 @@ class PartiqlBasic private constructor() {
     }
     
     sealed class Expr(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
-        override fun copyMetas(newMetas: MetaContainer): Expr =
+        override fun copy(metas: MetaContainer): Expr =
             when (this) {
-                is Lit -> copy(metas = newMetas)
-                is Id -> copy(metas = newMetas)
-                is Parameter -> copy(metas = newMetas)
-                is Not -> copy(metas = newMetas)
-                is Plus -> copy(metas = newMetas)
-                is Minus -> copy(metas = newMetas)
-                is Times -> copy(metas = newMetas)
-                is Divide -> copy(metas = newMetas)
-                is Modulo -> copy(metas = newMetas)
-                is Concat -> copy(metas = newMetas)
-                is Like -> copy(metas = newMetas)
-                is Between -> copy(metas = newMetas)
-                is Path -> copy(metas = newMetas)
-                is Call -> copy(metas = newMetas)
-                is CallAgg -> copy(metas = newMetas)
-                is SimpleCase -> copy(metas = newMetas)
-                is SearchedCase -> copy(metas = newMetas)
-                is Struct -> copy(metas = newMetas)
-                is Bag -> copy(metas = newMetas)
-                is List -> copy(metas = newMetas)
-                is Select -> copy(metas = newMetas)
+                is Lit -> copy(metas = metas)
+                is Id -> copy(metas = metas)
+                is Parameter -> copy(metas = metas)
+                is Not -> copy(metas = metas)
+                is Plus -> copy(metas = metas)
+                is Minus -> copy(metas = metas)
+                is Times -> copy(metas = metas)
+                is Divide -> copy(metas = metas)
+                is Modulo -> copy(metas = metas)
+                is Concat -> copy(metas = metas)
+                is Like -> copy(metas = metas)
+                is Between -> copy(metas = metas)
+                is Path -> copy(metas = metas)
+                is Call -> copy(metas = metas)
+                is CallAgg -> copy(metas = metas)
+                is SimpleCase -> copy(metas = metas)
+                is SearchedCase -> copy(metas = metas)
+                is Struct -> copy(metas = metas)
+                is Bag -> copy(metas = metas)
+                is List -> copy(metas = metas)
+                is Select -> copy(metas = metas)
             }
     
         class Lit(
@@ -2549,10 +2484,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Lit =
+            override fun copy(metas: MetaContainer): Lit =
                 Lit(
                     value = value,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Lit =
                 Lit(
@@ -2600,12 +2535,12 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Id =
+            override fun copy(metas: MetaContainer): Id =
                 Id(
                     name = name,
                     case = case,
                     scopeQualifier = scopeQualifier,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Id =
                 Id(
@@ -2663,10 +2598,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Parameter =
+            override fun copy(metas: MetaContainer): Parameter =
                 Parameter(
                     index = index,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Parameter =
                 Parameter(
@@ -2712,10 +2647,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Not =
+            override fun copy(metas: MetaContainer): Not =
                 Not(
                     expr = expr,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Not =
                 Not(
@@ -2761,10 +2696,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Plus =
+            override fun copy(metas: MetaContainer): Plus =
                 Plus(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Plus =
                 Plus(
@@ -2810,10 +2745,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Minus =
+            override fun copy(metas: MetaContainer): Minus =
                 Minus(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Minus =
                 Minus(
@@ -2859,10 +2794,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Times =
+            override fun copy(metas: MetaContainer): Times =
                 Times(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Times =
                 Times(
@@ -2908,10 +2843,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Divide =
+            override fun copy(metas: MetaContainer): Divide =
                 Divide(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Divide =
                 Divide(
@@ -2957,10 +2892,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Modulo =
+            override fun copy(metas: MetaContainer): Modulo =
                 Modulo(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Modulo =
                 Modulo(
@@ -3006,10 +2941,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Concat =
+            override fun copy(metas: MetaContainer): Concat =
                 Concat(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Concat =
                 Concat(
@@ -3057,12 +2992,12 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Like =
+            override fun copy(metas: MetaContainer): Like =
                 Like(
                     left = left,
                     right = right,
                     escape = escape,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Like =
                 Like(
@@ -3122,12 +3057,12 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Between =
+            override fun copy(metas: MetaContainer): Between =
                 Between(
                     value = value,
                     from = from,
                     to = to,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Between =
                 Between(
@@ -3186,11 +3121,11 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Path =
+            override fun copy(metas: MetaContainer): Path =
                 Path(
                     root = root,
                     elements = elements,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Path =
                 Path(
@@ -3243,11 +3178,11 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Call =
+            override fun copy(metas: MetaContainer): Call =
                 Call(
                     name = name,
                     args = args,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Call =
                 Call(
@@ -3301,12 +3236,12 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): CallAgg =
+            override fun copy(metas: MetaContainer): CallAgg =
                 CallAgg(
                     name = name,
                     setQuantifier = setQuantifier,
                     arg = arg,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): CallAgg =
                 CallAgg(
@@ -3365,11 +3300,11 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): SimpleCase =
+            override fun copy(metas: MetaContainer): SimpleCase =
                 SimpleCase(
                     value = value,
                     branches = branches,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): SimpleCase =
                 SimpleCase(
@@ -3421,10 +3356,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): SearchedCase =
+            override fun copy(metas: MetaContainer): SearchedCase =
                 SearchedCase(
                     branches = branches,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): SearchedCase =
                 SearchedCase(
@@ -3470,10 +3405,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Struct =
+            override fun copy(metas: MetaContainer): Struct =
                 Struct(
                     fields = fields,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Struct =
                 Struct(
@@ -3519,10 +3454,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Bag =
+            override fun copy(metas: MetaContainer): Bag =
                 Bag(
                     values = values,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Bag =
                 Bag(
@@ -3568,10 +3503,10 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): List =
+            override fun copy(metas: MetaContainer): List =
                 List(
                     values = values,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): List =
                 List(
@@ -3623,7 +3558,7 @@ class PartiqlBasic private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Select =
+            override fun copy(metas: MetaContainer): Select =
                 Select(
                     setq = setq,
                     project = project,
@@ -3632,7 +3567,7 @@ class PartiqlBasic private constructor() {
                     group = group,
                     having = having,
                     limit = limit,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Select =
                 Select(
