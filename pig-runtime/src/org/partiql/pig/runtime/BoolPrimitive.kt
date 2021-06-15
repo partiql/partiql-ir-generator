@@ -17,30 +17,30 @@ package org.partiql.pig.runtime
 
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
-import com.amazon.ionelement.api.ionInt
+import com.amazon.ionelement.api.ionBool
 import com.amazon.ionelement.api.metaContainerOf
 
 /**
- * Represents a long value that is part of a generated type domain.
+ * Represents a boolean value that is part of a generated type domain.
  *
  * This is needed to allow such values to have metas.
  */
-class LongPrimitive(val value: Long, override val metas: MetaContainer) : DomainNode {
+class BoolPrimitive(val value: Boolean, override val metas: MetaContainer) : DomainNode {
 
     /** Creates a copy of the current node with the specified values. */
-    fun copy(value: Long = this.value, metas: MetaContainer = this.metas): LongPrimitive =
-        LongPrimitive(value, metas)
+    fun copy(value: Boolean = this.value, metas: MetaContainer = this.metas): BoolPrimitive =
+        BoolPrimitive(value, metas)
 
-    /** Creates a copy of the current [LongPrimitive] with [metas] as the new metas. */
-    override fun copy(metas: MetaContainer): LongPrimitive =
-        LongPrimitive(value, metas)
+    /** Creates a copy of the current [BoolPrimitive] with [newMetas] as the new metas. */
+    override fun copyMetas(newMetas: MetaContainer): BoolPrimitive =
+        BoolPrimitive(value, newMetas)
 
-    /** Creates a copy of the current [LongPrimitive] with the specified additional meta. */
-    override fun withMeta(metaKey: String, metaValue: Any): LongPrimitive =
-        LongPrimitive(this.value, metas + metaContainerOf(metaKey to metaValue))
+    /** Creates a copy of the current [BoolPrimitive] with the specified additional meta. */
+    override fun withMeta(metaKey: String, metaValue: Any): BoolPrimitive =
+        BoolPrimitive(this.value, metas + metaContainerOf(metaKey to metaValue))
 
-    /** Creates an [IonElement] representation of the current [LongPrimitive]. */
-    override fun toIonElement(): IonElement = ionInt(value, metas = metas)
+    /** Creates an [IonElement] representation of the current [BoolPrimitive]. */
+    override fun toIonElement(): IonElement = ionBool(value, metas = metas)
 
     /** Converts [value] to a string. */
     override fun toString(): String = value.toString()
@@ -49,7 +49,7 @@ class LongPrimitive(val value: Long, override val metas: MetaContainer) : Domain
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as LongPrimitive
+        other as BoolPrimitive
 
         if (value != other.value) return false
 
@@ -60,4 +60,3 @@ class LongPrimitive(val value: Long, override val metas: MetaContainer) : Domain
         return value.hashCode()
     }
 }
-

@@ -32,6 +32,29 @@ class TestDomain private constructor() {
     interface Builder {
                 // Tuples
         /**
+         * Creates an instance of [TestDomain.BoolPair].
+         */
+        fun boolPair(
+            first: Boolean,
+            second: Boolean,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.BoolPair
+        
+        /**
+         * Creates an instance of [TestDomain.BoolPair].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        fun boolPair_(
+            first: org.partiql.pig.runtime.BoolPrimitive,
+            second: org.partiql.pig.runtime.BoolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.BoolPair
+        
+        
+        /**
          * Creates an instance of [TestDomain.IntPair].
          */
         fun intPair(
@@ -735,6 +758,27 @@ class TestDomain private constructor() {
     
     private object TestDomainBuilder : Builder {
                 // Tuples
+        override fun boolPair(
+            first: Boolean,
+            second: Boolean,
+            metas: MetaContainer
+        ): TestDomain.BoolPair =
+            TestDomain.BoolPair(
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = metas)
+        
+        override fun boolPair_(
+            first: org.partiql.pig.runtime.BoolPrimitive,
+            second: org.partiql.pig.runtime.BoolPrimitive,
+            metas: MetaContainer
+        ): TestDomain.BoolPair =
+            TestDomain.BoolPair(
+                first = first,
+                second = second,
+                metas = metas)
+        
+        
         override fun intPair(
             first: Long,
             second: Long,
@@ -1399,6 +1443,63 @@ class TestDomain private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     // Tuple Types
     /////////////////////////////////////////////////////////////////////////////
+    class BoolPair(
+        val first: org.partiql.pig.runtime.BoolPrimitive,
+        val second: org.partiql.pig.runtime.BoolPrimitive,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): TestDomainNode() {
+    
+        override fun copyMetas(newMetas: MetaContainer): BoolPair =
+            BoolPair(
+                first = first,
+                second = second,
+                metas = newMetas)
+    
+        override fun withMeta(metaKey: String, metaValue: Any): BoolPair =
+            BoolPair(
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
+    
+        override fun toIonElement(): SexpElement {
+            val elements = ionSexpOf(
+                ionSymbol("bool_pair"),
+                first.toIonElement(),
+                second.toIonElement(),
+                metas = metas)
+            return elements
+        }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.BoolPrimitive = this.first,
+            second: org.partiql.pig.runtime.BoolPrimitive = this.second,
+            metas: MetaContainer = this.metas
+        ) =
+            BoolPair(
+                first,
+                second,
+                metas)
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != BoolPair::class.java) return false
+    
+            other as BoolPair
+            if (first != other.first) return false
+            if (second != other.second) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
     class IntPair(
         val first: org.partiql.pig.runtime.LongPrimitive,
         val second: org.partiql.pig.runtime.LongPrimitive,
@@ -3323,6 +3424,15 @@ class TestDomain private constructor() {
                 //////////////////////////////////////
                 // Tuple Types
                 //////////////////////////////////////
+                "bool_pair" -> {
+                    sexp.requireArityOrMalformed(IntRange(2, 2))
+                    val first = sexp.getRequired(0).toBoolPrimitive()
+                    val second = sexp.getRequired(1).toBoolPrimitive()
+                    TestDomain.BoolPair(
+                        first,
+                        second,
+                        metas = sexp.metas)
+                }
                 "int_pair" -> {
                     sexp.requireArityOrMalformed(IntRange(2, 2))
                     val first = sexp.getRequired(0).toLongPrimitive()
@@ -3643,6 +3753,7 @@ class TestDomain private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
+        open fun visitBoolPair(node: TestDomain.BoolPair) { }
         open fun visitIntPair(node: TestDomain.IntPair) { }
         open fun visitSymbolPair(node: TestDomain.SymbolPair) { }
         open fun visitIonPair(node: TestDomain.IonPair) { }
@@ -3701,6 +3812,13 @@ class TestDomain private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
+        open fun walkBoolPair(node: TestDomain.BoolPair) {
+            visitBoolPair(node)
+            walkBoolPrimitive(node.first)
+            walkBoolPrimitive(node.second)
+            walkMetas(node.metas)
+        }
+    
         open fun walkIntPair(node: TestDomain.IntPair) {
             visitIntPair(node)
             walkLongPrimitive(node.first)
@@ -3990,6 +4108,7 @@ class TestDomain private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
+        open protected fun visitBoolPair(node: TestDomain.BoolPair, accumulator: T): T = accumulator
         open protected fun visitIntPair(node: TestDomain.IntPair, accumulator: T): T = accumulator
         open protected fun visitSymbolPair(node: TestDomain.SymbolPair, accumulator: T): T = accumulator
         open protected fun visitIonPair(node: TestDomain.IonPair, accumulator: T): T = accumulator
@@ -4048,6 +4167,15 @@ class TestDomain private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
+        open fun walkBoolPair(node: TestDomain.BoolPair, accumulator: T): T {
+            var current = accumulator
+            current = visitBoolPair(node, current)
+            current = walkBoolPrimitive(node.first, current)
+            current = walkBoolPrimitive(node.second, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
         open fun walkIntPair(node: TestDomain.IntPair, accumulator: T): T {
             var current = accumulator
             current = visitIntPair(node, current)
@@ -4399,6 +4527,32 @@ class TestDomain private constructor() {
         //////////////////////////////////////
         // Tuple Types
         //////////////////////////////////////
+        // Tuple BoolPair
+        open fun transformBoolPair(node: TestDomain.BoolPair): TestDomain.BoolPair {
+            val new_first = transformBoolPair_first(node)
+            val new_second = transformBoolPair_second(node)
+            val new_metas = transformBoolPair_metas(node)
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.BoolPair(
+                    first = new_first,
+                    second = new_second,
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformBoolPair_first(node: TestDomain.BoolPair) =
+            transformBoolPrimitive(node.first)
+        open fun transformBoolPair_second(node: TestDomain.BoolPair) =
+            transformBoolPrimitive(node.second)
+        open fun transformBoolPair_metas(node: TestDomain.BoolPair) =
+            transformMetas(node.metas)
+    
         // Tuple IntPair
         open fun transformIntPair(node: TestDomain.IntPair): TestDomain.IntPair {
             val new_first = transformIntPair_first(node)

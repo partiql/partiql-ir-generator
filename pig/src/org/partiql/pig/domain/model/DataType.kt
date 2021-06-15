@@ -69,6 +69,18 @@ sealed class DataType {
     }
 
     /**
+     * Represents the equivalent of an Ion `bool` in the target language.
+     *
+     * This is one of pig's "primitive" types.
+     */
+    object Bool : DataType() {
+        override val isPrimitive: Boolean get() = true
+        override val isBuiltin: Boolean get() = true
+        override val tag: String get() = "bool"
+        override val metas: MetaContainer get() = emptyMetaContainer()
+    }
+
+    /**
      * Represents the equivalent of an Ion `int` in the target language.
      * This is one of pig's "primitive" types.
      */

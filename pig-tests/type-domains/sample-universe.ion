@@ -25,6 +25,7 @@
 
  (define test_domain
     (domain
+        (product bool_pair first::bool second::bool)
         (product int_pair first::int second::int)
         (product symbol_pair first::symbol second::symbol)
         (product ion_pair first::ion second::ion)

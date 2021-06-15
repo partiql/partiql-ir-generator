@@ -20,6 +20,10 @@ import com.amazon.ionelement.api.MetaContainer
 
 open class DomainVisitorFoldBase<T> {
 
+    protected open fun visitBoolPrimitive(node: BoolPrimitive, accumulator: T): T =
+        // default does nothing
+        accumulator
+
     protected open fun visitLongPrimitive(node: LongPrimitive, accumulator: T): T =
         // default does nothing
         accumulator
@@ -38,22 +42,24 @@ open class DomainVisitorFoldBase<T> {
 
     ///////////////////////////////////////////////////////
 
+    open fun walkBoolPrimitive(node: BoolPrimitive, accumulator: T): T {
+        val intermediate = visitBoolPrimitive(node, accumulator)
+        return walkMetas(node.metas, intermediate)
+    }
+
     open fun walkLongPrimitive(node: LongPrimitive, accumulator: T): T {
-        var current = accumulator
-        current = visitLongPrimitive(node, current)
-        return walkMetas(node.metas, current)
+        val intermediate = visitLongPrimitive(node, accumulator)
+        return walkMetas(node.metas, intermediate)
     }
 
     open fun walkSymbolPrimitive(node: SymbolPrimitive, accumulator: T): T {
-        var current = accumulator
-        current = visitSymbolPrimitive(node, current)
-        return walkMetas(node.metas, current)
+        val intermediate = visitSymbolPrimitive(node, accumulator)
+        return walkMetas(node.metas, intermediate)
     }
 
     open fun walkAnyElement(node: AnyElement, accumulator: T): T {
-        var current = accumulator
-        current = visitAnyElement(node, current)
-        return walkMetas(node.metas, current)
+        var intermediate = visitAnyElement(node, accumulator)
+        return walkMetas(node.metas, intermediate)
     }
 
     open fun walkMetas(node: MetaContainer, accumulator: T): T {

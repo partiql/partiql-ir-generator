@@ -20,11 +20,17 @@ import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.emptyMetaContainer
 
 
+fun AnyElement.toBoolPrimitive() =
+    BoolPrimitive(this.booleanValue, this.metas)
+
 fun AnyElement.toLongPrimitive() =
     LongPrimitive(this.longValue, this.metas)
 
 fun AnyElement.toSymbolPrimitive() =
     SymbolPrimitive(this.symbolValue, this.metas)
+
+fun Boolean.asPrimitive(metas: MetaContainer = emptyMetaContainer()) =
+    BoolPrimitive(this, metas)
 
 fun Long.asPrimitive(metas: MetaContainer = emptyMetaContainer()) =
     LongPrimitive(this, metas)

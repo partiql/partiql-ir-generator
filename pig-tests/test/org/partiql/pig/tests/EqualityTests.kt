@@ -50,10 +50,30 @@ class EqualityTests {
 
     data class TestCase(val left: TestDomain.TestDomainNode, val right: TestDomain.TestDomainNode, val isEqual: Boolean)
     class EqualityTestsArgumentsProvider: ArgumentsProviderBase() {
+
+        @Suppress("BooleanLiteralArgument")
         override fun getParameters(): List<Any> = listOf(
             /////////////////////////////////////////////////
             // Products
             /////////////////////////////////////////////////
+            TestCase(
+                TestDomain.build { boolPair(true, true) },
+                TestDomain.build { boolPair(true, true) },
+                isEqual = true),
+
+            TestCase(
+                TestDomain.build { boolPair(true, true) },
+                TestDomain.build { boolPair(true, false) },
+                isEqual = false),
+            TestCase(
+                TestDomain.build { boolPair(false, true) },
+                TestDomain.build { boolPair(true, false) },
+                isEqual = false),
+            TestCase(
+                TestDomain.build { boolPair(true, false) },
+                TestDomain.build { boolPair(false, true) },
+                isEqual = false),
+
             TestCase(
                 TestDomain.build { intPair(1, 1) },
                 TestDomain.build { intPair(1, 1) },

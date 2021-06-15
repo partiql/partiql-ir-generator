@@ -359,6 +359,7 @@ private class KTypeDomainConverter(
         when (typeDomain.resolveTypeRef(typeRef)) {
             DataType.Ion -> ""
             DataType.Int -> ".toLongPrimitive()"
+            DataType.Bool -> ".toBoolPrimitive()"
             DataType.Symbol -> ".toSymbolPrimitive()"
             is DataType.UserType.Tuple, is DataType.UserType.Sum ->
                 ".transformExpect<${typeRef.typeName.snakeToPascalCase()}>()"
@@ -377,6 +378,7 @@ private class KTypeDomainConverter(
         return when (typeName) {
             "ion" -> "com.amazon.ionelement.api." + if(useAnyElement) "AnyElement" else "IonElement"
             "int" -> if (kotlinPrimitives) "Long" else "org.partiql.pig.runtime.LongPrimitive"
+            "bool" -> if (kotlinPrimitives) "Boolean" else "org.partiql.pig.runtime.BoolPrimitive"
             "symbol" -> if (kotlinPrimitives) "String" else "org.partiql.pig.runtime.SymbolPrimitive"
             else -> this.typeName.snakeToPascalCase()
         }
@@ -387,6 +389,7 @@ private class KTypeDomainConverter(
         get() {
             return when (typeName) {
                 "ion" -> "AnyElement"
+                "bool" -> "BoolPrimitive"
                 "int" -> "LongPrimitive"
                 "symbol" -> "SymbolPrimitive"
                 else -> this.typeName.snakeToPascalCase()

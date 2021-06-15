@@ -35,19 +35,23 @@ abstract class DomainVisitorTransformBase {
         }
     }
 
-    open fun transformSymbolPrimitive(sym: SymbolPrimitive): SymbolPrimitive {
-        val newText = transformSymbolPrimitiveText(sym)
-        val newMetas = transformSymbolPrimitiveMetas(sym)
-        return if(sym.text != newText || sym.metas !== newMetas) {
-            SymbolPrimitive(newText, newMetas)
+    // bool
+
+    open fun transformBoolPrimitive(b: BoolPrimitive): BoolPrimitive {
+        val newValue = transformBoolPrimitiveValue(b)
+        val newMetas = transformBoolPrimitiveMetas(b)
+        return if(b.value != newValue || b.metas !== newMetas) {
+            BoolPrimitive(newValue, newMetas)
         } else {
-            sym
+            b
         }
     }
 
-    open fun transformSymbolPrimitiveText(sym: SymbolPrimitive) = sym.text
+    open fun transformBoolPrimitiveValue(sym: BoolPrimitive): Boolean = sym.value
 
-    open fun transformSymbolPrimitiveMetas(sym: SymbolPrimitive) = transformMetas(sym.metas)
+    open fun transformBoolPrimitiveMetas(b: BoolPrimitive) = transformMetas(b.metas)
+
+    // long
 
     open fun transformLongPrimitive(lng: LongPrimitive): LongPrimitive {
         val newValue = transformLongPrimitiveValue(lng)
@@ -62,6 +66,24 @@ abstract class DomainVisitorTransformBase {
     open fun transformLongPrimitiveValue(sym: LongPrimitive): Long = sym.value
 
     open fun transformLongPrimitiveMetas(sym: LongPrimitive) = transformMetas(sym.metas)
+
+    // symbol
+
+    open fun transformSymbolPrimitive(sym: SymbolPrimitive): SymbolPrimitive {
+        val newText = transformSymbolPrimitiveText(sym)
+        val newMetas = transformSymbolPrimitiveMetas(sym)
+        return if(sym.text != newText || sym.metas !== newMetas) {
+            SymbolPrimitive(newText, newMetas)
+        } else {
+            sym
+        }
+    }
+
+    open fun transformSymbolPrimitiveText(sym: SymbolPrimitive) = sym.text
+
+    open fun transformSymbolPrimitiveMetas(sym: SymbolPrimitive) = transformMetas(sym.metas)
+
+
 
 }
 

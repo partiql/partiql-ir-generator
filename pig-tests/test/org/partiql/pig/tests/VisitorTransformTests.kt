@@ -144,6 +144,15 @@ class VisitorTransformTests {
     }
 
     @Test
+    fun doesNotMakeUnnecessaryCopiesWithWithBoolPrimitives() {
+        @Suppress("BooleanLiteralArgument")
+        val input = TestDomain.build { boolPair(true, false) }
+        val output = object : TestDomain.VisitorTransform() { }.transformBoolPair(input)
+        assertSame(input, output, "Expected same instance of BoolPair to be returned from a VisitorTransform " +
+            "that doesn't change it.")
+    }
+
+    @Test
     fun doesNotMakeUnnecessaryCopiesWithWithSymbolPrimitives() {
         val input = TestDomain.build { symbolPair("a", "b") }
         val output = object : TestDomain.VisitorTransform() { }.transformSymbolPair(input)
