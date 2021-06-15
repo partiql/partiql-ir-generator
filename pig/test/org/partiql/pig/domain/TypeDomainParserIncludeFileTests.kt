@@ -16,11 +16,9 @@
 package org.partiql.pig.domain
 
 import com.amazon.ionelement.api.IonTextLocation
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.partiql.pig.domain.model.SemanticErrorContext
 import org.partiql.pig.domain.model.TypeDomain
 import org.partiql.pig.domain.parser.ParserErrorContext
 import org.partiql.pig.domain.parser.SourceLocation
@@ -56,7 +54,7 @@ class TypeDomainParserIncludeFileTests {
         assertEquals(
             PigError(
                 SourceLocation(File(universeFilePath).canonicalPath, IonTextLocation(4L, 1L)),
-                ParserErrorContext.CouldNotFindImportedTypeUniverse(File("test-domains/domains/doesnotexist.ion").canonicalPath)
+                ParserErrorContext.CouldNotFindIncludedFile(File("test-domains/domains/doesnotexist.ion").canonicalPath)
             ),
             ex.error
         )

@@ -418,8 +418,8 @@ additional type domains.  The primary purpose of this is to be able to permute d
 `include_file` is recursive, so any type domains in any files included by `a.ion` and `b.ion` will also be present.  Any 
 attempt to include a file that has already been seen will be ignored.
 
-Paths are always relative to the directory containing the current file.  The working directory at the time the `pig` is 
-command is irrelevant.
+Paths are always relative to the directory containing the current file.  The working directory at the time `pig` 
+is executed is irrelevant.
 
 ```
 (include_file "subdir/partiql.ion")
@@ -427,7 +427,7 @@ command is irrelevant.
 ```
 
 Lastly, `include_file` can only be used at the top-level within a `.ion` file.  It is not allowed within a 
-`(domain ...)`clause.
+`(domain ...)` clause.
 
 #### Using PIG In Your Project
 

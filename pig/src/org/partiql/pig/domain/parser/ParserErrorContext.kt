@@ -39,8 +39,8 @@ sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
         override fun hashCode(): Int = 0
     }
 
-    data class CouldNotFindImportedTypeUniverse(val tag: String)
-        : ParserErrorContext({ "Could not find imported type universe: $tag" })
+    data class CouldNotFindIncludedFile(val tag: String)
+        : ParserErrorContext({ "Included file missing: $tag" })
 
     data class UnknownConstructor(val tag: String)
         : ParserErrorContext({ "Unknown constructor: '$tag' (expected constructors are 'domain' or 'permute_domain')" })

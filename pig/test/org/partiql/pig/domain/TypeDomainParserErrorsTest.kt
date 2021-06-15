@@ -110,7 +110,7 @@ class TypeDomainParserErrorsTest {
 
             TestCase(
                 "(include_file \"some-non-existing-file.ion\")",
-                makeErr(1, 1, ParserErrorContext.CouldNotFindImportedTypeUniverse(
+                makeErr(1, 1, ParserErrorContext.CouldNotFindIncludedFile(
                     File("some-non-existing-file.ion").canonicalPath)))
         )
     }

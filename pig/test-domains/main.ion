@@ -1,26 +1,27 @@
 /*
 
-This file is used to test the `(import <relative-path>)` statement.
+This file is used to test the `(include_file <relative-path>)` statement.
 
 Two primary things are tested:
 
-- Cyclic imports are tolerated without exception.
+- Cyclic includes are tolerated without exception.
 - Relative paths, which are always relative to the directory containing the type universe currently being parsed.
 
 .
 ├── domains
-│  ├── circular_universe_c.ion  imports circular_universe_d.ion
-│  ├── circular_universe_d.ion  imports circular_universe_c.ion
-│  ├── import_b.ion             imports ../other/universe_b
-│  └── universe_a.ion           imports import_b.ion
-├── main.ion                    imports domains/universe_a.ion and domains/circular_universe_c.ion
+│  ├── circular_universe_c.ion  includes circular_universe_d.ion
+│  ├── circular_universe_d.ion  includes circular_universe_c.ion
+│  ├── include_b.ion             includes ../other/universe_b
+│  └── universe_a.ion           includes include_b.ion
+├── main.ion                    includes domains/universe_a.ion and domains/circular_universe_c.ion
+├── include-missing-file.ion    used by error handling tests and not included by main.ion
 └── other
-    └── universe_b.ion          imports nothing
+    └── universe_b.ion          includes nothing
 
 
-By parsing, main.ion (this file), we test that each of the other files is imported (directly or indirectly). Each
-.ion file (except for "import_b.ion") defines a type domain, for a total of 4 type domains.  The test is successful
-if main.ion can be imported without error and results in a single universe with all 4 type domains.
+By parsing, main.ion (this file), we test that each of the other files is includeed (directly or indirectly). Each
+.ion file (except for "include_b.ion") defines a type domain, for a total of 4 type domains.  The test is successful
+if main.ion can be included without error and results in a single universe with all 4 type domains.
 
 */
 

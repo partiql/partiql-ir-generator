@@ -34,10 +34,10 @@ internal const val FAKE_ROOT_FILE = "root.ion"
  *
  *
  * [includes] is a map keyed by "fake" filename that will be used instead of a real-file system for looking
- * up the content of imported files.  [includes] must not contain any filename by the name of "root.ion", which
+ * up the content of included files.  [includes] must not contain any filename by the name of "root.ion", which
  * is the name given to the type universe specified in [topUnvierseText].
  */
-fun parseTypeUniverseString(topUnvierseText: String, includes: Map<String, String> = emptyMap()): TypeUniverse {
+internal fun parseTypeUniverseString(topUnvierseText: String, includes: Map<String, String> = emptyMap()): TypeUniverse {
     assert(!includes.containsKey(FAKE_ROOT_FILE))
 
     val allIncludes = (mapOf(FAKE_ROOT_FILE to topUnvierseText) + includes).map {
@@ -49,9 +49,9 @@ fun parseTypeUniverseString(topUnvierseText: String, includes: Map<String, Strin
 }
 
 /** A minimal faux file system backed by a Map<String, String>.  Used only for testing. */
-class FakeInputStreamSource(val sources: Map<String, String>) : InputStreamSource {
-    override fun openInputStream(resolvedName: String): InputStream {
-        val text: String = sources[resolvedName] ?: throw FileNotFoundException("$resolvedName does not exist")
+internal class FakeInputStreamSource(private val sources: Map<String, String>) : InputStreamSource {
+    override fun openInputStream(fileName: String): InputStream {
+        val text: String = sources[fileName] ?: throw FileNotFoundException("$fileName does not exist")
 
         return ByteArrayInputStream(text.toByteArray(Charsets.UTF_8))
     }

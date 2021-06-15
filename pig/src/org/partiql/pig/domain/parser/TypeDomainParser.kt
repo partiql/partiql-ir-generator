@@ -60,8 +60,7 @@ internal fun parseTypeUniverseFile(universeFilePath: String): TypeUniverse {
 }
 
 internal class TypeUniverseParser(
-    private val imporSource: InputStreamSource
-    //private val imoprtResolver: ImportResolver
+    private val inputStreamSource: InputStreamSource
 ) {
     /**
      * This contains every file the parser has "seen" and is used to detect and ignore any `(include_file ...)`
@@ -80,9 +79,8 @@ internal class TypeUniverseParser(
     /** Parses a type universe in the specified [IonReader]. */
     fun parseTypeUniverse(source: String): TypeUniverse {
         val elementLoader = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
-        //val qualifiedSource = imoprtResolver.resolve(source)
         val qualifiedSource = File(source).absolutePath
-        return imporSource.openInputStream(qualifiedSource).use { inputStream: InputStream ->
+        return inputStreamSource.openInputStream(qualifiedSource).use { inputStream: InputStream ->
             IonReaderBuilder.standard().build(inputStream).use { reader: IonReader ->
                 this.parseHistory.add(qualifiedSource)
                 this.inputFilePathStack.push(qualifiedSource)
@@ -131,7 +129,7 @@ internal class TypeUniverseParser(
             } catch (e: FileNotFoundException) {
                 parseError(
                     sexp.metas.location?.toSourceLocation(),
-                    ParserErrorContext.CouldNotFindImportedTypeUniverse(qualifiedSourcePath))
+                    ParserErrorContext.CouldNotFindIncludedFile(qualifiedSourcePath))
             }
         } else {
             listOf()
