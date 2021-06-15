@@ -39,7 +39,7 @@ class BoolPrimitive(val value: Boolean, override val metas: MetaContainer) : Dom
     override fun withMeta(metaKey: String, metaValue: Any): BoolPrimitive =
         BoolPrimitive(this.value, metas + metaContainerOf(metaKey to metaValue))
 
-    /** Creates an []IonElement] representation of the current [BoolPrimitive]. */
+    /** Creates an [IonElement] representation of the current [BoolPrimitive]. */
     override fun toIonElement(): IonElement = ionBool(value, metas = metas)
 
     /** Converts [value] to a string. */
