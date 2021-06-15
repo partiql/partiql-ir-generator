@@ -31,9 +31,9 @@ class BoolPrimitive(val value: Boolean, override val metas: MetaContainer) : Dom
     fun copy(value: Boolean = this.value, metas: MetaContainer = this.metas): BoolPrimitive =
         BoolPrimitive(value, metas)
 
-    /** Creates a copy of the current [BoolPrimitive] with [newMetas] as the new metas. */
-    override fun copyMetas(newMetas: MetaContainer): BoolPrimitive =
-        BoolPrimitive(value, newMetas)
+    /** Creates a copy of the current [BoolPrimitive] with [metas] as the new metas. */
+    override fun copy(metas: MetaContainer): BoolPrimitive =
+        BoolPrimitive(value, metas)
 
     /** Creates a copy of the current [BoolPrimitive] with the specified additional meta. */
     override fun withMeta(metaKey: String, metaValue: Any): BoolPrimitive =
