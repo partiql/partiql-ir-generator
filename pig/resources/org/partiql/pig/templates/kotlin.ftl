@@ -38,12 +38,12 @@ class ${t.kotlinName}(
     override val metas: MetaContainer = emptyMetaContainer()
 ): ${t.superClass}() {
 
-    override fun copyMetas(newMetas: MetaContainer): ${t.kotlinName} =
+    override fun copy(metas: MetaContainer): ${t.kotlinName} =
         ${t.kotlinName}(
             [#list t.properties as p]
             ${p.kotlinName} = ${p.kotlinName},
             [/#list]
-            metas = newMetas)
+            metas = metas)
 
     override fun withMeta(metaKey: String, metaValue: Any): ${t.kotlinName} =
         ${t.kotlinName}(
@@ -87,10 +87,11 @@ class ${t.kotlinName}(
     }
 [/#if]
 
+    [#list t.properties]
     fun copy(
-    [#list t.properties as p]
+    [#items as p]
         ${p.kotlinName}: ${p.kotlinTypeName} = this.${p.kotlinName},
-    [/#list]
+    [/#items]
         metas: MetaContainer = this.metas
     ) =
         ${t.kotlinName}(
@@ -98,6 +99,7 @@ class ${t.kotlinName}(
             ${p.kotlinName},
             [/#list]
             metas)
+    [/#list]
 
     override fun equals(other: Any?): Boolean {
         if (other == null) return false
@@ -245,7 +247,7 @@ private object ${domain.kotlinName}Builder : Builder {
 
 /** Base class for all ${domain.kotlinName} types. */
 abstract class ${domain.kotlinName}Node : DomainNode {
-    abstract override fun copyMetas(newMetas: MetaContainer): ${domain.kotlinName}Node
+    abstract override fun copy(metas: MetaContainer): ${domain.kotlinName}Node
     override fun toString() = toIonElement().toString()
     abstract override fun withMeta(metaKey: String, metaValue: Any): ${domain.kotlinName}Node
     abstract override fun toIonElement(): SexpElement
@@ -267,10 +269,10 @@ abstract class ${domain.kotlinName}Node : DomainNode {
 [#list domain.sums as s]
 
 sealed class ${s.kotlinName}(override val metas: MetaContainer = emptyMetaContainer()) : ${s.superClass}() {
-    override fun copyMetas(newMetas: MetaContainer): ${s.kotlinName} =
+    override fun copy(metas: MetaContainer): ${s.kotlinName} =
         when (this) {
             [#list s.variants as v]
-            is ${v.kotlinName} -> copy(metas = newMetas)
+            is ${v.kotlinName} -> copy(metas = metas)
             [/#list]
         }
 

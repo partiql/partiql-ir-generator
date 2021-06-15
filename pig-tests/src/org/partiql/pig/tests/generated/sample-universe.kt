@@ -1389,7 +1389,7 @@ class TestDomain private constructor() {
     
     /** Base class for all TestDomain types. */
     abstract class TestDomainNode : DomainNode {
-        abstract override fun copyMetas(newMetas: MetaContainer): TestDomainNode
+        abstract override fun copy(metas: MetaContainer): TestDomainNode
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(metaKey: String, metaValue: Any): TestDomainNode
         abstract override fun toIonElement(): SexpElement
@@ -1405,11 +1405,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): IntPair =
+        override fun copy(metas: MetaContainer): IntPair =
             IntPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): IntPair =
             IntPair(
@@ -1462,11 +1462,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): SymbolPair =
+        override fun copy(metas: MetaContainer): SymbolPair =
             SymbolPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): SymbolPair =
             SymbolPair(
@@ -1519,11 +1519,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): IonPair =
+        override fun copy(metas: MetaContainer): IonPair =
             IonPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): IonPair =
             IonPair(
@@ -1576,11 +1576,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): IntSymbolPair =
+        override fun copy(metas: MetaContainer): IntSymbolPair =
             IntSymbolPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): IntSymbolPair =
             IntSymbolPair(
@@ -1633,11 +1633,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): SymbolIntPair =
+        override fun copy(metas: MetaContainer): SymbolIntPair =
             SymbolIntPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): SymbolIntPair =
             SymbolIntPair(
@@ -1690,11 +1690,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): IonIntPair =
+        override fun copy(metas: MetaContainer): IonIntPair =
             IonIntPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): IonIntPair =
             IonIntPair(
@@ -1747,11 +1747,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): IonSymbolPair =
+        override fun copy(metas: MetaContainer): IonSymbolPair =
             IonSymbolPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): IonSymbolPair =
             IonSymbolPair(
@@ -1804,11 +1804,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): IntPairPair =
+        override fun copy(metas: MetaContainer): IntPairPair =
             IntPairPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): IntPairPair =
             IntPairPair(
@@ -1861,11 +1861,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): SymbolPairPair =
+        override fun copy(metas: MetaContainer): SymbolPairPair =
             SymbolPairPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): SymbolPairPair =
             SymbolPairPair(
@@ -1918,11 +1918,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): IonPairPair =
+        override fun copy(metas: MetaContainer): IonPairPair =
             IonPairPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): IonPairPair =
             IonPairPair(
@@ -1975,11 +1975,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): RecursivePair =
+        override fun copy(metas: MetaContainer): RecursivePair =
             RecursivePair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): RecursivePair =
             RecursivePair(
@@ -2032,11 +2032,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AnswerPair =
+        override fun copy(metas: MetaContainer): AnswerPair =
             AnswerPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AnswerPair =
             AnswerPair(
@@ -2089,11 +2089,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AnswerIntPair =
+        override fun copy(metas: MetaContainer): AnswerIntPair =
             AnswerIntPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AnswerIntPair =
             AnswerIntPair(
@@ -2146,11 +2146,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): IntAnswerPair =
+        override fun copy(metas: MetaContainer): IntAnswerPair =
             IntAnswerPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): IntAnswerPair =
             IntAnswerPair(
@@ -2203,11 +2203,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): SymbolAnswerPair =
+        override fun copy(metas: MetaContainer): SymbolAnswerPair =
             SymbolAnswerPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): SymbolAnswerPair =
             SymbolAnswerPair(
@@ -2260,11 +2260,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AnswerSymbolPair =
+        override fun copy(metas: MetaContainer): AnswerSymbolPair =
             AnswerSymbolPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AnswerSymbolPair =
             AnswerSymbolPair(
@@ -2316,10 +2316,10 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): VariadicMin0 =
+        override fun copy(metas: MetaContainer): VariadicMin0 =
             VariadicMin0(
                 ints = ints,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): VariadicMin0 =
             VariadicMin0(
@@ -2365,10 +2365,10 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): VariadicMin1 =
+        override fun copy(metas: MetaContainer): VariadicMin1 =
             VariadicMin1(
                 ints = ints,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): VariadicMin1 =
             VariadicMin1(
@@ -2415,11 +2415,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): ElementVariadic =
+        override fun copy(metas: MetaContainer): ElementVariadic =
             ElementVariadic(
                 name = name,
                 ints = ints,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): ElementVariadic =
             ElementVariadic(
@@ -2471,10 +2471,10 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): Optional1 =
+        override fun copy(metas: MetaContainer): Optional1 =
             Optional1(
                 value = value,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): Optional1 =
             Optional1(
@@ -2521,11 +2521,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): Optional2 =
+        override fun copy(metas: MetaContainer): Optional2 =
             Optional2(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): Optional2 =
             Optional2(
@@ -2579,12 +2579,12 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): DomainLevelRecord =
+        override fun copy(metas: MetaContainer): DomainLevelRecord =
             DomainLevelRecord(
                 someField = someField,
                 anotherField = anotherField,
                 optionalField = optionalField,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): DomainLevelRecord =
             DomainLevelRecord(
@@ -2644,11 +2644,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): ProductWithRecord =
+        override fun copy(metas: MetaContainer): ProductWithRecord =
             ProductWithRecord(
                 value = value,
                 dlr = dlr,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): ProductWithRecord =
             ProductWithRecord(
@@ -2702,12 +2702,12 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): TestSumTriplet =
+        override fun copy(metas: MetaContainer): TestSumTriplet =
             TestSumTriplet(
                 a = a,
                 b = b,
                 c = c,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): TestSumTriplet =
             TestSumTriplet(
@@ -2766,11 +2766,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): EntityPair =
+        override fun copy(metas: MetaContainer): EntityPair =
             EntityPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): EntityPair =
             EntityPair(
@@ -2823,19 +2823,19 @@ class TestDomain private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     
     sealed class Answer(override val metas: MetaContainer = emptyMetaContainer()) : TestDomainNode() {
-        override fun copyMetas(newMetas: MetaContainer): Answer =
+        override fun copy(metas: MetaContainer): Answer =
             when (this) {
-                is No -> copy(metas = newMetas)
-                is Yes -> copy(metas = newMetas)
+                is No -> copy(metas = metas)
+                is Yes -> copy(metas = metas)
             }
     
         class No(
             override val metas: MetaContainer = emptyMetaContainer()
         ): Answer() {
         
-            override fun copyMetas(newMetas: MetaContainer): No =
+            override fun copy(metas: MetaContainer): No =
                 No(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): No =
                 No(
@@ -2848,11 +2848,6 @@ class TestDomain private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                No(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -2869,9 +2864,9 @@ class TestDomain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Answer() {
         
-            override fun copyMetas(newMetas: MetaContainer): Yes =
+            override fun copy(metas: MetaContainer): Yes =
                 Yes(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Yes =
                 Yes(
@@ -2884,11 +2879,6 @@ class TestDomain private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Yes(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -2904,9 +2894,9 @@ class TestDomain private constructor() {
     }
     
     sealed class SumWithRecord(override val metas: MetaContainer = emptyMetaContainer()) : TestDomainNode() {
-        override fun copyMetas(newMetas: MetaContainer): SumWithRecord =
+        override fun copy(metas: MetaContainer): SumWithRecord =
             when (this) {
-                is VariantWithRecord -> copy(metas = newMetas)
+                is VariantWithRecord -> copy(metas = metas)
             }
     
         class VariantWithRecord(
@@ -2915,11 +2905,11 @@ class TestDomain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumWithRecord() {
         
-            override fun copyMetas(newMetas: MetaContainer): VariantWithRecord =
+            override fun copy(metas: MetaContainer): VariantWithRecord =
                 VariantWithRecord(
                     value = value,
                     dlr = dlr,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): VariantWithRecord =
                 VariantWithRecord(
@@ -2969,11 +2959,11 @@ class TestDomain private constructor() {
     }
     
     sealed class TestSum(override val metas: MetaContainer = emptyMetaContainer()) : TestDomainNode() {
-        override fun copyMetas(newMetas: MetaContainer): TestSum =
+        override fun copy(metas: MetaContainer): TestSum =
             when (this) {
-                is One -> copy(metas = newMetas)
-                is Two -> copy(metas = newMetas)
-                is Three -> copy(metas = newMetas)
+                is One -> copy(metas = metas)
+                is Two -> copy(metas = metas)
+                is Three -> copy(metas = metas)
             }
     
         class One(
@@ -2981,10 +2971,10 @@ class TestDomain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): TestSum() {
         
-            override fun copyMetas(newMetas: MetaContainer): One =
+            override fun copy(metas: MetaContainer): One =
                 One(
                     a = a,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): One =
                 One(
@@ -3031,11 +3021,11 @@ class TestDomain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): TestSum() {
         
-            override fun copyMetas(newMetas: MetaContainer): Two =
+            override fun copy(metas: MetaContainer): Two =
                 Two(
                     a = a,
                     b = b,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Two =
                 Two(
@@ -3089,12 +3079,12 @@ class TestDomain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): TestSum() {
         
-            override fun copyMetas(newMetas: MetaContainer): Three =
+            override fun copy(metas: MetaContainer): Three =
                 Three(
                     a = a,
                     b = b,
                     c = c,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Three =
                 Three(
@@ -3150,20 +3140,20 @@ class TestDomain private constructor() {
     }
     
     sealed class Entity(override val metas: MetaContainer = emptyMetaContainer()) : TestDomainNode() {
-        override fun copyMetas(newMetas: MetaContainer): Entity =
+        override fun copy(metas: MetaContainer): Entity =
             when (this) {
-                is Slug -> copy(metas = newMetas)
-                is Android -> copy(metas = newMetas)
-                is Human -> copy(metas = newMetas)
+                is Slug -> copy(metas = metas)
+                is Android -> copy(metas = metas)
+                is Human -> copy(metas = metas)
             }
     
         class Slug(
             override val metas: MetaContainer = emptyMetaContainer()
         ): Entity() {
         
-            override fun copyMetas(newMetas: MetaContainer): Slug =
+            override fun copy(metas: MetaContainer): Slug =
                 Slug(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Slug =
                 Slug(
@@ -3176,11 +3166,6 @@ class TestDomain private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Slug(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -3198,10 +3183,10 @@ class TestDomain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Entity() {
         
-            override fun copyMetas(newMetas: MetaContainer): Android =
+            override fun copy(metas: MetaContainer): Android =
                 Android(
                     id = id,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Android =
                 Android(
@@ -3251,14 +3236,14 @@ class TestDomain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Entity() {
         
-            override fun copyMetas(newMetas: MetaContainer): Human =
+            override fun copy(metas: MetaContainer): Human =
                 Human(
                     firstName = firstName,
                     middleNames = middleNames,
                     lastName = lastName,
                     title = title,
                     parent = parent,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Human =
                 Human(
@@ -6063,7 +6048,7 @@ class MultiWordDomain private constructor() {
     
     /** Base class for all MultiWordDomain types. */
     abstract class MultiWordDomainNode : DomainNode {
-        abstract override fun copyMetas(newMetas: MetaContainer): MultiWordDomainNode
+        abstract override fun copy(metas: MetaContainer): MultiWordDomainNode
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(metaKey: String, metaValue: Any): MultiWordDomainNode
         abstract override fun toIonElement(): SexpElement
@@ -6077,9 +6062,9 @@ class MultiWordDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AaaAaa =
+        override fun copy(metas: MetaContainer): AaaAaa =
             AaaAaa(
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AaaAaa =
             AaaAaa(
@@ -6092,11 +6077,6 @@ class MultiWordDomain private constructor() {
             return elements
         }
     
-        fun copy(
-            metas: MetaContainer = this.metas
-        ) =
-            AaaAaa(
-                metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
@@ -6114,10 +6094,10 @@ class MultiWordDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AaaAab =
+        override fun copy(metas: MetaContainer): AaaAab =
             AaaAab(
                 dField = dField,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AaaAab =
             AaaAab(
@@ -6164,11 +6144,11 @@ class MultiWordDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AaaAac =
+        override fun copy(metas: MetaContainer): AaaAac =
             AaaAac(
                 dField = dField,
                 eField = eField,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AaaAac =
             AaaAac(
@@ -6220,10 +6200,10 @@ class MultiWordDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AaaAad =
+        override fun copy(metas: MetaContainer): AaaAad =
             AaaAad(
                 dField = dField,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AaaAad =
             AaaAad(
@@ -6269,10 +6249,10 @@ class MultiWordDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AaaAae =
+        override fun copy(metas: MetaContainer): AaaAae =
             AaaAae(
                 dField = dField,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AaaAae =
             AaaAae(
@@ -6319,11 +6299,11 @@ class MultiWordDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AabAaa =
+        override fun copy(metas: MetaContainer): AabAaa =
             AabAaa(
                 bField = bField,
                 cField = cField,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AabAaa =
             AabAaa(
@@ -6377,12 +6357,12 @@ class MultiWordDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AabAab =
+        override fun copy(metas: MetaContainer): AabAab =
             AabAab(
                 bField = bField,
                 cField = cField,
                 dField = dField,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AabAab =
             AabAab(
@@ -6443,13 +6423,13 @@ class MultiWordDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AabAac =
+        override fun copy(metas: MetaContainer): AabAac =
             AabAac(
                 bField = bField,
                 cField = cField,
                 dField = dField,
                 eField = eField,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AabAac =
             AabAac(
@@ -6515,12 +6495,12 @@ class MultiWordDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AabAad =
+        override fun copy(metas: MetaContainer): AabAad =
             AabAad(
                 bField = bField,
                 cField = cField,
                 dField = dField,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AabAad =
             AabAad(
@@ -6580,12 +6560,12 @@ class MultiWordDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): AabAae =
+        override fun copy(metas: MetaContainer): AabAae =
             AabAae(
                 bField = bField,
                 cField = cField,
                 dField = dField,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): AabAae =
             AabAae(
@@ -6644,11 +6624,11 @@ class MultiWordDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): MultiWordDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): Rrr =
+        override fun copy(metas: MetaContainer): Rrr =
             Rrr(
                 aField = aField,
                 bbbField = bbbField,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): Rrr =
             Rrr(
@@ -6702,10 +6682,10 @@ class MultiWordDomain private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     
     sealed class SssTtt(override val metas: MetaContainer = emptyMetaContainer()) : MultiWordDomainNode() {
-        override fun copyMetas(newMetas: MetaContainer): SssTtt =
+        override fun copy(metas: MetaContainer): SssTtt =
             when (this) {
-                is Lll -> copy(metas = newMetas)
-                is Mmm -> copy(metas = newMetas)
+                is Lll -> copy(metas = metas)
+                is Mmm -> copy(metas = metas)
             }
     
         class Lll(
@@ -6713,10 +6693,10 @@ class MultiWordDomain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): SssTtt() {
         
-            override fun copyMetas(newMetas: MetaContainer): Lll =
+            override fun copy(metas: MetaContainer): Lll =
                 Lll(
                     uField = uField,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Lll =
                 Lll(
@@ -6762,10 +6742,10 @@ class MultiWordDomain private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): SssTtt() {
         
-            override fun copyMetas(newMetas: MetaContainer): Mmm =
+            override fun copy(metas: MetaContainer): Mmm =
                 Mmm(
                     vField = vField,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Mmm =
                 Mmm(
@@ -8071,7 +8051,7 @@ class DomainA private constructor() {
     
     /** Base class for all DomainA types. */
     abstract class DomainANode : DomainNode {
-        abstract override fun copyMetas(newMetas: MetaContainer): DomainANode
+        abstract override fun copy(metas: MetaContainer): DomainANode
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(metaKey: String, metaValue: Any): DomainANode
         abstract override fun toIonElement(): SexpElement
@@ -8086,10 +8066,10 @@ class DomainA private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainANode() {
     
-        override fun copyMetas(newMetas: MetaContainer): ProductToRemove =
+        override fun copy(metas: MetaContainer): ProductToRemove =
             ProductToRemove(
                 whatever = whatever,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): ProductToRemove =
             ProductToRemove(
@@ -8135,10 +8115,10 @@ class DomainA private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainANode() {
     
-        override fun copyMetas(newMetas: MetaContainer): RecordToRemove =
+        override fun copy(metas: MetaContainer): RecordToRemove =
             RecordToRemove(
                 irrelevant = irrelevant,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): RecordToRemove =
             RecordToRemove(
@@ -8185,10 +8165,10 @@ class DomainA private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainANode() {
     
-        override fun copyMetas(newMetas: MetaContainer): ProductA =
+        override fun copy(metas: MetaContainer): ProductA =
             ProductA(
                 one = one,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): ProductA =
             ProductA(
@@ -8234,10 +8214,10 @@ class DomainA private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainANode() {
     
-        override fun copyMetas(newMetas: MetaContainer): RecordA =
+        override fun copy(metas: MetaContainer): RecordA =
             RecordA(
                 one = one,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): RecordA =
             RecordA(
@@ -8285,11 +8265,11 @@ class DomainA private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainANode() {
     
-        override fun copyMetas(newMetas: MetaContainer): UnpermutedProduct =
+        override fun copy(metas: MetaContainer): UnpermutedProduct =
             UnpermutedProduct(
                 foo = foo,
                 bar = bar,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): UnpermutedProduct =
             UnpermutedProduct(
@@ -8342,11 +8322,11 @@ class DomainA private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainANode() {
     
-        override fun copyMetas(newMetas: MetaContainer): UnpermutedRecord =
+        override fun copy(metas: MetaContainer): UnpermutedRecord =
             UnpermutedRecord(
                 foo = foo,
                 bar = bar,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): UnpermutedRecord =
             UnpermutedRecord(
@@ -8400,19 +8380,19 @@ class DomainA private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     
     sealed class SumToRemove(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
-        override fun copyMetas(newMetas: MetaContainer): SumToRemove =
+        override fun copy(metas: MetaContainer): SumToRemove =
             when (this) {
-                is Doesnt -> copy(metas = newMetas)
-                is Matter -> copy(metas = newMetas)
+                is Doesnt -> copy(metas = metas)
+                is Matter -> copy(metas = metas)
             }
     
         class Doesnt(
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumToRemove() {
         
-            override fun copyMetas(newMetas: MetaContainer): Doesnt =
+            override fun copy(metas: MetaContainer): Doesnt =
                 Doesnt(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Doesnt =
                 Doesnt(
@@ -8425,11 +8405,6 @@ class DomainA private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Doesnt(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -8446,9 +8421,9 @@ class DomainA private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumToRemove() {
         
-            override fun copyMetas(newMetas: MetaContainer): Matter =
+            override fun copy(metas: MetaContainer): Matter =
                 Matter(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Matter =
                 Matter(
@@ -8461,11 +8436,6 @@ class DomainA private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Matter(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -8481,19 +8451,19 @@ class DomainA private constructor() {
     }
     
     sealed class SumA(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
-        override fun copyMetas(newMetas: MetaContainer): SumA =
+        override fun copy(metas: MetaContainer): SumA =
             when (this) {
-                is Who -> copy(metas = newMetas)
-                is Cares -> copy(metas = newMetas)
+                is Who -> copy(metas = metas)
+                is Cares -> copy(metas = metas)
             }
     
         class Who(
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumA() {
         
-            override fun copyMetas(newMetas: MetaContainer): Who =
+            override fun copy(metas: MetaContainer): Who =
                 Who(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Who =
                 Who(
@@ -8506,11 +8476,6 @@ class DomainA private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Who(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -8527,9 +8492,9 @@ class DomainA private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumA() {
         
-            override fun copyMetas(newMetas: MetaContainer): Cares =
+            override fun copy(metas: MetaContainer): Cares =
                 Cares(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Cares =
                 Cares(
@@ -8542,11 +8507,6 @@ class DomainA private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Cares(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -8562,20 +8522,20 @@ class DomainA private constructor() {
     }
     
     sealed class SumB(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
-        override fun copyMetas(newMetas: MetaContainer): SumB =
+        override fun copy(metas: MetaContainer): SumB =
             when (this) {
-                is WillBeUnchanged -> copy(metas = newMetas)
-                is WillBeRemoved -> copy(metas = newMetas)
-                is WillBeReplaced -> copy(metas = newMetas)
+                is WillBeUnchanged -> copy(metas = metas)
+                is WillBeRemoved -> copy(metas = metas)
+                is WillBeReplaced -> copy(metas = metas)
             }
     
         class WillBeUnchanged(
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumB() {
         
-            override fun copyMetas(newMetas: MetaContainer): WillBeUnchanged =
+            override fun copy(metas: MetaContainer): WillBeUnchanged =
                 WillBeUnchanged(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): WillBeUnchanged =
                 WillBeUnchanged(
@@ -8588,11 +8548,6 @@ class DomainA private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                WillBeUnchanged(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -8609,9 +8564,9 @@ class DomainA private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumB() {
         
-            override fun copyMetas(newMetas: MetaContainer): WillBeRemoved =
+            override fun copy(metas: MetaContainer): WillBeRemoved =
                 WillBeRemoved(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): WillBeRemoved =
                 WillBeRemoved(
@@ -8624,11 +8579,6 @@ class DomainA private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                WillBeRemoved(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -8646,10 +8596,10 @@ class DomainA private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumB() {
         
-            override fun copyMetas(newMetas: MetaContainer): WillBeReplaced =
+            override fun copy(metas: MetaContainer): WillBeReplaced =
                 WillBeReplaced(
                     something = something,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): WillBeReplaced =
                 WillBeReplaced(
@@ -8693,10 +8643,10 @@ class DomainA private constructor() {
     }
     
     sealed class UnpermutedSum(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
-        override fun copyMetas(newMetas: MetaContainer): UnpermutedSum =
+        override fun copy(metas: MetaContainer): UnpermutedSum =
             when (this) {
-                is UnpermutedProductVariant -> copy(metas = newMetas)
-                is UnpermutedRecordVariant -> copy(metas = newMetas)
+                is UnpermutedProductVariant -> copy(metas = metas)
+                is UnpermutedRecordVariant -> copy(metas = metas)
             }
     
         class UnpermutedProductVariant(
@@ -8705,11 +8655,11 @@ class DomainA private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): UnpermutedSum() {
         
-            override fun copyMetas(newMetas: MetaContainer): UnpermutedProductVariant =
+            override fun copy(metas: MetaContainer): UnpermutedProductVariant =
                 UnpermutedProductVariant(
                     foo = foo,
                     bar = bar,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): UnpermutedProductVariant =
                 UnpermutedProductVariant(
@@ -8762,11 +8712,11 @@ class DomainA private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): UnpermutedSum() {
         
-            override fun copyMetas(newMetas: MetaContainer): UnpermutedRecordVariant =
+            override fun copy(metas: MetaContainer): UnpermutedRecordVariant =
                 UnpermutedRecordVariant(
                     foo = foo,
                     bar = bar,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): UnpermutedRecordVariant =
                 UnpermutedRecordVariant(
@@ -10134,7 +10084,7 @@ class DomainB private constructor() {
     
     /** Base class for all DomainB types. */
     abstract class DomainBNode : DomainNode {
-        abstract override fun copyMetas(newMetas: MetaContainer): DomainBNode
+        abstract override fun copy(metas: MetaContainer): DomainBNode
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(metaKey: String, metaValue: Any): DomainBNode
         abstract override fun toIonElement(): SexpElement
@@ -10150,11 +10100,11 @@ class DomainB private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainBNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): UnpermutedProduct =
+        override fun copy(metas: MetaContainer): UnpermutedProduct =
             UnpermutedProduct(
                 foo = foo,
                 bar = bar,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): UnpermutedProduct =
             UnpermutedProduct(
@@ -10207,11 +10157,11 @@ class DomainB private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainBNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): UnpermutedRecord =
+        override fun copy(metas: MetaContainer): UnpermutedRecord =
             UnpermutedRecord(
                 foo = foo,
                 bar = bar,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): UnpermutedRecord =
             UnpermutedRecord(
@@ -10264,10 +10214,10 @@ class DomainB private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainBNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): ProductA =
+        override fun copy(metas: MetaContainer): ProductA =
             ProductA(
                 one = one,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): ProductA =
             ProductA(
@@ -10313,10 +10263,10 @@ class DomainB private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainBNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): RecordA =
+        override fun copy(metas: MetaContainer): RecordA =
             RecordA(
                 one = one,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): RecordA =
             RecordA(
@@ -10363,10 +10313,10 @@ class DomainB private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainBNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): NewProduct =
+        override fun copy(metas: MetaContainer): NewProduct =
             NewProduct(
                 foo = foo,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): NewProduct =
             NewProduct(
@@ -10412,10 +10362,10 @@ class DomainB private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainBNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): NewRecord =
+        override fun copy(metas: MetaContainer): NewRecord =
             NewRecord(
                 foo = foo,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): NewRecord =
             NewRecord(
@@ -10463,10 +10413,10 @@ class DomainB private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     
     sealed class UnpermutedSum(override val metas: MetaContainer = emptyMetaContainer()) : DomainBNode() {
-        override fun copyMetas(newMetas: MetaContainer): UnpermutedSum =
+        override fun copy(metas: MetaContainer): UnpermutedSum =
             when (this) {
-                is UnpermutedProductVariant -> copy(metas = newMetas)
-                is UnpermutedRecordVariant -> copy(metas = newMetas)
+                is UnpermutedProductVariant -> copy(metas = metas)
+                is UnpermutedRecordVariant -> copy(metas = metas)
             }
     
         class UnpermutedProductVariant(
@@ -10475,11 +10425,11 @@ class DomainB private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): UnpermutedSum() {
         
-            override fun copyMetas(newMetas: MetaContainer): UnpermutedProductVariant =
+            override fun copy(metas: MetaContainer): UnpermutedProductVariant =
                 UnpermutedProductVariant(
                     foo = foo,
                     bar = bar,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): UnpermutedProductVariant =
                 UnpermutedProductVariant(
@@ -10532,11 +10482,11 @@ class DomainB private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): UnpermutedSum() {
         
-            override fun copyMetas(newMetas: MetaContainer): UnpermutedRecordVariant =
+            override fun copy(metas: MetaContainer): UnpermutedRecordVariant =
                 UnpermutedRecordVariant(
                     foo = foo,
                     bar = bar,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): UnpermutedRecordVariant =
                 UnpermutedRecordVariant(
@@ -10587,19 +10537,19 @@ class DomainB private constructor() {
     }
     
     sealed class SumB(override val metas: MetaContainer = emptyMetaContainer()) : DomainBNode() {
-        override fun copyMetas(newMetas: MetaContainer): SumB =
+        override fun copy(metas: MetaContainer): SumB =
             when (this) {
-                is WillBeUnchanged -> copy(metas = newMetas)
-                is WillBeReplaced -> copy(metas = newMetas)
+                is WillBeUnchanged -> copy(metas = metas)
+                is WillBeReplaced -> copy(metas = metas)
             }
     
         class WillBeUnchanged(
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumB() {
         
-            override fun copyMetas(newMetas: MetaContainer): WillBeUnchanged =
+            override fun copy(metas: MetaContainer): WillBeUnchanged =
                 WillBeUnchanged(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): WillBeUnchanged =
                 WillBeUnchanged(
@@ -10612,11 +10562,6 @@ class DomainB private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                WillBeUnchanged(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -10634,10 +10579,10 @@ class DomainB private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumB() {
         
-            override fun copyMetas(newMetas: MetaContainer): WillBeReplaced =
+            override fun copy(metas: MetaContainer): WillBeReplaced =
                 WillBeReplaced(
                     something = something,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): WillBeReplaced =
                 WillBeReplaced(
@@ -10681,19 +10626,19 @@ class DomainB private constructor() {
     }
     
     sealed class NewSum(override val metas: MetaContainer = emptyMetaContainer()) : DomainBNode() {
-        override fun copyMetas(newMetas: MetaContainer): NewSum =
+        override fun copy(metas: MetaContainer): NewSum =
             when (this) {
-                is Eek -> copy(metas = newMetas)
-                is Whatever -> copy(metas = newMetas)
+                is Eek -> copy(metas = metas)
+                is Whatever -> copy(metas = metas)
             }
     
         class Eek(
             override val metas: MetaContainer = emptyMetaContainer()
         ): NewSum() {
         
-            override fun copyMetas(newMetas: MetaContainer): Eek =
+            override fun copy(metas: MetaContainer): Eek =
                 Eek(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Eek =
                 Eek(
@@ -10706,11 +10651,6 @@ class DomainB private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Eek(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
@@ -10727,9 +10667,9 @@ class DomainB private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): NewSum() {
         
-            override fun copyMetas(newMetas: MetaContainer): Whatever =
+            override fun copy(metas: MetaContainer): Whatever =
                 Whatever(
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Whatever =
                 Whatever(
@@ -10742,11 +10682,6 @@ class DomainB private constructor() {
                 return elements
             }
         
-            fun copy(
-                metas: MetaContainer = this.metas
-            ) =
-                Whatever(
-                    metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false

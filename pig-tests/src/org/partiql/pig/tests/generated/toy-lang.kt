@@ -437,7 +437,7 @@ class ToyLang private constructor() {
     
     /** Base class for all ToyLang types. */
     abstract class ToyLangNode : DomainNode {
-        abstract override fun copyMetas(newMetas: MetaContainer): ToyLangNode
+        abstract override fun copy(metas: MetaContainer): ToyLangNode
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(metaKey: String, metaValue: Any): ToyLangNode
         abstract override fun toIonElement(): SexpElement
@@ -450,19 +450,19 @@ class ToyLang private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     
     sealed class Expr(override val metas: MetaContainer = emptyMetaContainer()) : ToyLangNode() {
-        override fun copyMetas(newMetas: MetaContainer): Expr =
+        override fun copy(metas: MetaContainer): Expr =
             when (this) {
-                is Lit -> copy(metas = newMetas)
-                is Variable -> copy(metas = newMetas)
-                is Not -> copy(metas = newMetas)
-                is Plus -> copy(metas = newMetas)
-                is Minus -> copy(metas = newMetas)
-                is Times -> copy(metas = newMetas)
-                is Divide -> copy(metas = newMetas)
-                is Modulo -> copy(metas = newMetas)
-                is Call -> copy(metas = newMetas)
-                is Let -> copy(metas = newMetas)
-                is Function -> copy(metas = newMetas)
+                is Lit -> copy(metas = metas)
+                is Variable -> copy(metas = metas)
+                is Not -> copy(metas = metas)
+                is Plus -> copy(metas = metas)
+                is Minus -> copy(metas = metas)
+                is Times -> copy(metas = metas)
+                is Divide -> copy(metas = metas)
+                is Modulo -> copy(metas = metas)
+                is Call -> copy(metas = metas)
+                is Let -> copy(metas = metas)
+                is Function -> copy(metas = metas)
             }
     
         class Lit(
@@ -470,10 +470,10 @@ class ToyLang private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Lit =
+            override fun copy(metas: MetaContainer): Lit =
                 Lit(
                     value = value,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Lit =
                 Lit(
@@ -519,10 +519,10 @@ class ToyLang private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Variable =
+            override fun copy(metas: MetaContainer): Variable =
                 Variable(
                     name = name,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Variable =
                 Variable(
@@ -568,10 +568,10 @@ class ToyLang private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Not =
+            override fun copy(metas: MetaContainer): Not =
                 Not(
                     expr = expr,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Not =
                 Not(
@@ -617,10 +617,10 @@ class ToyLang private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Plus =
+            override fun copy(metas: MetaContainer): Plus =
                 Plus(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Plus =
                 Plus(
@@ -666,10 +666,10 @@ class ToyLang private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Minus =
+            override fun copy(metas: MetaContainer): Minus =
                 Minus(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Minus =
                 Minus(
@@ -715,10 +715,10 @@ class ToyLang private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Times =
+            override fun copy(metas: MetaContainer): Times =
                 Times(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Times =
                 Times(
@@ -764,10 +764,10 @@ class ToyLang private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Divide =
+            override fun copy(metas: MetaContainer): Divide =
                 Divide(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Divide =
                 Divide(
@@ -813,10 +813,10 @@ class ToyLang private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Modulo =
+            override fun copy(metas: MetaContainer): Modulo =
                 Modulo(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Modulo =
                 Modulo(
@@ -863,11 +863,11 @@ class ToyLang private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Call =
+            override fun copy(metas: MetaContainer): Call =
                 Call(
                     name = name,
                     argument = argument,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Call =
                 Call(
@@ -921,12 +921,12 @@ class ToyLang private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Let =
+            override fun copy(metas: MetaContainer): Let =
                 Let(
                     name = name,
                     value = value,
                     body = body,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Let =
                 Let(
@@ -985,11 +985,11 @@ class ToyLang private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Function =
+            override fun copy(metas: MetaContainer): Function =
                 Function(
                     varName = varName,
                     body = body,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Function =
                 Function(
@@ -2108,7 +2108,7 @@ class ToyLangIndexed private constructor() {
     
     /** Base class for all ToyLangIndexed types. */
     abstract class ToyLangIndexedNode : DomainNode {
-        abstract override fun copyMetas(newMetas: MetaContainer): ToyLangIndexedNode
+        abstract override fun copy(metas: MetaContainer): ToyLangIndexedNode
         override fun toString() = toIonElement().toString()
         abstract override fun withMeta(metaKey: String, metaValue: Any): ToyLangIndexedNode
         abstract override fun toIonElement(): SexpElement
@@ -2121,19 +2121,19 @@ class ToyLangIndexed private constructor() {
     /////////////////////////////////////////////////////////////////////////////
     
     sealed class Expr(override val metas: MetaContainer = emptyMetaContainer()) : ToyLangIndexedNode() {
-        override fun copyMetas(newMetas: MetaContainer): Expr =
+        override fun copy(metas: MetaContainer): Expr =
             when (this) {
-                is Lit -> copy(metas = newMetas)
-                is Not -> copy(metas = newMetas)
-                is Plus -> copy(metas = newMetas)
-                is Minus -> copy(metas = newMetas)
-                is Times -> copy(metas = newMetas)
-                is Divide -> copy(metas = newMetas)
-                is Modulo -> copy(metas = newMetas)
-                is Call -> copy(metas = newMetas)
-                is Function -> copy(metas = newMetas)
-                is Variable -> copy(metas = newMetas)
-                is Let -> copy(metas = newMetas)
+                is Lit -> copy(metas = metas)
+                is Not -> copy(metas = metas)
+                is Plus -> copy(metas = metas)
+                is Minus -> copy(metas = metas)
+                is Times -> copy(metas = metas)
+                is Divide -> copy(metas = metas)
+                is Modulo -> copy(metas = metas)
+                is Call -> copy(metas = metas)
+                is Function -> copy(metas = metas)
+                is Variable -> copy(metas = metas)
+                is Let -> copy(metas = metas)
             }
     
         class Lit(
@@ -2141,10 +2141,10 @@ class ToyLangIndexed private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Lit =
+            override fun copy(metas: MetaContainer): Lit =
                 Lit(
                     value = value,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Lit =
                 Lit(
@@ -2190,10 +2190,10 @@ class ToyLangIndexed private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Not =
+            override fun copy(metas: MetaContainer): Not =
                 Not(
                     expr = expr,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Not =
                 Not(
@@ -2239,10 +2239,10 @@ class ToyLangIndexed private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Plus =
+            override fun copy(metas: MetaContainer): Plus =
                 Plus(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Plus =
                 Plus(
@@ -2288,10 +2288,10 @@ class ToyLangIndexed private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Minus =
+            override fun copy(metas: MetaContainer): Minus =
                 Minus(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Minus =
                 Minus(
@@ -2337,10 +2337,10 @@ class ToyLangIndexed private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Times =
+            override fun copy(metas: MetaContainer): Times =
                 Times(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Times =
                 Times(
@@ -2386,10 +2386,10 @@ class ToyLangIndexed private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Divide =
+            override fun copy(metas: MetaContainer): Divide =
                 Divide(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Divide =
                 Divide(
@@ -2435,10 +2435,10 @@ class ToyLangIndexed private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Modulo =
+            override fun copy(metas: MetaContainer): Modulo =
                 Modulo(
                     operands = operands,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Modulo =
                 Modulo(
@@ -2485,11 +2485,11 @@ class ToyLangIndexed private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Call =
+            override fun copy(metas: MetaContainer): Call =
                 Call(
                     name = name,
                     argument = argument,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Call =
                 Call(
@@ -2542,11 +2542,11 @@ class ToyLangIndexed private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Function =
+            override fun copy(metas: MetaContainer): Function =
                 Function(
                     varName = varName,
                     body = body,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Function =
                 Function(
@@ -2599,11 +2599,11 @@ class ToyLangIndexed private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Variable =
+            override fun copy(metas: MetaContainer): Variable =
                 Variable(
                     name = name,
                     index = index,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Variable =
                 Variable(
@@ -2658,13 +2658,13 @@ class ToyLangIndexed private constructor() {
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copyMetas(newMetas: MetaContainer): Let =
+            override fun copy(metas: MetaContainer): Let =
                 Let(
                     name = name,
                     index = index,
                     value = value,
                     body = body,
-                    metas = newMetas)
+                    metas = metas)
         
             override fun withMeta(metaKey: String, metaValue: Any): Let =
                 Let(
