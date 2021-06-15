@@ -40,7 +40,7 @@ open class DomainVisitorFoldBase<T> {
         // default does nothing
         accumulator
 
-    ///////////////////////////////////////////////////////transformBoolPrimitiveMetas
+    ///////////////////////////////////////////////////////
 
     open fun walkBoolPrimitive(node: BoolPrimitive, accumulator: T): T {
         val intermediate = visitBoolPrimitive(node, accumulator)
