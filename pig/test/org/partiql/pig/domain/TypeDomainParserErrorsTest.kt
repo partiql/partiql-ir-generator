@@ -23,9 +23,10 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.partiql.pig.domain.parser.ParserErrorContext
-import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
+import org.partiql.pig.util.parseTypeUniverseString
+import java.io.File
 
 class TypeDomainParserErrorsTest {
 
@@ -35,7 +36,7 @@ class TypeDomainParserErrorsTest {
     @MethodSource("parametersForErrorsTest")
     fun errorsTest(tc: TestCase) {
         val ex = assertThrows<PigException> {
-            val oops = parseTypeUniverse(tc.typeUniverseText)
+            val oops = parseTypeUniverseString(tc.typeUniverseText)
             println("this was erroneously parsed: ${oops.toIonElement()}")
         }
         assertEquals(tc.expectedError, ex.error)
@@ -105,7 +106,12 @@ class TypeDomainParserErrorsTest {
 
             TestCase( // Covers second place in parser this can be thrown
                 "(define huh (domain (product huh x::int y::42)))",
-                makeErr(1, 41, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT)))
+                makeErr(1, 41, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT))),
+
+            TestCase(
+                "(include_file \"some-non-existing-file.ion\")",
+                makeErr(1, 1, ParserErrorContext.CouldNotFindIncludedFile(
+                    File("some-non-existing-file.ion").canonicalPath)))
         )
     }
 }

@@ -15,14 +15,13 @@
 
 package org.partiql.pig.domain
 
-import com.amazon.ion.system.IonReaderBuilder
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.partiql.pig.domain.model.Arity
 import org.partiql.pig.domain.model.DataType
 import org.partiql.pig.domain.model.TypeUniverse
-import org.partiql.pig.domain.parser.parseTypeUniverse
+import org.partiql.pig.util.parseTypeUniverseString
 
 class PermuteDomainTests {
     /**
@@ -59,7 +58,7 @@ class PermuteDomainTests {
                         (e b::symbol)))))
         """
 
-        val td: TypeUniverse = IonReaderBuilder.standard().build(typeUniverseWithExtensions).use { parseTypeUniverse(it) }
+        val td: TypeUniverse = parseTypeUniverseString(typeUniverseWithExtensions)
 
         val concretes = td.computeTypeDomains()
 

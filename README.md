@@ -174,7 +174,9 @@ assertEquals(onePlusOne, anotherOnePlusOne)
 // Top level
 type_universe ::= <stmt>...
 definition ::= '(' 'define' symbol <domain_definition> ')'
-stmt ::=  <definition> | <transform>
+stmt ::=  <definition> | <transform> | <include_file>
+
+include_file ::= `(include_file <path-to-file>)`
 
 // Domain
 domain_definition ::= <domain> | <permute_domain>
@@ -400,6 +402,32 @@ Unlike record elements, product element defintions must include identifiers.
 (product int_pair first::int second::int)
 ```
 
+#### Type Domain Includes
+
+It is possible to split type universes among multiple files:
+
+```
+// root.ion:
+(include_file "a.ion")
+(include_file "b.ion")
+```
+
+The resulting type universe will contain all type domains from both `a.ion` and `b.ion`. `root.ion` may also define
+additional type domains.  The primary purpose of this is to be able to permute domains defined in another file.
+
+`include_file` is recursive, so any type domains in any files included by `a.ion` and `b.ion` will also be present.  Any 
+attempt to include a file that has already been seen will be ignored.
+
+Paths are always relative to the directory containing the current file.  The working directory at the time `pig` 
+is executed is irrelevant.
+
+```
+(include_file "subdir/partiql.ion")
+(include_file "../other/some-universe.ion")
+```
+
+Lastly, `include_file` can only be used at the top-level within a `.ion` file.  It is not allowed within a 
+`(domain ...)` clause.
 
 #### Using PIG In Your Project
 

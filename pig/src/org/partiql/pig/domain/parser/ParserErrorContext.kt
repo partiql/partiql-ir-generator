@@ -15,14 +15,11 @@
 
 package org.partiql.pig.domain.parser
 
-import com.amazon.ionelement.api.IonElement
-import com.amazon.ionelement.api.IonLocation
-import com.amazon.ionelement.api.location
 import com.amazon.ionelement.api.ElementType
 import com.amazon.ionelement.api.IonElementException
-import org.partiql.pig.errors.PigException
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
+import org.partiql.pig.errors.PigException
 
 /**
  * Variants of [ParserErrorContext] contain details about various parse errors that can be encountered
@@ -33,7 +30,7 @@ import org.partiql.pig.errors.PigError
 sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
     override val message: String get() = msgFormatter()
 
-    /** Indicates that an []IonElectrolyteException] was thrown during parsing of a type universe. */
+    /** Indicates that an [IonElementException] was thrown during parsing of a type universe. */
     data class IonElementError(val ex: IonElementException)
         : ParserErrorContext({ ex.message!! }) {
         // This is for unit tests... we don't include IonElectrolyteException here since it doesn't implement
@@ -41,6 +38,9 @@ sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
         override fun equals(other: Any?): Boolean = other is IonElementError
         override fun hashCode(): Int = 0
     }
+
+    data class CouldNotFindIncludedFile(val tag: String)
+        : ParserErrorContext({ "Included file missing: $tag" })
 
     data class UnknownConstructor(val tag: String)
         : ParserErrorContext({ "Unknown constructor: '$tag' (expected constructors are 'domain' or 'permute_domain')" })
@@ -79,8 +79,7 @@ sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
         : ParserErrorContext({ "Element has multiple name annotations"})
 }
 
-
-fun parseError(blame: IonLocation?, context: ErrorContext): Nothing =
+fun parseError(blame: SourceLocation?, context: ErrorContext): Nothing =
     PigError(blame, context).let {
         throw when (context) {
             is ParserErrorContext.IonElementError -> {
@@ -90,9 +89,4 @@ fun parseError(blame: IonLocation?, context: ErrorContext): Nothing =
             else -> PigException(it)
         }
     }
-
-fun parseError(blame: IonElement, context: ErrorContext): Nothing {
-    val loc = blame.metas.location
-    parseError(loc, context)
-}
 

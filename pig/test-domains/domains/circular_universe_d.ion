@@ -1,0 +1,5 @@
+
+(define domain_d (domain (product foo)))
+
+// make a circular reference
+(include_file "circular_universe_c.ion")

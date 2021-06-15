@@ -15,18 +15,16 @@
 
 package org.partiql.pig
 
-import com.amazon.ion.system.IonReaderBuilder
 import org.partiql.pig.cmdline.Command
 import org.partiql.pig.cmdline.CommandLineParser
 import org.partiql.pig.cmdline.TargetLanguage
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.domain.model.TypeUniverse
-import org.partiql.pig.domain.parser.parseTypeUniverse
+import org.partiql.pig.domain.parser.parseTypeUniverseFile
 import org.partiql.pig.generator.custom.applyCustomTemplate
 import org.partiql.pig.generator.html.applyHtmlTemplate
 import org.partiql.pig.generator.kotlin.applyKotlinTemplate
 import org.partiql.pig.generator.kotlin.convertToKTypeUniverse
-import java.io.FileInputStream
 import java.io.PrintWriter
 import kotlin.system.exitProcess
 
@@ -61,17 +59,15 @@ fun main(args: Array<String>) {
  * having to `exec` pig as a separate process.
  */
 fun generateCode(command: Command.Generate) {
-    progress("universe file: ${command.typeUniverseFile}")
-    progress("output file  : ${command.outputFile}")
+    progress("universe file: ${command.typeUniverseFilePath}")
+    progress("output file  : ${command.outputFilePath}")
 
     progress("parsing the universe...")
-    val typeUniverse: TypeUniverse = FileInputStream(command.typeUniverseFile).use { inputStream ->
-        IonReaderBuilder.standard().build(inputStream).use { ionReader -> parseTypeUniverse(ionReader) }
-    }
+    val typeUniverse: TypeUniverse = parseTypeUniverseFile(command.typeUniverseFilePath.canonicalPath)
 
     progress("permuting domains...")
 
-    PrintWriter(command.outputFile).use { printWriter ->
+    PrintWriter(command.outputFilePath).use { printWriter ->
         when (command.target) {
             is TargetLanguage.Kotlin -> {
                 progress("applying Kotlin pre-processing")

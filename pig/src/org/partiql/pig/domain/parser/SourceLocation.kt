@@ -13,22 +13,22 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.errors
+package org.partiql.pig.domain.parser
 
-import org.partiql.pig.domain.parser.SourceLocation
+import com.amazon.ionelement.api.IonLocation
+import com.amazon.ionelement.api.MetaContainer
 
 /**
- * [ErrorContext] instances provide information about an error message which can later be used
- * to produce human readable error message.
- *
- * [ErrorContext] instances must implement [toString] to produce the human readable text,
- * and [equals]
+ * Used to construct helpful error messages for the end-user, who will be able to know the file, line & column of
+ * a given error.
  */
-interface ErrorContext {
-    val message: String
+data class SourceLocation(val path: String, val location: IonLocation) {
+    override fun toString(): String {
+        return "$path:$location"
+    }
 }
 
-data class PigError(val location: SourceLocation?, val context: ErrorContext) {
-    override fun toString(): String = "${location?.toString() ?: "<unknown path>"}: ${context.message}"
-}
+internal const val SOURCE_LOCATION_META_TAG = "\$pig_source_location"
 
+internal val MetaContainer.sourceLocation
+    get() = this[SOURCE_LOCATION_META_TAG] as? SourceLocation
