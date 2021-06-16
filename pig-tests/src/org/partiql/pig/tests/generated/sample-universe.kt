@@ -1449,11 +1449,11 @@ class TestDomain private constructor() {
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copyMetas(newMetas: MetaContainer): BoolPair =
+        override fun copy(metas: MetaContainer): BoolPair =
             BoolPair(
                 first = first,
                 second = second,
-                metas = newMetas)
+                metas = metas)
     
         override fun withMeta(metaKey: String, metaValue: Any): BoolPair =
             BoolPair(
