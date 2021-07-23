@@ -435,7 +435,7 @@ Note that paths starting with `/` do not actually refer to the root of any file 
 relative to the include directories.
 
 Paths specified with `include_file` may only contain alphanumeric or one of the following characters: 
-`-`, `_`, `.` or `/`.
+`-`, `_`, `.` or `/`.  Additionally, two consecutive ".." (i.e. a parent directory) are not allowed.
 
 Lastly, `include_file` can only be used at the top-level within a `.ion` file.  It is not allowed anywhere within a 
 `(domain ...)` clause.
