@@ -18,9 +18,10 @@ package org.partiql.pig
 import org.partiql.pig.cmdline.Command
 import org.partiql.pig.cmdline.CommandLineParser
 import org.partiql.pig.cmdline.TargetLanguage
+import org.partiql.pig.domain.include.InvalidIncludePathException
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.domain.model.TypeUniverse
-import org.partiql.pig.domain.parser.parseTypeUniverseFile
+import org.partiql.pig.domain.parser.parseMainTypeUniverse
 import org.partiql.pig.generator.custom.applyCustomTemplate
 import org.partiql.pig.generator.html.applyHtmlTemplate
 import org.partiql.pig.generator.kotlin.applyKotlinTemplate
@@ -28,8 +29,13 @@ import org.partiql.pig.generator.kotlin.convertToKTypeUniverse
 import java.io.PrintWriter
 import kotlin.system.exitProcess
 
- fun progress(msg: String) =
-    println("pig: ${msg}")
+fun progress(msg: String) =
+    println("pig: $msg")
+
+fun fatal(msg: String) {
+    System.err.print("pig: $msg")
+    exitProcess(-1)
+}
 
 /**
  * Entry point for when pig is being invoked from the command-line.
@@ -45,9 +51,12 @@ fun main(args: Array<String>) {
         is Command.Generate -> {
             try {
                 generateCode(command)
-            } catch (e: PigException) {
-                System.err.println("pig: ${e.error.location}: ${e.error.context.message}\n${e.stackTrace}")
-                exitProcess(-1)
+            }
+            catch(e: InvalidIncludePathException) {
+                fatal(e.message!!)
+            }
+            catch (e: PigException) {
+                fatal("${e.error.location}: ${e.error.context.message}\n${e.stackTrace}")
             }
         }
     }
@@ -61,13 +70,18 @@ fun main(args: Array<String>) {
 fun generateCode(command: Command.Generate) {
     progress("universe file: ${command.typeUniverseFilePath}")
     progress("output file  : ${command.outputFilePath}")
-
+    command.includePaths.forEach {
+        progress("include dir  : $it")
+    }
     progress("parsing the universe...")
-    val typeUniverse: TypeUniverse = parseTypeUniverseFile(command.typeUniverseFilePath.canonicalPath)
+    val typeUniverse: TypeUniverse = parseMainTypeUniverse(
+        mainTypeUniversePath = command.typeUniverseFilePath,
+        includePaths = command.includePaths
+    )
 
     progress("permuting domains...")
 
-    PrintWriter(command.outputFilePath).use { printWriter ->
+    PrintWriter(command.outputFilePath.toFile()).use { printWriter ->
         when (command.target) {
             is TargetLanguage.Kotlin -> {
                 progress("applying Kotlin pre-processing")

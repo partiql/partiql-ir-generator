@@ -20,41 +20,82 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.partiql.pig.domain.model.TypeDomain
+import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.domain.parser.ParserErrorContext
 import org.partiql.pig.domain.parser.SourceLocation
-import org.partiql.pig.domain.parser.parseTypeUniverseFile
+import org.partiql.pig.domain.parser.parseMainTypeUniverse
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
-import java.io.File
+import java.nio.file.Path
+import java.nio.file.Paths
 import kotlin.test.assertTrue
 
 class TypeDomainParserIncludeFileTests {
+    private val mainDir = Paths.get("test-domains").toAbsolutePath()
+    private val rootA = mainDir.resolve("root_a").toAbsolutePath()
+    private val rootB = mainDir.resolve("root_b").toAbsolutePath()
 
     @Test
-    fun `include happy path`() {
-        val universe = parseTypeUniverseFile("test-domains/main.ion")
+    fun `include happy case`() {
+        val universe = parseWithTestRoots("test-domains/main.ion")
         val allDomains = universe.statements.filterIsInstance<TypeDomain>()
 
-        // If 4 domains are loaded correctly, then we deal with relative paths and circular references correctly.
+        // If 5 domains are loaded correctly, then we deal with relative paths and circular references correctly.
         // see documentation at top of test-domains/main.ion
-        assertEquals(4, allDomains.size)
+        assertEquals(5, allDomains.size)
         assertTrue(allDomains.any { it.tag == "domain_a" })
         assertTrue(allDomains.any { it.tag == "domain_b" })
         assertTrue(allDomains.any { it.tag == "domain_c" })
         assertTrue(allDomains.any { it.tag == "domain_d" })
+        assertTrue(allDomains.any { it.tag == "domain_s" })
+    }
+
+    private fun parseWithTestRoots(universeFile: String): TypeUniverse {
+        val includeSearchRoots = listOf(rootA, rootB)
+        return parseMainTypeUniverse(Paths.get(universeFile), includeSearchRoots)
     }
 
     @Test
-    fun `missing file`() {
-        val universeFilePath = "test-domains/include-missing-file.ion"
-        val ex = assertThrows<PigException> {
-            parseTypeUniverseFile(universeFilePath)
-        }
+    fun `include sad case - missing include - relative path`() {
+        val includeeFile = "does-not-exist.ion"
+        testMissingInclude(
+            mainUniverseFile = "test-domains/include-missing-relative.ion",
+            includeeFile = includeeFile,
+            pathsSearched = listOf(
+                "${mainDir}/$includeeFile",
+                "${rootA.resolve("does-not-exist.ion").toAbsolutePath()}",
+                "${rootB.resolve("does-not-exist.ion").toAbsolutePath()}"
+            )
+        )
+    }
 
+    @Test
+    fun `include sad case - missing include - absolute path`() {
+        val includeeFile = "/dir_x/does-not-exist.ion"
+        testMissingInclude(
+            mainUniverseFile = "test-domains/include-missing-absolute.ion",
+            includeeFile = includeeFile,
+            pathsSearched = listOf(
+                "${mainDir}$includeeFile",
+                "${rootA.resolve("dir_x/does-not-exist.ion").toAbsolutePath()}",
+                "${rootB.resolve("dir_x/does-not-exist.ion").toAbsolutePath()}"
+            )
+        )
+    }
+
+    private fun testMissingInclude(
+        mainUniverseFile: String,
+        includeeFile: String,
+        pathsSearched: List<String>
+    ) {
+        val ex = assertThrows<PigException> { parseWithTestRoots(mainUniverseFile) }
         assertEquals(
             PigError(
-                SourceLocation(File(universeFilePath).canonicalPath, IonTextLocation(4L, 1L)),
-                ParserErrorContext.CouldNotFindIncludedFile(File("test-domains/domains/doesnotexist.ion").canonicalPath)
+                SourceLocation(Paths.get(mainUniverseFile).toAbsolutePath().toString(), IonTextLocation(4L, 1L)),
+                ParserErrorContext.IncludeFileNotFound(
+                    includeeFile,
+                    pathsSearched
+                )
             ),
             ex.error
         )

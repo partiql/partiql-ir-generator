@@ -25,8 +25,8 @@ import org.junit.jupiter.params.provider.MethodSource
 import org.partiql.pig.domain.parser.ParserErrorContext
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
+import org.partiql.pig.util.makeFakePath
 import org.partiql.pig.util.parseTypeUniverseString
-import java.io.File
 
 class TypeDomainParserErrorsTest {
 
@@ -110,10 +110,33 @@ class TypeDomainParserErrorsTest {
 
             TestCase(
                 "(include_file \"some-non-existing-file.ion\")",
-                makeErr(1, 1, ParserErrorContext.CouldNotFindIncludedFile(
-                    File("some-non-existing-file.ion").canonicalPath)))
+                makeErr(1, 1,
+                    ParserErrorContext.IncludeFileNotFound(
+                        "some-non-existing-file.ion",
+                        listOf(makeFakePath("some-non-existing-file.ion"))
+                ))),
+            TestCase(
+                "(include_file \"/some-sub-dir/some-non-existing-file.ion\")",
+                makeErr(1, 1,
+                    ParserErrorContext.IncludeFileNotFound(
+                        "/some-sub-dir/some-non-existing-file.ion",
+                        listOf(makeFakePath("some-sub-dir/some-non-existing-file.ion"))
+                ))),
+            TestCase(
+                "(include_file \"../doesntmatter.ion\")",
+                makeErr(1, 15, ParserErrorContext.IncludeFilePathContainsParentDirectory)),
+            TestCase(
+                "(include_file \"c:/windows/drive/letter/is/bad.ion\")",
+                makeErr(1, 15, ParserErrorContext.IncludeFilePathContainsIllegalCharacter(':'))),
+            TestCase(
+                """(include_file "\\windows\\path\\separator")""",
+                makeErr(1, 15, ParserErrorContext.IncludeFilePathContainsIllegalCharacter('\\'))),
+            TestCase(
+                "(include_file \"space in name\")",
+                makeErr(1, 15, ParserErrorContext.IncludeFilePathContainsIllegalCharacter(' ')))
         )
     }
 }
+
 
 

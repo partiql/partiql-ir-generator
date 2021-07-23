@@ -32,6 +32,10 @@ import com.amazon.ionelement.api.location
 import com.amazon.ionelement.api.metaContainerOf
 import com.amazon.ionelement.api.tag
 import com.amazon.ionelement.api.tail
+import org.partiql.pig.domain.include.IncludeCycleHandler
+import org.partiql.pig.domain.include.IncludeResolutionException
+import org.partiql.pig.domain.include.IncludeResolver
+import org.partiql.pig.domain.include.InputSource
 import org.partiql.pig.domain.model.Arity
 import org.partiql.pig.domain.model.DataType
 import org.partiql.pig.domain.model.NamedElement
@@ -44,46 +48,61 @@ import org.partiql.pig.domain.model.TypeDomain
 import org.partiql.pig.domain.model.TypeRef
 import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.errors.ErrorContext
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.InputStream
-import java.util.Stack
+import org.partiql.pig.errors.PigError
+import org.partiql.pig.errors.PigException
+import java.nio.file.FileSystem
+import java.nio.file.Files
+import java.nio.file.Path
 
 /**
- * Parses the type universe specified in [universeFilePath].
+ * Parses the type universe specified in [mainTypeUniversePath].
  *
- * Any files included with `include_file` are relative to the directory containing [universeFilePath].
+ * @param mainTypeUnversePath Specifies the "main" type universe file where parsing will begin.  The [FileSystem]
+ * of this path (as returned by [Path.getFileSystem]) will be utilized when searching for and reading files referenced
+ * by any `include_file` statement.  Thus, it is possible to read type domains from a real file system for
+ * production or from an in-memory file system for tests.  In the future this may also form the basis for reading type
+ * universes from `.jar` files.
+ *
+ * To read the type universe from a real file system, obtain the [Path] from the [java.nio.file.FileSystem.getPath]
+ * method on the default file system ([java.nio.file.FileSystems.getDefault]) or [java.nio.file.Paths.get].
+ *
+ * @param includePaths specifies a list of directories to be searched (in order) when looking for files specified
+ * with `include_file`.  The parent directory of [mainTypeUniversePath] is always added as a source root.
  */
-internal fun parseTypeUniverseFile(universeFilePath: String): TypeUniverse {
-    val parser = TypeUniverseParser(FILE_SYSTEM_INPUT_STREAM_SOURCE)
-    return parser.parseTypeUniverse(universeFilePath)
+internal fun parseMainTypeUniverse(
+    mainTypeUniversePath: Path,
+    includePaths: List<Path>
+): TypeUniverse {
+    require(includePaths.all { it.fileSystem === mainTypeUniversePath.fileSystem}) {
+        "The mainTypeUniversePath and all includePaths must be from the same FileSystem"
+    }
+
+    val resolver = IncludeResolver(
+        searchDirs = listOf(mainTypeUniversePath.parent, *includePaths.toTypedArray()),
+        fileSystem = mainTypeUniversePath.fileSystem
+    )
+    val includeFileManager = IncludeCycleHandler(mainTypeUniversePath, resolver)
+    val source = InputSource(mainTypeUniversePath.toAbsolutePath().normalize(), Files.newInputStream(mainTypeUniversePath))
+    return TypeUniverseParser(source, includeFileManager).parse()
 }
 
+/**
+ * Parses a type universe file.
+ *
+ * There must exist only one instance of this class per type universe file.  (i.e. every `include_file` statement
+ * results in new instance of this class.
+ *
+ * When an `include_file` statement is encountered, [includeCycleHandler] will be utilized to deal with include
+ * search paths and include cycles.
+ */
 internal class TypeUniverseParser(
-    private val inputStreamSource: InputStreamSource
+    private val source: InputSource,
+    private val includeCycleHandler: IncludeCycleHandler
 ) {
-    /**
-     * This contains every file the parser has "seen" and is used to detect and ignore any `(include_file ...)`
-     * statement for a file that the parser has previously seen.  This sidesteps issues arising from files being
-     * included more than once, including infinite recursion in the case of cyclic includes.
-     */
-    private val parseHistory = HashSet<String>()
-
-    /**
-     * The top of this stack is always the path to the input file currently being parsed.
-     *
-     * Kept up to date by the  [parseTypeUniverse] function.
-     */
-    private val inputFilePathStack = Stack<String>()
-
     /** Parses a type universe in the specified [IonReader]. */
-    fun parseTypeUniverse(source: String): TypeUniverse {
+    fun parse(): TypeUniverse {
         val elementLoader = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
-        val qualifiedSource = File(source).absolutePath
-        return inputStreamSource.openInputStream(qualifiedSource).use { inputStream: InputStream ->
-            IonReaderBuilder.standard().build(inputStream).use { reader: IonReader ->
-                this.parseHistory.add(qualifiedSource)
-                this.inputFilePathStack.push(qualifiedSource)
+        return IonReaderBuilder.standard().build(source.inputStream).use { reader: IonReader ->
                 val domains = try {
                     val topLevelElements = elementLoader.loadAllElements(reader)
                     topLevelElements.flatMap { topLevelValue ->
@@ -100,10 +119,8 @@ internal class TypeUniverseParser(
                 } catch (iee: IonElementException) {
                     parseError(iee.location?.toSourceLocation(), ParserErrorContext.IonElementError(iee))
                 }
-                this.inputFilePathStack.pop()
                 TypeUniverse(domains)
             }
-        }
     }
 
     private fun parseError(blame: IonElement, context: ErrorContext): Nothing {
@@ -111,7 +128,7 @@ internal class TypeUniverseParser(
         parseError(loc, context)
     }
 
-    private fun IonLocation.toSourceLocation() = SourceLocation(inputFilePathStack.peek(), this)
+    private fun IonLocation.toSourceLocation() = SourceLocation(source.absolutePath.toString(), this)
 
     private fun MetaContainer.toSourceLocationMetas(): MetaContainer = this.location?.let {
         metaContainerOf(SOURCE_LOCATION_META_TAG to it.toSourceLocation())
@@ -119,22 +136,31 @@ internal class TypeUniverseParser(
 
     private fun parseIncludeFile(sexp: SexpElement): List<Statement> {
         requireArityForTag(sexp, 1)
-        val relativePath = sexp.tail.single().asString().textValue
+        val includeePath = sexp.tail.single().asString()
 
-        val workingDirectory = File(this.inputFilePathStack.peek()).parentFile
-        val qualifiedSourcePath = File(workingDirectory, relativePath).canonicalPath
-        return if(!parseHistory.contains(qualifiedSourcePath)) {
-            try {
-                parseTypeUniverse(qualifiedSourcePath).statements
-            } catch (e: FileNotFoundException) {
-                parseError(
-                    sexp.metas.location?.toSourceLocation(),
-                    ParserErrorContext.CouldNotFindIncludedFile(qualifiedSourcePath))
+        includeePath.textValue.forEach {
+            if (!isValidPathChar(it)) {
+                parseError(includeePath, ParserErrorContext.IncludeFilePathContainsIllegalCharacter(it))
             }
-        } else {
-            listOf()
+        }
+
+        if(includeePath.textValue.contains("..")) {
+            parseError(includeePath, ParserErrorContext.IncludeFilePathContainsParentDirectory)
+        }
+
+        return try {
+            includeCycleHandler.parseIncludedTypeUniverse(includeePath.textValue, source.absolutePath)
+        } catch(ex: IncludeResolutionException) {
+            throw PigException(
+                PigError(
+                    sexp.metas.location?.toSourceLocation(),
+                    ParserErrorContext.IncludeFileNotFound(ex.inputFilePathString, ex.consideredFilePaths)
+                ),
+                ex
+            )
         }
     }
+
     private fun parseDefine(sexp: SexpElement): Statement {
         requireArityForTag(sexp, 2)
         val args = sexp.tail // Skip tag
@@ -246,7 +272,7 @@ internal class TypeUniverseParser(
         return DataType.UserType.Tuple(typeName, TupleType.RECORD, namedElements, metas)
     }
 
-    fun parseRecordElements(elementSexps: List<AnyElement>): List<NamedElement> =
+    private fun parseRecordElements(elementSexps: List<AnyElement>): List<NamedElement> =
         elementSexps.asSequence()
             .map { it.asSexp() }
             .map { elementSexp ->
@@ -369,6 +395,13 @@ internal class TypeUniverseParser(
             parseError(sexp, ParserErrorContext.InvalidArityForTag(arityRange, sexp.head.symbolValue, argCount))
         }
     }
-
 }
 
+private val OTHER_VALID_PATH_CHARS = setOf('_', '-', '.', '/')
+
+/**
+ * Legal characters are: any letter or digit, plus any character in [OTHER_VALID_PATH_CHARS].
+ *
+ * All other characters are illegal.
+ */
+private fun isValidPathChar(c: Char) = c.isLetterOrDigit() || OTHER_VALID_PATH_CHARS.contains(c)

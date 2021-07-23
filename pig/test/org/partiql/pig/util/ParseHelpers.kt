@@ -15,44 +15,37 @@
 
 package org.partiql.pig.util
 
+import com.google.common.collect.ImmutableList
+import com.google.common.jimfs.Configuration
+import com.google.common.jimfs.Jimfs
 import org.partiql.pig.domain.model.TypeUniverse
-import org.partiql.pig.domain.parser.InputStreamSource
-import org.partiql.pig.domain.parser.TypeUniverseParser
-import java.io.ByteArrayInputStream
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.InputStream
+import org.partiql.pig.domain.parser.parseMainTypeUniverse
+import java.nio.charset.StandardCharsets
+import java.nio.file.FileSystem
+import java.nio.file.Files
+import java.nio.file.Path
 
-/**
- * The name of the "fake" root file used by unit tests.
- */
-internal const val FAKE_ROOT_FILE = "root.ion"
+
+internal const val FAKE_ROOT_DIR = "/fake-directory"
+internal fun makeFakePath(fileName: String) = "$FAKE_ROOT_DIR/$fileName"
+
+/** The name of the "fake" root file used by unit tests. */
+internal val FAKE_ROOT_FILE = makeFakePath("root.ion")
+
 
 /**
  * For unit tests only. Parses the type universe specified in [topUnvierseText].
  *
- *
- *
- * [includes] is a map keyed by "fake" filename that will be used instead of a real-file system for looking
- * up the content of included files.  [includes] must not contain any filename by the name of "root.ion", which
- * is the name given to the type universe specified in [topUnvierseText].
+ * Accomplishes this by using Jimfs to create an in-memory file system, and then
+ * writing [topUnvierseText] to [FAKE_ROOT_FILE] within it.
  */
-internal fun parseTypeUniverseString(topUnvierseText: String, includes: Map<String, String> = emptyMap()): TypeUniverse {
-    assert(!includes.containsKey(FAKE_ROOT_FILE))
+internal fun parseTypeUniverseString(topUnvierseText: String): TypeUniverse {
+    val build = Configuration.unix().toBuilder().setWorkingDirectory("/").build()
+    val fs: FileSystem = Jimfs.newFileSystem(build)
+    Files.createDirectory(fs.getPath(FAKE_ROOT_DIR))
+    val rootPath: Path = fs.getPath(FAKE_ROOT_FILE)
 
-    val allIncludes = (mapOf(FAKE_ROOT_FILE to topUnvierseText) + includes).map {
-        File(it.key).canonicalPath to it.value
-    }.toMap()
+    Files.write(rootPath, ImmutableList.of(topUnvierseText), StandardCharsets.UTF_8)
 
-    val parser = TypeUniverseParser(FakeInputStreamSource(allIncludes))
-    return parser.parseTypeUniverse(FAKE_ROOT_FILE)
-}
-
-/** A minimal faux file system backed by a Map<String, String>.  Used only for testing. */
-internal class FakeInputStreamSource(private val sources: Map<String, String>) : InputStreamSource {
-    override fun openInputStream(fileName: String): InputStream {
-        val text: String = sources[fileName] ?: throw FileNotFoundException("$fileName does not exist")
-
-        return ByteArrayInputStream(text.toByteArray(Charsets.UTF_8))
-    }
+    return parseMainTypeUniverse(rootPath, listOf())
 }

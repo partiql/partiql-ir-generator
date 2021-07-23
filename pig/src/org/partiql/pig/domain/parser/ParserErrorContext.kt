@@ -20,6 +20,7 @@ import com.amazon.ionelement.api.IonElementException
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
+import javax.swing.text.html.parser.Parser
 
 /**
  * Variants of [ParserErrorContext] contain details about various parse errors that can be encountered
@@ -39,9 +40,6 @@ sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
         override fun hashCode(): Int = 0
     }
 
-    data class CouldNotFindIncludedFile(val tag: String)
-        : ParserErrorContext({ "Included file missing: $tag" })
-
     data class UnknownConstructor(val tag: String)
         : ParserErrorContext({ "Unknown constructor: '$tag' (expected constructors are 'domain' or 'permute_domain')" })
 
@@ -51,14 +49,25 @@ sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
     data class InvalidTopLevelTag(val tag: String)
         : ParserErrorContext({ "Invalid top-level tag: '$tag'"})
 
-    data class InvalidSumLevelTag(val tag: String)
-        : ParserErrorContext({ "Invalid tag for sum variant: '$tag'"})
-
     data class InvalidPermutedDomainTag(val tag: String)
         : ParserErrorContext({ "Invalid tag for permute_domain body: '$tag'"})
 
     data class InvalidWithSumTag(val tag: String)
         : ParserErrorContext({ "Invalid tag for with body: '$tag'"})
+
+    data class IncludeFileNotFound(val includeFilePath: String, val searchedPaths: List<String> )
+        : ParserErrorContext(
+        {
+            "Could not locate include file '$includeFilePath' at any of the following locations:\n" +
+            searchedPaths.joinToString("\n")
+        }
+    )
+
+    data class IncludeFilePathContainsIllegalCharacter(val c: Char)
+        : ParserErrorContext({ "Illegal character '$c' in include_file path" })
+
+    object IncludeFilePathContainsParentDirectory
+        : ParserErrorContext({ "include_file path contained parent directory, i.e. \"..\"" })
 
     data class ExpectedTypeReferenceArityTag(val tag: String)
         : ParserErrorContext({ "Expected '*' or '?' but found '$tag'"})

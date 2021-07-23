@@ -13,13 +13,13 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.cmdline
+package org.partiql.pig.domain.include
 
-import java.io.File
-import java.nio.file.Path
+import java.lang.Exception
 
-sealed class TargetLanguage {
-    data class Kotlin(val namespace: String) : TargetLanguage()
-    data class Custom(val templateFile: Path) : TargetLanguage()
-    object Html : TargetLanguage()
-}
+/** Thrown by [IncludeResolver] to indicate that it cannot locate an include file. */
+class IncludeResolutionException(
+    val inputFilePathString: String,
+    val consideredFilePaths: List<String>
+) : Exception("Could not locate include file '$inputFilePathString' in any considered path")
+

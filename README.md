@@ -404,29 +404,40 @@ Unlike record elements, product element defintions must include identifiers.
 
 #### Type Domain Includes
 
-It is possible to split type universes among multiple files:
+It is possible to split type universes among multiple files, which allows type domains defined in another project to be
+permuted.  For example:
 
 ```
 // root.ion:
-(include_file "a.ion")
-(include_file "b.ion")
+(include_file "sibling.ion")
+(include_file "sub-dir/thing.ion")
+(include_file "/other-project/toy-ast.ion")
 ```
 
-The resulting type universe will contain all type domains from both `a.ion` and `b.ion`. `root.ion` may also define
-additional type domains.  The primary purpose of this is to be able to permute domains defined in another file.
+While discussing further details, it is helpful to introduce two terms: an "includer" is a file which includes another
+using `include_file`, and the "includee" is a file which is included.
 
-`include_file` is recursive, so any type domains in any files included by `a.ion` and `b.ion` will also be present.  Any 
-attempt to include a file that has already been seen will be ignored.
+The `root.ion` universe will contain all type domains from all includees and may still define additional type domains
+of its own.
 
-Paths are always relative to the directory containing the current file.  The working directory at the time `pig` 
-is executed is irrelevant.
+`include_file` statements are allowed in includees. Any attempt to include a file that has already been seen will be 
+ignored.
 
-```
-(include_file "subdir/partiql.ion")
-(include_file "../other/some-universe.ion")
-```
+When resolving the file to include, the following locations are searched:
 
-Lastly, `include_file` can only be used at the top-level within a `.ion` file.  It is not allowed within a 
+- The directory containing the includer (if the path to the includee does not start with `/`)
+- The directory containing the "main" type universe that was passed to `pig` on the command-line.
+- Any directories specified with the `--include` or `-I` arguments, in the order they were specified.
+
+The first matching file found wins and any other matching files ignored.
+
+Note that paths starting with `/` do not actually refer to the root of any file system, but instead are treated as 
+relative to the include directories.
+
+Paths specified with `include_file` may only contain alphanumeric or one of the following characters: 
+`-`, `_`, `.` or `/`.
+
+Lastly, `include_file` can only be used at the top-level within a `.ion` file.  It is not allowed anywhere within a 
 `(domain ...)` clause.
 
 #### Using PIG In Your Project
@@ -436,16 +447,14 @@ Lastly, `include_file` can only be used at the top-level within a `.ion` file.  
 At build time and before compilation of your application or library, the following should be executed:
 
 ```
-pig \
-    -u <type universe.ion> \
-    -t kotlin \ 
-    -n <namespace> \ 
-    -o path/to/package/<output file>
+pig -u <type universe.ion> -t kotlin -n <namespace> -o <path/to/output_file> [ -I <path-to-include-dir> ]  
 ```
 
 - `<type universe.ion>`:  path to the Ion text file containing the type universe
-- `<output file>`: path to the file for the generated code 
+- `<path/to/output_file>`: path to the file for the generated code 
 - `<namespace>`: the name used in the `package` statement at the top of the output file
+- `<path-to-include-dir>`: search path to external include directory (optional).  Can be specified more than once,
+i.e. `pig ... -I <dir1> -I <dir2> -I <dir3>`
 
 Execute: `pig --help` for all command-line options.
 

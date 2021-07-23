@@ -1,31 +1,30 @@
 /*
 
-This file is used to test the `(include_file <relative-path>)` statement.
-
-Two primary things are tested:
+This file is used to test the `include_file` statement.  Parsing this file and the files it includes is challenging -
+ if we can do it correctly then we should be able to handle any `include_file` statement the user throws at us.
 
 - Cyclic includes are tolerated without exception.
-- Relative paths, which are always relative to the directory containing the type universe currently being parsed.
+- Aboslute and relative paths are respected during include resolution.
+- Searching across multiple search roots works.
 
-.
-├── domains
-│  ├── circular_universe_c.ion  includes circular_universe_d.ion
-│  ├── circular_universe_d.ion  includes circular_universe_c.ion
-│  ├── include_b.ion             includes ../other/universe_b
-│  └── universe_a.ion           includes include_b.ion
-├── main.ion                    includes domains/universe_a.ion and domains/circular_universe_c.ion
-├── include-missing-file.ion    used by error handling tests and not included by main.ion
-└── other
-    └── universe_b.ion          includes nothing
+├── include-missing-absolute.ion      used by error handling tests and not included by main.ion
+├── include-missing-relative.ion      used by error handling tests and not included by main.ion
+├── main.ion                          includes siblin-of-main.ion root_a/dir_x/universe_a.ion, root_b/dir_z/circular_universe_c.ion
+├── root_a
+│   └── dir_x
+│       ├── circular_universe_c.ion   includes circular_universe_d.ion
+│       ├── circular_universe_d.ion   includes circular_universe_c.ion
+│       ├── include_b.ion             includes ../dir_a/universe_b
+│       └── universe_a.ion            includes include_b.ion
+├── root_b
+│   └── dir_z
+│       └── universe_b.ion            includes nothing
+└── sibling-of-main.ion
 
-
-By parsing, main.ion (this file), we test that each of the other files is includeed (directly or indirectly). Each
-.ion file (except for "include_b.ion") defines a type domain, for a total of 4 type domains.  The test is successful
-if main.ion can be included without error and results in a single universe with all 4 type domains.
 
 */
 
-
-(include_file "domains/universe_a.ion")
-(include_file "domains/circular_universe_c.ion")
+(include_file "/sibling-of-main.ion")
+(include_file "/dir_x/universe_a.ion")
+(include_file "/dir_x/circular_universe_c.ion")
 

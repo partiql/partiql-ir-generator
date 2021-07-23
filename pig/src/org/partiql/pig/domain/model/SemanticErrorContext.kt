@@ -66,16 +66,16 @@ sealed class SemanticErrorContext(val msgFormatter: () -> String): ErrorContext 
         : SemanticErrorContext({ "Cannot remove built-in type '$typeName'" })
 
     data class DuplicateTypeDomainName(val domainName: String)
-        : SemanticErrorContext({ "Duplicate type domain tag: '${domainName} "})
+        : SemanticErrorContext({ "Duplicate type domain tag: '${domainName}' "})
 
     data class DuplicateRecordElementTag(val elementName: String)
-        : SemanticErrorContext({ "Duplicate record element tag: '${elementName} "})
+        : SemanticErrorContext({ "Duplicate record element tag: '${elementName}' "})
 
     data class DuplicateElementIdentifier(val elementName: String)
-        : SemanticErrorContext({ "Duplicate element identifier: '${elementName} "})
+        : SemanticErrorContext({ "Duplicate element identifier: '${elementName}' "})
 
     data class NameAlreadyUsed(val name: String, val domainName: String)
-        : SemanticErrorContext({ "Name '$name' was previously used in the `$domainName` type domain" })
+        : SemanticErrorContext({ "Name '$name' was previously used in the '$domainName' type domain" })
 
     data class CannotRemoveNonExistentSumVariant(val sumTypeName: String, val variantName: String)
         : SemanticErrorContext({ "Permuted sum type '${sumTypeName}' tries to remove variant '${variantName}' which " +

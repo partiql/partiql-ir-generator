@@ -36,7 +36,13 @@ import org.partiql.pig.util.FAKE_ROOT_FILE
 import java.io.File
 
 fun makeErr(line: Int, col: Int, errorContext: ErrorContext) =
-    PigError(SourceLocation(File(FAKE_ROOT_FILE).canonicalPath, IonTextLocation(line.toLong(), col.toLong())), errorContext)
+    PigError(
+        SourceLocation(
+            File(FAKE_ROOT_FILE).canonicalPath,
+            IonTextLocation(line.toLong(), col.toLong())
+        ),
+        errorContext
+    )
 
 fun makeErr(errorContext: ErrorContext) =
     PigError(null, errorContext)
