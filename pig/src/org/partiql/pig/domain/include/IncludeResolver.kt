@@ -95,6 +95,6 @@ internal class IncludeResolver(
             // TODO: can we used a algebraic type here instead of an exception?
             ?: throw IncludeResolutionException(
                 inputFilePathString = includeeFile.toString(),
-                consideredFilePaths = possibleIncludeeFiles.map { "${it}" })
+                consideredFilePaths = possibleIncludeeFiles.map { "$it" })
     }
 }
