@@ -57,7 +57,7 @@ import java.nio.file.Path
 /**
  * Parses the type universe specified in [mainTypeUniversePath].
  *
- * @param mainTypeUnversePath Specifies the "main" type universe file where parsing will begin.  The [FileSystem]
+ * @param mainTypeUniversePath Specifies the "main" type universe file where parsing will begin.  The [FileSystem]
  * of this path (as returned by [Path.getFileSystem]) will be utilized when searching for and reading files referenced
  * by any `include_file` statement.  Thus, it is possible to read type domains from a real file system for
  * production or from an in-memory file system for tests.  In the future this may also form the basis for reading type
