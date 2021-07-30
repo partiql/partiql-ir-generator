@@ -19,8 +19,8 @@ import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.MetaContainer
 
 /**
- * Used to construct helpful error messages for the end-user, who will be able to know the file, line & column of
- * a given error.
+ * Used to construct helpful error messages for the end-user, who will be able to the location of a given
+ * error which includes the file name, line & column.
  */
 data class SourceLocation(val path: String, val location: IonLocation) {
     override fun toString(): String {
