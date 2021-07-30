@@ -47,7 +47,7 @@ internal class IncludeCycleHandler(
      * The return value is a [List] of [Statement]s that make up the type universe file.
      *
      * This function becomes a no-op in the event that the [includee] has been seen previously: an
-     * empty [List] is is returned instead of the file being parsed again.
+     * empty [List] is returned instead of the file being parsed again.
      *
      * @param includeePath The file requested to be included.
      * @param includerPath The file in which the includee is to be included.
@@ -68,4 +68,3 @@ internal class IncludeCycleHandler(
         }
     }
 }
-
