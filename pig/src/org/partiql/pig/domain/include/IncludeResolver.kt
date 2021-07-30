@@ -58,7 +58,7 @@ internal class IncludeResolver(
      * Searches for the absolute path of an included file, returning the first file found.
      *
      * The parent directory of the [includerFile] is searched first, followed by each of the source roots in turn. If
-     * [fileToInclude] starts with `/`, the parent directory of [includerFile] is skipped.
+     * [includeeFile] starts with `/`, the parent directory of [includerFile] is skipped.
      *
      * @return The absolute [Path] of the first file located.
      */
@@ -66,7 +66,7 @@ internal class IncludeResolver(
         val normalizedIncluder = includerFile.normalize().toAbsolutePath()
 
         // Determine list of all possible search roots, excluding the includer's parent directory if
-        // the includee an absolute path.  T
+        // the includee is an absolute path.
         val includerParentDir = normalizedIncluder.parent
         val searchPaths = listOfNotNull(
             includerParentDir.takeIf { !includeeFile.isAbsolute },
@@ -79,8 +79,8 @@ internal class IncludeResolver(
 
         val possibleIncludeeFiles = searchPaths
             .map {
-                // Truncates / at the beginning of an absolute path This forces absolute paths absolute of includees
-                // to be relative the include paths specified on the command-line and prevents them from being relative
+                // Truncates / at the beginning of an absolute path. This forces absolute paths of includees
+                // to be relative to the include paths specified on the command-line and prevents them from being relative
                 // to the includer.
                 val appendPath = when {
                     includeeFile.isAbsolute -> includeeFile.toString().substring(1)
