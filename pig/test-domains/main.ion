@@ -3,13 +3,15 @@
 This file is used to test the `include_file` statement.  Parsing this file and the files it includes is challenging -
  if we can do it correctly then we should be able to handle any `include_file` statement the user throws at us.
 
+The following aspects are being tested here:
+
 - Cyclic includes are tolerated without exception.
 - Aboslute and relative paths are respected during include resolution.
 - Searching across multiple search roots works.
 
 ├── include-missing-absolute.ion      used by error handling tests and not included by main.ion
 ├── include-missing-relative.ion      used by error handling tests and not included by main.ion
-├── main.ion                          includes siblin-of-main.ion root_a/dir_x/universe_a.ion, root_b/dir_z/circular_universe_c.ion
+├── main.ion                          includes sibling-of-main.ion, root_a/dir_x/universe_a.ion, root_b/dir_z/circular_universe_c.ion
 ├── root_a
 │   └── dir_x
 │       ├── circular_universe_c.ion   includes circular_universe_d.ion

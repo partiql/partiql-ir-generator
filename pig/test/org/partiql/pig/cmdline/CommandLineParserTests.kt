@@ -137,13 +137,13 @@ class CommandLineParserTests {
 
         private fun createExpectedGenerateCommand(
             target: TargetLanguage,
-            vararg addlIncludePaths: String
+            vararg additionalIncludePaths: String
         ) = Command.Generate(
             typeUniverseFilePath = Paths.get("input.ion").toAbsolutePath(),
             outputFilePath = Paths.get("output.any").toAbsolutePath(),
             includePaths = listOf(
                 Paths.get(".").toAbsolutePath().normalize(),
-                *addlIncludePaths.map { Paths.get(it).toAbsolutePath() }.toTypedArray()
+                *additionalIncludePaths.map { Paths.get(it).toAbsolutePath() }.toTypedArray()
             ),
             target = target
         )

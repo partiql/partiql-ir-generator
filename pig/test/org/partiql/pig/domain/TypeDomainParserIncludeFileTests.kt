@@ -26,7 +26,6 @@ import org.partiql.pig.domain.parser.SourceLocation
 import org.partiql.pig.domain.parser.parseMainTypeUniverse
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
-import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.test.assertTrue
 

@@ -16,11 +16,14 @@
 package org.partiql.pig.include
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.partiql.pig.domain.include.IncludeResolver
 import org.partiql.pig.domain.include.IncludeResolutionException
+import org.partiql.pig.domain.include.InvalidIncludePathException
+import java.nio.file.FileSystem
 import java.nio.file.FileSystems
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -100,5 +103,13 @@ class IncludeResolverTests {
         assertEquals(tc.expectedConsdieredPaths, ex.consideredFilePaths)
     }
 
-    // TODO: include tests for InvalidIncludePathException.
+    @Test
+    fun `test invalid include search path`() {
+        assertThrows<InvalidIncludePathException> {
+            IncludeResolver(
+                listOf(Paths.get("/this/dir/does/not/exist")),
+                FileSystems.getDefault()
+            )
+        }
+    }
 }
