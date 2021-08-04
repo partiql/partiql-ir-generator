@@ -20,6 +20,6 @@ package org.partiql.pig.domain.include
  *
  * Search roots are normally specified on the command-line.
  */
-class InvalidIncludePathException(val invalidIncludePath: String)
+class InvalidIncludePathException(invalidIncludePath: String)
     : Exception("Specified include path '$invalidIncludePath' does not exist or is not a directory.")
 
