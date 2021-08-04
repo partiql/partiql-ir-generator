@@ -15,14 +15,24 @@
 
 package org.partiql.pig.domain
 
+import com.amazon.ionelement.api.IonTextLocation
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.partiql.pig.domain.model.SemanticErrorContext
+import org.partiql.pig.domain.parser.SourceLocation
+import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
+import org.partiql.pig.util.FAKE_ROOT_FILE
+import org.partiql.pig.util.MAIN_DOMAINS_DIR
+import org.partiql.pig.util.ROOT_B
 import org.partiql.pig.util.parseTypeUniverseString
+import org.partiql.pig.util.parseWithTestRoots
+import java.io.File
+import java.nio.file.Paths
 
 class TypeDomainSemanticCheckerTests {
 
@@ -210,4 +220,28 @@ class TypeDomainSemanticCheckerTests {
             TestCase("(define some_domain (domain (record some_record)))",
                      makeErr(1, 29, SemanticErrorContext.EmptyRecord)))
     }
+
+    /**
+     * This ensures that we can still detect duplicate domains even if they reside in different files.
+     *
+     * To be totally clear here, [org.partiql.pig.domain.model.TypeDomainSemanticChecker] knows absolutely nothing
+     * of the `include_file` statement: all `TypeDomainSemanticChecker` sees is a list of domains and does not care one
+     * whit what file the domain was defined in: if a duplicate name was in the list of domains, it will issue an
+     * error.  This test only exists to cover the unlikely scenario that this assumption changes in the future.
+     */
+    @Test
+    fun `duplicate domain detection works across include_file`() {
+        val u = parseWithTestRoots("test-domains/duplicate_domains.ion")
+        val ex = assertThrows<PigException> { u.computeTypeDomains() }
+        val expectedError =
+            PigError(
+                SourceLocation(
+                    ROOT_B.resolve("dir_z/second_duplicated_domain_name.ion").toString(),
+                    IonTextLocation(3, 20)
+                ),
+                SemanticErrorContext.DuplicateTypeDomainName("domain_dup")
+            )
+        assertEquals(expectedError, ex.error)
+    }
+
 }

@@ -1,0 +1,4 @@
+
+// the second instance of domain_dup should result in an error
+(define domain_dup (domain (product foo)))
+

@@ -26,14 +26,14 @@ import org.partiql.pig.domain.parser.SourceLocation
 import org.partiql.pig.domain.parser.parseMainTypeUniverse
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
+import org.partiql.pig.util.MAIN_DOMAINS_DIR
+import org.partiql.pig.util.ROOT_A
+import org.partiql.pig.util.ROOT_B
+import org.partiql.pig.util.parseWithTestRoots
 import java.nio.file.Paths
 import kotlin.test.assertTrue
 
 class TypeDomainParserIncludeFileTests {
-    private val mainDir = Paths.get("test-domains").toAbsolutePath()
-    private val rootA = mainDir.resolve("root_a").toAbsolutePath()
-    private val rootB = mainDir.resolve("root_b").toAbsolutePath()
-
     @Test
     fun `include happy case`() {
         val universe = parseWithTestRoots("test-domains/main.ion")
@@ -49,10 +49,6 @@ class TypeDomainParserIncludeFileTests {
         assertTrue(allDomains.any { it.tag == "domain_s" })
     }
 
-    private fun parseWithTestRoots(universeFile: String): TypeUniverse {
-        val includeSearchRoots = listOf(rootA, rootB)
-        return parseMainTypeUniverse(Paths.get(universeFile), includeSearchRoots)
-    }
 
     @Test
     fun `include sad case - missing include - relative path`() {
@@ -61,9 +57,9 @@ class TypeDomainParserIncludeFileTests {
             mainUniverseFile = "test-domains/include-missing-relative.ion",
             includeeFile = includeeFile,
             pathsSearched = listOf(
-                "${mainDir}/$includeeFile",
-                "${rootA.resolve("does-not-exist.ion").toAbsolutePath()}",
-                "${rootB.resolve("does-not-exist.ion").toAbsolutePath()}"
+                "${MAIN_DOMAINS_DIR}/$includeeFile",
+                "${ROOT_A.resolve("does-not-exist.ion").toAbsolutePath()}",
+                "${ROOT_B.resolve("does-not-exist.ion").toAbsolutePath()}"
             )
         )
     }
@@ -75,9 +71,9 @@ class TypeDomainParserIncludeFileTests {
             mainUniverseFile = "test-domains/include-missing-absolute.ion",
             includeeFile = includeeFile,
             pathsSearched = listOf(
-                "${mainDir}$includeeFile",
-                "${rootA.resolve("dir_x/does-not-exist.ion").toAbsolutePath()}",
-                "${rootB.resolve("dir_x/does-not-exist.ion").toAbsolutePath()}"
+                "${MAIN_DOMAINS_DIR}$includeeFile",
+                "${ROOT_A.resolve("dir_x/does-not-exist.ion").toAbsolutePath()}",
+                "${ROOT_B.resolve("dir_x/does-not-exist.ion").toAbsolutePath()}"
             )
         )
     }

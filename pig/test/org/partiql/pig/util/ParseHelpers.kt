@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.FileSystem
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 
 internal const val FAKE_ROOT_DIR = "/fake-directory"
@@ -48,4 +49,14 @@ internal fun parseTypeUniverseString(topUnvierseText: String): TypeUniverse {
     Files.write(rootPath, ImmutableList.of(topUnvierseText), StandardCharsets.UTF_8)
 
     return parseMainTypeUniverse(rootPath, listOf())
+}
+
+
+internal val MAIN_DOMAINS_DIR = Paths.get("test-domains").toAbsolutePath()
+internal val ROOT_A = MAIN_DOMAINS_DIR.resolve("root_a").toAbsolutePath()
+internal val ROOT_B = MAIN_DOMAINS_DIR.resolve("root_b").toAbsolutePath()
+
+internal fun parseWithTestRoots(universeFile: String): TypeUniverse {
+    val includeSearchRoots = listOf(ROOT_A, ROOT_B)
+    return parseMainTypeUniverse(Paths.get(universeFile), includeSearchRoots)
 }
