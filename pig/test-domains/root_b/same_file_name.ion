@@ -1,0 +1,4 @@
+// Another file of the same name resides in `root_a`, which comes earlier in the `-I` include search order.  That file
+// should be included and this one should be ignored.
+(define this_domain_should_not_be_included (domain (product a)))
+

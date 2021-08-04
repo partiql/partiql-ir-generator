@@ -20,10 +20,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.partiql.pig.domain.model.TypeDomain
-import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.domain.parser.ParserErrorContext
 import org.partiql.pig.domain.parser.SourceLocation
-import org.partiql.pig.domain.parser.parseMainTypeUniverse
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.util.MAIN_DOMAINS_DIR
@@ -31,7 +29,6 @@ import org.partiql.pig.util.ROOT_A
 import org.partiql.pig.util.ROOT_B
 import org.partiql.pig.util.parseWithTestRoots
 import java.nio.file.Paths
-import kotlin.test.assertTrue
 
 class TypeDomainParserIncludeFileTests {
     @Test
@@ -39,16 +36,20 @@ class TypeDomainParserIncludeFileTests {
         val universe = parseWithTestRoots("test-domains/main.ion")
         val allDomains = universe.statements.filterIsInstance<TypeDomain>()
 
-        // If 5 domains are loaded correctly, then we deal with relative paths and circular references correctly.
+        // If the following 6 domains are loaded, then we deal with relative paths and circular references correctly.
         // see documentation at top of test-domains/main.ion
-        assertEquals(5, allDomains.size)
-        assertTrue(allDomains.any { it.tag == "domain_a" })
-        assertTrue(allDomains.any { it.tag == "domain_b" })
-        assertTrue(allDomains.any { it.tag == "domain_c" })
-        assertTrue(allDomains.any { it.tag == "domain_d" })
-        assertTrue(allDomains.any { it.tag == "domain_s" })
+        assertEquals(
+            setOf(
+                "domain_a",
+                "domain_b",
+                "domain_c",
+                "domain_d",
+                "domain_f",
+                "domain_s"
+            ),
+            allDomains.map { it.tag }.toSet()
+        )
     }
-
 
     @Test
     fun `include sad case - missing include - relative path`() {

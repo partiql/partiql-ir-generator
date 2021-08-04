@@ -3,3 +3,4 @@
 (include_file "/sibling-of-main.ion")
 (include_file "/dir_x/universe_a.ion")
 (include_file "/dir_x/circular_universe_c.ion")
+(include_file "/same_file_name.ion")
