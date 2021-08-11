@@ -30,6 +30,47 @@ class ToyLang private constructor() {
     }
     
     interface Builder {
+        // Variants for Sum: Operator 
+        /**
+         * Creates an instance of [ToyLang.Operator.Plus].
+         */
+        fun plus(
+            metas: MetaContainer = emptyMetaContainer()
+        ): ToyLang.Operator.Plus
+        
+        
+        /**
+         * Creates an instance of [ToyLang.Operator.Minus].
+         */
+        fun minus(
+            metas: MetaContainer = emptyMetaContainer()
+        ): ToyLang.Operator.Minus
+        
+        
+        /**
+         * Creates an instance of [ToyLang.Operator.Times].
+         */
+        fun times(
+            metas: MetaContainer = emptyMetaContainer()
+        ): ToyLang.Operator.Times
+        
+        
+        /**
+         * Creates an instance of [ToyLang.Operator.Divide].
+         */
+        fun divide(
+            metas: MetaContainer = emptyMetaContainer()
+        ): ToyLang.Operator.Divide
+        
+        
+        /**
+         * Creates an instance of [ToyLang.Operator.Modulo].
+         */
+        fun modulo(
+            metas: MetaContainer = emptyMetaContainer()
+        ): ToyLang.Operator.Modulo
+        
+        
         // Variants for Sum: Expr 
         /**
          * Creates an instance of [ToyLang.Expr.Lit].
@@ -71,121 +112,22 @@ class ToyLang private constructor() {
         
         
         /**
-         * Creates an instance of [ToyLang.Expr.Plus].
+         * Creates an instance of [ToyLang.Expr.Nary].
          */
-        fun plus(
-            operands: kotlin.collections.List<Expr>,
+        fun nary(
+            op: Operator,
+            operands: kotlin.collections.List<Expr> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Plus
+        ): ToyLang.Expr.Nary
         
         /**
-         * Creates an instance of [ToyLang.Expr.Plus].
+         * Creates an instance of [ToyLang.Expr.Nary].
          */
-        fun plus(
-            operands0: Expr,
-            operands1: Expr,
+        fun nary(
+            op: Operator,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Plus
-        
-        
-        /**
-         * Creates an instance of [ToyLang.Expr.Minus].
-         */
-        fun minus(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Minus
-        
-        /**
-         * Creates an instance of [ToyLang.Expr.Minus].
-         */
-        fun minus(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Minus
-        
-        
-        /**
-         * Creates an instance of [ToyLang.Expr.Times].
-         */
-        fun times(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Times
-        
-        /**
-         * Creates an instance of [ToyLang.Expr.Times].
-         */
-        fun times(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Times
-        
-        
-        /**
-         * Creates an instance of [ToyLang.Expr.Divide].
-         */
-        fun divide(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Divide
-        
-        /**
-         * Creates an instance of [ToyLang.Expr.Divide].
-         */
-        fun divide(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Divide
-        
-        
-        /**
-         * Creates an instance of [ToyLang.Expr.Modulo].
-         */
-        fun modulo(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Modulo
-        
-        /**
-         * Creates an instance of [ToyLang.Expr.Modulo].
-         */
-        fun modulo(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Modulo
-        
-        
-        /**
-         * Creates an instance of [ToyLang.Expr.Call].
-         */
-        fun call(
-            name: String,
-            argument: Expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Call
-        
-        /**
-         * Creates an instance of [ToyLang.Expr.Call].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun call_(
-            name: org.partiql.pig.runtime.SymbolPrimitive,
-            argument: Expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Call
+        ): ToyLang.Expr.Nary
         
         
         /**
@@ -237,6 +179,42 @@ class ToyLang private constructor() {
     }
     
     private object ToyLangBuilder : Builder {
+        // Variants for Sum: Operator 
+        override fun plus(
+            metas: MetaContainer
+        ): ToyLang.Operator.Plus =
+            ToyLang.Operator.Plus(
+                metas = metas)
+        
+        
+        override fun minus(
+            metas: MetaContainer
+        ): ToyLang.Operator.Minus =
+            ToyLang.Operator.Minus(
+                metas = metas)
+        
+        
+        override fun times(
+            metas: MetaContainer
+        ): ToyLang.Operator.Times =
+            ToyLang.Operator.Times(
+                metas = metas)
+        
+        
+        override fun divide(
+            metas: MetaContainer
+        ): ToyLang.Operator.Divide =
+            ToyLang.Operator.Divide(
+                metas = metas)
+        
+        
+        override fun modulo(
+            metas: MetaContainer
+        ): ToyLang.Operator.Modulo =
+            ToyLang.Operator.Modulo(
+                metas = metas)
+        
+        
         // Variants for Sum: Expr 
         override fun lit(
             value: com.amazon.ionelement.api.IonElement,
@@ -273,119 +251,24 @@ class ToyLang private constructor() {
                 metas = metas)
         
         
-        override fun plus(
+        override fun nary(
+            op: Operator,
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer
-        ): ToyLang.Expr.Plus =
-            ToyLang.Expr.Plus(
+        ): ToyLang.Expr.Nary =
+            ToyLang.Expr.Nary(
+                op = op,
                 operands = operands,
                 metas = metas)
         
-        override fun plus(
-            operands0: Expr,
-            operands1: Expr,
+        override fun nary(
+            op: Operator,
             vararg operands: Expr,
             metas: MetaContainer
-        ): ToyLang.Expr.Plus =
-            ToyLang.Expr.Plus(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
-        
-        
-        override fun minus(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer
-        ): ToyLang.Expr.Minus =
-            ToyLang.Expr.Minus(
-                operands = operands,
-                metas = metas)
-        
-        override fun minus(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer
-        ): ToyLang.Expr.Minus =
-            ToyLang.Expr.Minus(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
-        
-        
-        override fun times(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer
-        ): ToyLang.Expr.Times =
-            ToyLang.Expr.Times(
-                operands = operands,
-                metas = metas)
-        
-        override fun times(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer
-        ): ToyLang.Expr.Times =
-            ToyLang.Expr.Times(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
-        
-        
-        override fun divide(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer
-        ): ToyLang.Expr.Divide =
-            ToyLang.Expr.Divide(
-                operands = operands,
-                metas = metas)
-        
-        override fun divide(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer
-        ): ToyLang.Expr.Divide =
-            ToyLang.Expr.Divide(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
-        
-        
-        override fun modulo(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer
-        ): ToyLang.Expr.Modulo =
-            ToyLang.Expr.Modulo(
-                operands = operands,
-                metas = metas)
-        
-        override fun modulo(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer
-        ): ToyLang.Expr.Modulo =
-            ToyLang.Expr.Modulo(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
-        
-        
-        override fun call(
-            name: String,
-            argument: Expr,
-            metas: MetaContainer
-        ): ToyLang.Expr.Call =
-            ToyLang.Expr.Call(
-                name = name.asPrimitive(),
-                argument = argument,
-                metas = metas)
-        
-        override fun call_(
-            name: org.partiql.pig.runtime.SymbolPrimitive,
-            argument: Expr,
-            metas: MetaContainer
-        ): ToyLang.Expr.Call =
-            ToyLang.Expr.Call(
-                name = name,
-                argument = argument,
+        ): ToyLang.Expr.Nary =
+            ToyLang.Expr.Nary(
+                op = op,
+                operands = operands.toList(),
                 metas = metas)
         
         
@@ -449,18 +332,192 @@ class ToyLang private constructor() {
     // Sum Types
     /////////////////////////////////////////////////////////////////////////////
     
+    sealed class Operator(override val metas: MetaContainer = emptyMetaContainer()) : ToyLangNode() {
+        override fun copy(metas: MetaContainer): Operator =
+            when (this) {
+                is Plus -> copy(metas = metas)
+                is Minus -> copy(metas = metas)
+                is Times -> copy(metas = metas)
+                is Divide -> copy(metas = metas)
+                is Modulo -> copy(metas = metas)
+            }
+    
+        class Plus(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): Operator() {
+        
+            override fun copy(metas: MetaContainer): Plus =
+                Plus(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Plus =
+                Plus(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("plus"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Plus::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1000
+        }
+        class Minus(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): Operator() {
+        
+            override fun copy(metas: MetaContainer): Minus =
+                Minus(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Minus =
+                Minus(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("minus"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Minus::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1001
+        }
+        class Times(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): Operator() {
+        
+            override fun copy(metas: MetaContainer): Times =
+                Times(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Times =
+                Times(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("times"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Times::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1002
+        }
+        class Divide(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): Operator() {
+        
+            override fun copy(metas: MetaContainer): Divide =
+                Divide(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Divide =
+                Divide(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("divide"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Divide::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1003
+        }
+        class Modulo(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): Operator() {
+        
+            override fun copy(metas: MetaContainer): Modulo =
+                Modulo(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Modulo =
+                Modulo(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("modulo"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Modulo::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1004
+        }
+    
+        /** Converts instances of [ToyLang.Operator] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: ToyLang.Operator): T = when(node) {
+                is ToyLang.Operator.Plus -> convertPlus(node)
+                is ToyLang.Operator.Minus -> convertMinus(node)
+                is ToyLang.Operator.Times -> convertTimes(node)
+                is ToyLang.Operator.Divide -> convertDivide(node)
+                is ToyLang.Operator.Modulo -> convertModulo(node)
+            }
+    
+            fun convertPlus(node: ToyLang.Operator.Plus): T
+            fun convertMinus(node: ToyLang.Operator.Minus): T
+            fun convertTimes(node: ToyLang.Operator.Times): T
+            fun convertDivide(node: ToyLang.Operator.Divide): T
+            fun convertModulo(node: ToyLang.Operator.Modulo): T
+        }
+    }
+    
     sealed class Expr(override val metas: MetaContainer = emptyMetaContainer()) : ToyLangNode() {
         override fun copy(metas: MetaContainer): Expr =
             when (this) {
                 is Lit -> copy(metas = metas)
                 is Variable -> copy(metas = metas)
                 is Not -> copy(metas = metas)
-                is Plus -> copy(metas = metas)
-                is Minus -> copy(metas = metas)
-                is Times -> copy(metas = metas)
-                is Divide -> copy(metas = metas)
-                is Modulo -> copy(metas = metas)
-                is Call -> copy(metas = metas)
+                is Nary -> copy(metas = metas)
                 is Let -> copy(metas = metas)
                 is Function -> copy(metas = metas)
             }
@@ -513,7 +570,6 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Variable(
             val name: org.partiql.pig.runtime.SymbolPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -562,7 +618,6 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Not(
             val expr: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -611,309 +666,62 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
-        class Plus(
+        class Nary(
+            val op: Operator,
             val operands: kotlin.collections.List<Expr>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copy(metas: MetaContainer): Plus =
-                Plus(
+            override fun copy(metas: MetaContainer): Nary =
+                Nary(
+                    op = op,
                     operands = operands,
                     metas = metas)
         
-            override fun withMeta(metaKey: String, metaValue: Any): Plus =
-                Plus(
+            override fun withMeta(metaKey: String, metaValue: Any): Nary =
+                Nary(
+                    op = op,
                     operands = operands,
                     metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
-                    ionSymbol("plus"),
+                    ionSymbol("nary"),
+                    op.toIonElement(),
                     *operands.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
         
             fun copy(
+                op: Operator = this.op,
                 operands: kotlin.collections.List<Expr> = this.operands,
                 metas: MetaContainer = this.metas
             ) =
-                Plus(
+                Nary(
+                    op,
                     operands,
                     metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
-                if (other.javaClass != Plus::class.java) return false
+                if (other.javaClass != Nary::class.java) return false
         
-                other as Plus
+                other as Nary
+                if (op != other.op) return false
                 if (operands != other.operands) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = operands.hashCode()
+                var hc = op.hashCode()
+                hc = 31 * hc + operands.hashCode()
                 hc
             }
         
             override fun hashCode(): Int = myHashCode
         }
-    
-        class Minus(
-            val operands: kotlin.collections.List<Expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): Expr() {
-        
-            override fun copy(metas: MetaContainer): Minus =
-                Minus(
-                    operands = operands,
-                    metas = metas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Minus =
-                Minus(
-                    operands = operands,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("minus"),
-                    *operands.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas
-            ) =
-                Minus(
-                    operands,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Minus::class.java) return false
-        
-                other as Minus
-                if (operands != other.operands) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = operands.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class Times(
-            val operands: kotlin.collections.List<Expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): Expr() {
-        
-            override fun copy(metas: MetaContainer): Times =
-                Times(
-                    operands = operands,
-                    metas = metas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Times =
-                Times(
-                    operands = operands,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("times"),
-                    *operands.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas
-            ) =
-                Times(
-                    operands,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Times::class.java) return false
-        
-                other as Times
-                if (operands != other.operands) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = operands.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class Divide(
-            val operands: kotlin.collections.List<Expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): Expr() {
-        
-            override fun copy(metas: MetaContainer): Divide =
-                Divide(
-                    operands = operands,
-                    metas = metas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Divide =
-                Divide(
-                    operands = operands,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("divide"),
-                    *operands.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas
-            ) =
-                Divide(
-                    operands,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Divide::class.java) return false
-        
-                other as Divide
-                if (operands != other.operands) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = operands.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class Modulo(
-            val operands: kotlin.collections.List<Expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): Expr() {
-        
-            override fun copy(metas: MetaContainer): Modulo =
-                Modulo(
-                    operands = operands,
-                    metas = metas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Modulo =
-                Modulo(
-                    operands = operands,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("modulo"),
-                    *operands.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas
-            ) =
-                Modulo(
-                    operands,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Modulo::class.java) return false
-        
-                other as Modulo
-                if (operands != other.operands) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = operands.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class Call(
-            val name: org.partiql.pig.runtime.SymbolPrimitive,
-            val argument: Expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): Expr() {
-        
-            override fun copy(metas: MetaContainer): Call =
-                Call(
-                    name = name,
-                    argument = argument,
-                    metas = metas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Call =
-                Call(
-                    name = name,
-                    argument = argument,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("call"),
-                    name.toIonElement(),
-                    argument.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
-                argument: Expr = this.argument,
-                metas: MetaContainer = this.metas
-            ) =
-                Call(
-                    name,
-                    argument,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Call::class.java) return false
-        
-                other as Call
-                if (name != other.name) return false
-                if (argument != other.argument) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = name.hashCode()
-                hc = 31 * hc + argument.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
         class Let(
             val name: org.partiql.pig.runtime.SymbolPrimitive,
             val value: Expr,
@@ -978,7 +786,6 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Function(
             val varName: org.partiql.pig.runtime.SymbolPrimitive,
             val body: Expr,
@@ -1036,6 +843,24 @@ class ToyLang private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [ToyLang.Expr] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: ToyLang.Expr): T = when(node) {
+                is ToyLang.Expr.Lit -> convertLit(node)
+                is ToyLang.Expr.Variable -> convertVariable(node)
+                is ToyLang.Expr.Not -> convertNot(node)
+                is ToyLang.Expr.Nary -> convertNary(node)
+                is ToyLang.Expr.Let -> convertLet(node)
+                is ToyLang.Expr.Function -> convertFunction(node)
+            }
+    
+            fun convertLit(node: ToyLang.Expr.Lit): T
+            fun convertVariable(node: ToyLang.Expr.Variable): T
+            fun convertNot(node: ToyLang.Expr.Not): T
+            fun convertNary(node: ToyLang.Expr.Nary): T
+            fun convertLet(node: ToyLang.Expr.Let): T
+            fun convertFunction(node: ToyLang.Expr.Function): T
+        }
     }
     
     /////////////////////////////////////////////////////////////////////////////
@@ -1047,6 +872,34 @@ class ToyLang private constructor() {
     
         override fun innerTransform(sexp: SexpElement): ToyLangNode {
             return when(sexp.tag) {
+                //////////////////////////////////////
+                // Variants for Sum Type 'Operator'
+                //////////////////////////////////////
+                "plus" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    ToyLang.Operator.Plus(
+                        metas = sexp.metas)
+                }
+                "minus" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    ToyLang.Operator.Minus(
+                        metas = sexp.metas)
+                }
+                "times" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    ToyLang.Operator.Times(
+                        metas = sexp.metas)
+                }
+                "divide" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    ToyLang.Operator.Divide(
+                        metas = sexp.metas)
+                }
+                "modulo" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    ToyLang.Operator.Modulo(
+                        metas = sexp.metas)
+                }
                 //////////////////////////////////////
                 // Variants for Sum Type 'Expr'
                 //////////////////////////////////////
@@ -1071,48 +924,13 @@ class ToyLang private constructor() {
                         expr,
                         metas = sexp.metas)
                 }
-                "plus" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val operands = sexp.values.drop(1).map { it.transformExpect<Expr>() }
-                    ToyLang.Expr.Plus(
+                "nary" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
+                    val op = sexp.getRequired(0).transformExpect<Operator>()
+                    val operands = sexp.values.drop(2).map { it.transformExpect<Expr>() }
+                    ToyLang.Expr.Nary(
+                        op,
                         operands,
-                        metas = sexp.metas)
-                }
-                "minus" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val operands = sexp.values.drop(1).map { it.transformExpect<Expr>() }
-                    ToyLang.Expr.Minus(
-                        operands,
-                        metas = sexp.metas)
-                }
-                "times" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val operands = sexp.values.drop(1).map { it.transformExpect<Expr>() }
-                    ToyLang.Expr.Times(
-                        operands,
-                        metas = sexp.metas)
-                }
-                "divide" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val operands = sexp.values.drop(1).map { it.transformExpect<Expr>() }
-                    ToyLang.Expr.Divide(
-                        operands,
-                        metas = sexp.metas)
-                }
-                "modulo" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val operands = sexp.values.drop(1).map { it.transformExpect<Expr>() }
-                    ToyLang.Expr.Modulo(
-                        operands,
-                        metas = sexp.metas)
-                }
-                "call" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val name = sexp.getRequired(0).toSymbolPrimitive()
-                    val argument = sexp.getRequired(1).transformExpect<Expr>()
-                    ToyLang.Expr.Call(
-                        name,
-                        argument,
                         metas = sexp.metas)
                 }
                 "let" -> {
@@ -1147,24 +965,67 @@ class ToyLang private constructor() {
         ////////////////////////////////////////////////////////////////////////////
     
         //////////////////////////////////////
+        // Sum Type: Operator
+        //////////////////////////////////////
+        protected open fun visitOperator(node: ToyLang.Operator) { }
+        protected open fun visitOperatorPlus(node: ToyLang.Operator.Plus) { }
+        protected open fun visitOperatorMinus(node: ToyLang.Operator.Minus) { }
+        protected open fun visitOperatorTimes(node: ToyLang.Operator.Times) { }
+        protected open fun visitOperatorDivide(node: ToyLang.Operator.Divide) { }
+        protected open fun visitOperatorModulo(node: ToyLang.Operator.Modulo) { }
+        //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
         protected open fun visitExpr(node: ToyLang.Expr) { }
         protected open fun visitExprLit(node: ToyLang.Expr.Lit) { }
         protected open fun visitExprVariable(node: ToyLang.Expr.Variable) { }
         protected open fun visitExprNot(node: ToyLang.Expr.Not) { }
-        protected open fun visitExprPlus(node: ToyLang.Expr.Plus) { }
-        protected open fun visitExprMinus(node: ToyLang.Expr.Minus) { }
-        protected open fun visitExprTimes(node: ToyLang.Expr.Times) { }
-        protected open fun visitExprDivide(node: ToyLang.Expr.Divide) { }
-        protected open fun visitExprModulo(node: ToyLang.Expr.Modulo) { }
-        protected open fun visitExprCall(node: ToyLang.Expr.Call) { }
+        protected open fun visitExprNary(node: ToyLang.Expr.Nary) { }
         protected open fun visitExprLet(node: ToyLang.Expr.Let) { }
         protected open fun visitExprFunction(node: ToyLang.Expr.Function) { }
     
         ////////////////////////////////////////////////////////////////////////////
         // Walk Functions
         ////////////////////////////////////////////////////////////////////////////
+    
+        //////////////////////////////////////
+        // Sum Type: Operator
+        //////////////////////////////////////
+        open fun walkOperator(node: ToyLang.Operator) {
+            visitOperator(node)
+            when(node) {
+                is ToyLang.Operator.Plus -> walkOperatorPlus(node)
+                is ToyLang.Operator.Minus -> walkOperatorMinus(node)
+                is ToyLang.Operator.Times -> walkOperatorTimes(node)
+                is ToyLang.Operator.Divide -> walkOperatorDivide(node)
+                is ToyLang.Operator.Modulo -> walkOperatorModulo(node)
+            }
+        }
+    
+        open fun walkOperatorPlus(node: ToyLang.Operator.Plus) {
+            visitOperatorPlus(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOperatorMinus(node: ToyLang.Operator.Minus) {
+            visitOperatorMinus(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOperatorTimes(node: ToyLang.Operator.Times) {
+            visitOperatorTimes(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOperatorDivide(node: ToyLang.Operator.Divide) {
+            visitOperatorDivide(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOperatorModulo(node: ToyLang.Operator.Modulo) {
+            visitOperatorModulo(node)
+            walkMetas(node.metas)
+        }
     
         //////////////////////////////////////
         // Sum Type: Expr
@@ -1175,12 +1036,7 @@ class ToyLang private constructor() {
                 is ToyLang.Expr.Lit -> walkExprLit(node)
                 is ToyLang.Expr.Variable -> walkExprVariable(node)
                 is ToyLang.Expr.Not -> walkExprNot(node)
-                is ToyLang.Expr.Plus -> walkExprPlus(node)
-                is ToyLang.Expr.Minus -> walkExprMinus(node)
-                is ToyLang.Expr.Times -> walkExprTimes(node)
-                is ToyLang.Expr.Divide -> walkExprDivide(node)
-                is ToyLang.Expr.Modulo -> walkExprModulo(node)
-                is ToyLang.Expr.Call -> walkExprCall(node)
+                is ToyLang.Expr.Nary -> walkExprNary(node)
                 is ToyLang.Expr.Let -> walkExprLet(node)
                 is ToyLang.Expr.Function -> walkExprFunction(node)
             }
@@ -1204,40 +1060,10 @@ class ToyLang private constructor() {
             walkMetas(node.metas)
         }
     
-        open fun walkExprPlus(node: ToyLang.Expr.Plus) {
-            visitExprPlus(node)
+        open fun walkExprNary(node: ToyLang.Expr.Nary) {
+            visitExprNary(node)
+            walkOperator(node.op)
             node.operands.map { walkExpr(it) }
-            walkMetas(node.metas)
-        }
-    
-        open fun walkExprMinus(node: ToyLang.Expr.Minus) {
-            visitExprMinus(node)
-            node.operands.map { walkExpr(it) }
-            walkMetas(node.metas)
-        }
-    
-        open fun walkExprTimes(node: ToyLang.Expr.Times) {
-            visitExprTimes(node)
-            node.operands.map { walkExpr(it) }
-            walkMetas(node.metas)
-        }
-    
-        open fun walkExprDivide(node: ToyLang.Expr.Divide) {
-            visitExprDivide(node)
-            node.operands.map { walkExpr(it) }
-            walkMetas(node.metas)
-        }
-    
-        open fun walkExprModulo(node: ToyLang.Expr.Modulo) {
-            visitExprModulo(node)
-            node.operands.map { walkExpr(it) }
-            walkMetas(node.metas)
-        }
-    
-        open fun walkExprCall(node: ToyLang.Expr.Call) {
-            visitExprCall(node)
-            walkSymbolPrimitive(node.name)
-            walkExpr(node.argument)
             walkMetas(node.metas)
         }
     
@@ -1265,24 +1091,77 @@ class ToyLang private constructor() {
         ////////////////////////////////////////////////////////////////////////////
     
         //////////////////////////////////////
+        // Sum Type: Operator
+        //////////////////////////////////////
+        open protected fun visitOperator(node: ToyLang.Operator, accumulator: T): T = accumulator
+        open protected fun visitOperatorPlus(node: ToyLang.Operator.Plus, accumulator: T): T = accumulator
+        open protected fun visitOperatorMinus(node: ToyLang.Operator.Minus, accumulator: T): T = accumulator
+        open protected fun visitOperatorTimes(node: ToyLang.Operator.Times, accumulator: T): T = accumulator
+        open protected fun visitOperatorDivide(node: ToyLang.Operator.Divide, accumulator: T): T = accumulator
+        open protected fun visitOperatorModulo(node: ToyLang.Operator.Modulo, accumulator: T): T = accumulator
+        //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
         open protected fun visitExpr(node: ToyLang.Expr, accumulator: T): T = accumulator
         open protected fun visitExprLit(node: ToyLang.Expr.Lit, accumulator: T): T = accumulator
         open protected fun visitExprVariable(node: ToyLang.Expr.Variable, accumulator: T): T = accumulator
         open protected fun visitExprNot(node: ToyLang.Expr.Not, accumulator: T): T = accumulator
-        open protected fun visitExprPlus(node: ToyLang.Expr.Plus, accumulator: T): T = accumulator
-        open protected fun visitExprMinus(node: ToyLang.Expr.Minus, accumulator: T): T = accumulator
-        open protected fun visitExprTimes(node: ToyLang.Expr.Times, accumulator: T): T = accumulator
-        open protected fun visitExprDivide(node: ToyLang.Expr.Divide, accumulator: T): T = accumulator
-        open protected fun visitExprModulo(node: ToyLang.Expr.Modulo, accumulator: T): T = accumulator
-        open protected fun visitExprCall(node: ToyLang.Expr.Call, accumulator: T): T = accumulator
+        open protected fun visitExprNary(node: ToyLang.Expr.Nary, accumulator: T): T = accumulator
         open protected fun visitExprLet(node: ToyLang.Expr.Let, accumulator: T): T = accumulator
         open protected fun visitExprFunction(node: ToyLang.Expr.Function, accumulator: T): T = accumulator
     
         ////////////////////////////////////////////////////////////////////////////
         // Walk Functions
         ////////////////////////////////////////////////////////////////////////////
+    
+        //////////////////////////////////////
+        // Sum Type: Operator
+        //////////////////////////////////////
+        open fun walkOperator(node: ToyLang.Operator, accumulator: T): T {
+            val current = visitOperator(node, accumulator)
+            return when(node) {
+                is ToyLang.Operator.Plus -> walkOperatorPlus(node, current)
+                is ToyLang.Operator.Minus -> walkOperatorMinus(node, current)
+                is ToyLang.Operator.Times -> walkOperatorTimes(node, current)
+                is ToyLang.Operator.Divide -> walkOperatorDivide(node, current)
+                is ToyLang.Operator.Modulo -> walkOperatorModulo(node, current)
+            }
+        }
+    
+        open fun walkOperatorPlus(node: ToyLang.Operator.Plus, accumulator: T): T {
+            var current = accumulator
+            current = visitOperatorPlus(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkOperatorMinus(node: ToyLang.Operator.Minus, accumulator: T): T {
+            var current = accumulator
+            current = visitOperatorMinus(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkOperatorTimes(node: ToyLang.Operator.Times, accumulator: T): T {
+            var current = accumulator
+            current = visitOperatorTimes(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkOperatorDivide(node: ToyLang.Operator.Divide, accumulator: T): T {
+            var current = accumulator
+            current = visitOperatorDivide(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkOperatorModulo(node: ToyLang.Operator.Modulo, accumulator: T): T {
+            var current = accumulator
+            current = visitOperatorModulo(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
     
         //////////////////////////////////////
         // Sum Type: Expr
@@ -1293,12 +1172,7 @@ class ToyLang private constructor() {
                 is ToyLang.Expr.Lit -> walkExprLit(node, current)
                 is ToyLang.Expr.Variable -> walkExprVariable(node, current)
                 is ToyLang.Expr.Not -> walkExprNot(node, current)
-                is ToyLang.Expr.Plus -> walkExprPlus(node, current)
-                is ToyLang.Expr.Minus -> walkExprMinus(node, current)
-                is ToyLang.Expr.Times -> walkExprTimes(node, current)
-                is ToyLang.Expr.Divide -> walkExprDivide(node, current)
-                is ToyLang.Expr.Modulo -> walkExprModulo(node, current)
-                is ToyLang.Expr.Call -> walkExprCall(node, current)
+                is ToyLang.Expr.Nary -> walkExprNary(node, current)
                 is ToyLang.Expr.Let -> walkExprLet(node, current)
                 is ToyLang.Expr.Function -> walkExprFunction(node, current)
             }
@@ -1328,51 +1202,11 @@ class ToyLang private constructor() {
             return current
         }
     
-        open fun walkExprPlus(node: ToyLang.Expr.Plus, accumulator: T): T {
+        open fun walkExprNary(node: ToyLang.Expr.Nary, accumulator: T): T {
             var current = accumulator
-            current = visitExprPlus(node, current)
+            current = visitExprNary(node, current)
+            current = walkOperator(node.op, current)
             node.operands.map { current = walkExpr(it, current) }
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkExprMinus(node: ToyLang.Expr.Minus, accumulator: T): T {
-            var current = accumulator
-            current = visitExprMinus(node, current)
-            node.operands.map { current = walkExpr(it, current) }
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkExprTimes(node: ToyLang.Expr.Times, accumulator: T): T {
-            var current = accumulator
-            current = visitExprTimes(node, current)
-            node.operands.map { current = walkExpr(it, current) }
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkExprDivide(node: ToyLang.Expr.Divide, accumulator: T): T {
-            var current = accumulator
-            current = visitExprDivide(node, current)
-            node.operands.map { current = walkExpr(it, current) }
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkExprModulo(node: ToyLang.Expr.Modulo, accumulator: T): T {
-            var current = accumulator
-            current = visitExprModulo(node, current)
-            node.operands.map { current = walkExpr(it, current) }
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkExprCall(node: ToyLang.Expr.Call, accumulator: T): T {
-            var current = accumulator
-            current = visitExprCall(node, current)
-            current = walkSymbolPrimitive(node.name, current)
-            current = walkExpr(node.argument, current)
             current = walkMetas(node.metas, current)
             return current
         }
@@ -1399,6 +1233,97 @@ class ToyLang private constructor() {
     }
     abstract class VisitorTransform : DomainVisitorTransformBase() {
         //////////////////////////////////////
+        // Sum Type: Operator
+        //////////////////////////////////////
+        open fun transformOperator(node: ToyLang.Operator): ToyLang.Operator =
+            when(node) {
+                is ToyLang.Operator.Plus -> transformOperatorPlus(node)
+                is ToyLang.Operator.Minus -> transformOperatorMinus(node)
+                is ToyLang.Operator.Times -> transformOperatorTimes(node)
+                is ToyLang.Operator.Divide -> transformOperatorDivide(node)
+                is ToyLang.Operator.Modulo -> transformOperatorModulo(node)
+            }
+        // Variant OperatorPlus
+        open fun transformOperatorPlus(node: ToyLang.Operator.Plus): ToyLang.Operator  {
+            val new_metas = transformOperatorPlus_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                ToyLang.Operator.Plus(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOperatorPlus_metas(node: ToyLang.Operator.Plus) =
+            transformMetas(node.metas)
+    
+        // Variant OperatorMinus
+        open fun transformOperatorMinus(node: ToyLang.Operator.Minus): ToyLang.Operator  {
+            val new_metas = transformOperatorMinus_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                ToyLang.Operator.Minus(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOperatorMinus_metas(node: ToyLang.Operator.Minus) =
+            transformMetas(node.metas)
+    
+        // Variant OperatorTimes
+        open fun transformOperatorTimes(node: ToyLang.Operator.Times): ToyLang.Operator  {
+            val new_metas = transformOperatorTimes_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                ToyLang.Operator.Times(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOperatorTimes_metas(node: ToyLang.Operator.Times) =
+            transformMetas(node.metas)
+    
+        // Variant OperatorDivide
+        open fun transformOperatorDivide(node: ToyLang.Operator.Divide): ToyLang.Operator  {
+            val new_metas = transformOperatorDivide_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                ToyLang.Operator.Divide(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOperatorDivide_metas(node: ToyLang.Operator.Divide) =
+            transformMetas(node.metas)
+    
+        // Variant OperatorModulo
+        open fun transformOperatorModulo(node: ToyLang.Operator.Modulo): ToyLang.Operator  {
+            val new_metas = transformOperatorModulo_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                ToyLang.Operator.Modulo(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOperatorModulo_metas(node: ToyLang.Operator.Modulo) =
+            transformMetas(node.metas)
+    
+        //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
         open fun transformExpr(node: ToyLang.Expr): ToyLang.Expr =
@@ -1406,12 +1331,7 @@ class ToyLang private constructor() {
                 is ToyLang.Expr.Lit -> transformExprLit(node)
                 is ToyLang.Expr.Variable -> transformExprVariable(node)
                 is ToyLang.Expr.Not -> transformExprNot(node)
-                is ToyLang.Expr.Plus -> transformExprPlus(node)
-                is ToyLang.Expr.Minus -> transformExprMinus(node)
-                is ToyLang.Expr.Times -> transformExprTimes(node)
-                is ToyLang.Expr.Divide -> transformExprDivide(node)
-                is ToyLang.Expr.Modulo -> transformExprModulo(node)
-                is ToyLang.Expr.Call -> transformExprCall(node)
+                is ToyLang.Expr.Nary -> transformExprNary(node)
                 is ToyLang.Expr.Let -> transformExprLet(node)
                 is ToyLang.Expr.Function -> transformExprFunction(node)
             }
@@ -1478,15 +1398,18 @@ class ToyLang private constructor() {
         open fun transformExprNot_metas(node: ToyLang.Expr.Not) =
             transformMetas(node.metas)
     
-        // Variant ExprPlus
-        open fun transformExprPlus(node: ToyLang.Expr.Plus): ToyLang.Expr  {
-            val new_operands = transformExprPlus_operands(node)
-            val new_metas = transformExprPlus_metas(node)
+        // Variant ExprNary
+        open fun transformExprNary(node: ToyLang.Expr.Nary): ToyLang.Expr  {
+            val new_op = transformExprNary_op(node)
+            val new_operands = transformExprNary_operands(node)
+            val new_metas = transformExprNary_metas(node)
             return if (
+                node.op !== new_op ||
                 node.operands !== new_operands ||
                 node.metas !== new_metas
             ) {
-                ToyLang.Expr.Plus(
+                ToyLang.Expr.Nary(
+                    op = new_op,
                     operands = new_operands,
                     metas = new_metas
                 )
@@ -1494,119 +1417,11 @@ class ToyLang private constructor() {
                 node
             }
         }
-        open fun transformExprPlus_operands(node: ToyLang.Expr.Plus) =
+        open fun transformExprNary_op(node: ToyLang.Expr.Nary) =
+            transformOperator(node.op)
+        open fun transformExprNary_operands(node: ToyLang.Expr.Nary) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprPlus_metas(node: ToyLang.Expr.Plus) =
-            transformMetas(node.metas)
-    
-        // Variant ExprMinus
-        open fun transformExprMinus(node: ToyLang.Expr.Minus): ToyLang.Expr  {
-            val new_operands = transformExprMinus_operands(node)
-            val new_metas = transformExprMinus_metas(node)
-            return if (
-                node.operands !== new_operands ||
-                node.metas !== new_metas
-            ) {
-                ToyLang.Expr.Minus(
-                    operands = new_operands,
-                    metas = new_metas
-                )
-            } else {
-                node
-            }
-        }
-        open fun transformExprMinus_operands(node: ToyLang.Expr.Minus) =
-            node.operands.map { transformExpr(it) }
-        open fun transformExprMinus_metas(node: ToyLang.Expr.Minus) =
-            transformMetas(node.metas)
-    
-        // Variant ExprTimes
-        open fun transformExprTimes(node: ToyLang.Expr.Times): ToyLang.Expr  {
-            val new_operands = transformExprTimes_operands(node)
-            val new_metas = transformExprTimes_metas(node)
-            return if (
-                node.operands !== new_operands ||
-                node.metas !== new_metas
-            ) {
-                ToyLang.Expr.Times(
-                    operands = new_operands,
-                    metas = new_metas
-                )
-            } else {
-                node
-            }
-        }
-        open fun transformExprTimes_operands(node: ToyLang.Expr.Times) =
-            node.operands.map { transformExpr(it) }
-        open fun transformExprTimes_metas(node: ToyLang.Expr.Times) =
-            transformMetas(node.metas)
-    
-        // Variant ExprDivide
-        open fun transformExprDivide(node: ToyLang.Expr.Divide): ToyLang.Expr  {
-            val new_operands = transformExprDivide_operands(node)
-            val new_metas = transformExprDivide_metas(node)
-            return if (
-                node.operands !== new_operands ||
-                node.metas !== new_metas
-            ) {
-                ToyLang.Expr.Divide(
-                    operands = new_operands,
-                    metas = new_metas
-                )
-            } else {
-                node
-            }
-        }
-        open fun transformExprDivide_operands(node: ToyLang.Expr.Divide) =
-            node.operands.map { transformExpr(it) }
-        open fun transformExprDivide_metas(node: ToyLang.Expr.Divide) =
-            transformMetas(node.metas)
-    
-        // Variant ExprModulo
-        open fun transformExprModulo(node: ToyLang.Expr.Modulo): ToyLang.Expr  {
-            val new_operands = transformExprModulo_operands(node)
-            val new_metas = transformExprModulo_metas(node)
-            return if (
-                node.operands !== new_operands ||
-                node.metas !== new_metas
-            ) {
-                ToyLang.Expr.Modulo(
-                    operands = new_operands,
-                    metas = new_metas
-                )
-            } else {
-                node
-            }
-        }
-        open fun transformExprModulo_operands(node: ToyLang.Expr.Modulo) =
-            node.operands.map { transformExpr(it) }
-        open fun transformExprModulo_metas(node: ToyLang.Expr.Modulo) =
-            transformMetas(node.metas)
-    
-        // Variant ExprCall
-        open fun transformExprCall(node: ToyLang.Expr.Call): ToyLang.Expr  {
-            val new_name = transformExprCall_name(node)
-            val new_argument = transformExprCall_argument(node)
-            val new_metas = transformExprCall_metas(node)
-            return if (
-                node.name !== new_name ||
-                node.argument !== new_argument ||
-                node.metas !== new_metas
-            ) {
-                ToyLang.Expr.Call(
-                    name = new_name,
-                    argument = new_argument,
-                    metas = new_metas
-                )
-            } else {
-                node
-            }
-        }
-        open fun transformExprCall_name(node: ToyLang.Expr.Call) =
-            transformSymbolPrimitive(node.name)
-        open fun transformExprCall_argument(node: ToyLang.Expr.Call) =
-            transformExpr(node.argument)
-        open fun transformExprCall_metas(node: ToyLang.Expr.Call) =
+        open fun transformExprNary_metas(node: ToyLang.Expr.Nary) =
             transformMetas(node.metas)
     
         // Variant ExprLet
@@ -1689,6 +1504,47 @@ class ToyLangIndexed private constructor() {
     }
     
     interface Builder {
+        // Variants for Sum: Operator 
+        /**
+         * Creates an instance of [ToyLangIndexed.Operator.Plus].
+         */
+        fun plus(
+            metas: MetaContainer = emptyMetaContainer()
+        ): ToyLangIndexed.Operator.Plus
+        
+        
+        /**
+         * Creates an instance of [ToyLangIndexed.Operator.Minus].
+         */
+        fun minus(
+            metas: MetaContainer = emptyMetaContainer()
+        ): ToyLangIndexed.Operator.Minus
+        
+        
+        /**
+         * Creates an instance of [ToyLangIndexed.Operator.Times].
+         */
+        fun times(
+            metas: MetaContainer = emptyMetaContainer()
+        ): ToyLangIndexed.Operator.Times
+        
+        
+        /**
+         * Creates an instance of [ToyLangIndexed.Operator.Divide].
+         */
+        fun divide(
+            metas: MetaContainer = emptyMetaContainer()
+        ): ToyLangIndexed.Operator.Divide
+        
+        
+        /**
+         * Creates an instance of [ToyLangIndexed.Operator.Modulo].
+         */
+        fun modulo(
+            metas: MetaContainer = emptyMetaContainer()
+        ): ToyLangIndexed.Operator.Modulo
+        
+        
         // Variants for Sum: Expr 
         /**
          * Creates an instance of [ToyLangIndexed.Expr.Lit].
@@ -1709,121 +1565,22 @@ class ToyLangIndexed private constructor() {
         
         
         /**
-         * Creates an instance of [ToyLangIndexed.Expr.Plus].
+         * Creates an instance of [ToyLangIndexed.Expr.Nary].
          */
-        fun plus(
-            operands: kotlin.collections.List<Expr>,
+        fun nary(
+            op: Operator,
+            operands: kotlin.collections.List<Expr> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Plus
+        ): ToyLangIndexed.Expr.Nary
         
         /**
-         * Creates an instance of [ToyLangIndexed.Expr.Plus].
+         * Creates an instance of [ToyLangIndexed.Expr.Nary].
          */
-        fun plus(
-            operands0: Expr,
-            operands1: Expr,
+        fun nary(
+            op: Operator,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Plus
-        
-        
-        /**
-         * Creates an instance of [ToyLangIndexed.Expr.Minus].
-         */
-        fun minus(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Minus
-        
-        /**
-         * Creates an instance of [ToyLangIndexed.Expr.Minus].
-         */
-        fun minus(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Minus
-        
-        
-        /**
-         * Creates an instance of [ToyLangIndexed.Expr.Times].
-         */
-        fun times(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Times
-        
-        /**
-         * Creates an instance of [ToyLangIndexed.Expr.Times].
-         */
-        fun times(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Times
-        
-        
-        /**
-         * Creates an instance of [ToyLangIndexed.Expr.Divide].
-         */
-        fun divide(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Divide
-        
-        /**
-         * Creates an instance of [ToyLangIndexed.Expr.Divide].
-         */
-        fun divide(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Divide
-        
-        
-        /**
-         * Creates an instance of [ToyLangIndexed.Expr.Modulo].
-         */
-        fun modulo(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Modulo
-        
-        /**
-         * Creates an instance of [ToyLangIndexed.Expr.Modulo].
-         */
-        fun modulo(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Modulo
-        
-        
-        /**
-         * Creates an instance of [ToyLangIndexed.Expr.Call].
-         */
-        fun call(
-            name: String,
-            argument: Expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Call
-        
-        /**
-         * Creates an instance of [ToyLangIndexed.Expr.Call].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun call_(
-            name: org.partiql.pig.runtime.SymbolPrimitive,
-            argument: Expr,
-            metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Call
+        ): ToyLangIndexed.Expr.Nary
         
         
         /**
@@ -1900,6 +1657,42 @@ class ToyLangIndexed private constructor() {
     }
     
     private object ToyLangIndexedBuilder : Builder {
+        // Variants for Sum: Operator 
+        override fun plus(
+            metas: MetaContainer
+        ): ToyLangIndexed.Operator.Plus =
+            ToyLangIndexed.Operator.Plus(
+                metas = metas)
+        
+        
+        override fun minus(
+            metas: MetaContainer
+        ): ToyLangIndexed.Operator.Minus =
+            ToyLangIndexed.Operator.Minus(
+                metas = metas)
+        
+        
+        override fun times(
+            metas: MetaContainer
+        ): ToyLangIndexed.Operator.Times =
+            ToyLangIndexed.Operator.Times(
+                metas = metas)
+        
+        
+        override fun divide(
+            metas: MetaContainer
+        ): ToyLangIndexed.Operator.Divide =
+            ToyLangIndexed.Operator.Divide(
+                metas = metas)
+        
+        
+        override fun modulo(
+            metas: MetaContainer
+        ): ToyLangIndexed.Operator.Modulo =
+            ToyLangIndexed.Operator.Modulo(
+                metas = metas)
+        
+        
         // Variants for Sum: Expr 
         override fun lit(
             value: com.amazon.ionelement.api.IonElement,
@@ -1919,119 +1712,24 @@ class ToyLangIndexed private constructor() {
                 metas = metas)
         
         
-        override fun plus(
+        override fun nary(
+            op: Operator,
             operands: kotlin.collections.List<Expr>,
             metas: MetaContainer
-        ): ToyLangIndexed.Expr.Plus =
-            ToyLangIndexed.Expr.Plus(
+        ): ToyLangIndexed.Expr.Nary =
+            ToyLangIndexed.Expr.Nary(
+                op = op,
                 operands = operands,
                 metas = metas)
         
-        override fun plus(
-            operands0: Expr,
-            operands1: Expr,
+        override fun nary(
+            op: Operator,
             vararg operands: Expr,
             metas: MetaContainer
-        ): ToyLangIndexed.Expr.Plus =
-            ToyLangIndexed.Expr.Plus(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
-        
-        
-        override fun minus(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Minus =
-            ToyLangIndexed.Expr.Minus(
-                operands = operands,
-                metas = metas)
-        
-        override fun minus(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Minus =
-            ToyLangIndexed.Expr.Minus(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
-        
-        
-        override fun times(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Times =
-            ToyLangIndexed.Expr.Times(
-                operands = operands,
-                metas = metas)
-        
-        override fun times(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Times =
-            ToyLangIndexed.Expr.Times(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
-        
-        
-        override fun divide(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Divide =
-            ToyLangIndexed.Expr.Divide(
-                operands = operands,
-                metas = metas)
-        
-        override fun divide(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Divide =
-            ToyLangIndexed.Expr.Divide(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
-        
-        
-        override fun modulo(
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Modulo =
-            ToyLangIndexed.Expr.Modulo(
-                operands = operands,
-                metas = metas)
-        
-        override fun modulo(
-            operands0: Expr,
-            operands1: Expr,
-            vararg operands: Expr,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Modulo =
-            ToyLangIndexed.Expr.Modulo(
-                operands = listOf(operands0, operands1) + operands.toList(),
-                metas = metas)
-        
-        
-        override fun call(
-            name: String,
-            argument: Expr,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Call =
-            ToyLangIndexed.Expr.Call(
-                name = name.asPrimitive(),
-                argument = argument,
-                metas = metas)
-        
-        override fun call_(
-            name: org.partiql.pig.runtime.SymbolPrimitive,
-            argument: Expr,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Call =
-            ToyLangIndexed.Expr.Call(
-                name = name,
-                argument = argument,
+        ): ToyLangIndexed.Expr.Nary =
+            ToyLangIndexed.Expr.Nary(
+                op = op,
+                operands = operands.toList(),
                 metas = metas)
         
         
@@ -2120,17 +1818,191 @@ class ToyLangIndexed private constructor() {
     // Sum Types
     /////////////////////////////////////////////////////////////////////////////
     
-    sealed class Expr(override val metas: MetaContainer = emptyMetaContainer()) : ToyLangIndexedNode() {
-        override fun copy(metas: MetaContainer): Expr =
+    sealed class Operator(override val metas: MetaContainer = emptyMetaContainer()) : ToyLangIndexedNode() {
+        override fun copy(metas: MetaContainer): Operator =
             when (this) {
-                is Lit -> copy(metas = metas)
-                is Not -> copy(metas = metas)
                 is Plus -> copy(metas = metas)
                 is Minus -> copy(metas = metas)
                 is Times -> copy(metas = metas)
                 is Divide -> copy(metas = metas)
                 is Modulo -> copy(metas = metas)
-                is Call -> copy(metas = metas)
+            }
+    
+        class Plus(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): Operator() {
+        
+            override fun copy(metas: MetaContainer): Plus =
+                Plus(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Plus =
+                Plus(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("plus"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Plus::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1000
+        }
+        class Minus(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): Operator() {
+        
+            override fun copy(metas: MetaContainer): Minus =
+                Minus(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Minus =
+                Minus(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("minus"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Minus::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1001
+        }
+        class Times(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): Operator() {
+        
+            override fun copy(metas: MetaContainer): Times =
+                Times(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Times =
+                Times(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("times"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Times::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1002
+        }
+        class Divide(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): Operator() {
+        
+            override fun copy(metas: MetaContainer): Divide =
+                Divide(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Divide =
+                Divide(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("divide"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Divide::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1003
+        }
+        class Modulo(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): Operator() {
+        
+            override fun copy(metas: MetaContainer): Modulo =
+                Modulo(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Modulo =
+                Modulo(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("modulo"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Modulo::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 1004
+        }
+    
+        /** Converts instances of [ToyLangIndexed.Operator] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: ToyLangIndexed.Operator): T = when(node) {
+                is ToyLangIndexed.Operator.Plus -> convertPlus(node)
+                is ToyLangIndexed.Operator.Minus -> convertMinus(node)
+                is ToyLangIndexed.Operator.Times -> convertTimes(node)
+                is ToyLangIndexed.Operator.Divide -> convertDivide(node)
+                is ToyLangIndexed.Operator.Modulo -> convertModulo(node)
+            }
+    
+            fun convertPlus(node: ToyLangIndexed.Operator.Plus): T
+            fun convertMinus(node: ToyLangIndexed.Operator.Minus): T
+            fun convertTimes(node: ToyLangIndexed.Operator.Times): T
+            fun convertDivide(node: ToyLangIndexed.Operator.Divide): T
+            fun convertModulo(node: ToyLangIndexed.Operator.Modulo): T
+        }
+    }
+    
+    sealed class Expr(override val metas: MetaContainer = emptyMetaContainer()) : ToyLangIndexedNode() {
+        override fun copy(metas: MetaContainer): Expr =
+            when (this) {
+                is Lit -> copy(metas = metas)
+                is Not -> copy(metas = metas)
+                is Nary -> copy(metas = metas)
                 is Function -> copy(metas = metas)
                 is Variable -> copy(metas = metas)
                 is Let -> copy(metas = metas)
@@ -2184,7 +2056,6 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Not(
             val expr: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -2233,309 +2104,62 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
-        class Plus(
+        class Nary(
+            val op: Operator,
             val operands: kotlin.collections.List<Expr>,
             override val metas: MetaContainer = emptyMetaContainer()
         ): Expr() {
         
-            override fun copy(metas: MetaContainer): Plus =
-                Plus(
+            override fun copy(metas: MetaContainer): Nary =
+                Nary(
+                    op = op,
                     operands = operands,
                     metas = metas)
         
-            override fun withMeta(metaKey: String, metaValue: Any): Plus =
-                Plus(
+            override fun withMeta(metaKey: String, metaValue: Any): Nary =
+                Nary(
+                    op = op,
                     operands = operands,
                     metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
-                    ionSymbol("plus"),
+                    ionSymbol("nary"),
+                    op.toIonElement(),
                     *operands.map { it.toIonElement() }.toTypedArray(),
                     metas = metas)
                 return elements
             }
         
             fun copy(
+                op: Operator = this.op,
                 operands: kotlin.collections.List<Expr> = this.operands,
                 metas: MetaContainer = this.metas
             ) =
-                Plus(
+                Nary(
+                    op,
                     operands,
                     metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
-                if (other.javaClass != Plus::class.java) return false
+                if (other.javaClass != Nary::class.java) return false
         
-                other as Plus
+                other as Nary
+                if (op != other.op) return false
                 if (operands != other.operands) return false
                 return true
             }
         
             private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = operands.hashCode()
+                var hc = op.hashCode()
+                hc = 31 * hc + operands.hashCode()
                 hc
             }
         
             override fun hashCode(): Int = myHashCode
         }
-    
-        class Minus(
-            val operands: kotlin.collections.List<Expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): Expr() {
-        
-            override fun copy(metas: MetaContainer): Minus =
-                Minus(
-                    operands = operands,
-                    metas = metas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Minus =
-                Minus(
-                    operands = operands,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("minus"),
-                    *operands.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas
-            ) =
-                Minus(
-                    operands,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Minus::class.java) return false
-        
-                other as Minus
-                if (operands != other.operands) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = operands.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class Times(
-            val operands: kotlin.collections.List<Expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): Expr() {
-        
-            override fun copy(metas: MetaContainer): Times =
-                Times(
-                    operands = operands,
-                    metas = metas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Times =
-                Times(
-                    operands = operands,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("times"),
-                    *operands.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas
-            ) =
-                Times(
-                    operands,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Times::class.java) return false
-        
-                other as Times
-                if (operands != other.operands) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = operands.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class Divide(
-            val operands: kotlin.collections.List<Expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): Expr() {
-        
-            override fun copy(metas: MetaContainer): Divide =
-                Divide(
-                    operands = operands,
-                    metas = metas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Divide =
-                Divide(
-                    operands = operands,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("divide"),
-                    *operands.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas
-            ) =
-                Divide(
-                    operands,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Divide::class.java) return false
-        
-                other as Divide
-                if (operands != other.operands) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = operands.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class Modulo(
-            val operands: kotlin.collections.List<Expr>,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): Expr() {
-        
-            override fun copy(metas: MetaContainer): Modulo =
-                Modulo(
-                    operands = operands,
-                    metas = metas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Modulo =
-                Modulo(
-                    operands = operands,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("modulo"),
-                    *operands.map { it.toIonElement() }.toTypedArray(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                operands: kotlin.collections.List<Expr> = this.operands,
-                metas: MetaContainer = this.metas
-            ) =
-                Modulo(
-                    operands,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Modulo::class.java) return false
-        
-                other as Modulo
-                if (operands != other.operands) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = operands.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
-        class Call(
-            val name: org.partiql.pig.runtime.SymbolPrimitive,
-            val argument: Expr,
-            override val metas: MetaContainer = emptyMetaContainer()
-        ): Expr() {
-        
-            override fun copy(metas: MetaContainer): Call =
-                Call(
-                    name = name,
-                    argument = argument,
-                    metas = metas)
-        
-            override fun withMeta(metaKey: String, metaValue: Any): Call =
-                Call(
-                    name = name,
-                    argument = argument,
-                    metas = metas + metaContainerOf(metaKey to metaValue))
-        
-            override fun toIonElement(): SexpElement {
-                val elements = ionSexpOf(
-                    ionSymbol("call"),
-                    name.toIonElement(),
-                    argument.toIonElement(),
-                    metas = metas)
-                return elements
-            }
-        
-            fun copy(
-                name: org.partiql.pig.runtime.SymbolPrimitive = this.name,
-                argument: Expr = this.argument,
-                metas: MetaContainer = this.metas
-            ) =
-                Call(
-                    name,
-                    argument,
-                    metas)
-        
-            override fun equals(other: Any?): Boolean {
-                if (other == null) return false
-                if (this === other) return true
-                if (other.javaClass != Call::class.java) return false
-        
-                other as Call
-                if (name != other.name) return false
-                if (argument != other.argument) return false
-                return true
-            }
-        
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
-                var hc = name.hashCode()
-                hc = 31 * hc + argument.hashCode()
-                hc
-            }
-        
-            override fun hashCode(): Int = myHashCode
-        }
-    
         class Function(
             val varName: org.partiql.pig.runtime.SymbolPrimitive,
             val body: Expr,
@@ -2592,7 +2216,6 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Variable(
             val name: org.partiql.pig.runtime.SymbolPrimitive,
             val index: org.partiql.pig.runtime.LongPrimitive,
@@ -2649,7 +2272,6 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Let(
             val name: org.partiql.pig.runtime.SymbolPrimitive,
             val index: org.partiql.pig.runtime.LongPrimitive,
@@ -2723,6 +2345,24 @@ class ToyLangIndexed private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [ToyLangIndexed.Expr] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: ToyLangIndexed.Expr): T = when(node) {
+                is ToyLangIndexed.Expr.Lit -> convertLit(node)
+                is ToyLangIndexed.Expr.Not -> convertNot(node)
+                is ToyLangIndexed.Expr.Nary -> convertNary(node)
+                is ToyLangIndexed.Expr.Function -> convertFunction(node)
+                is ToyLangIndexed.Expr.Variable -> convertVariable(node)
+                is ToyLangIndexed.Expr.Let -> convertLet(node)
+            }
+    
+            fun convertLit(node: ToyLangIndexed.Expr.Lit): T
+            fun convertNot(node: ToyLangIndexed.Expr.Not): T
+            fun convertNary(node: ToyLangIndexed.Expr.Nary): T
+            fun convertFunction(node: ToyLangIndexed.Expr.Function): T
+            fun convertVariable(node: ToyLangIndexed.Expr.Variable): T
+            fun convertLet(node: ToyLangIndexed.Expr.Let): T
+        }
     }
     
     /////////////////////////////////////////////////////////////////////////////
@@ -2734,6 +2374,34 @@ class ToyLangIndexed private constructor() {
     
         override fun innerTransform(sexp: SexpElement): ToyLangIndexedNode {
             return when(sexp.tag) {
+                //////////////////////////////////////
+                // Variants for Sum Type 'Operator'
+                //////////////////////////////////////
+                "plus" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    ToyLangIndexed.Operator.Plus(
+                        metas = sexp.metas)
+                }
+                "minus" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    ToyLangIndexed.Operator.Minus(
+                        metas = sexp.metas)
+                }
+                "times" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    ToyLangIndexed.Operator.Times(
+                        metas = sexp.metas)
+                }
+                "divide" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    ToyLangIndexed.Operator.Divide(
+                        metas = sexp.metas)
+                }
+                "modulo" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    ToyLangIndexed.Operator.Modulo(
+                        metas = sexp.metas)
+                }
                 //////////////////////////////////////
                 // Variants for Sum Type 'Expr'
                 //////////////////////////////////////
@@ -2751,48 +2419,13 @@ class ToyLangIndexed private constructor() {
                         expr,
                         metas = sexp.metas)
                 }
-                "plus" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val operands = sexp.values.drop(1).map { it.transformExpect<Expr>() }
-                    ToyLangIndexed.Expr.Plus(
+                "nary" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
+                    val op = sexp.getRequired(0).transformExpect<Operator>()
+                    val operands = sexp.values.drop(2).map { it.transformExpect<Expr>() }
+                    ToyLangIndexed.Expr.Nary(
+                        op,
                         operands,
-                        metas = sexp.metas)
-                }
-                "minus" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val operands = sexp.values.drop(1).map { it.transformExpect<Expr>() }
-                    ToyLangIndexed.Expr.Minus(
-                        operands,
-                        metas = sexp.metas)
-                }
-                "times" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val operands = sexp.values.drop(1).map { it.transformExpect<Expr>() }
-                    ToyLangIndexed.Expr.Times(
-                        operands,
-                        metas = sexp.metas)
-                }
-                "divide" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val operands = sexp.values.drop(1).map { it.transformExpect<Expr>() }
-                    ToyLangIndexed.Expr.Divide(
-                        operands,
-                        metas = sexp.metas)
-                }
-                "modulo" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
-                    val operands = sexp.values.drop(1).map { it.transformExpect<Expr>() }
-                    ToyLangIndexed.Expr.Modulo(
-                        operands,
-                        metas = sexp.metas)
-                }
-                "call" -> {
-                    sexp.requireArityOrMalformed(IntRange(2, 2))
-                    val name = sexp.getRequired(0).toSymbolPrimitive()
-                    val argument = sexp.getRequired(1).transformExpect<Expr>()
-                    ToyLangIndexed.Expr.Call(
-                        name,
-                        argument,
                         metas = sexp.metas)
                 }
                 "function" -> {
@@ -2838,17 +2471,21 @@ class ToyLangIndexed private constructor() {
         ////////////////////////////////////////////////////////////////////////////
     
         //////////////////////////////////////
+        // Sum Type: Operator
+        //////////////////////////////////////
+        protected open fun visitOperator(node: ToyLangIndexed.Operator) { }
+        protected open fun visitOperatorPlus(node: ToyLangIndexed.Operator.Plus) { }
+        protected open fun visitOperatorMinus(node: ToyLangIndexed.Operator.Minus) { }
+        protected open fun visitOperatorTimes(node: ToyLangIndexed.Operator.Times) { }
+        protected open fun visitOperatorDivide(node: ToyLangIndexed.Operator.Divide) { }
+        protected open fun visitOperatorModulo(node: ToyLangIndexed.Operator.Modulo) { }
+        //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
         protected open fun visitExpr(node: ToyLangIndexed.Expr) { }
         protected open fun visitExprLit(node: ToyLangIndexed.Expr.Lit) { }
         protected open fun visitExprNot(node: ToyLangIndexed.Expr.Not) { }
-        protected open fun visitExprPlus(node: ToyLangIndexed.Expr.Plus) { }
-        protected open fun visitExprMinus(node: ToyLangIndexed.Expr.Minus) { }
-        protected open fun visitExprTimes(node: ToyLangIndexed.Expr.Times) { }
-        protected open fun visitExprDivide(node: ToyLangIndexed.Expr.Divide) { }
-        protected open fun visitExprModulo(node: ToyLangIndexed.Expr.Modulo) { }
-        protected open fun visitExprCall(node: ToyLangIndexed.Expr.Call) { }
+        protected open fun visitExprNary(node: ToyLangIndexed.Expr.Nary) { }
         protected open fun visitExprFunction(node: ToyLangIndexed.Expr.Function) { }
         protected open fun visitExprVariable(node: ToyLangIndexed.Expr.Variable) { }
         protected open fun visitExprLet(node: ToyLangIndexed.Expr.Let) { }
@@ -2858,6 +2495,45 @@ class ToyLangIndexed private constructor() {
         ////////////////////////////////////////////////////////////////////////////
     
         //////////////////////////////////////
+        // Sum Type: Operator
+        //////////////////////////////////////
+        open fun walkOperator(node: ToyLangIndexed.Operator) {
+            visitOperator(node)
+            when(node) {
+                is ToyLangIndexed.Operator.Plus -> walkOperatorPlus(node)
+                is ToyLangIndexed.Operator.Minus -> walkOperatorMinus(node)
+                is ToyLangIndexed.Operator.Times -> walkOperatorTimes(node)
+                is ToyLangIndexed.Operator.Divide -> walkOperatorDivide(node)
+                is ToyLangIndexed.Operator.Modulo -> walkOperatorModulo(node)
+            }
+        }
+    
+        open fun walkOperatorPlus(node: ToyLangIndexed.Operator.Plus) {
+            visitOperatorPlus(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOperatorMinus(node: ToyLangIndexed.Operator.Minus) {
+            visitOperatorMinus(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOperatorTimes(node: ToyLangIndexed.Operator.Times) {
+            visitOperatorTimes(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOperatorDivide(node: ToyLangIndexed.Operator.Divide) {
+            visitOperatorDivide(node)
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOperatorModulo(node: ToyLangIndexed.Operator.Modulo) {
+            visitOperatorModulo(node)
+            walkMetas(node.metas)
+        }
+    
+        //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
         open fun walkExpr(node: ToyLangIndexed.Expr) {
@@ -2865,12 +2541,7 @@ class ToyLangIndexed private constructor() {
             when(node) {
                 is ToyLangIndexed.Expr.Lit -> walkExprLit(node)
                 is ToyLangIndexed.Expr.Not -> walkExprNot(node)
-                is ToyLangIndexed.Expr.Plus -> walkExprPlus(node)
-                is ToyLangIndexed.Expr.Minus -> walkExprMinus(node)
-                is ToyLangIndexed.Expr.Times -> walkExprTimes(node)
-                is ToyLangIndexed.Expr.Divide -> walkExprDivide(node)
-                is ToyLangIndexed.Expr.Modulo -> walkExprModulo(node)
-                is ToyLangIndexed.Expr.Call -> walkExprCall(node)
+                is ToyLangIndexed.Expr.Nary -> walkExprNary(node)
                 is ToyLangIndexed.Expr.Function -> walkExprFunction(node)
                 is ToyLangIndexed.Expr.Variable -> walkExprVariable(node)
                 is ToyLangIndexed.Expr.Let -> walkExprLet(node)
@@ -2889,40 +2560,10 @@ class ToyLangIndexed private constructor() {
             walkMetas(node.metas)
         }
     
-        open fun walkExprPlus(node: ToyLangIndexed.Expr.Plus) {
-            visitExprPlus(node)
+        open fun walkExprNary(node: ToyLangIndexed.Expr.Nary) {
+            visitExprNary(node)
+            walkOperator(node.op)
             node.operands.map { walkExpr(it) }
-            walkMetas(node.metas)
-        }
-    
-        open fun walkExprMinus(node: ToyLangIndexed.Expr.Minus) {
-            visitExprMinus(node)
-            node.operands.map { walkExpr(it) }
-            walkMetas(node.metas)
-        }
-    
-        open fun walkExprTimes(node: ToyLangIndexed.Expr.Times) {
-            visitExprTimes(node)
-            node.operands.map { walkExpr(it) }
-            walkMetas(node.metas)
-        }
-    
-        open fun walkExprDivide(node: ToyLangIndexed.Expr.Divide) {
-            visitExprDivide(node)
-            node.operands.map { walkExpr(it) }
-            walkMetas(node.metas)
-        }
-    
-        open fun walkExprModulo(node: ToyLangIndexed.Expr.Modulo) {
-            visitExprModulo(node)
-            node.operands.map { walkExpr(it) }
-            walkMetas(node.metas)
-        }
-    
-        open fun walkExprCall(node: ToyLangIndexed.Expr.Call) {
-            visitExprCall(node)
-            walkSymbolPrimitive(node.name)
-            walkExpr(node.argument)
             walkMetas(node.metas)
         }
     
@@ -2958,17 +2599,21 @@ class ToyLangIndexed private constructor() {
         ////////////////////////////////////////////////////////////////////////////
     
         //////////////////////////////////////
+        // Sum Type: Operator
+        //////////////////////////////////////
+        open protected fun visitOperator(node: ToyLangIndexed.Operator, accumulator: T): T = accumulator
+        open protected fun visitOperatorPlus(node: ToyLangIndexed.Operator.Plus, accumulator: T): T = accumulator
+        open protected fun visitOperatorMinus(node: ToyLangIndexed.Operator.Minus, accumulator: T): T = accumulator
+        open protected fun visitOperatorTimes(node: ToyLangIndexed.Operator.Times, accumulator: T): T = accumulator
+        open protected fun visitOperatorDivide(node: ToyLangIndexed.Operator.Divide, accumulator: T): T = accumulator
+        open protected fun visitOperatorModulo(node: ToyLangIndexed.Operator.Modulo, accumulator: T): T = accumulator
+        //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
         open protected fun visitExpr(node: ToyLangIndexed.Expr, accumulator: T): T = accumulator
         open protected fun visitExprLit(node: ToyLangIndexed.Expr.Lit, accumulator: T): T = accumulator
         open protected fun visitExprNot(node: ToyLangIndexed.Expr.Not, accumulator: T): T = accumulator
-        open protected fun visitExprPlus(node: ToyLangIndexed.Expr.Plus, accumulator: T): T = accumulator
-        open protected fun visitExprMinus(node: ToyLangIndexed.Expr.Minus, accumulator: T): T = accumulator
-        open protected fun visitExprTimes(node: ToyLangIndexed.Expr.Times, accumulator: T): T = accumulator
-        open protected fun visitExprDivide(node: ToyLangIndexed.Expr.Divide, accumulator: T): T = accumulator
-        open protected fun visitExprModulo(node: ToyLangIndexed.Expr.Modulo, accumulator: T): T = accumulator
-        open protected fun visitExprCall(node: ToyLangIndexed.Expr.Call, accumulator: T): T = accumulator
+        open protected fun visitExprNary(node: ToyLangIndexed.Expr.Nary, accumulator: T): T = accumulator
         open protected fun visitExprFunction(node: ToyLangIndexed.Expr.Function, accumulator: T): T = accumulator
         open protected fun visitExprVariable(node: ToyLangIndexed.Expr.Variable, accumulator: T): T = accumulator
         open protected fun visitExprLet(node: ToyLangIndexed.Expr.Let, accumulator: T): T = accumulator
@@ -2978,6 +2623,55 @@ class ToyLangIndexed private constructor() {
         ////////////////////////////////////////////////////////////////////////////
     
         //////////////////////////////////////
+        // Sum Type: Operator
+        //////////////////////////////////////
+        open fun walkOperator(node: ToyLangIndexed.Operator, accumulator: T): T {
+            val current = visitOperator(node, accumulator)
+            return when(node) {
+                is ToyLangIndexed.Operator.Plus -> walkOperatorPlus(node, current)
+                is ToyLangIndexed.Operator.Minus -> walkOperatorMinus(node, current)
+                is ToyLangIndexed.Operator.Times -> walkOperatorTimes(node, current)
+                is ToyLangIndexed.Operator.Divide -> walkOperatorDivide(node, current)
+                is ToyLangIndexed.Operator.Modulo -> walkOperatorModulo(node, current)
+            }
+        }
+    
+        open fun walkOperatorPlus(node: ToyLangIndexed.Operator.Plus, accumulator: T): T {
+            var current = accumulator
+            current = visitOperatorPlus(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkOperatorMinus(node: ToyLangIndexed.Operator.Minus, accumulator: T): T {
+            var current = accumulator
+            current = visitOperatorMinus(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkOperatorTimes(node: ToyLangIndexed.Operator.Times, accumulator: T): T {
+            var current = accumulator
+            current = visitOperatorTimes(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkOperatorDivide(node: ToyLangIndexed.Operator.Divide, accumulator: T): T {
+            var current = accumulator
+            current = visitOperatorDivide(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkOperatorModulo(node: ToyLangIndexed.Operator.Modulo, accumulator: T): T {
+            var current = accumulator
+            current = visitOperatorModulo(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
         open fun walkExpr(node: ToyLangIndexed.Expr, accumulator: T): T {
@@ -2985,12 +2679,7 @@ class ToyLangIndexed private constructor() {
             return when(node) {
                 is ToyLangIndexed.Expr.Lit -> walkExprLit(node, current)
                 is ToyLangIndexed.Expr.Not -> walkExprNot(node, current)
-                is ToyLangIndexed.Expr.Plus -> walkExprPlus(node, current)
-                is ToyLangIndexed.Expr.Minus -> walkExprMinus(node, current)
-                is ToyLangIndexed.Expr.Times -> walkExprTimes(node, current)
-                is ToyLangIndexed.Expr.Divide -> walkExprDivide(node, current)
-                is ToyLangIndexed.Expr.Modulo -> walkExprModulo(node, current)
-                is ToyLangIndexed.Expr.Call -> walkExprCall(node, current)
+                is ToyLangIndexed.Expr.Nary -> walkExprNary(node, current)
                 is ToyLangIndexed.Expr.Function -> walkExprFunction(node, current)
                 is ToyLangIndexed.Expr.Variable -> walkExprVariable(node, current)
                 is ToyLangIndexed.Expr.Let -> walkExprLet(node, current)
@@ -3013,51 +2702,11 @@ class ToyLangIndexed private constructor() {
             return current
         }
     
-        open fun walkExprPlus(node: ToyLangIndexed.Expr.Plus, accumulator: T): T {
+        open fun walkExprNary(node: ToyLangIndexed.Expr.Nary, accumulator: T): T {
             var current = accumulator
-            current = visitExprPlus(node, current)
+            current = visitExprNary(node, current)
+            current = walkOperator(node.op, current)
             node.operands.map { current = walkExpr(it, current) }
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkExprMinus(node: ToyLangIndexed.Expr.Minus, accumulator: T): T {
-            var current = accumulator
-            current = visitExprMinus(node, current)
-            node.operands.map { current = walkExpr(it, current) }
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkExprTimes(node: ToyLangIndexed.Expr.Times, accumulator: T): T {
-            var current = accumulator
-            current = visitExprTimes(node, current)
-            node.operands.map { current = walkExpr(it, current) }
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkExprDivide(node: ToyLangIndexed.Expr.Divide, accumulator: T): T {
-            var current = accumulator
-            current = visitExprDivide(node, current)
-            node.operands.map { current = walkExpr(it, current) }
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkExprModulo(node: ToyLangIndexed.Expr.Modulo, accumulator: T): T {
-            var current = accumulator
-            current = visitExprModulo(node, current)
-            node.operands.map { current = walkExpr(it, current) }
-            current = walkMetas(node.metas, current)
-            return current
-        }
-    
-        open fun walkExprCall(node: ToyLangIndexed.Expr.Call, accumulator: T): T {
-            var current = accumulator
-            current = visitExprCall(node, current)
-            current = walkSymbolPrimitive(node.name, current)
-            current = walkExpr(node.argument, current)
             current = walkMetas(node.metas, current)
             return current
         }
@@ -3094,18 +2743,104 @@ class ToyLangIndexed private constructor() {
     }
     abstract class VisitorTransform : DomainVisitorTransformBase() {
         //////////////////////////////////////
+        // Sum Type: Operator
+        //////////////////////////////////////
+        open fun transformOperator(node: ToyLangIndexed.Operator): ToyLangIndexed.Operator =
+            when(node) {
+                is ToyLangIndexed.Operator.Plus -> transformOperatorPlus(node)
+                is ToyLangIndexed.Operator.Minus -> transformOperatorMinus(node)
+                is ToyLangIndexed.Operator.Times -> transformOperatorTimes(node)
+                is ToyLangIndexed.Operator.Divide -> transformOperatorDivide(node)
+                is ToyLangIndexed.Operator.Modulo -> transformOperatorModulo(node)
+            }
+        // Variant OperatorPlus
+        open fun transformOperatorPlus(node: ToyLangIndexed.Operator.Plus): ToyLangIndexed.Operator  {
+            val new_metas = transformOperatorPlus_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Operator.Plus(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOperatorPlus_metas(node: ToyLangIndexed.Operator.Plus) =
+            transformMetas(node.metas)
+    
+        // Variant OperatorMinus
+        open fun transformOperatorMinus(node: ToyLangIndexed.Operator.Minus): ToyLangIndexed.Operator  {
+            val new_metas = transformOperatorMinus_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Operator.Minus(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOperatorMinus_metas(node: ToyLangIndexed.Operator.Minus) =
+            transformMetas(node.metas)
+    
+        // Variant OperatorTimes
+        open fun transformOperatorTimes(node: ToyLangIndexed.Operator.Times): ToyLangIndexed.Operator  {
+            val new_metas = transformOperatorTimes_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Operator.Times(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOperatorTimes_metas(node: ToyLangIndexed.Operator.Times) =
+            transformMetas(node.metas)
+    
+        // Variant OperatorDivide
+        open fun transformOperatorDivide(node: ToyLangIndexed.Operator.Divide): ToyLangIndexed.Operator  {
+            val new_metas = transformOperatorDivide_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Operator.Divide(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOperatorDivide_metas(node: ToyLangIndexed.Operator.Divide) =
+            transformMetas(node.metas)
+    
+        // Variant OperatorModulo
+        open fun transformOperatorModulo(node: ToyLangIndexed.Operator.Modulo): ToyLangIndexed.Operator  {
+            val new_metas = transformOperatorModulo_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                ToyLangIndexed.Operator.Modulo(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOperatorModulo_metas(node: ToyLangIndexed.Operator.Modulo) =
+            transformMetas(node.metas)
+    
+        //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
         open fun transformExpr(node: ToyLangIndexed.Expr): ToyLangIndexed.Expr =
             when(node) {
                 is ToyLangIndexed.Expr.Lit -> transformExprLit(node)
                 is ToyLangIndexed.Expr.Not -> transformExprNot(node)
-                is ToyLangIndexed.Expr.Plus -> transformExprPlus(node)
-                is ToyLangIndexed.Expr.Minus -> transformExprMinus(node)
-                is ToyLangIndexed.Expr.Times -> transformExprTimes(node)
-                is ToyLangIndexed.Expr.Divide -> transformExprDivide(node)
-                is ToyLangIndexed.Expr.Modulo -> transformExprModulo(node)
-                is ToyLangIndexed.Expr.Call -> transformExprCall(node)
+                is ToyLangIndexed.Expr.Nary -> transformExprNary(node)
                 is ToyLangIndexed.Expr.Function -> transformExprFunction(node)
                 is ToyLangIndexed.Expr.Variable -> transformExprVariable(node)
                 is ToyLangIndexed.Expr.Let -> transformExprLet(node)
@@ -3152,15 +2887,18 @@ class ToyLangIndexed private constructor() {
         open fun transformExprNot_metas(node: ToyLangIndexed.Expr.Not) =
             transformMetas(node.metas)
     
-        // Variant ExprPlus
-        open fun transformExprPlus(node: ToyLangIndexed.Expr.Plus): ToyLangIndexed.Expr  {
-            val new_operands = transformExprPlus_operands(node)
-            val new_metas = transformExprPlus_metas(node)
+        // Variant ExprNary
+        open fun transformExprNary(node: ToyLangIndexed.Expr.Nary): ToyLangIndexed.Expr  {
+            val new_op = transformExprNary_op(node)
+            val new_operands = transformExprNary_operands(node)
+            val new_metas = transformExprNary_metas(node)
             return if (
+                node.op !== new_op ||
                 node.operands !== new_operands ||
                 node.metas !== new_metas
             ) {
-                ToyLangIndexed.Expr.Plus(
+                ToyLangIndexed.Expr.Nary(
+                    op = new_op,
                     operands = new_operands,
                     metas = new_metas
                 )
@@ -3168,119 +2906,11 @@ class ToyLangIndexed private constructor() {
                 node
             }
         }
-        open fun transformExprPlus_operands(node: ToyLangIndexed.Expr.Plus) =
+        open fun transformExprNary_op(node: ToyLangIndexed.Expr.Nary) =
+            transformOperator(node.op)
+        open fun transformExprNary_operands(node: ToyLangIndexed.Expr.Nary) =
             node.operands.map { transformExpr(it) }
-        open fun transformExprPlus_metas(node: ToyLangIndexed.Expr.Plus) =
-            transformMetas(node.metas)
-    
-        // Variant ExprMinus
-        open fun transformExprMinus(node: ToyLangIndexed.Expr.Minus): ToyLangIndexed.Expr  {
-            val new_operands = transformExprMinus_operands(node)
-            val new_metas = transformExprMinus_metas(node)
-            return if (
-                node.operands !== new_operands ||
-                node.metas !== new_metas
-            ) {
-                ToyLangIndexed.Expr.Minus(
-                    operands = new_operands,
-                    metas = new_metas
-                )
-            } else {
-                node
-            }
-        }
-        open fun transformExprMinus_operands(node: ToyLangIndexed.Expr.Minus) =
-            node.operands.map { transformExpr(it) }
-        open fun transformExprMinus_metas(node: ToyLangIndexed.Expr.Minus) =
-            transformMetas(node.metas)
-    
-        // Variant ExprTimes
-        open fun transformExprTimes(node: ToyLangIndexed.Expr.Times): ToyLangIndexed.Expr  {
-            val new_operands = transformExprTimes_operands(node)
-            val new_metas = transformExprTimes_metas(node)
-            return if (
-                node.operands !== new_operands ||
-                node.metas !== new_metas
-            ) {
-                ToyLangIndexed.Expr.Times(
-                    operands = new_operands,
-                    metas = new_metas
-                )
-            } else {
-                node
-            }
-        }
-        open fun transformExprTimes_operands(node: ToyLangIndexed.Expr.Times) =
-            node.operands.map { transformExpr(it) }
-        open fun transformExprTimes_metas(node: ToyLangIndexed.Expr.Times) =
-            transformMetas(node.metas)
-    
-        // Variant ExprDivide
-        open fun transformExprDivide(node: ToyLangIndexed.Expr.Divide): ToyLangIndexed.Expr  {
-            val new_operands = transformExprDivide_operands(node)
-            val new_metas = transformExprDivide_metas(node)
-            return if (
-                node.operands !== new_operands ||
-                node.metas !== new_metas
-            ) {
-                ToyLangIndexed.Expr.Divide(
-                    operands = new_operands,
-                    metas = new_metas
-                )
-            } else {
-                node
-            }
-        }
-        open fun transformExprDivide_operands(node: ToyLangIndexed.Expr.Divide) =
-            node.operands.map { transformExpr(it) }
-        open fun transformExprDivide_metas(node: ToyLangIndexed.Expr.Divide) =
-            transformMetas(node.metas)
-    
-        // Variant ExprModulo
-        open fun transformExprModulo(node: ToyLangIndexed.Expr.Modulo): ToyLangIndexed.Expr  {
-            val new_operands = transformExprModulo_operands(node)
-            val new_metas = transformExprModulo_metas(node)
-            return if (
-                node.operands !== new_operands ||
-                node.metas !== new_metas
-            ) {
-                ToyLangIndexed.Expr.Modulo(
-                    operands = new_operands,
-                    metas = new_metas
-                )
-            } else {
-                node
-            }
-        }
-        open fun transformExprModulo_operands(node: ToyLangIndexed.Expr.Modulo) =
-            node.operands.map { transformExpr(it) }
-        open fun transformExprModulo_metas(node: ToyLangIndexed.Expr.Modulo) =
-            transformMetas(node.metas)
-    
-        // Variant ExprCall
-        open fun transformExprCall(node: ToyLangIndexed.Expr.Call): ToyLangIndexed.Expr  {
-            val new_name = transformExprCall_name(node)
-            val new_argument = transformExprCall_argument(node)
-            val new_metas = transformExprCall_metas(node)
-            return if (
-                node.name !== new_name ||
-                node.argument !== new_argument ||
-                node.metas !== new_metas
-            ) {
-                ToyLangIndexed.Expr.Call(
-                    name = new_name,
-                    argument = new_argument,
-                    metas = new_metas
-                )
-            } else {
-                node
-            }
-        }
-        open fun transformExprCall_name(node: ToyLangIndexed.Expr.Call) =
-            transformSymbolPrimitive(node.name)
-        open fun transformExprCall_argument(node: ToyLangIndexed.Expr.Call) =
-            transformExpr(node.argument)
-        open fun transformExprCall_metas(node: ToyLangIndexed.Expr.Call) =
+        open fun transformExprNary_metas(node: ToyLangIndexed.Expr.Nary) =
             transformMetas(node.metas)
     
         // Variant ExprFunction
@@ -3382,6 +3012,67 @@ class ToyLangIndexed private constructor() {
 
 abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformBase() {
     //////////////////////////////////////
+    // Sum Type: Operator
+    //////////////////////////////////////
+    open fun transformOperator(node: ToyLang.Operator): ToyLangIndexed.Operator =
+        when(node) {
+            is ToyLang.Operator.Plus -> transformOperatorPlus(node)
+            is ToyLang.Operator.Minus -> transformOperatorMinus(node)
+            is ToyLang.Operator.Times -> transformOperatorTimes(node)
+            is ToyLang.Operator.Divide -> transformOperatorDivide(node)
+            is ToyLang.Operator.Modulo -> transformOperatorModulo(node)
+        }
+    // Variant OperatorPlus
+    open fun transformOperatorPlus(node: ToyLang.Operator.Plus): ToyLangIndexed.Operator  {
+        val new_metas = transformOperatorPlus_metas(node)
+        return             ToyLangIndexed.Operator.Plus(
+                metas = new_metas
+            )
+    }
+    open fun transformOperatorPlus_metas(node: ToyLang.Operator.Plus) =
+        transformMetas(node.metas)
+
+    // Variant OperatorMinus
+    open fun transformOperatorMinus(node: ToyLang.Operator.Minus): ToyLangIndexed.Operator  {
+        val new_metas = transformOperatorMinus_metas(node)
+        return             ToyLangIndexed.Operator.Minus(
+                metas = new_metas
+            )
+    }
+    open fun transformOperatorMinus_metas(node: ToyLang.Operator.Minus) =
+        transformMetas(node.metas)
+
+    // Variant OperatorTimes
+    open fun transformOperatorTimes(node: ToyLang.Operator.Times): ToyLangIndexed.Operator  {
+        val new_metas = transformOperatorTimes_metas(node)
+        return             ToyLangIndexed.Operator.Times(
+                metas = new_metas
+            )
+    }
+    open fun transformOperatorTimes_metas(node: ToyLang.Operator.Times) =
+        transformMetas(node.metas)
+
+    // Variant OperatorDivide
+    open fun transformOperatorDivide(node: ToyLang.Operator.Divide): ToyLangIndexed.Operator  {
+        val new_metas = transformOperatorDivide_metas(node)
+        return             ToyLangIndexed.Operator.Divide(
+                metas = new_metas
+            )
+    }
+    open fun transformOperatorDivide_metas(node: ToyLang.Operator.Divide) =
+        transformMetas(node.metas)
+
+    // Variant OperatorModulo
+    open fun transformOperatorModulo(node: ToyLang.Operator.Modulo): ToyLangIndexed.Operator  {
+        val new_metas = transformOperatorModulo_metas(node)
+        return             ToyLangIndexed.Operator.Modulo(
+                metas = new_metas
+            )
+    }
+    open fun transformOperatorModulo_metas(node: ToyLang.Operator.Modulo) =
+        transformMetas(node.metas)
+
+    //////////////////////////////////////
     // Sum Type: Expr
     //////////////////////////////////////
     open fun transformExpr(node: ToyLang.Expr): ToyLangIndexed.Expr =
@@ -3389,12 +3080,7 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
             is ToyLang.Expr.Lit -> transformExprLit(node)
             is ToyLang.Expr.Variable -> transformExprVariable(node)
             is ToyLang.Expr.Not -> transformExprNot(node)
-            is ToyLang.Expr.Plus -> transformExprPlus(node)
-            is ToyLang.Expr.Minus -> transformExprMinus(node)
-            is ToyLang.Expr.Times -> transformExprTimes(node)
-            is ToyLang.Expr.Divide -> transformExprDivide(node)
-            is ToyLang.Expr.Modulo -> transformExprModulo(node)
-            is ToyLang.Expr.Call -> transformExprCall(node)
+            is ToyLang.Expr.Nary -> transformExprNary(node)
             is ToyLang.Expr.Let -> transformExprLet(node)
             is ToyLang.Expr.Function -> transformExprFunction(node)
         }
@@ -3428,92 +3114,22 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
     open fun transformExprNot_metas(node: ToyLang.Expr.Not) =
         transformMetas(node.metas)
 
-    // Variant ExprPlus
-    open fun transformExprPlus(node: ToyLang.Expr.Plus): ToyLangIndexed.Expr  {
-        val new_operands = transformExprPlus_operands(node)
-        val new_metas = transformExprPlus_metas(node)
-        return             ToyLangIndexed.Expr.Plus(
+    // Variant ExprNary
+    open fun transformExprNary(node: ToyLang.Expr.Nary): ToyLangIndexed.Expr  {
+        val new_op = transformExprNary_op(node)
+        val new_operands = transformExprNary_operands(node)
+        val new_metas = transformExprNary_metas(node)
+        return             ToyLangIndexed.Expr.Nary(
+                op = new_op,
                 operands = new_operands,
                 metas = new_metas
             )
     }
-    open fun transformExprPlus_operands(node: ToyLang.Expr.Plus) =
+    open fun transformExprNary_op(node: ToyLang.Expr.Nary) =
+        transformOperator(node.op)
+    open fun transformExprNary_operands(node: ToyLang.Expr.Nary) =
         node.operands.map { transformExpr(it) }
-    open fun transformExprPlus_metas(node: ToyLang.Expr.Plus) =
-        transformMetas(node.metas)
-
-    // Variant ExprMinus
-    open fun transformExprMinus(node: ToyLang.Expr.Minus): ToyLangIndexed.Expr  {
-        val new_operands = transformExprMinus_operands(node)
-        val new_metas = transformExprMinus_metas(node)
-        return             ToyLangIndexed.Expr.Minus(
-                operands = new_operands,
-                metas = new_metas
-            )
-    }
-    open fun transformExprMinus_operands(node: ToyLang.Expr.Minus) =
-        node.operands.map { transformExpr(it) }
-    open fun transformExprMinus_metas(node: ToyLang.Expr.Minus) =
-        transformMetas(node.metas)
-
-    // Variant ExprTimes
-    open fun transformExprTimes(node: ToyLang.Expr.Times): ToyLangIndexed.Expr  {
-        val new_operands = transformExprTimes_operands(node)
-        val new_metas = transformExprTimes_metas(node)
-        return             ToyLangIndexed.Expr.Times(
-                operands = new_operands,
-                metas = new_metas
-            )
-    }
-    open fun transformExprTimes_operands(node: ToyLang.Expr.Times) =
-        node.operands.map { transformExpr(it) }
-    open fun transformExprTimes_metas(node: ToyLang.Expr.Times) =
-        transformMetas(node.metas)
-
-    // Variant ExprDivide
-    open fun transformExprDivide(node: ToyLang.Expr.Divide): ToyLangIndexed.Expr  {
-        val new_operands = transformExprDivide_operands(node)
-        val new_metas = transformExprDivide_metas(node)
-        return             ToyLangIndexed.Expr.Divide(
-                operands = new_operands,
-                metas = new_metas
-            )
-    }
-    open fun transformExprDivide_operands(node: ToyLang.Expr.Divide) =
-        node.operands.map { transformExpr(it) }
-    open fun transformExprDivide_metas(node: ToyLang.Expr.Divide) =
-        transformMetas(node.metas)
-
-    // Variant ExprModulo
-    open fun transformExprModulo(node: ToyLang.Expr.Modulo): ToyLangIndexed.Expr  {
-        val new_operands = transformExprModulo_operands(node)
-        val new_metas = transformExprModulo_metas(node)
-        return             ToyLangIndexed.Expr.Modulo(
-                operands = new_operands,
-                metas = new_metas
-            )
-    }
-    open fun transformExprModulo_operands(node: ToyLang.Expr.Modulo) =
-        node.operands.map { transformExpr(it) }
-    open fun transformExprModulo_metas(node: ToyLang.Expr.Modulo) =
-        transformMetas(node.metas)
-
-    // Variant ExprCall
-    open fun transformExprCall(node: ToyLang.Expr.Call): ToyLangIndexed.Expr  {
-        val new_name = transformExprCall_name(node)
-        val new_argument = transformExprCall_argument(node)
-        val new_metas = transformExprCall_metas(node)
-        return             ToyLangIndexed.Expr.Call(
-                name = new_name,
-                argument = new_argument,
-                metas = new_metas
-            )
-    }
-    open fun transformExprCall_name(node: ToyLang.Expr.Call) =
-        transformSymbolPrimitive(node.name)
-    open fun transformExprCall_argument(node: ToyLang.Expr.Call) =
-        transformExpr(node.argument)
-    open fun transformExprCall_metas(node: ToyLang.Expr.Call) =
+    open fun transformExprNary_metas(node: ToyLang.Expr.Nary) =
         transformMetas(node.metas)
 
     // Variant ExprLet
@@ -3539,18 +3155,74 @@ abstract class ToyLangToToyLangIndexedVisitorTransform : DomainVisitorTransformB
 }
 abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformBase() {
     //////////////////////////////////////
+    // Sum Type: Operator
+    //////////////////////////////////////
+    open fun transformOperator(node: ToyLangIndexed.Operator): ToyLang.Operator =
+        when(node) {
+            is ToyLangIndexed.Operator.Plus -> transformOperatorPlus(node)
+            is ToyLangIndexed.Operator.Minus -> transformOperatorMinus(node)
+            is ToyLangIndexed.Operator.Times -> transformOperatorTimes(node)
+            is ToyLangIndexed.Operator.Divide -> transformOperatorDivide(node)
+            is ToyLangIndexed.Operator.Modulo -> transformOperatorModulo(node)
+        }
+    // Variant OperatorPlus
+    open fun transformOperatorPlus(node: ToyLangIndexed.Operator.Plus): ToyLang.Operator  {
+        val new_metas = transformOperatorPlus_metas(node)
+        return             ToyLang.Operator.Plus(
+                metas = new_metas
+            )
+    }
+    open fun transformOperatorPlus_metas(node: ToyLangIndexed.Operator.Plus) =
+        transformMetas(node.metas)
+
+    // Variant OperatorMinus
+    open fun transformOperatorMinus(node: ToyLangIndexed.Operator.Minus): ToyLang.Operator  {
+        val new_metas = transformOperatorMinus_metas(node)
+        return             ToyLang.Operator.Minus(
+                metas = new_metas
+            )
+    }
+    open fun transformOperatorMinus_metas(node: ToyLangIndexed.Operator.Minus) =
+        transformMetas(node.metas)
+
+    // Variant OperatorTimes
+    open fun transformOperatorTimes(node: ToyLangIndexed.Operator.Times): ToyLang.Operator  {
+        val new_metas = transformOperatorTimes_metas(node)
+        return             ToyLang.Operator.Times(
+                metas = new_metas
+            )
+    }
+    open fun transformOperatorTimes_metas(node: ToyLangIndexed.Operator.Times) =
+        transformMetas(node.metas)
+
+    // Variant OperatorDivide
+    open fun transformOperatorDivide(node: ToyLangIndexed.Operator.Divide): ToyLang.Operator  {
+        val new_metas = transformOperatorDivide_metas(node)
+        return             ToyLang.Operator.Divide(
+                metas = new_metas
+            )
+    }
+    open fun transformOperatorDivide_metas(node: ToyLangIndexed.Operator.Divide) =
+        transformMetas(node.metas)
+
+    // Variant OperatorModulo
+    open fun transformOperatorModulo(node: ToyLangIndexed.Operator.Modulo): ToyLang.Operator  {
+        val new_metas = transformOperatorModulo_metas(node)
+        return             ToyLang.Operator.Modulo(
+                metas = new_metas
+            )
+    }
+    open fun transformOperatorModulo_metas(node: ToyLangIndexed.Operator.Modulo) =
+        transformMetas(node.metas)
+
+    //////////////////////////////////////
     // Sum Type: Expr
     //////////////////////////////////////
     open fun transformExpr(node: ToyLangIndexed.Expr): ToyLang.Expr =
         when(node) {
             is ToyLangIndexed.Expr.Lit -> transformExprLit(node)
             is ToyLangIndexed.Expr.Not -> transformExprNot(node)
-            is ToyLangIndexed.Expr.Plus -> transformExprPlus(node)
-            is ToyLangIndexed.Expr.Minus -> transformExprMinus(node)
-            is ToyLangIndexed.Expr.Times -> transformExprTimes(node)
-            is ToyLangIndexed.Expr.Divide -> transformExprDivide(node)
-            is ToyLangIndexed.Expr.Modulo -> transformExprModulo(node)
-            is ToyLangIndexed.Expr.Call -> transformExprCall(node)
+            is ToyLangIndexed.Expr.Nary -> transformExprNary(node)
             is ToyLangIndexed.Expr.Function -> transformExprFunction(node)
             is ToyLangIndexed.Expr.Variable -> transformExprVariable(node)
             is ToyLangIndexed.Expr.Let -> transformExprLet(node)
@@ -3583,92 +3255,22 @@ abstract class ToyLangIndexedToToyLangVisitorTransform : DomainVisitorTransformB
     open fun transformExprNot_metas(node: ToyLangIndexed.Expr.Not) =
         transformMetas(node.metas)
 
-    // Variant ExprPlus
-    open fun transformExprPlus(node: ToyLangIndexed.Expr.Plus): ToyLang.Expr  {
-        val new_operands = transformExprPlus_operands(node)
-        val new_metas = transformExprPlus_metas(node)
-        return             ToyLang.Expr.Plus(
+    // Variant ExprNary
+    open fun transformExprNary(node: ToyLangIndexed.Expr.Nary): ToyLang.Expr  {
+        val new_op = transformExprNary_op(node)
+        val new_operands = transformExprNary_operands(node)
+        val new_metas = transformExprNary_metas(node)
+        return             ToyLang.Expr.Nary(
+                op = new_op,
                 operands = new_operands,
                 metas = new_metas
             )
     }
-    open fun transformExprPlus_operands(node: ToyLangIndexed.Expr.Plus) =
+    open fun transformExprNary_op(node: ToyLangIndexed.Expr.Nary) =
+        transformOperator(node.op)
+    open fun transformExprNary_operands(node: ToyLangIndexed.Expr.Nary) =
         node.operands.map { transformExpr(it) }
-    open fun transformExprPlus_metas(node: ToyLangIndexed.Expr.Plus) =
-        transformMetas(node.metas)
-
-    // Variant ExprMinus
-    open fun transformExprMinus(node: ToyLangIndexed.Expr.Minus): ToyLang.Expr  {
-        val new_operands = transformExprMinus_operands(node)
-        val new_metas = transformExprMinus_metas(node)
-        return             ToyLang.Expr.Minus(
-                operands = new_operands,
-                metas = new_metas
-            )
-    }
-    open fun transformExprMinus_operands(node: ToyLangIndexed.Expr.Minus) =
-        node.operands.map { transformExpr(it) }
-    open fun transformExprMinus_metas(node: ToyLangIndexed.Expr.Minus) =
-        transformMetas(node.metas)
-
-    // Variant ExprTimes
-    open fun transformExprTimes(node: ToyLangIndexed.Expr.Times): ToyLang.Expr  {
-        val new_operands = transformExprTimes_operands(node)
-        val new_metas = transformExprTimes_metas(node)
-        return             ToyLang.Expr.Times(
-                operands = new_operands,
-                metas = new_metas
-            )
-    }
-    open fun transformExprTimes_operands(node: ToyLangIndexed.Expr.Times) =
-        node.operands.map { transformExpr(it) }
-    open fun transformExprTimes_metas(node: ToyLangIndexed.Expr.Times) =
-        transformMetas(node.metas)
-
-    // Variant ExprDivide
-    open fun transformExprDivide(node: ToyLangIndexed.Expr.Divide): ToyLang.Expr  {
-        val new_operands = transformExprDivide_operands(node)
-        val new_metas = transformExprDivide_metas(node)
-        return             ToyLang.Expr.Divide(
-                operands = new_operands,
-                metas = new_metas
-            )
-    }
-    open fun transformExprDivide_operands(node: ToyLangIndexed.Expr.Divide) =
-        node.operands.map { transformExpr(it) }
-    open fun transformExprDivide_metas(node: ToyLangIndexed.Expr.Divide) =
-        transformMetas(node.metas)
-
-    // Variant ExprModulo
-    open fun transformExprModulo(node: ToyLangIndexed.Expr.Modulo): ToyLang.Expr  {
-        val new_operands = transformExprModulo_operands(node)
-        val new_metas = transformExprModulo_metas(node)
-        return             ToyLang.Expr.Modulo(
-                operands = new_operands,
-                metas = new_metas
-            )
-    }
-    open fun transformExprModulo_operands(node: ToyLangIndexed.Expr.Modulo) =
-        node.operands.map { transformExpr(it) }
-    open fun transformExprModulo_metas(node: ToyLangIndexed.Expr.Modulo) =
-        transformMetas(node.metas)
-
-    // Variant ExprCall
-    open fun transformExprCall(node: ToyLangIndexed.Expr.Call): ToyLang.Expr  {
-        val new_name = transformExprCall_name(node)
-        val new_argument = transformExprCall_argument(node)
-        val new_metas = transformExprCall_metas(node)
-        return             ToyLang.Expr.Call(
-                name = new_name,
-                argument = new_argument,
-                metas = new_metas
-            )
-    }
-    open fun transformExprCall_name(node: ToyLangIndexed.Expr.Call) =
-        transformSymbolPrimitive(node.name)
-    open fun transformExprCall_argument(node: ToyLangIndexed.Expr.Call) =
-        transformExpr(node.argument)
-    open fun transformExprCall_metas(node: ToyLangIndexed.Expr.Call) =
+    open fun transformExprNary_metas(node: ToyLangIndexed.Expr.Nary) =
         transformMetas(node.metas)
 
     // Variant ExprFunction

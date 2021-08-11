@@ -2960,7 +2960,6 @@ class TestDomain private constructor() {
         
             override fun hashCode(): Int = 1000
         }
-    
         class Yes(
             override val metas: MetaContainer = emptyMetaContainer()
         ): Answer() {
@@ -2992,6 +2991,16 @@ class TestDomain private constructor() {
             override fun hashCode(): Int = 1001
         }
     
+        /** Converts instances of [TestDomain.Answer] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: TestDomain.Answer): T = when(node) {
+                is TestDomain.Answer.No -> convertNo(node)
+                is TestDomain.Answer.Yes -> convertYes(node)
+            }
+    
+            fun convertNo(node: TestDomain.Answer.No): T
+            fun convertYes(node: TestDomain.Answer.Yes): T
+        }
     }
     
     sealed class SumWithRecord(override val metas: MetaContainer = emptyMetaContainer()) : TestDomainNode() {
@@ -3057,6 +3066,14 @@ class TestDomain private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [TestDomain.SumWithRecord] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: TestDomain.SumWithRecord): T = when(node) {
+                is TestDomain.SumWithRecord.VariantWithRecord -> convertVariantWithRecord(node)
+            }
+    
+            fun convertVariantWithRecord(node: TestDomain.SumWithRecord.VariantWithRecord): T
+        }
     }
     
     sealed class TestSum(override val metas: MetaContainer = emptyMetaContainer()) : TestDomainNode() {
@@ -3115,7 +3132,6 @@ class TestDomain private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Two(
             val a: org.partiql.pig.runtime.LongPrimitive,
             val b: org.partiql.pig.runtime.LongPrimitive,
@@ -3172,7 +3188,6 @@ class TestDomain private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Three(
             val a: org.partiql.pig.runtime.LongPrimitive,
             val b: org.partiql.pig.runtime.LongPrimitive,
@@ -3238,6 +3253,18 @@ class TestDomain private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [TestDomain.TestSum] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: TestDomain.TestSum): T = when(node) {
+                is TestDomain.TestSum.One -> convertOne(node)
+                is TestDomain.TestSum.Two -> convertTwo(node)
+                is TestDomain.TestSum.Three -> convertThree(node)
+            }
+    
+            fun convertOne(node: TestDomain.TestSum.One): T
+            fun convertTwo(node: TestDomain.TestSum.Two): T
+            fun convertThree(node: TestDomain.TestSum.Three): T
+        }
     }
     
     sealed class Entity(override val metas: MetaContainer = emptyMetaContainer()) : TestDomainNode() {
@@ -3278,7 +3305,6 @@ class TestDomain private constructor() {
         
             override fun hashCode(): Int = 4000
         }
-    
         class Android(
             val id: org.partiql.pig.runtime.LongPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -3327,7 +3353,6 @@ class TestDomain private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Human(
             val firstName: org.partiql.pig.runtime.SymbolPrimitive,
             val middleNames: kotlin.collections.List<org.partiql.pig.runtime.SymbolPrimitive>,
@@ -3410,6 +3435,18 @@ class TestDomain private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [TestDomain.Entity] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: TestDomain.Entity): T = when(node) {
+                is TestDomain.Entity.Slug -> convertSlug(node)
+                is TestDomain.Entity.Android -> convertAndroid(node)
+                is TestDomain.Entity.Human -> convertHuman(node)
+            }
+    
+            fun convertSlug(node: TestDomain.Entity.Slug): T
+            fun convertAndroid(node: TestDomain.Entity.Android): T
+            fun convertHuman(node: TestDomain.Entity.Human): T
+        }
     }
     
     /////////////////////////////////////////////////////////////////////////////
@@ -6890,7 +6927,6 @@ class MultiWordDomain private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Mmm(
             val vField: org.partiql.pig.runtime.SymbolPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -6940,6 +6976,16 @@ class MultiWordDomain private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [MultiWordDomain.SssTtt] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: MultiWordDomain.SssTtt): T = when(node) {
+                is MultiWordDomain.SssTtt.Lll -> convertLll(node)
+                is MultiWordDomain.SssTtt.Mmm -> convertMmm(node)
+            }
+    
+            fun convertLll(node: MultiWordDomain.SssTtt.Lll): T
+            fun convertMmm(node: MultiWordDomain.SssTtt.Mmm): T
+        }
     }
     
     /////////////////////////////////////////////////////////////////////////////
@@ -8570,7 +8616,6 @@ class DomainA private constructor() {
         
             override fun hashCode(): Int = 1000
         }
-    
         class Matter(
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumToRemove() {
@@ -8602,6 +8647,16 @@ class DomainA private constructor() {
             override fun hashCode(): Int = 1001
         }
     
+        /** Converts instances of [DomainA.SumToRemove] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: DomainA.SumToRemove): T = when(node) {
+                is DomainA.SumToRemove.Doesnt -> convertDoesnt(node)
+                is DomainA.SumToRemove.Matter -> convertMatter(node)
+            }
+    
+            fun convertDoesnt(node: DomainA.SumToRemove.Doesnt): T
+            fun convertMatter(node: DomainA.SumToRemove.Matter): T
+        }
     }
     
     sealed class SumA(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
@@ -8641,7 +8696,6 @@ class DomainA private constructor() {
         
             override fun hashCode(): Int = 2000
         }
-    
         class Cares(
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumA() {
@@ -8673,6 +8727,16 @@ class DomainA private constructor() {
             override fun hashCode(): Int = 2001
         }
     
+        /** Converts instances of [DomainA.SumA] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: DomainA.SumA): T = when(node) {
+                is DomainA.SumA.Who -> convertWho(node)
+                is DomainA.SumA.Cares -> convertCares(node)
+            }
+    
+            fun convertWho(node: DomainA.SumA.Who): T
+            fun convertCares(node: DomainA.SumA.Cares): T
+        }
     }
     
     sealed class SumB(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
@@ -8713,7 +8777,6 @@ class DomainA private constructor() {
         
             override fun hashCode(): Int = 3000
         }
-    
         class WillBeRemoved(
             override val metas: MetaContainer = emptyMetaContainer()
         ): SumB() {
@@ -8744,7 +8807,6 @@ class DomainA private constructor() {
         
             override fun hashCode(): Int = 3001
         }
-    
         class WillBeReplaced(
             val something: org.partiql.pig.runtime.LongPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -8794,6 +8856,18 @@ class DomainA private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [DomainA.SumB] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: DomainA.SumB): T = when(node) {
+                is DomainA.SumB.WillBeUnchanged -> convertWillBeUnchanged(node)
+                is DomainA.SumB.WillBeRemoved -> convertWillBeRemoved(node)
+                is DomainA.SumB.WillBeReplaced -> convertWillBeReplaced(node)
+            }
+    
+            fun convertWillBeUnchanged(node: DomainA.SumB.WillBeUnchanged): T
+            fun convertWillBeRemoved(node: DomainA.SumB.WillBeRemoved): T
+            fun convertWillBeReplaced(node: DomainA.SumB.WillBeReplaced): T
+        }
     }
     
     sealed class UnpermutedSum(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
@@ -8859,7 +8933,6 @@ class DomainA private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class UnpermutedRecordVariant(
             val foo: org.partiql.pig.runtime.SymbolPrimitive,
             val bar: org.partiql.pig.runtime.LongPrimitive,
@@ -8918,6 +8991,16 @@ class DomainA private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [DomainA.UnpermutedSum] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: DomainA.UnpermutedSum): T = when(node) {
+                is DomainA.UnpermutedSum.UnpermutedProductVariant -> convertUnpermutedProductVariant(node)
+                is DomainA.UnpermutedSum.UnpermutedRecordVariant -> convertUnpermutedRecordVariant(node)
+            }
+    
+            fun convertUnpermutedProductVariant(node: DomainA.UnpermutedSum.UnpermutedProductVariant): T
+            fun convertUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant): T
+        }
     }
     
     /////////////////////////////////////////////////////////////////////////////
@@ -10629,7 +10712,6 @@ class DomainB private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class UnpermutedRecordVariant(
             val foo: org.partiql.pig.runtime.SymbolPrimitive,
             val bar: org.partiql.pig.runtime.LongPrimitive,
@@ -10688,6 +10770,16 @@ class DomainB private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [DomainB.UnpermutedSum] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: DomainB.UnpermutedSum): T = when(node) {
+                is DomainB.UnpermutedSum.UnpermutedProductVariant -> convertUnpermutedProductVariant(node)
+                is DomainB.UnpermutedSum.UnpermutedRecordVariant -> convertUnpermutedRecordVariant(node)
+            }
+    
+            fun convertUnpermutedProductVariant(node: DomainB.UnpermutedSum.UnpermutedProductVariant): T
+            fun convertUnpermutedRecordVariant(node: DomainB.UnpermutedSum.UnpermutedRecordVariant): T
+        }
     }
     
     sealed class SumB(override val metas: MetaContainer = emptyMetaContainer()) : DomainBNode() {
@@ -10727,7 +10819,6 @@ class DomainB private constructor() {
         
             override fun hashCode(): Int = 2000
         }
-    
         class WillBeReplaced(
             val something: org.partiql.pig.runtime.SymbolPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -10777,6 +10868,16 @@ class DomainB private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [DomainB.SumB] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: DomainB.SumB): T = when(node) {
+                is DomainB.SumB.WillBeUnchanged -> convertWillBeUnchanged(node)
+                is DomainB.SumB.WillBeReplaced -> convertWillBeReplaced(node)
+            }
+    
+            fun convertWillBeUnchanged(node: DomainB.SumB.WillBeUnchanged): T
+            fun convertWillBeReplaced(node: DomainB.SumB.WillBeReplaced): T
+        }
     }
     
     sealed class NewSum(override val metas: MetaContainer = emptyMetaContainer()) : DomainBNode() {
@@ -10816,7 +10917,6 @@ class DomainB private constructor() {
         
             override fun hashCode(): Int = 3000
         }
-    
         class Whatever(
             override val metas: MetaContainer = emptyMetaContainer()
         ): NewSum() {
@@ -10848,6 +10948,16 @@ class DomainB private constructor() {
             override fun hashCode(): Int = 3001
         }
     
+        /** Converts instances of [DomainB.NewSum] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: DomainB.NewSum): T = when(node) {
+                is DomainB.NewSum.Eek -> convertEek(node)
+                is DomainB.NewSum.Whatever -> convertWhatever(node)
+            }
+    
+            fun convertEek(node: DomainB.NewSum.Eek): T
+            fun convertWhatever(node: DomainB.NewSum.Whatever): T
+        }
     }
     
     /////////////////////////////////////////////////////////////////////////////

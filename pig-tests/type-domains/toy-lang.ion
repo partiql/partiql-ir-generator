@@ -4,16 +4,12 @@
 // Toy has literals, variables, basic arithmetic and functions that accept a single argument.
 (define toy_lang
  (domain
+   (sum operator (plus) (minus) (times) (divide) (modulo))
     (sum expr
         (lit value::ion)
         (variable name::symbol)
         (not expr::expr)
-        (plus operands::(* expr 2))
-        (minus operands::(* expr 2))
-        (times operands::(* expr 2))
-        (divide operands::(* expr 2))
-        (modulo operands::(* expr 2))
-        (call name::symbol argument::expr)
+        (nary op::operator operands::(* expr 0))
         (let name::symbol value::expr body::expr)
         (function var_name::symbol body::expr))))
 

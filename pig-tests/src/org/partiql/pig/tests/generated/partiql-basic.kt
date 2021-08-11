@@ -1680,7 +1680,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class ProjectValue(
             val value: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -1730,6 +1729,16 @@ class PartiqlBasic private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [PartiqlBasic.Projection] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: PartiqlBasic.Projection): T = when(node) {
+                is PartiqlBasic.Projection.ProjectList -> convertProjectList(node)
+                is PartiqlBasic.Projection.ProjectValue -> convertProjectValue(node)
+            }
+    
+            fun convertProjectList(node: PartiqlBasic.Projection.ProjectList): T
+            fun convertProjectValue(node: PartiqlBasic.Projection.ProjectValue): T
+        }
     }
     
     sealed class ProjectItem(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
@@ -1769,7 +1778,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = 2000
         }
-    
         class ProjectExpr(
             val value: Expr,
             val asAlias: org.partiql.pig.runtime.SymbolPrimitive?,
@@ -1827,6 +1835,16 @@ class PartiqlBasic private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [PartiqlBasic.ProjectItem] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: PartiqlBasic.ProjectItem): T = when(node) {
+                is PartiqlBasic.ProjectItem.ProjectAll -> convertProjectAll(node)
+                is PartiqlBasic.ProjectItem.ProjectExpr -> convertProjectExpr(node)
+            }
+    
+            fun convertProjectAll(node: PartiqlBasic.ProjectItem.ProjectAll): T
+            fun convertProjectExpr(node: PartiqlBasic.ProjectItem.ProjectExpr): T
+        }
     }
     
     sealed class JoinType(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
@@ -1868,7 +1886,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = 3000
         }
-    
         class Left(
             override val metas: MetaContainer = emptyMetaContainer()
         ): JoinType() {
@@ -1899,7 +1916,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = 3001
         }
-    
         class Right(
             override val metas: MetaContainer = emptyMetaContainer()
         ): JoinType() {
@@ -1930,7 +1946,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = 3002
         }
-    
         class Outer(
             override val metas: MetaContainer = emptyMetaContainer()
         ): JoinType() {
@@ -1962,6 +1977,20 @@ class PartiqlBasic private constructor() {
             override fun hashCode(): Int = 3003
         }
     
+        /** Converts instances of [PartiqlBasic.JoinType] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: PartiqlBasic.JoinType): T = when(node) {
+                is PartiqlBasic.JoinType.Inner -> convertInner(node)
+                is PartiqlBasic.JoinType.Left -> convertLeft(node)
+                is PartiqlBasic.JoinType.Right -> convertRight(node)
+                is PartiqlBasic.JoinType.Outer -> convertOuter(node)
+            }
+    
+            fun convertInner(node: PartiqlBasic.JoinType.Inner): T
+            fun convertLeft(node: PartiqlBasic.JoinType.Left): T
+            fun convertRight(node: PartiqlBasic.JoinType.Right): T
+            fun convertOuter(node: PartiqlBasic.JoinType.Outer): T
+        }
     }
     
     sealed class FromSource(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
@@ -2043,7 +2072,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Join(
             val type: JoinType,
             val left: FromSource,
@@ -2117,6 +2145,16 @@ class PartiqlBasic private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [PartiqlBasic.FromSource] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: PartiqlBasic.FromSource): T = when(node) {
+                is PartiqlBasic.FromSource.Scan -> convertScan(node)
+                is PartiqlBasic.FromSource.Join -> convertJoin(node)
+            }
+    
+            fun convertScan(node: PartiqlBasic.FromSource.Scan): T
+            fun convertJoin(node: PartiqlBasic.FromSource.Join): T
+        }
     }
     
     sealed class CaseSensitivity(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
@@ -2156,7 +2194,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = 5000
         }
-    
         class CaseInsensitive(
             override val metas: MetaContainer = emptyMetaContainer()
         ): CaseSensitivity() {
@@ -2188,6 +2225,16 @@ class PartiqlBasic private constructor() {
             override fun hashCode(): Int = 5001
         }
     
+        /** Converts instances of [PartiqlBasic.CaseSensitivity] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: PartiqlBasic.CaseSensitivity): T = when(node) {
+                is PartiqlBasic.CaseSensitivity.CaseSensitive -> convertCaseSensitive(node)
+                is PartiqlBasic.CaseSensitivity.CaseInsensitive -> convertCaseInsensitive(node)
+            }
+    
+            fun convertCaseSensitive(node: PartiqlBasic.CaseSensitivity.CaseSensitive): T
+            fun convertCaseInsensitive(node: PartiqlBasic.CaseSensitivity.CaseInsensitive): T
+        }
     }
     
     sealed class ScopeQualifier(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
@@ -2227,7 +2274,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = 6000
         }
-    
         class Qualified(
             override val metas: MetaContainer = emptyMetaContainer()
         ): ScopeQualifier() {
@@ -2259,6 +2305,16 @@ class PartiqlBasic private constructor() {
             override fun hashCode(): Int = 6001
         }
     
+        /** Converts instances of [PartiqlBasic.ScopeQualifier] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: PartiqlBasic.ScopeQualifier): T = when(node) {
+                is PartiqlBasic.ScopeQualifier.Unqualified -> convertUnqualified(node)
+                is PartiqlBasic.ScopeQualifier.Qualified -> convertQualified(node)
+            }
+    
+            fun convertUnqualified(node: PartiqlBasic.ScopeQualifier.Unqualified): T
+            fun convertQualified(node: PartiqlBasic.ScopeQualifier.Qualified): T
+        }
     }
     
     sealed class SetQuantifier(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
@@ -2298,7 +2354,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = 7000
         }
-    
         class Distinct(
             override val metas: MetaContainer = emptyMetaContainer()
         ): SetQuantifier() {
@@ -2330,6 +2385,16 @@ class PartiqlBasic private constructor() {
             override fun hashCode(): Int = 7001
         }
     
+        /** Converts instances of [PartiqlBasic.SetQuantifier] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: PartiqlBasic.SetQuantifier): T = when(node) {
+                is PartiqlBasic.SetQuantifier.All -> convertAll(node)
+                is PartiqlBasic.SetQuantifier.Distinct -> convertDistinct(node)
+            }
+    
+            fun convertAll(node: PartiqlBasic.SetQuantifier.All): T
+            fun convertDistinct(node: PartiqlBasic.SetQuantifier.Distinct): T
+        }
     }
     
     sealed class PathElement(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
@@ -2388,7 +2453,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class PathWildcard(
             override val metas: MetaContainer = emptyMetaContainer()
         ): PathElement() {
@@ -2419,7 +2483,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = 8001
         }
-    
         class PathUnpivot(
             override val metas: MetaContainer = emptyMetaContainer()
         ): PathElement() {
@@ -2451,6 +2514,18 @@ class PartiqlBasic private constructor() {
             override fun hashCode(): Int = 8002
         }
     
+        /** Converts instances of [PartiqlBasic.PathElement] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: PartiqlBasic.PathElement): T = when(node) {
+                is PartiqlBasic.PathElement.PathExpr -> convertPathExpr(node)
+                is PartiqlBasic.PathElement.PathWildcard -> convertPathWildcard(node)
+                is PartiqlBasic.PathElement.PathUnpivot -> convertPathUnpivot(node)
+            }
+    
+            fun convertPathExpr(node: PartiqlBasic.PathElement.PathExpr): T
+            fun convertPathWildcard(node: PartiqlBasic.PathElement.PathWildcard): T
+            fun convertPathUnpivot(node: PartiqlBasic.PathElement.PathUnpivot): T
+        }
     }
     
     sealed class Expr(override val metas: MetaContainer = emptyMetaContainer()) : PartiqlBasicNode() {
@@ -2527,7 +2602,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Id(
             val name: org.partiql.pig.runtime.SymbolPrimitive,
             val case: CaseSensitivity,
@@ -2592,7 +2666,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Parameter(
             val index: org.partiql.pig.runtime.LongPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -2641,7 +2714,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Not(
             val expr: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -2690,7 +2762,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Plus(
             val operands: kotlin.collections.List<Expr>,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -2739,7 +2810,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Minus(
             val operands: kotlin.collections.List<Expr>,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -2788,7 +2858,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Times(
             val operands: kotlin.collections.List<Expr>,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -2837,7 +2906,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Divide(
             val operands: kotlin.collections.List<Expr>,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -2886,7 +2954,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Modulo(
             val operands: kotlin.collections.List<Expr>,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -2935,7 +3002,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Concat(
             val operands: kotlin.collections.List<Expr>,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -2984,7 +3050,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Like(
             val left: Expr,
             val right: Expr,
@@ -3049,7 +3114,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Between(
             val value: Expr,
             val from: Expr,
@@ -3114,7 +3178,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Path(
             val root: Expr,
             val elements: kotlin.collections.List<PathElement>,
@@ -3171,7 +3234,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Call(
             val name: org.partiql.pig.runtime.SymbolPrimitive,
             val args: kotlin.collections.List<Expr>,
@@ -3228,7 +3290,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class CallAgg(
             val name: org.partiql.pig.runtime.SymbolPrimitive,
             val setQuantifier: SetQuantifier,
@@ -3293,7 +3354,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class SimpleCase(
             val value: Expr,
             val branches: kotlin.collections.List<ExprPair>,
@@ -3350,7 +3410,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class SearchedCase(
             val branches: kotlin.collections.List<ExprPair>,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -3399,7 +3458,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Struct(
             val fields: kotlin.collections.List<ExprPair>,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -3448,7 +3506,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Bag(
             val values: kotlin.collections.List<Expr>,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -3497,7 +3554,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class List(
             val values: kotlin.collections.List<Expr>,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -3546,7 +3602,6 @@ class PartiqlBasic private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
-    
         class Select(
             val setq: SetQuantifier?,
             val project: Projection,
@@ -3645,6 +3700,54 @@ class PartiqlBasic private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
+        /** Converts instances of [PartiqlBasic.Expr] to any [T]. */
+        interface Converter<T> {
+            open fun convert(node: PartiqlBasic.Expr): T = when(node) {
+                is PartiqlBasic.Expr.Lit -> convertLit(node)
+                is PartiqlBasic.Expr.Id -> convertId(node)
+                is PartiqlBasic.Expr.Parameter -> convertParameter(node)
+                is PartiqlBasic.Expr.Not -> convertNot(node)
+                is PartiqlBasic.Expr.Plus -> convertPlus(node)
+                is PartiqlBasic.Expr.Minus -> convertMinus(node)
+                is PartiqlBasic.Expr.Times -> convertTimes(node)
+                is PartiqlBasic.Expr.Divide -> convertDivide(node)
+                is PartiqlBasic.Expr.Modulo -> convertModulo(node)
+                is PartiqlBasic.Expr.Concat -> convertConcat(node)
+                is PartiqlBasic.Expr.Like -> convertLike(node)
+                is PartiqlBasic.Expr.Between -> convertBetween(node)
+                is PartiqlBasic.Expr.Path -> convertPath(node)
+                is PartiqlBasic.Expr.Call -> convertCall(node)
+                is PartiqlBasic.Expr.CallAgg -> convertCallAgg(node)
+                is PartiqlBasic.Expr.SimpleCase -> convertSimpleCase(node)
+                is PartiqlBasic.Expr.SearchedCase -> convertSearchedCase(node)
+                is PartiqlBasic.Expr.Struct -> convertStruct(node)
+                is PartiqlBasic.Expr.Bag -> convertBag(node)
+                is PartiqlBasic.Expr.List -> convertList(node)
+                is PartiqlBasic.Expr.Select -> convertSelect(node)
+            }
+    
+            fun convertLit(node: PartiqlBasic.Expr.Lit): T
+            fun convertId(node: PartiqlBasic.Expr.Id): T
+            fun convertParameter(node: PartiqlBasic.Expr.Parameter): T
+            fun convertNot(node: PartiqlBasic.Expr.Not): T
+            fun convertPlus(node: PartiqlBasic.Expr.Plus): T
+            fun convertMinus(node: PartiqlBasic.Expr.Minus): T
+            fun convertTimes(node: PartiqlBasic.Expr.Times): T
+            fun convertDivide(node: PartiqlBasic.Expr.Divide): T
+            fun convertModulo(node: PartiqlBasic.Expr.Modulo): T
+            fun convertConcat(node: PartiqlBasic.Expr.Concat): T
+            fun convertLike(node: PartiqlBasic.Expr.Like): T
+            fun convertBetween(node: PartiqlBasic.Expr.Between): T
+            fun convertPath(node: PartiqlBasic.Expr.Path): T
+            fun convertCall(node: PartiqlBasic.Expr.Call): T
+            fun convertCallAgg(node: PartiqlBasic.Expr.CallAgg): T
+            fun convertSimpleCase(node: PartiqlBasic.Expr.SimpleCase): T
+            fun convertSearchedCase(node: PartiqlBasic.Expr.SearchedCase): T
+            fun convertStruct(node: PartiqlBasic.Expr.Struct): T
+            fun convertBag(node: PartiqlBasic.Expr.Bag): T
+            fun convertList(node: PartiqlBasic.Expr.List): T
+            fun convertSelect(node: PartiqlBasic.Expr.Select): T
+        }
     }
     
     /////////////////////////////////////////////////////////////////////////////
