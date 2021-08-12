@@ -77,8 +77,8 @@ transformation code.
 // Toy has literals, variables, basic arithmetic and functions that accept a single argument. 
 
 (define toy_lang
- (domain
-   (sum operator (plus) (minus) (times) (divide) (modulo))
+    (domain
+        (sum operator (plus) (minus) (times) (divide) (modulo))
     (sum expr
         (lit value::ion)
         (variable name::symbol)
@@ -89,13 +89,13 @@ transformation code.
 
 // Define another type domain which extends "toy_lang" by removing named variables and adding DeBruijn indices:
 (define toy_lang_indexed
-  (permute_domain toy_lang
-    (with expr
-      (exclude variable let)
-      (include
-        // We are adding the `index` element here.
-        (variable name::symbol index::int)
-        (let name::symbol index::int value::expr body::expr)))))
+    (permute_domain toy_lang
+        (with expr
+            (exclude variable let)
+            (include
+            // We are adding the `index` element here.
+            (variable name::symbol index::int)
+            (let name::symbol index::int value::expr body::expr)))))
 ```
 
 ### Generated Kotlin Domain Model Sample

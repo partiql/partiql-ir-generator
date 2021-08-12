@@ -372,6 +372,7 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = 1000
         }
+    
         class Minus(
             override val metas: MetaContainer = emptyMetaContainer()
         ): Operator() {
@@ -402,6 +403,7 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = 1001
         }
+    
         class Times(
             override val metas: MetaContainer = emptyMetaContainer()
         ): Operator() {
@@ -432,6 +434,7 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = 1002
         }
+    
         class Divide(
             override val metas: MetaContainer = emptyMetaContainer()
         ): Operator() {
@@ -462,6 +465,7 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = 1003
         }
+    
         class Modulo(
             override val metas: MetaContainer = emptyMetaContainer()
         ): Operator() {
@@ -495,7 +499,7 @@ class ToyLang private constructor() {
     
         /** Converts instances of [ToyLang.Operator] to any [T]. */
         interface Converter<T> {
-            open fun convert(node: ToyLang.Operator): T = when(node) {
+            fun convert(node: ToyLang.Operator): T = when(node) {
                 is ToyLang.Operator.Plus -> convertPlus(node)
                 is ToyLang.Operator.Minus -> convertMinus(node)
                 is ToyLang.Operator.Times -> convertTimes(node)
@@ -570,6 +574,7 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
+    
         class Variable(
             val name: org.partiql.pig.runtime.SymbolPrimitive,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -618,6 +623,7 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
+    
         class Not(
             val expr: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -666,6 +672,7 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
+    
         class Nary(
             val op: Operator,
             val operands: kotlin.collections.List<Expr>,
@@ -722,6 +729,7 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
+    
         class Let(
             val name: org.partiql.pig.runtime.SymbolPrimitive,
             val value: Expr,
@@ -786,6 +794,7 @@ class ToyLang private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
+    
         class Function(
             val varName: org.partiql.pig.runtime.SymbolPrimitive,
             val body: Expr,
@@ -845,7 +854,7 @@ class ToyLang private constructor() {
     
         /** Converts instances of [ToyLang.Expr] to any [T]. */
         interface Converter<T> {
-            open fun convert(node: ToyLang.Expr): T = when(node) {
+            fun convert(node: ToyLang.Expr): T = when(node) {
                 is ToyLang.Expr.Lit -> convertLit(node)
                 is ToyLang.Expr.Variable -> convertVariable(node)
                 is ToyLang.Expr.Not -> convertNot(node)
@@ -1858,6 +1867,7 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = 1000
         }
+    
         class Minus(
             override val metas: MetaContainer = emptyMetaContainer()
         ): Operator() {
@@ -1888,6 +1898,7 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = 1001
         }
+    
         class Times(
             override val metas: MetaContainer = emptyMetaContainer()
         ): Operator() {
@@ -1918,6 +1929,7 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = 1002
         }
+    
         class Divide(
             override val metas: MetaContainer = emptyMetaContainer()
         ): Operator() {
@@ -1948,6 +1960,7 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = 1003
         }
+    
         class Modulo(
             override val metas: MetaContainer = emptyMetaContainer()
         ): Operator() {
@@ -1981,7 +1994,7 @@ class ToyLangIndexed private constructor() {
     
         /** Converts instances of [ToyLangIndexed.Operator] to any [T]. */
         interface Converter<T> {
-            open fun convert(node: ToyLangIndexed.Operator): T = when(node) {
+            fun convert(node: ToyLangIndexed.Operator): T = when(node) {
                 is ToyLangIndexed.Operator.Plus -> convertPlus(node)
                 is ToyLangIndexed.Operator.Minus -> convertMinus(node)
                 is ToyLangIndexed.Operator.Times -> convertTimes(node)
@@ -2056,6 +2069,7 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
+    
         class Not(
             val expr: Expr,
             override val metas: MetaContainer = emptyMetaContainer()
@@ -2104,6 +2118,7 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
+    
         class Nary(
             val op: Operator,
             val operands: kotlin.collections.List<Expr>,
@@ -2160,6 +2175,7 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
+    
         class Function(
             val varName: org.partiql.pig.runtime.SymbolPrimitive,
             val body: Expr,
@@ -2216,6 +2232,7 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
+    
         class Variable(
             val name: org.partiql.pig.runtime.SymbolPrimitive,
             val index: org.partiql.pig.runtime.LongPrimitive,
@@ -2272,6 +2289,7 @@ class ToyLangIndexed private constructor() {
         
             override fun hashCode(): Int = myHashCode
         }
+    
         class Let(
             val name: org.partiql.pig.runtime.SymbolPrimitive,
             val index: org.partiql.pig.runtime.LongPrimitive,
@@ -2347,7 +2365,7 @@ class ToyLangIndexed private constructor() {
     
         /** Converts instances of [ToyLangIndexed.Expr] to any [T]. */
         interface Converter<T> {
-            open fun convert(node: ToyLangIndexed.Expr): T = when(node) {
+            fun convert(node: ToyLangIndexed.Expr): T = when(node) {
                 is ToyLangIndexed.Expr.Lit -> convertLit(node)
                 is ToyLangIndexed.Expr.Not -> convertNot(node)
                 is ToyLangIndexed.Expr.Nary -> convertNary(node)

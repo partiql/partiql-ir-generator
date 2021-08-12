@@ -280,11 +280,11 @@ sealed class ${s.kotlinName}(override val metas: MetaContainer = emptyMetaContai
 [@indent count=4]
     [@tuple t = v index = ((s?index + 1) * 1000 + v?index) /]
 [/@indent]
-[/#list]
 
+[/#list]
     /** Converts instances of [${domain.kotlinName}.${s.kotlinName}] to any [T]. */
     interface Converter<T> {
-        open fun convert(node: ${domain.kotlinName}.${s.kotlinName}): T = when(node) {
+        fun convert(node: ${domain.kotlinName}.${s.kotlinName}): T = when(node) {
         [#list s.variants as t]
             is ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName} -> convert${t.kotlinName}(node)
         [/#list]
@@ -360,7 +360,6 @@ private class IonElementTransformer : IonElementTransformerBase<${domain.kotlinN
 [#include "kotlin-visitor.ftl"]
 [#include "kotlin-visitor-fold.ftl"]
 [#include "kotlin-visitor-transform.ftl"]
-
 
 [/@indent]
 }
