@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain
+package org.partiql.pig.domain.parser
 
 import com.amazon.ionelement.api.IonElementLoaderOptions
 import com.amazon.ionelement.api.createIonElementLoader
@@ -22,6 +22,7 @@ import com.amazon.ionelement.api.ionSymbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.partiql.pig.domain.toIonElement
 import org.partiql.pig.util.parseTypeUniverseString
 
 class TypeDomainParserTests {

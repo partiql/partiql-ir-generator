@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.include
+package org.partiql.pig.domain.parser.include
 
 import org.partiql.pig.domain.model.Statement
 import org.partiql.pig.domain.parser.TypeUniverseParser

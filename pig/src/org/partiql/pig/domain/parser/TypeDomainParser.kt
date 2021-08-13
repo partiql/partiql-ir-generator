@@ -32,10 +32,10 @@ import com.amazon.ionelement.api.location
 import com.amazon.ionelement.api.metaContainerOf
 import com.amazon.ionelement.api.tag
 import com.amazon.ionelement.api.tail
-import org.partiql.pig.domain.include.IncludeCycleHandler
-import org.partiql.pig.domain.include.IncludeResolutionException
-import org.partiql.pig.domain.include.IncludeResolver
-import org.partiql.pig.domain.include.InputSource
+import org.partiql.pig.domain.parser.include.IncludeCycleHandler
+import org.partiql.pig.domain.parser.include.IncludeResolutionException
+import org.partiql.pig.domain.parser.include.IncludeResolver
+import org.partiql.pig.domain.parser.include.InputSource
 import org.partiql.pig.domain.model.Arity
 import org.partiql.pig.domain.model.DataType
 import org.partiql.pig.domain.model.NamedElement
@@ -137,15 +137,20 @@ internal class TypeUniverseParser(
     private fun parseIncludeFile(sexp: SexpElement): List<Statement> {
         requireArityForTag(sexp, 1)
         val includeePath = sexp.tail.single().asString()
+        val includeePathText = includeePath.textValue.trim()
 
-        includeePath.textValue.forEach {
+        includeePathText.forEach {
             if (!isValidPathChar(it)) {
                 parseError(includeePath, ParserErrorContext.IncludeFilePathContainsIllegalCharacter(it))
             }
         }
 
-        if(includeePath.textValue.contains("..")) {
+        if(includeePathText.contains("..")) {
             parseError(includeePath, ParserErrorContext.IncludeFilePathContainsParentDirectory)
+        }
+
+        if(includeePathText.startsWith('/')) {
+            parseError(includeePath, ParserErrorContext.IncludeFilePathMustNotStartWithRoot)
         }
 
         return try {

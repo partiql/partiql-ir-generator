@@ -13,17 +13,13 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.include
+package org.partiql.pig.domain.parser.include
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import org.partiql.pig.domain.include.IncludeResolver
-import org.partiql.pig.domain.include.IncludeResolutionException
-import org.partiql.pig.domain.include.InvalidIncludePathException
-import java.nio.file.FileSystem
 import java.nio.file.FileSystems
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -61,20 +57,19 @@ class IncludeResolverTests {
         fun notFoundCases() = listOf(
             NotFoundCase(
                 includee = "does-not-exist.ion",
-                expectedConsdieredPaths = listOf(
-                    // no / at start of includePath, therefore we include the parent directory of the includer
-                    Paths.get("test-domains/does-not-exist.ion").toAbsolutePath().toString(),
-                    Paths.get("test-domains/root_a/does-not-exist.ion").toAbsolutePath().toString(),
-                    Paths.get("test-domains/root_b/does-not-exist.ion").toAbsolutePath().toString()
-                )
+                expectedConsdieredPaths = expectedConsideredPaths
             ),
             NotFoundCase(
                 includee = "/does-not-exist.ion",
-                expectedConsdieredPaths = listOf(
-                    // / at start of includePath, therefore we exclude the parent directory of the includer.
-                    Paths.get("test-domains/root_a/does-not-exist.ion").toAbsolutePath().toString(),
-                    Paths.get("test-domains/root_b/does-not-exist.ion").toAbsolutePath().toString())
-                )
+                expectedConsdieredPaths = expectedConsideredPaths
+            )
+        )
+
+        private val expectedConsideredPaths
+            get() = listOf(
+                Paths.get("test-domains/does-not-exist.ion").toAbsolutePath().toString(),
+                Paths.get("test-domains/root_a/does-not-exist.ion").toAbsolutePath().toString(),
+                Paths.get("test-domains/root_b/does-not-exist.ion").toAbsolutePath().toString()
             )
     }
 

@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.include
+package org.partiql.pig.domain.parser.include
 
 import java.lang.Exception
 

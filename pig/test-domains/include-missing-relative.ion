@@ -1,4 +1,0 @@
-
-// This file attempts to include a missing file specified with a relative (not prefixed with '/') path
-
-(include_file "does-not-exist.ion")

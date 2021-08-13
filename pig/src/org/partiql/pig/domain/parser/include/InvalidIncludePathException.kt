@@ -13,10 +13,13 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.include
+package org.partiql.pig.domain.parser.include
 
-import java.io.InputStream
-import java.nio.file.Path
+/**
+ * Thrown by [IncludeResolver] to indicate that one of the search roots passed to it is invalid.
+ *
+ * Search roots are normally specified on the command-line.
+ */
+class InvalidIncludePathException(invalidIncludePath: String)
+    : Exception("Specified include path '$invalidIncludePath' does not exist or is not a directory.")
 
-/** Provides a convenient way to associate an inputStream with it's path. */
-class InputSource(val absolutePath: Path, val inputStream: InputStream)

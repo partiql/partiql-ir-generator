@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.include
+package org.partiql.pig.domain.parser.include
 
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -65,23 +65,17 @@ internal class IncludeResolver(
     fun resolve(includeeFile: Path, includerFile: Path): Path {
         val normalizedIncluder = includerFile.normalize().toAbsolutePath()
 
-        // Determine list of all possible search roots, excluding the includer's parent directory if
-        // the includee is an absolute path.
+        // Determine list of all possible search roots
         val includerParentDir = normalizedIncluder.parent
-        val searchPaths = listOfNotNull(
-            includerParentDir.takeIf { !includeeFile.isAbsolute },
-            *searchDirectories
-        ).distinct()
+
+        val searchPaths = listOf(includerParentDir, *searchDirectories).distinct()
         // distinct is needed because duplicate entries can arise in this list, for instance if the
-        // includer's parent directory is the same as a include directory. Primarily this is needed to
+        // includer's parent directory is the same as an include directory. Primarily this is needed to
         // prevent the directory from appearing twice in the error messages we display when we can't
         // find an include file.
 
         val possibleIncludeeFiles = searchPaths
             .map {
-                // Truncates / at the beginning of an absolute path. This forces absolute paths of includees
-                // to be relative to the include paths specified on the command-line and prevents them from being relative
-                // to the includer.
                 val appendPath = when {
                     includeeFile.isAbsolute -> includeeFile.toString().substring(1)
                     else -> includeeFile.toString()
@@ -92,7 +86,6 @@ internal class IncludeResolver(
 
         // The resolved file is the first one that exists.
         return possibleIncludeeFiles.firstOrNull { Files.exists(it) }
-            // TODO: can we used a algebraic type here instead of an exception?
             ?: throw IncludeResolutionException(
                 inputFilePathString = includeeFile.toString(),
                 consideredFilePaths = possibleIncludeeFiles.map { "$it" })

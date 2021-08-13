@@ -13,15 +13,13 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain
+package org.partiql.pig.domain.parser
 
 import com.amazon.ionelement.api.IonTextLocation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.partiql.pig.domain.model.TypeDomain
-import org.partiql.pig.domain.parser.ParserErrorContext
-import org.partiql.pig.domain.parser.SourceLocation
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.util.MAIN_DOMAINS_DIR
@@ -51,28 +49,16 @@ class TypeDomainParserIncludeFileTests {
         )
     }
 
-    @Test
-    fun `include sad case - missing include - relative path`() {
-        val includeeFile = "does-not-exist.ion"
-        testMissingInclude(
-            mainUniverseFile = "test-domains/include-missing-relative.ion",
-            includeeFile = includeeFile,
-            pathsSearched = listOf(
-                "${MAIN_DOMAINS_DIR}/$includeeFile",
-                "${ROOT_A.resolve("does-not-exist.ion").toAbsolutePath()}",
-                "${ROOT_B.resolve("does-not-exist.ion").toAbsolutePath()}"
-            )
-        )
-    }
+
 
     @Test
     fun `include sad case - missing include - absolute path`() {
-        val includeeFile = "/dir_x/does-not-exist.ion"
+        val includeeFile = "dir_x/does-not-exist.ion"
         testMissingInclude(
-            mainUniverseFile = "test-domains/include-missing-absolute.ion",
+            mainUniverseFile = "test-domains/include-missing.ion",
             includeeFile = includeeFile,
             pathsSearched = listOf(
-                "${MAIN_DOMAINS_DIR}$includeeFile",
+                "${MAIN_DOMAINS_DIR}/$includeeFile",
                 "${ROOT_A.resolve("dir_x/does-not-exist.ion").toAbsolutePath()}",
                 "${ROOT_B.resolve("dir_x/does-not-exist.ion").toAbsolutePath()}"
             )

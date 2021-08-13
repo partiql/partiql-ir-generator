@@ -18,7 +18,7 @@ package org.partiql.pig
 import org.partiql.pig.cmdline.Command
 import org.partiql.pig.cmdline.CommandLineParser
 import org.partiql.pig.cmdline.TargetLanguage
-import org.partiql.pig.domain.include.InvalidIncludePathException
+import org.partiql.pig.domain.parser.include.InvalidIncludePathException
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.domain.parser.parseMainTypeUniverse

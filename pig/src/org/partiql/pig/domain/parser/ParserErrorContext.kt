@@ -69,6 +69,9 @@ sealed class ParserErrorContext(val msgFormatter: () -> String): ErrorContext {
     object IncludeFilePathContainsParentDirectory
         : ParserErrorContext({ "include_file path contained parent directory, i.e. \"..\"" })
 
+    object IncludeFilePathMustNotStartWithRoot
+        : ParserErrorContext({ "include_file path must not start with '/'" })
+
     data class ExpectedTypeReferenceArityTag(val tag: String)
         : ParserErrorContext({ "Expected '*' or '?' but found '$tag'"})
 

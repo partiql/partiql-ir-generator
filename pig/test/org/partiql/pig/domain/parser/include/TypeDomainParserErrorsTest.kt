@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain
+package org.partiql.pig.domain.parser.include
 
 import com.amazon.ionelement.api.ElementType
 import com.amazon.ionelement.api.IonElementLoaderException
@@ -22,7 +22,9 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+import org.partiql.pig.domain.makeErr
 import org.partiql.pig.domain.parser.ParserErrorContext
+import org.partiql.pig.domain.toIonElement
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.util.makeFakePath
@@ -116,10 +118,10 @@ class TypeDomainParserErrorsTest {
                         listOf(makeFakePath("some-non-existing-file.ion"))
                 ))),
             TestCase(
-                "(include_file \"/some-sub-dir/some-non-existing-file.ion\")",
+                "(include_file \"some-sub-dir/some-non-existing-file.ion\")",
                 makeErr(1, 1,
                     ParserErrorContext.IncludeFileNotFound(
-                        "/some-sub-dir/some-non-existing-file.ion",
+                        "some-sub-dir/some-non-existing-file.ion",
                         listOf(makeFakePath("some-sub-dir/some-non-existing-file.ion"))
                 ))),
             TestCase(
