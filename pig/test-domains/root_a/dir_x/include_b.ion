@@ -1,0 +1,3 @@
+
+// include file with an aboslute path
+(include_file "dir_z/universe_b.ion")

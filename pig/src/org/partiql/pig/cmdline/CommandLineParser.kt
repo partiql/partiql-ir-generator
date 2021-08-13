@@ -16,8 +16,9 @@
 package org.partiql.pig.cmdline
 
 import joptsimple.*
-import java.io.File
 import java.io.PrintStream
+import java.nio.file.Path
+import java.nio.file.Paths
 
 
 class CommandLineParser {
@@ -30,7 +31,7 @@ class CommandLineParser {
         HTML
     }
 
-    private object languageTargetTypeValueConverter : ValueConverter<LanguageTargetType> {
+    private object LanguageTargetTypeValueConverter : ValueConverter<LanguageTargetType> {
         private val lookup = LanguageTargetType.values().associateBy { it.name.toLowerCase() }
 
         override fun convert(value: String?): LanguageTargetType {
@@ -47,6 +48,12 @@ class CommandLineParser {
         }
     }
 
+    private object PathValueConverter : ValueConverter<Path> {
+        override fun convert(value: String?): Path = Paths.get(value).toAbsolutePath().normalize()
+        override fun valueType(): Class<out Path> = Path::class.java
+        override fun valuePattern(): String? = null
+    }
+
     private val formatter = object : BuiltinHelpFormatter(120, 2) {
         override fun format(options: MutableMap<String, out OptionDescriptor>?): String {
             return """PartiQL I.R. Generator
@@ -56,6 +63,8 @@ class CommandLineParser {
                 |
                 |  --target=kotlin requires --namespace=<ns>
                 |  --target=custom requires --template=<path-to-template>
+                |  All paths specified in these command-line options are relative to the current working
+                |  directory by default.
                 | 
                 |Examples:
                 |
@@ -65,7 +74,9 @@ class CommandLineParser {
         """.trimMargin()
         }
     }
-    private val optParser = OptionParser().also { it.formatHelpWith(formatter) }
+    private val optParser = OptionParser().apply {
+        formatHelpWith(formatter)
+    }
 
 
     private val helpOpt = optParser.acceptsAll(listOf("help", "h", "?"), "prints this help")
@@ -73,18 +84,22 @@ class CommandLineParser {
 
     private val universeOpt = optParser.acceptsAll(listOf("universe", "u"), "Type universe input file")
         .withRequiredArg()
-        .ofType(File::class.java)
+        .withValuesConvertedBy(PathValueConverter)
         .required()
+
+    private val includeSearchRootOpt = optParser.acceptsAll(listOf("include", "I"), "Include search path")
+        .withRequiredArg()
+        .withValuesConvertedBy(PathValueConverter)
+        .describedAs("Search path for files included with include_file. May be specified multiple times.")
 
     private val outputOpt = optParser.acceptsAll(listOf("output", "o"), "Generated output file")
         .withRequiredArg()
-        .ofType(File::class.java)
+        .withValuesConvertedBy(PathValueConverter)
         .required()
 
     private val targetTypeOpt = optParser.acceptsAll(listOf("target", "t"), "Target language")
         .withRequiredArg()
-        //.ofType(LanguageTargetType::class.java)
-        .withValuesConvertedBy(languageTargetTypeValueConverter)
+        .withValuesConvertedBy(LanguageTargetTypeValueConverter)
         .required()
 
     private val namespaceOpt = optParser.acceptsAll(listOf("namespace", "n"), "Namespace for generated code")
@@ -93,7 +108,7 @@ class CommandLineParser {
 
     private val templateOpt = optParser.acceptsAll(listOf("template", "e"), "Path to an Apache FreeMarker template")
         .withOptionalArg()
-        .ofType(File::class.java)
+        .withValuesConvertedBy(PathValueConverter)
 
 
     /**
@@ -116,9 +131,15 @@ class CommandLineParser {
                 optSet.has(helpOpt) -> Command.ShowHelp
                 else -> {
                     // !! is fine in this case since we define these options as .required() above.
-                    val typeUniverseFile: File = optSet.valueOf(universeOpt)!!
+                    val typeUniverseFile: Path = optSet.valueOf(universeOpt)!!
                     val targetType = optSet.valueOf(targetTypeOpt)!!
-                    val outputFile: File = optSet.valueOf(outputOpt)!!
+                    val outputFile: Path = optSet.valueOf(outputOpt)!!
+
+                    // Always add the parent of the file containing the main type universe as an include root.
+                    val includeSearchRoots = listOf(
+                        typeUniverseFile.parent,
+                        *optSet.valuesOf(includeSearchRootOpt)!!.toTypedArray()
+                    )
 
                     if (targetType.requireNamespace) {
                         if (!optSet.has(namespaceOpt)) {
@@ -145,13 +166,11 @@ class CommandLineParser {
                         LanguageTargetType.CUSTOM -> TargetLanguage.Custom(optSet.valueOf(templateOpt))
                     }
 
-                    Command.Generate(typeUniverseFile, outputFile, target)
+                    Command.Generate(typeUniverseFile, outputFile, includeSearchRoots, target)
                 }
             }
         } catch(ex: OptionException) {
             Command.InvalidCommandLineArguments(ex.message!!)
         }
-
     }
-
 }

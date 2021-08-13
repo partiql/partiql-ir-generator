@@ -17,12 +17,12 @@ package org.partiql.pig.generator.custom
 
 import org.partiql.pig.domain.model.TypeDomain
 import org.partiql.pig.generator.createDefaultFreeMarkerConfiguration
-import java.io.File
 import java.io.PrintWriter
+import java.nio.file.Path
 import java.time.OffsetDateTime
 
 fun applyCustomTemplate(
-    templateFile: File,
+    templatePath: Path,
     domains: List<TypeDomain>,
     output: PrintWriter
 ) {
@@ -30,8 +30,8 @@ fun applyCustomTemplate(
 
     val cfg = createDefaultFreeMarkerConfiguration()
 
-    cfg.setDirectoryForTemplateLoading(templateFile.parentFile)
-    val template = cfg.getTemplate(templateFile.name)!!
+    cfg.setDirectoryForTemplateLoading(templatePath.parent.toFile())
+    val template = cfg.getTemplate(templatePath.fileName.toString())!!
 
     template.process(renderModel, output)
 }

@@ -13,13 +13,13 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.cmdline
+package org.partiql.pig.domain.parser.include
 
-import java.io.File
-import java.nio.file.Path
+/**
+ * Thrown by [IncludeResolver] to indicate that one of the search roots passed to it is invalid.
+ *
+ * Search roots are normally specified on the command-line.
+ */
+class InvalidIncludePathException(invalidIncludePath: String)
+    : Exception("Specified include path '$invalidIncludePath' does not exist or is not a directory.")
 
-sealed class TargetLanguage {
-    data class Kotlin(val namespace: String) : TargetLanguage()
-    data class Custom(val templateFile: Path) : TargetLanguage()
-    object Html : TargetLanguage()
-}

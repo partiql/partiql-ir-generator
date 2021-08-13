@@ -18,7 +18,7 @@ package org.partiql.pig.cmdline
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import java.io.File
+import java.nio.file.Paths
 
 class CommandLineParserTests {
 
@@ -39,77 +39,113 @@ class CommandLineParserTests {
 
         @JvmStatic
         @Suppress("unused")
-        fun parametersForTests() = listOf(
-            // Help
-            TestCase(Command.ShowHelp, "-h"),
-            TestCase(Command.ShowHelp, "--help"),
+        fun parametersForTests(): List<TestCase> {
 
-            ////////////////////////////////////////////////////////
-            // Missing parameters required for all language targets
-            ////////////////////////////////////////////////////////
-            // No --universe
-            TestCase(
-                Command.InvalidCommandLineArguments("Missing required option(s) [u/universe]"),
-                "--target=kotlin", "--output=output.kt", "--namespace=some.package"),
+            return listOf(
+                // Help
+                TestCase(Command.ShowHelp, "-h"),
+                TestCase(Command.ShowHelp, "--help"),
 
-            // No --target
-            TestCase(
-                Command.InvalidCommandLineArguments("Missing required option(s) [t/target]"),
-                "--universe=input.ion", "--output=output.kt", "--namespace=some.package"),
+                ////////////////////////////////////////////////////////
+                // Missing parameters required for all language targets
+                ////////////////////////////////////////////////////////
+                // No --universe
+                TestCase(
+                    Command.InvalidCommandLineArguments("Missing required option(s) [u/universe]"),
+                    "--target=kotlin", "--output=output.kt", "--namespace=some.package"),
 
-            // No the --output argument
-            TestCase(
-                Command.InvalidCommandLineArguments("Missing required option(s) [o/output]"),
-                "--universe=input.ion", "--target=kotlin", "--namespace=some.package"),
+                // No --target
+                TestCase(
+                    Command.InvalidCommandLineArguments("Missing required option(s) [t/target]"),
+                    "--universe=input.ion", "--output=output.kt", "--namespace=some.package"),
 
-            ////////////////////////////////////////////////////////
-            // Kotlin target
-            ////////////////////////////////////////////////////////
-            // long parameter names
-            TestCase(
-                Command.Generate(File("input.ion"), File("output.kt"), TargetLanguage.Kotlin("some.package")),
-                "--universe=input.ion", "--target=kotlin", "--output=output.kt", "--namespace=some.package"),
+                // No --output argument
+                TestCase(
+                    Command.InvalidCommandLineArguments("Missing required option(s) [o/output]"),
+                    "--universe=input.ion", "--target=kotlin", "--namespace=some.package"),
 
-            // short parameter names
-            TestCase(
-                Command.Generate(File("input.ion"), File("output.kt"), TargetLanguage.Kotlin("some.package")),
-                "-u=input.ion", "-t=kotlin", "-o=output.kt", "-n=some.package"),
+                ////////////////////////////////////////////////////////
+                // Kotlin target
+                ////////////////////////////////////////////////////////
+                // long parameter names
+                TestCase(
+                    createExpectedGenerateCommand(TargetLanguage.Kotlin("some.package"), "dir_a", "dir_b"),
+                    "--universe=input.ion",
+                    "--target=kotlin",
+                    "--output=output.any",
+                    "--include=dir_a",
+                    "--include=dir_b",
+                    "--namespace=some.package"),
 
-            // missing the --namespace argument
-            TestCase(
-                Command.InvalidCommandLineArguments("The selected language target requires the --namespace argument"),
-                "-u=input.ion", "-t=kotlin", "-o=output.kt"),
+                // short parameter names
+                TestCase(
+                    createExpectedGenerateCommand(TargetLanguage.Kotlin("some.package"), "dir_a", "dir_b"),
+                    "-u=input.ion",
+                    "-t=kotlin",
+                    "-o=output.any",
+                    "-I=dir_a",
+                    "-I=dir_b",
+                    "-n=some.package"
+                ),
 
-            ////////////////////////////////////////////////////////
-            // Html target
-            ////////////////////////////////////////////////////////
-            // long parameter names
-            TestCase(
-                Command.Generate(File("input.ion"), File("output.html"), TargetLanguage.Html),
-                "--universe=input.ion", "--target=html", "--output=output.html"),
+                // no include directories
+                TestCase(
+                    createExpectedGenerateCommand(TargetLanguage.Kotlin("some.package")),
+                    "-u=input.ion",
+                    "-t=kotlin",
+                    "-o=output.any",
+                    "-n=some.package"
+                ),
 
-            // short parameter names
-            TestCase(
-                Command.Generate(File("input.ion"), File("output.html"), TargetLanguage.Html),
-                "-u=input.ion", "-target=html", "--output=output.html"),
+                // missing the --namespace argument
+                TestCase(
+                    Command.InvalidCommandLineArguments("The selected language target requires the --namespace argument"),
+                    "-u=input.ion", "-t=kotlin", "-o=output.any"),
 
-            ////////////////////////////////////////////////////////
-            // Custom target
-            ////////////////////////////////////////////////////////
-            // long parameter names
-            TestCase(
-                Command.Generate(File("input.ion"), File("output.txt"), TargetLanguage.Custom(File("template.ftl"))),
-                "--universe=input.ion", "--target=custom", "--output=output.txt", "--template=template.ftl"),
+                ////////////////////////////////////////////////////////
+                // Html target
+                ////////////////////////////////////////////////////////
+                // long parameter names
+                TestCase(
+                    createExpectedGenerateCommand(TargetLanguage.Html),
+                    "--universe=input.ion", "--target=html", "--output=output.any"),
 
-            // short parameter names
-            TestCase(
-                Command.Generate(File("input.ion"), File("output.txt"), TargetLanguage.Custom(File("template.ftl"))),
-                "-u=input.ion", "-t=custom", "-o=output.txt", "-e=template.ftl"),
+                // short parameter names
+                TestCase(
+                    createExpectedGenerateCommand(TargetLanguage.Html),
+                    "-u=input.ion", "-target=html", "--output=output.any"),
 
-            // missing the --template argument
-            TestCase(
-                Command.InvalidCommandLineArguments("The selected language target requires the --template argument"),
-                "-u=input.ion", "-t=custom", "-o=output.kt")
+                ////////////////////////////////////////////////////////
+                // Custom target
+                ////////////////////////////////////////////////////////
+                // long parameter names
+                TestCase(
+                    createExpectedGenerateCommand(TargetLanguage.Custom(Paths.get("template.ftl").toAbsolutePath())),
+                    "--universe=input.ion", "--target=custom", "--output=output.any", "--template=template.ftl"),
+
+                // short parameter names
+                TestCase(
+                    createExpectedGenerateCommand(TargetLanguage.Custom(Paths.get("template.ftl").toAbsolutePath())),
+                    "-u=input.ion", "-t=custom", "-o=output.any", "-e=template.ftl"),
+
+                // missing the --template argument
+                TestCase(
+                    Command.InvalidCommandLineArguments("The selected language target requires the --template argument"),
+                    "-u=input.ion", "-t=custom", "-o=output.any")
+            )
+        }
+
+        private fun createExpectedGenerateCommand(
+            target: TargetLanguage,
+            vararg additionalIncludePaths: String
+        ) = Command.Generate(
+            typeUniverseFilePath = Paths.get("input.ion").toAbsolutePath(),
+            outputFilePath = Paths.get("output.any").toAbsolutePath(),
+            includePaths = listOf(
+                Paths.get(".").toAbsolutePath().normalize(),
+                *additionalIncludePaths.map { Paths.get(it).toAbsolutePath() }.toTypedArray()
+            ),
+            target = target
         )
     }
 }

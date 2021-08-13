@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain
+package org.partiql.pig.domain.parser.include
 
 import com.amazon.ionelement.api.ElementType
 import com.amazon.ionelement.api.IonElementLoaderException
@@ -22,10 +22,13 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+import org.partiql.pig.domain.makeErr
 import org.partiql.pig.domain.parser.ParserErrorContext
-import org.partiql.pig.domain.parser.parseTypeUniverse
+import org.partiql.pig.domain.toIonElement
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
+import org.partiql.pig.util.makeFakePath
+import org.partiql.pig.util.parseTypeUniverseString
 
 class TypeDomainParserErrorsTest {
 
@@ -35,7 +38,7 @@ class TypeDomainParserErrorsTest {
     @MethodSource("parametersForErrorsTest")
     fun errorsTest(tc: TestCase) {
         val ex = assertThrows<PigException> {
-            val oops = parseTypeUniverse(tc.typeUniverseText)
+            val oops = parseTypeUniverseString(tc.typeUniverseText)
             println("this was erroneously parsed: ${oops.toIonElement()}")
         }
         assertEquals(tc.expectedError, ex.error)
@@ -105,9 +108,37 @@ class TypeDomainParserErrorsTest {
 
             TestCase( // Covers second place in parser this can be thrown
                 "(define huh (domain (product huh x::int y::42)))",
-                makeErr(1, 41, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT)))
+                makeErr(1, 41, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT))),
+
+            TestCase(
+                "(include_file \"some-non-existing-file.ion\")",
+                makeErr(1, 1,
+                    ParserErrorContext.IncludeFileNotFound(
+                        "some-non-existing-file.ion",
+                        listOf(makeFakePath("some-non-existing-file.ion"))
+                ))),
+            TestCase(
+                "(include_file \"some-sub-dir/some-non-existing-file.ion\")",
+                makeErr(1, 1,
+                    ParserErrorContext.IncludeFileNotFound(
+                        "some-sub-dir/some-non-existing-file.ion",
+                        listOf(makeFakePath("some-sub-dir/some-non-existing-file.ion"))
+                ))),
+            TestCase(
+                "(include_file \"../doesntmatter.ion\")",
+                makeErr(1, 15, ParserErrorContext.IncludeFilePathContainsParentDirectory)),
+            TestCase(
+                "(include_file \"c:/windows/drive/letter/is/bad.ion\")",
+                makeErr(1, 15, ParserErrorContext.IncludeFilePathContainsIllegalCharacter(':'))),
+            TestCase(
+                """(include_file "\\windows\\path\\separator")""",
+                makeErr(1, 15, ParserErrorContext.IncludeFilePathContainsIllegalCharacter('\\'))),
+            TestCase(
+                "(include_file \"space in name\")",
+                makeErr(1, 15, ParserErrorContext.IncludeFilePathContainsIllegalCharacter(' ')))
         )
     }
 }
+
 
 

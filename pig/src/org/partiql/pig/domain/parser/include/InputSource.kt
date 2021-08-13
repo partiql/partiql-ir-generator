@@ -13,13 +13,10 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.cmdline
+package org.partiql.pig.domain.parser.include
 
-import java.io.File
+import java.io.InputStream
 import java.nio.file.Path
 
-sealed class TargetLanguage {
-    data class Kotlin(val namespace: String) : TargetLanguage()
-    data class Custom(val templateFile: Path) : TargetLanguage()
-    object Html : TargetLanguage()
-}
+/** Provides a convenient way to associate an inputStream with its path. */
+class InputSource(val absolutePath: Path, val inputStream: InputStream)

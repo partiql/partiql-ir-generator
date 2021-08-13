@@ -1,0 +1,4 @@
+
+// This file attempts to include a missing file using an absolute path.
+
+(include_file "dir_x/does-not-exist.ion")

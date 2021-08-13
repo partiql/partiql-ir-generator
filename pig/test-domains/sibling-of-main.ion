@@ -1,0 +1,5 @@
+
+
+(define domain_s (domain (product foo)))
+
+

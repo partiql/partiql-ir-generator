@@ -29,20 +29,27 @@ import org.partiql.pig.domain.model.Transform
 import org.partiql.pig.domain.model.TupleType
 import org.partiql.pig.domain.model.TypeDomain
 import org.partiql.pig.domain.model.TypeUniverse
+import org.partiql.pig.domain.parser.SourceLocation
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
+import org.partiql.pig.util.FAKE_ROOT_FILE
+import java.io.File
 
 fun makeErr(line: Int, col: Int, errorContext: ErrorContext) =
-    PigError(IonTextLocation(line.toLong(), col.toLong()), errorContext)
+    PigError(
+        SourceLocation(
+            File(FAKE_ROOT_FILE).canonicalPath,
+            IonTextLocation(line.toLong(), col.toLong())
+        ),
+        errorContext
+    )
 
 fun makeErr(errorContext: ErrorContext) =
     PigError(null, errorContext)
 
-
 /*
  * The [toIonElement] functions below generate an s-expression representation of a [TypeUniverse].
  */
-
 
 fun TypeUniverse.toIonElement(): IonElement =
     ionSexpOf(

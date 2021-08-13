@@ -13,9 +13,8 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain
+package org.partiql.pig.domain.parser
 
-import com.amazon.ion.system.IonReaderBuilder
 import com.amazon.ionelement.api.IonElementLoaderOptions
 import com.amazon.ionelement.api.createIonElementLoader
 import com.amazon.ionelement.api.ionSexpOf
@@ -23,7 +22,8 @@ import com.amazon.ionelement.api.ionSymbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.partiql.pig.domain.parser.parseTypeUniverse
+import org.partiql.pig.domain.toIonElement
+import org.partiql.pig.util.parseTypeUniverseString
 
 class TypeDomainParserTests {
     private val loader = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
@@ -36,6 +36,7 @@ class TypeDomainParserTests {
                         (product foo a::string b::(* int 2))
                         (product bar a::bat b::(? baz) c::(* blargh 10))))
             """)
+
     @Test
     fun testTransform() = runTestCase("(transform domain_a domain_b)")
 
@@ -88,10 +89,9 @@ class TypeDomainParserTests {
         val expected = assertDoesNotThrow("loading the expected type universe") {
             loader.loadSingleElement(tc)
         }
+
         val parsed = assertDoesNotThrow("parsing type universe") {
-            IonReaderBuilder.standard().build(tc).use {
-                parseTypeUniverse(it)
-            }
+            parseTypeUniverseString(tc)
         }
 
         assertEquals(

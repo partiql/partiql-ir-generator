@@ -15,12 +15,12 @@
 
 package org.partiql.pig.domain.model
 
-import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.MetaContainer
-import com.amazon.ionelement.api.location
-import org.partiql.pig.errors.PigException
+import org.partiql.pig.domain.parser.SourceLocation
+import org.partiql.pig.domain.parser.sourceLocation
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
+import org.partiql.pig.errors.PigException
 
 /**
  * Encapsulates all error context information in an easily testable way.
@@ -66,16 +66,16 @@ sealed class SemanticErrorContext(val msgFormatter: () -> String): ErrorContext 
         : SemanticErrorContext({ "Cannot remove built-in type '$typeName'" })
 
     data class DuplicateTypeDomainName(val domainName: String)
-        : SemanticErrorContext({ "Duplicate type domain tag: '${domainName} "})
+        : SemanticErrorContext({ "Duplicate type domain tag: '${domainName}' "})
 
     data class DuplicateRecordElementTag(val elementName: String)
-        : SemanticErrorContext({ "Duplicate record element tag: '${elementName} "})
+        : SemanticErrorContext({ "Duplicate record element tag: '${elementName}' "})
 
     data class DuplicateElementIdentifier(val elementName: String)
-        : SemanticErrorContext({ "Duplicate element identifier: '${elementName} "})
+        : SemanticErrorContext({ "Duplicate element identifier: '${elementName}' "})
 
     data class NameAlreadyUsed(val name: String, val domainName: String)
-        : SemanticErrorContext({ "Name '$name' was previously used in the `$domainName` type domain" })
+        : SemanticErrorContext({ "Name '$name' was previously used in the '$domainName' type domain" })
 
     data class CannotRemoveNonExistentSumVariant(val sumTypeName: String, val variantName: String)
         : SemanticErrorContext({ "Permuted sum type '${sumTypeName}' tries to remove variant '${variantName}' which " +
@@ -109,9 +109,9 @@ sealed class SemanticErrorContext(val msgFormatter: () -> String): ErrorContext 
  * Shortcut for throwing [PigException] with the specified metas and [PigError].
  */
 fun semanticError(blame: MetaContainer, context: ErrorContext): Nothing =
-    semanticError(blame.location, context)
+    semanticError(blame.sourceLocation, context)
 /**
  * Shortcut for throwing [PigException] with the specified metas and [PigError].
  */
-fun semanticError(blame: IonLocation?, context: ErrorContext): Nothing =
+fun semanticError(blame: SourceLocation?, context: ErrorContext): Nothing =
     throw PigException(PigError(blame, context))

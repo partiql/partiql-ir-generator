@@ -1,0 +1,4 @@
+// Another file of the same name resides in `root_b`, which comes later in the `-I` include search order.  That file
+// should be ignored and this file should be included.
+(define domain_f (domain (product a)))
+
