@@ -57,8 +57,7 @@ internal class IncludeResolver(
     /**
      * Searches for the absolute path of an included file, returning the first file found.
      *
-     * The parent directory of the [includerFile] is searched first, followed by each of the source roots in turn. If
-     * [includeeFile] starts with `/`, the parent directory of [includerFile] is skipped.
+     * The parent directory of the [includerFile] is searched first, followed by each of the source roots in turn. 
      *
      * @return The absolute [Path] of the first file located.
      */
