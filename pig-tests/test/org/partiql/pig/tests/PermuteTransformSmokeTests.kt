@@ -71,7 +71,7 @@ class PermuteTransformSmokeTests {
                 let(
                     "bar",
                     lit(ionInt(48)),
-                    plus(variable("foo"), variable("bar"))))
+                    nary(plus(), variable("foo"), variable("bar"))))
         }
 
 
@@ -87,7 +87,7 @@ class PermuteTransformSmokeTests {
                     "bar",
                     1,
                     lit(ionInt(48)),
-                    plus(variable("foo", 0), variable("bar", 1))))
+                    nary(plus(), variable("foo", 0), variable("bar", 1))))
         }
         assertEquals(indexed, outerLet)
 

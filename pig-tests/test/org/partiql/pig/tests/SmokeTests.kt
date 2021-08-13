@@ -28,7 +28,7 @@ class SmokeTests {
     @Test
     fun toy_lang_test() {
         val node = ToyLang.build {
-            plus(variable("foo"), lit(ionInt(42)), lit(ionNull(ElementType.STRING)))
+            nary(plus(), variable("foo"), lit(ionInt(42)), lit(ionNull(ElementType.STRING)))
         }
 
         val expectedIonElement = node.toIonElement()

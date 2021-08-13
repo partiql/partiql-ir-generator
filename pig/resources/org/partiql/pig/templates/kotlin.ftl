@@ -282,6 +282,18 @@ sealed class ${s.kotlinName}(override val metas: MetaContainer = emptyMetaContai
 [/@indent]
 
 [/#list]
+    /** Converts instances of [${domain.kotlinName}.${s.kotlinName}] to any [T]. */
+    interface Converter<T> {
+        fun convert(node: ${domain.kotlinName}.${s.kotlinName}): T = when(node) {
+        [#list s.variants as t]
+            is ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName} -> convert${t.kotlinName}(node)
+        [/#list]
+        }
+
+    [#list s.variants as t]
+        fun convert${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}): T
+    [/#list]
+    }
 }
 [/#list]
 

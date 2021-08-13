@@ -62,17 +62,17 @@ class VisitorTransformTests {
                 let(
                     "bar",
                     lit(ionInt(48)),
-                    plus(variable("foo"), variable("bar"))))
+                    nary(plus(), variable("foo"), variable("bar"))))
         }
 
         val resolver = VariableResolverWithMetas()
         val outerLet = resolver.transformExpr(unresolved) as ToyLang.Expr.Let
 
         val innerLet = outerLet.body as ToyLang.Expr.Let
-        val plus = innerLet.body as ToyLang.Expr.Plus
+        val nary = innerLet.body as ToyLang.Expr.Nary
 
-        assertEquals(metaContainerOf(INDEX_META_KEY to 0L), plus.operands[0].metas)
-        assertEquals(metaContainerOf(INDEX_META_KEY to 1L), plus.operands[1].metas)
+        assertEquals(metaContainerOf(INDEX_META_KEY to 0L), nary.operands[0].metas)
+        assertEquals(metaContainerOf(INDEX_META_KEY to 1L), nary.operands[1].metas)
     }
 
     private val longIncrementer = object : TestDomain.VisitorTransform() {

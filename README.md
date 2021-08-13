@@ -32,10 +32,11 @@ structures required by PartiQL.  PIG generates Kotlin classes to represent data 
 
 - One Kotlin class per node type.
 - `Object.equals` and `object.hashCode` implementations
-- Three different implementations of the [visitor pattern](https://en.wikipedia.org/wiki/Visitor_pattern):
+- Four different variations of the [visitor pattern](https://en.wikipedia.org/wiki/Visitor_pattern):
     - Plain visitors, which can be used to perform simple semantic checks.
     - Folding visitors, which can be used to extract data from a tree.
     - Rewriting visitors for simple transformations of trees.
+    - Conversion visitors, one for each sum type, to convert from a sum type to any other type.
 - Components to transform between the generated classes and Ion s-expressions and to check the structure of the 
 structure of the s-expression representation.
 
@@ -77,30 +78,29 @@ transformation code.
 
 (define toy_lang
     (domain
-        (sum expr
-            (lit value::ion)
-            (variable name::symbol)
-            (not expr::expr)
-            (apply op operands::(* expr 2))
-            (call name::symbol argument::expr)
-            (let name::symbol value::expr body::expr)
-            (function var_name::symbol body::expr))
-        (sum op (plus) (minus) (times) (divide))
-))
+        (sum operator (plus) (minus) (times) (divide) (modulo))
+    (sum expr
+        (lit value::ion)
+        (variable name::symbol)
+        (not expr::expr)
+        (nary op::operator operands::(* expr 0))
+        (let name::symbol value::expr body::expr)
+        (function var_name::symbol body::expr))))
 
-// Define another type domain which is the same as "toy_lang" but replaces variable names with DeBruijn indices:
-(define toy_lang_nameless
-  (permute_domain toy_lang
-    (with expr
-      (exclude variable let)
-      (include
-        (variable index::int)
-        (let index::int value::expr body::expr)))))
+// Define another type domain which extends "toy_lang" by removing named variables and adding DeBruijn indices:
+(define toy_lang_indexed
+    (permute_domain toy_lang
+        (with expr
+            (exclude variable let)
+            (include
+            // We are adding the `index` element here.
+            (variable name::symbol index::int)
+            (let name::symbol index::int value::expr body::expr)))))
 ```
 
 ### Generated Kotlin Domain Model Sample
 
-See the sample generated code [here](pig-tests/src/org/partiql/pig/tests/generated/sample-universe.kt).
+See the sample generated code [here](pig-tests/src/org/partiql/pig/tests/generated/toy-lang.kt).
 
 ### Typical Use Of Generated Domain Models
 
@@ -399,6 +399,62 @@ Unlike record elements, product element defintions must include identifiers.
 ```      
 (product int_pair first::int second::int)
 ```
+
+
+#### Visitors
+
+TODO: other types of visitors documented here.
+
+##### Sum Type Converters
+
+The Kotlin target generates a `Converter<T>` interface with methods that allow conversion of each variant type to 
+any `T`.
+
+In the example below, the `expr` and `operator` sum types are converted to string representations.
+
+```Kotlin
+val toyOperatorConverter = object : ToyLang.Operator.Converter<String> {
+    override fun convertPlus(node: ToyLang.Operator.Plus): String = "+"
+    override fun convertMinus(node: ToyLang.Operator.Minus): String = "-"
+    override fun convertTimes(node: ToyLang.Operator.Times): String = "*"
+    override fun convertDivide(node: ToyLang.Operator.Divide): String = "/"
+    override fun convertModulo(node: ToyLang.Operator.Modulo): String = "%"
+}
+
+val toyExprConverter = object : ToyLang.Expr.Converter<String> {
+    override fun convertLit(node: ToyLang.Expr.Lit): String = "${node.value}"
+    override fun convertVariable(node: ToyLang.Expr.Variable): String = node.name.text
+    override fun convertNot(node: ToyLang.Expr.Not): String = "!${convert(node.expr)}"
+    override fun convertNary(node: ToyLang.Expr.Nary): String {
+        // This Converter<T> implementation isn't responsible for converting ToyLang.Operator instances.
+        // delegate to toyOperatorConverter for that.
+        val op = toyOperatorConverter.convert(node.op)
+        return node.operands.joinToString(" $op ") { convert(it) }
+    }
+
+    override fun convertLet(node: ToyLang.Expr.Let): String =
+        "let ${node.name.text} = ${convert(node.value)} in ${convert(node.body)}"
+
+    override fun convertFunction(node: ToyLang.Expr.Function): String =
+        "fun (${node.varName.text}) -> ${convert(node.body)}"
+}
+
+// Example use:
+val ast = ToyLang.build {
+  let(
+    "x",
+    lit(ionInt(38)),
+    nary(plus(), variable("x"), lit(ionInt(4))))
+}
+
+val s = toyExprConverter.convert(ast)
+
+println(s)
+
+// prints to the console:
+// let x = 38 in x + 4
+```
+
 
 
 #### Using PIG In Your Project
