@@ -10,13 +10,14 @@ import org.partiql.pig.tests.generated.TestDomain
  */
 class CustomMetasTests {
 
+    /** Custom builder implementation that assigns unique Ids to all nodes. */
     class NodeIdAssigningBuilder : TestDomain.Builder {
         private var nextNodeId = 0
         override fun newMetaContainer(): MetaContainer = mapOf("nodeId" to nextNodeId++)
     }
 
     /**
-     * Typically, a builder function such as this should be created which invokes [block] on a our custom
+     * Typically, a builder function such as this should be created which invokes [block] on our custom
      * [TestDomain.Builder] instance.
      *
      * Note that the receiver type is [TestDomain.Builder] and not [NodeIdAssigningBuilder].  Callers should never
