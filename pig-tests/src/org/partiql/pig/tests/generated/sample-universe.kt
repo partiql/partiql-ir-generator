@@ -30,706 +30,945 @@ class TestDomain private constructor() {
     }
     
     interface Builder {
-                // Tuples
+        fun newMetaContainer() = emptyMetaContainer()
+    
+                    // Tuples
         /**
-         * Creates an instance of [TestDomain.BoolPair].
-         */
+        * Creates an instance of [TestDomain.BoolPair].
+        */
         fun boolPair(
             first: Boolean,
             second: Boolean,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.BoolPair
+        ): TestDomain.BoolPair =
+            TestDomain.BoolPair(
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.BoolPair].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.BoolPair].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun boolPair_(
             first: org.partiql.pig.runtime.BoolPrimitive,
             second: org.partiql.pig.runtime.BoolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.BoolPair
+        ): TestDomain.BoolPair =
+            TestDomain.BoolPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.IntPair].
-         */
+        * Creates an instance of [TestDomain.IntPair].
+        */
         fun intPair(
             first: Long,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntPair
+        ): TestDomain.IntPair =
+            TestDomain.IntPair(
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.IntPair].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.IntPair].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun intPair_(
             first: org.partiql.pig.runtime.LongPrimitive,
             second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntPair
+        ): TestDomain.IntPair =
+            TestDomain.IntPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.SymbolPair].
-         */
+        * Creates an instance of [TestDomain.SymbolPair].
+        */
         fun symbolPair(
             first: String,
             second: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolPair
+        ): TestDomain.SymbolPair =
+            TestDomain.SymbolPair(
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.SymbolPair].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.SymbolPair].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun symbolPair_(
             first: org.partiql.pig.runtime.SymbolPrimitive,
             second: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolPair
+        ): TestDomain.SymbolPair =
+            TestDomain.SymbolPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.IonPair].
-         */
+        * Creates an instance of [TestDomain.IonPair].
+        */
         fun ionPair(
             first: com.amazon.ionelement.api.IonElement,
             second: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IonPair
+        ): TestDomain.IonPair =
+            TestDomain.IonPair(
+                first = first.asAnyElement(),
+                second = second.asAnyElement(),
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.IntSymbolPair].
-         */
+        * Creates an instance of [TestDomain.IntSymbolPair].
+        */
         fun intSymbolPair(
             first: Long,
             second: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntSymbolPair
+        ): TestDomain.IntSymbolPair =
+            TestDomain.IntSymbolPair(
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.IntSymbolPair].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.IntSymbolPair].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun intSymbolPair_(
             first: org.partiql.pig.runtime.LongPrimitive,
             second: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntSymbolPair
+        ): TestDomain.IntSymbolPair =
+            TestDomain.IntSymbolPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.SymbolIntPair].
-         */
+        * Creates an instance of [TestDomain.SymbolIntPair].
+        */
         fun symbolIntPair(
             first: String,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolIntPair
+        ): TestDomain.SymbolIntPair =
+            TestDomain.SymbolIntPair(
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.SymbolIntPair].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.SymbolIntPair].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun symbolIntPair_(
             first: org.partiql.pig.runtime.SymbolPrimitive,
             second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolIntPair
+        ): TestDomain.SymbolIntPair =
+            TestDomain.SymbolIntPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.IonIntPair].
-         */
+        * Creates an instance of [TestDomain.IonIntPair].
+        */
         fun ionIntPair(
             first: com.amazon.ionelement.api.IonElement,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IonIntPair
+        ): TestDomain.IonIntPair =
+            TestDomain.IonIntPair(
+                first = first.asAnyElement(),
+                second = second.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.IonIntPair].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.IonIntPair].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun ionIntPair_(
             first: com.amazon.ionelement.api.IonElement,
             second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IonIntPair
+        ): TestDomain.IonIntPair =
+            TestDomain.IonIntPair(
+                first = first.asAnyElement(),
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.IonSymbolPair].
-         */
+        * Creates an instance of [TestDomain.IonSymbolPair].
+        */
         fun ionSymbolPair(
             first: com.amazon.ionelement.api.IonElement,
             second: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IonSymbolPair
+        ): TestDomain.IonSymbolPair =
+            TestDomain.IonSymbolPair(
+                first = first.asAnyElement(),
+                second = second.asAnyElement(),
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.IntPairPair].
-         */
+        * Creates an instance of [TestDomain.IntPairPair].
+        */
         fun intPairPair(
             first: IntPair,
             second: IntPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntPairPair
+        ): TestDomain.IntPairPair =
+            TestDomain.IntPairPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.SymbolPairPair].
-         */
+        * Creates an instance of [TestDomain.SymbolPairPair].
+        */
         fun symbolPairPair(
             first: SymbolPair,
             second: SymbolPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolPairPair
+        ): TestDomain.SymbolPairPair =
+            TestDomain.SymbolPairPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.IonPairPair].
-         */
+        * Creates an instance of [TestDomain.IonPairPair].
+        */
         fun ionPairPair(
             first: IonPair,
             second: IonPair,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IonPairPair
+        ): TestDomain.IonPairPair =
+            TestDomain.IonPairPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.RecursivePair].
-         */
+        * Creates an instance of [TestDomain.RecursivePair].
+        */
         fun recursivePair(
             first: Long,
             second: RecursivePair? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.RecursivePair
+        ): TestDomain.RecursivePair =
+            TestDomain.RecursivePair(
+                first = first.asPrimitive(),
+                second = second,
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.RecursivePair].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.RecursivePair].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun recursivePair_(
             first: org.partiql.pig.runtime.LongPrimitive,
             second: RecursivePair? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.RecursivePair
+        ): TestDomain.RecursivePair =
+            TestDomain.RecursivePair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.AnswerPair].
-         */
+        * Creates an instance of [TestDomain.AnswerPair].
+        */
         fun answerPair(
             first: Answer,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.AnswerPair
+        ): TestDomain.AnswerPair =
+            TestDomain.AnswerPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.AnswerIntPair].
-         */
+        * Creates an instance of [TestDomain.AnswerIntPair].
+        */
         fun answerIntPair(
             first: Answer,
             second: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.AnswerIntPair
+        ): TestDomain.AnswerIntPair =
+            TestDomain.AnswerIntPair(
+                first = first,
+                second = second.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.AnswerIntPair].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.AnswerIntPair].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun answerIntPair_(
             first: Answer,
             second: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.AnswerIntPair
+        ): TestDomain.AnswerIntPair =
+            TestDomain.AnswerIntPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.IntAnswerPair].
-         */
+        * Creates an instance of [TestDomain.IntAnswerPair].
+        */
         fun intAnswerPair(
             first: Long,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntAnswerPair
+        ): TestDomain.IntAnswerPair =
+            TestDomain.IntAnswerPair(
+                first = first.asPrimitive(),
+                second = second,
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.IntAnswerPair].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.IntAnswerPair].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun intAnswerPair_(
             first: org.partiql.pig.runtime.LongPrimitive,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.IntAnswerPair
+        ): TestDomain.IntAnswerPair =
+            TestDomain.IntAnswerPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.SymbolAnswerPair].
-         */
+        * Creates an instance of [TestDomain.SymbolAnswerPair].
+        */
         fun symbolAnswerPair(
             first: String,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolAnswerPair
+        ): TestDomain.SymbolAnswerPair =
+            TestDomain.SymbolAnswerPair(
+                first = first.asPrimitive(),
+                second = second,
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.SymbolAnswerPair].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.SymbolAnswerPair].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun symbolAnswerPair_(
             first: org.partiql.pig.runtime.SymbolPrimitive,
             second: Answer,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SymbolAnswerPair
+        ): TestDomain.SymbolAnswerPair =
+            TestDomain.SymbolAnswerPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.AnswerSymbolPair].
-         */
+        * Creates an instance of [TestDomain.AnswerSymbolPair].
+        */
         fun answerSymbolPair(
             first: Answer,
             second: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.AnswerSymbolPair
+        ): TestDomain.AnswerSymbolPair =
+            TestDomain.AnswerSymbolPair(
+                first = first,
+                second = second.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.AnswerSymbolPair].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.AnswerSymbolPair].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun answerSymbolPair_(
             first: Answer,
             second: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.AnswerSymbolPair
+        ): TestDomain.AnswerSymbolPair =
+            TestDomain.AnswerSymbolPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.VariadicMin0].
-         */
+        * Creates an instance of [TestDomain.VariadicMin0].
+        */
         fun variadicMin0(
             ints: kotlin.collections.List<Long> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin0
+        ): TestDomain.VariadicMin0 =
+            TestDomain.VariadicMin0(
+                ints = ints.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.VariadicMin0].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.VariadicMin0].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun variadicMin0_(
             ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin0
+        ): TestDomain.VariadicMin0 =
+            TestDomain.VariadicMin0(
+                ints = ints,
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.VariadicMin0].
-         */
+        * Creates an instance of [TestDomain.VariadicMin0].
+        */
         fun variadicMin0(
             vararg ints: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin0
+        ): TestDomain.VariadicMin0 =
+            TestDomain.VariadicMin0(
+                ints = ints.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.VariadicMin0].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.VariadicMin0].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun variadicMin0_(
             vararg ints: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin0
+        ): TestDomain.VariadicMin0 =
+            TestDomain.VariadicMin0(
+                ints = ints.toList(),
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.VariadicMin1].
-         */
+        * Creates an instance of [TestDomain.VariadicMin1].
+        */
         fun variadicMin1(
             ints: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin1
+        ): TestDomain.VariadicMin1 =
+            TestDomain.VariadicMin1(
+                ints = ints.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.VariadicMin1].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.VariadicMin1].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun variadicMin1_(
             ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin1
+        ): TestDomain.VariadicMin1 =
+            TestDomain.VariadicMin1(
+                ints = ints,
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.VariadicMin1].
-         */
+        * Creates an instance of [TestDomain.VariadicMin1].
+        */
         fun variadicMin1(
             ints0: Long,
             vararg ints: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin1
+        ): TestDomain.VariadicMin1 =
+            TestDomain.VariadicMin1(
+                ints = listOfPrimitives(ints0) + ints.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.VariadicMin1].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.VariadicMin1].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun variadicMin1_(
             ints0: org.partiql.pig.runtime.LongPrimitive,
             vararg ints: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.VariadicMin1
+        ): TestDomain.VariadicMin1 =
+            TestDomain.VariadicMin1(
+                ints = listOfPrimitives(ints0) + ints.toList(),
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.ElementVariadic].
-         */
+        * Creates an instance of [TestDomain.ElementVariadic].
+        */
         fun elementVariadic(
             name: String,
             ints: kotlin.collections.List<Long> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.ElementVariadic
+        ): TestDomain.ElementVariadic =
+            TestDomain.ElementVariadic(
+                name = name.asPrimitive(),
+                ints = ints.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.ElementVariadic].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.ElementVariadic].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun elementVariadic_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
             ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.ElementVariadic
+        ): TestDomain.ElementVariadic =
+            TestDomain.ElementVariadic(
+                name = name,
+                ints = ints,
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.ElementVariadic].
-         */
+        * Creates an instance of [TestDomain.ElementVariadic].
+        */
         fun elementVariadic(
             name: String,
             vararg ints: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.ElementVariadic
+        ): TestDomain.ElementVariadic =
+            TestDomain.ElementVariadic(
+                name = name?.asPrimitive(),
+                ints = ints.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.ElementVariadic].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.ElementVariadic].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun elementVariadic_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
             vararg ints: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.ElementVariadic
+        ): TestDomain.ElementVariadic =
+            TestDomain.ElementVariadic(
+                name = name,
+                ints = ints.toList(),
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.Optional1].
-         */
+        * Creates an instance of [TestDomain.Optional1].
+        */
         fun optional1(
             value: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Optional1
+        ): TestDomain.Optional1 =
+            TestDomain.Optional1(
+                value = value?.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.Optional1].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.Optional1].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun optional1_(
             value: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Optional1
+        ): TestDomain.Optional1 =
+            TestDomain.Optional1(
+                value = value,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.Optional2].
-         */
+        * Creates an instance of [TestDomain.Optional2].
+        */
         fun optional2(
             first: Long? = null,
             second: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Optional2
+        ): TestDomain.Optional2 =
+            TestDomain.Optional2(
+                first = first?.asPrimitive(),
+                second = second?.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.Optional2].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.Optional2].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun optional2_(
             first: org.partiql.pig.runtime.LongPrimitive? = null,
             second: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Optional2
+        ): TestDomain.Optional2 =
+            TestDomain.Optional2(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.DomainLevelRecord].
-         */
+        * Creates an instance of [TestDomain.DomainLevelRecord].
+        */
         fun domainLevelRecord(
             someField: Long,
             anotherField: String,
             optionalField: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.DomainLevelRecord
+        ): TestDomain.DomainLevelRecord =
+            TestDomain.DomainLevelRecord(
+                someField = someField.asPrimitive(),
+                anotherField = anotherField.asPrimitive(),
+                optionalField = optionalField?.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.DomainLevelRecord].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.DomainLevelRecord].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun domainLevelRecord_(
             someField: org.partiql.pig.runtime.LongPrimitive,
             anotherField: org.partiql.pig.runtime.SymbolPrimitive,
             optionalField: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.DomainLevelRecord
+        ): TestDomain.DomainLevelRecord =
+            TestDomain.DomainLevelRecord(
+                someField = someField,
+                anotherField = anotherField,
+                optionalField = optionalField,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.ProductWithRecord].
-         */
+        * Creates an instance of [TestDomain.ProductWithRecord].
+        */
         fun productWithRecord(
             value: Long,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.ProductWithRecord
+        ): TestDomain.ProductWithRecord =
+            TestDomain.ProductWithRecord(
+                value = value.asPrimitive(),
+                dlr = dlr,
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.ProductWithRecord].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.ProductWithRecord].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun productWithRecord_(
             value: org.partiql.pig.runtime.LongPrimitive,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.ProductWithRecord
+        ): TestDomain.ProductWithRecord =
+            TestDomain.ProductWithRecord(
+                value = value,
+                dlr = dlr,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.TestSumTriplet].
-         */
+        * Creates an instance of [TestDomain.TestSumTriplet].
+        */
         fun testSumTriplet(
             a: TestSum,
             b: TestSum,
             c: TestSum,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSumTriplet
+        ): TestDomain.TestSumTriplet =
+            TestDomain.TestSumTriplet(
+                a = a,
+                b = b,
+                c = c,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.EntityPair].
-         */
+        * Creates an instance of [TestDomain.EntityPair].
+        */
         fun entityPair(
             first: Entity,
             second: Entity,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.EntityPair
+        ): TestDomain.EntityPair =
+            TestDomain.EntityPair(
+                first = first,
+                second = second,
+                metas = metas + newMetaContainer())
         
         
         // Variants for Sum: Answer 
         /**
-         * Creates an instance of [TestDomain.Answer.No].
-         */
+        * Creates an instance of [TestDomain.Answer.No].
+        */
         fun no(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Answer.No
+        ): TestDomain.Answer.No =
+            TestDomain.Answer.No(
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.Answer.Yes].
-         */
+        * Creates an instance of [TestDomain.Answer.Yes].
+        */
         fun yes(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Answer.Yes
+        ): TestDomain.Answer.Yes =
+            TestDomain.Answer.Yes(
+                metas = metas + newMetaContainer())
         
         
         // Variants for Sum: SumWithRecord 
         /**
-         * Creates an instance of [TestDomain.SumWithRecord.VariantWithRecord].
-         */
+        * Creates an instance of [TestDomain.SumWithRecord.VariantWithRecord].
+        */
         fun variantWithRecord(
             value: Long,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SumWithRecord.VariantWithRecord
+        ): TestDomain.SumWithRecord.VariantWithRecord =
+            TestDomain.SumWithRecord.VariantWithRecord(
+                value = value.asPrimitive(),
+                dlr = dlr,
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.SumWithRecord.VariantWithRecord].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.SumWithRecord.VariantWithRecord].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun variantWithRecord_(
             value: org.partiql.pig.runtime.LongPrimitive,
             dlr: DomainLevelRecord,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.SumWithRecord.VariantWithRecord
+        ): TestDomain.SumWithRecord.VariantWithRecord =
+            TestDomain.SumWithRecord.VariantWithRecord(
+                value = value,
+                dlr = dlr,
+                metas = metas + newMetaContainer())
         
         
         // Variants for Sum: TestSum 
         /**
-         * Creates an instance of [TestDomain.TestSum.One].
-         */
+        * Creates an instance of [TestDomain.TestSum.One].
+        */
         fun one(
             a: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSum.One
+        ): TestDomain.TestSum.One =
+            TestDomain.TestSum.One(
+                a = a.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.TestSum.One].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.TestSum.One].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun one_(
             a: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSum.One
+        ): TestDomain.TestSum.One =
+            TestDomain.TestSum.One(
+                a = a,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.TestSum.Two].
-         */
+        * Creates an instance of [TestDomain.TestSum.Two].
+        */
         fun two(
             a: Long,
             b: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSum.Two
+        ): TestDomain.TestSum.Two =
+            TestDomain.TestSum.Two(
+                a = a.asPrimitive(),
+                b = b.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.TestSum.Two].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.TestSum.Two].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun two_(
             a: org.partiql.pig.runtime.LongPrimitive,
             b: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSum.Two
+        ): TestDomain.TestSum.Two =
+            TestDomain.TestSum.Two(
+                a = a,
+                b = b,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.TestSum.Three].
-         */
+        * Creates an instance of [TestDomain.TestSum.Three].
+        */
         fun three(
             a: Long,
             b: Long,
             c: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSum.Three
+        ): TestDomain.TestSum.Three =
+            TestDomain.TestSum.Three(
+                a = a.asPrimitive(),
+                b = b.asPrimitive(),
+                c = c.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.TestSum.Three].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.TestSum.Three].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun three_(
             a: org.partiql.pig.runtime.LongPrimitive,
             b: org.partiql.pig.runtime.LongPrimitive,
             c: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.TestSum.Three
+        ): TestDomain.TestSum.Three =
+            TestDomain.TestSum.Three(
+                a = a,
+                b = b,
+                c = c,
+                metas = metas + newMetaContainer())
         
         
         // Variants for Sum: Entity 
         /**
-         * Creates an instance of [TestDomain.Entity.Slug].
-         */
+        * Creates an instance of [TestDomain.Entity.Slug].
+        */
         fun slug(
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Entity.Slug
+        ): TestDomain.Entity.Slug =
+            TestDomain.Entity.Slug(
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.Entity.Android].
-         */
+        * Creates an instance of [TestDomain.Entity.Android].
+        */
         fun android(
             id: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Entity.Android
+        ): TestDomain.Entity.Android =
+            TestDomain.Entity.Android(
+                id = id.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [TestDomain.Entity.Android].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [TestDomain.Entity.Android].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun android_(
             id: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Entity.Android
+        ): TestDomain.Entity.Android =
+            TestDomain.Entity.Android(
+                id = id,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [TestDomain.Entity.Human].
-         */
+        * Creates an instance of [TestDomain.Entity.Human].
+        */
         fun human(
             firstName: String,
             middleNames: kotlin.collections.List<String> = emptyList(),
@@ -737,674 +976,6 @@ class TestDomain private constructor() {
             title: String? = null,
             parent: Entity? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Entity.Human
-        
-        /**
-         * Creates an instance of [TestDomain.Entity.Human].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun human_(
-            firstName: org.partiql.pig.runtime.SymbolPrimitive,
-            middleNames: kotlin.collections.List<org.partiql.pig.runtime.SymbolPrimitive> = emptyList(),
-            lastName: org.partiql.pig.runtime.SymbolPrimitive,
-            title: org.partiql.pig.runtime.SymbolPrimitive? = null,
-            parent: Entity? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Entity.Human
-    }
-    
-    private object TestDomainBuilder : Builder {
-                // Tuples
-        override fun boolPair(
-            first: Boolean,
-            second: Boolean,
-            metas: MetaContainer
-        ): TestDomain.BoolPair =
-            TestDomain.BoolPair(
-                first = first.asPrimitive(),
-                second = second.asPrimitive(),
-                metas = metas)
-        
-        override fun boolPair_(
-            first: org.partiql.pig.runtime.BoolPrimitive,
-            second: org.partiql.pig.runtime.BoolPrimitive,
-            metas: MetaContainer
-        ): TestDomain.BoolPair =
-            TestDomain.BoolPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun intPair(
-            first: Long,
-            second: Long,
-            metas: MetaContainer
-        ): TestDomain.IntPair =
-            TestDomain.IntPair(
-                first = first.asPrimitive(),
-                second = second.asPrimitive(),
-                metas = metas)
-        
-        override fun intPair_(
-            first: org.partiql.pig.runtime.LongPrimitive,
-            second: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): TestDomain.IntPair =
-            TestDomain.IntPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun symbolPair(
-            first: String,
-            second: String,
-            metas: MetaContainer
-        ): TestDomain.SymbolPair =
-            TestDomain.SymbolPair(
-                first = first.asPrimitive(),
-                second = second.asPrimitive(),
-                metas = metas)
-        
-        override fun symbolPair_(
-            first: org.partiql.pig.runtime.SymbolPrimitive,
-            second: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
-        ): TestDomain.SymbolPair =
-            TestDomain.SymbolPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun ionPair(
-            first: com.amazon.ionelement.api.IonElement,
-            second: com.amazon.ionelement.api.IonElement,
-            metas: MetaContainer
-        ): TestDomain.IonPair =
-            TestDomain.IonPair(
-                first = first.asAnyElement(),
-                second = second.asAnyElement(),
-                metas = metas)
-        
-        
-        override fun intSymbolPair(
-            first: Long,
-            second: String,
-            metas: MetaContainer
-        ): TestDomain.IntSymbolPair =
-            TestDomain.IntSymbolPair(
-                first = first.asPrimitive(),
-                second = second.asPrimitive(),
-                metas = metas)
-        
-        override fun intSymbolPair_(
-            first: org.partiql.pig.runtime.LongPrimitive,
-            second: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
-        ): TestDomain.IntSymbolPair =
-            TestDomain.IntSymbolPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun symbolIntPair(
-            first: String,
-            second: Long,
-            metas: MetaContainer
-        ): TestDomain.SymbolIntPair =
-            TestDomain.SymbolIntPair(
-                first = first.asPrimitive(),
-                second = second.asPrimitive(),
-                metas = metas)
-        
-        override fun symbolIntPair_(
-            first: org.partiql.pig.runtime.SymbolPrimitive,
-            second: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): TestDomain.SymbolIntPair =
-            TestDomain.SymbolIntPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun ionIntPair(
-            first: com.amazon.ionelement.api.IonElement,
-            second: Long,
-            metas: MetaContainer
-        ): TestDomain.IonIntPair =
-            TestDomain.IonIntPair(
-                first = first.asAnyElement(),
-                second = second.asPrimitive(),
-                metas = metas)
-        
-        override fun ionIntPair_(
-            first: com.amazon.ionelement.api.IonElement,
-            second: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): TestDomain.IonIntPair =
-            TestDomain.IonIntPair(
-                first = first.asAnyElement(),
-                second = second,
-                metas = metas)
-        
-        
-        override fun ionSymbolPair(
-            first: com.amazon.ionelement.api.IonElement,
-            second: com.amazon.ionelement.api.IonElement,
-            metas: MetaContainer
-        ): TestDomain.IonSymbolPair =
-            TestDomain.IonSymbolPair(
-                first = first.asAnyElement(),
-                second = second.asAnyElement(),
-                metas = metas)
-        
-        
-        override fun intPairPair(
-            first: IntPair,
-            second: IntPair,
-            metas: MetaContainer
-        ): TestDomain.IntPairPair =
-            TestDomain.IntPairPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun symbolPairPair(
-            first: SymbolPair,
-            second: SymbolPair,
-            metas: MetaContainer
-        ): TestDomain.SymbolPairPair =
-            TestDomain.SymbolPairPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun ionPairPair(
-            first: IonPair,
-            second: IonPair,
-            metas: MetaContainer
-        ): TestDomain.IonPairPair =
-            TestDomain.IonPairPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun recursivePair(
-            first: Long,
-            second: RecursivePair?,
-            metas: MetaContainer
-        ): TestDomain.RecursivePair =
-            TestDomain.RecursivePair(
-                first = first.asPrimitive(),
-                second = second,
-                metas = metas)
-        
-        override fun recursivePair_(
-            first: org.partiql.pig.runtime.LongPrimitive,
-            second: RecursivePair?,
-            metas: MetaContainer
-        ): TestDomain.RecursivePair =
-            TestDomain.RecursivePair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun answerPair(
-            first: Answer,
-            second: Answer,
-            metas: MetaContainer
-        ): TestDomain.AnswerPair =
-            TestDomain.AnswerPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun answerIntPair(
-            first: Answer,
-            second: Long,
-            metas: MetaContainer
-        ): TestDomain.AnswerIntPair =
-            TestDomain.AnswerIntPair(
-                first = first,
-                second = second.asPrimitive(),
-                metas = metas)
-        
-        override fun answerIntPair_(
-            first: Answer,
-            second: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): TestDomain.AnswerIntPair =
-            TestDomain.AnswerIntPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun intAnswerPair(
-            first: Long,
-            second: Answer,
-            metas: MetaContainer
-        ): TestDomain.IntAnswerPair =
-            TestDomain.IntAnswerPair(
-                first = first.asPrimitive(),
-                second = second,
-                metas = metas)
-        
-        override fun intAnswerPair_(
-            first: org.partiql.pig.runtime.LongPrimitive,
-            second: Answer,
-            metas: MetaContainer
-        ): TestDomain.IntAnswerPair =
-            TestDomain.IntAnswerPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun symbolAnswerPair(
-            first: String,
-            second: Answer,
-            metas: MetaContainer
-        ): TestDomain.SymbolAnswerPair =
-            TestDomain.SymbolAnswerPair(
-                first = first.asPrimitive(),
-                second = second,
-                metas = metas)
-        
-        override fun symbolAnswerPair_(
-            first: org.partiql.pig.runtime.SymbolPrimitive,
-            second: Answer,
-            metas: MetaContainer
-        ): TestDomain.SymbolAnswerPair =
-            TestDomain.SymbolAnswerPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun answerSymbolPair(
-            first: Answer,
-            second: String,
-            metas: MetaContainer
-        ): TestDomain.AnswerSymbolPair =
-            TestDomain.AnswerSymbolPair(
-                first = first,
-                second = second.asPrimitive(),
-                metas = metas)
-        
-        override fun answerSymbolPair_(
-            first: Answer,
-            second: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
-        ): TestDomain.AnswerSymbolPair =
-            TestDomain.AnswerSymbolPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun variadicMin0(
-            ints: kotlin.collections.List<Long>,
-            metas: MetaContainer
-        ): TestDomain.VariadicMin0 =
-            TestDomain.VariadicMin0(
-                ints = ints.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun variadicMin0_(
-            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
-            metas: MetaContainer
-        ): TestDomain.VariadicMin0 =
-            TestDomain.VariadicMin0(
-                ints = ints,
-                metas = metas)
-        
-        override fun variadicMin0(
-            vararg ints: Long,
-            metas: MetaContainer
-        ): TestDomain.VariadicMin0 =
-            TestDomain.VariadicMin0(
-                ints = ints.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun variadicMin0_(
-            vararg ints: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): TestDomain.VariadicMin0 =
-            TestDomain.VariadicMin0(
-                ints = ints.toList(),
-                metas = metas)
-        
-        
-        override fun variadicMin1(
-            ints: kotlin.collections.List<Long>,
-            metas: MetaContainer
-        ): TestDomain.VariadicMin1 =
-            TestDomain.VariadicMin1(
-                ints = ints.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun variadicMin1_(
-            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
-            metas: MetaContainer
-        ): TestDomain.VariadicMin1 =
-            TestDomain.VariadicMin1(
-                ints = ints,
-                metas = metas)
-        
-        override fun variadicMin1(
-            ints0: Long,
-            vararg ints: Long,
-            metas: MetaContainer
-        ): TestDomain.VariadicMin1 =
-            TestDomain.VariadicMin1(
-                ints = listOfPrimitives(ints0) + ints.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun variadicMin1_(
-            ints0: org.partiql.pig.runtime.LongPrimitive,
-            vararg ints: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): TestDomain.VariadicMin1 =
-            TestDomain.VariadicMin1(
-                ints = listOfPrimitives(ints0) + ints.toList(),
-                metas = metas)
-        
-        
-        override fun elementVariadic(
-            name: String,
-            ints: kotlin.collections.List<Long>,
-            metas: MetaContainer
-        ): TestDomain.ElementVariadic =
-            TestDomain.ElementVariadic(
-                name = name.asPrimitive(),
-                ints = ints.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun elementVariadic_(
-            name: org.partiql.pig.runtime.SymbolPrimitive,
-            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
-            metas: MetaContainer
-        ): TestDomain.ElementVariadic =
-            TestDomain.ElementVariadic(
-                name = name,
-                ints = ints,
-                metas = metas)
-        
-        override fun elementVariadic(
-            name: String,
-            vararg ints: Long,
-            metas: MetaContainer
-        ): TestDomain.ElementVariadic =
-            TestDomain.ElementVariadic(
-                name = name?.asPrimitive(),
-                ints = ints.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun elementVariadic_(
-            name: org.partiql.pig.runtime.SymbolPrimitive,
-            vararg ints: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): TestDomain.ElementVariadic =
-            TestDomain.ElementVariadic(
-                name = name,
-                ints = ints.toList(),
-                metas = metas)
-        
-        
-        override fun optional1(
-            value: Long?,
-            metas: MetaContainer
-        ): TestDomain.Optional1 =
-            TestDomain.Optional1(
-                value = value?.asPrimitive(),
-                metas = metas)
-        
-        override fun optional1_(
-            value: org.partiql.pig.runtime.LongPrimitive?,
-            metas: MetaContainer
-        ): TestDomain.Optional1 =
-            TestDomain.Optional1(
-                value = value,
-                metas = metas)
-        
-        
-        override fun optional2(
-            first: Long?,
-            second: Long?,
-            metas: MetaContainer
-        ): TestDomain.Optional2 =
-            TestDomain.Optional2(
-                first = first?.asPrimitive(),
-                second = second?.asPrimitive(),
-                metas = metas)
-        
-        override fun optional2_(
-            first: org.partiql.pig.runtime.LongPrimitive?,
-            second: org.partiql.pig.runtime.LongPrimitive?,
-            metas: MetaContainer
-        ): TestDomain.Optional2 =
-            TestDomain.Optional2(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        override fun domainLevelRecord(
-            someField: Long,
-            anotherField: String,
-            optionalField: Long?,
-            metas: MetaContainer
-        ): TestDomain.DomainLevelRecord =
-            TestDomain.DomainLevelRecord(
-                someField = someField.asPrimitive(),
-                anotherField = anotherField.asPrimitive(),
-                optionalField = optionalField?.asPrimitive(),
-                metas = metas)
-        
-        override fun domainLevelRecord_(
-            someField: org.partiql.pig.runtime.LongPrimitive,
-            anotherField: org.partiql.pig.runtime.SymbolPrimitive,
-            optionalField: org.partiql.pig.runtime.LongPrimitive?,
-            metas: MetaContainer
-        ): TestDomain.DomainLevelRecord =
-            TestDomain.DomainLevelRecord(
-                someField = someField,
-                anotherField = anotherField,
-                optionalField = optionalField,
-                metas = metas)
-        
-        
-        override fun productWithRecord(
-            value: Long,
-            dlr: DomainLevelRecord,
-            metas: MetaContainer
-        ): TestDomain.ProductWithRecord =
-            TestDomain.ProductWithRecord(
-                value = value.asPrimitive(),
-                dlr = dlr,
-                metas = metas)
-        
-        override fun productWithRecord_(
-            value: org.partiql.pig.runtime.LongPrimitive,
-            dlr: DomainLevelRecord,
-            metas: MetaContainer
-        ): TestDomain.ProductWithRecord =
-            TestDomain.ProductWithRecord(
-                value = value,
-                dlr = dlr,
-                metas = metas)
-        
-        
-        override fun testSumTriplet(
-            a: TestSum,
-            b: TestSum,
-            c: TestSum,
-            metas: MetaContainer
-        ): TestDomain.TestSumTriplet =
-            TestDomain.TestSumTriplet(
-                a = a,
-                b = b,
-                c = c,
-                metas = metas)
-        
-        
-        override fun entityPair(
-            first: Entity,
-            second: Entity,
-            metas: MetaContainer
-        ): TestDomain.EntityPair =
-            TestDomain.EntityPair(
-                first = first,
-                second = second,
-                metas = metas)
-        
-        
-        // Variants for Sum: Answer 
-        override fun no(
-            metas: MetaContainer
-        ): TestDomain.Answer.No =
-            TestDomain.Answer.No(
-                metas = metas)
-        
-        
-        override fun yes(
-            metas: MetaContainer
-        ): TestDomain.Answer.Yes =
-            TestDomain.Answer.Yes(
-                metas = metas)
-        
-        
-        // Variants for Sum: SumWithRecord 
-        override fun variantWithRecord(
-            value: Long,
-            dlr: DomainLevelRecord,
-            metas: MetaContainer
-        ): TestDomain.SumWithRecord.VariantWithRecord =
-            TestDomain.SumWithRecord.VariantWithRecord(
-                value = value.asPrimitive(),
-                dlr = dlr,
-                metas = metas)
-        
-        override fun variantWithRecord_(
-            value: org.partiql.pig.runtime.LongPrimitive,
-            dlr: DomainLevelRecord,
-            metas: MetaContainer
-        ): TestDomain.SumWithRecord.VariantWithRecord =
-            TestDomain.SumWithRecord.VariantWithRecord(
-                value = value,
-                dlr = dlr,
-                metas = metas)
-        
-        
-        // Variants for Sum: TestSum 
-        override fun one(
-            a: Long,
-            metas: MetaContainer
-        ): TestDomain.TestSum.One =
-            TestDomain.TestSum.One(
-                a = a.asPrimitive(),
-                metas = metas)
-        
-        override fun one_(
-            a: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): TestDomain.TestSum.One =
-            TestDomain.TestSum.One(
-                a = a,
-                metas = metas)
-        
-        
-        override fun two(
-            a: Long,
-            b: Long,
-            metas: MetaContainer
-        ): TestDomain.TestSum.Two =
-            TestDomain.TestSum.Two(
-                a = a.asPrimitive(),
-                b = b.asPrimitive(),
-                metas = metas)
-        
-        override fun two_(
-            a: org.partiql.pig.runtime.LongPrimitive,
-            b: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): TestDomain.TestSum.Two =
-            TestDomain.TestSum.Two(
-                a = a,
-                b = b,
-                metas = metas)
-        
-        
-        override fun three(
-            a: Long,
-            b: Long,
-            c: Long,
-            metas: MetaContainer
-        ): TestDomain.TestSum.Three =
-            TestDomain.TestSum.Three(
-                a = a.asPrimitive(),
-                b = b.asPrimitive(),
-                c = c.asPrimitive(),
-                metas = metas)
-        
-        override fun three_(
-            a: org.partiql.pig.runtime.LongPrimitive,
-            b: org.partiql.pig.runtime.LongPrimitive,
-            c: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): TestDomain.TestSum.Three =
-            TestDomain.TestSum.Three(
-                a = a,
-                b = b,
-                c = c,
-                metas = metas)
-        
-        
-        // Variants for Sum: Entity 
-        override fun slug(
-            metas: MetaContainer
-        ): TestDomain.Entity.Slug =
-            TestDomain.Entity.Slug(
-                metas = metas)
-        
-        
-        override fun android(
-            id: Long,
-            metas: MetaContainer
-        ): TestDomain.Entity.Android =
-            TestDomain.Entity.Android(
-                id = id.asPrimitive(),
-                metas = metas)
-        
-        override fun android_(
-            id: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): TestDomain.Entity.Android =
-            TestDomain.Entity.Android(
-                id = id,
-                metas = metas)
-        
-        
-        override fun human(
-            firstName: String,
-            middleNames: kotlin.collections.List<String>,
-            lastName: String,
-            title: String?,
-            parent: Entity?,
-            metas: MetaContainer
         ): TestDomain.Entity.Human =
             TestDomain.Entity.Human(
                 firstName = firstName.asPrimitive(),
@@ -1412,15 +983,22 @@ class TestDomain private constructor() {
                 lastName = lastName.asPrimitive(),
                 title = title?.asPrimitive(),
                 parent = parent,
-                metas = metas)
+                metas = metas + newMetaContainer())
         
-        override fun human_(
+        /**
+        * Creates an instance of [TestDomain.Entity.Human].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
+        fun human_(
             firstName: org.partiql.pig.runtime.SymbolPrimitive,
-            middleNames: kotlin.collections.List<org.partiql.pig.runtime.SymbolPrimitive>,
+            middleNames: kotlin.collections.List<org.partiql.pig.runtime.SymbolPrimitive> = emptyList(),
             lastName: org.partiql.pig.runtime.SymbolPrimitive,
-            title: org.partiql.pig.runtime.SymbolPrimitive?,
-            parent: Entity?,
-            metas: MetaContainer
+            title: org.partiql.pig.runtime.SymbolPrimitive? = null,
+            parent: Entity? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Entity.Human =
             TestDomain.Entity.Human(
                 firstName = firstName,
@@ -1428,8 +1006,11 @@ class TestDomain private constructor() {
                 lastName = lastName,
                 title = title,
                 parent = parent,
-                metas = metas)
+                metas = metas + newMetaContainer())
     }
+    
+    /** Default implementation of [Builder] that uses all default method implementations. */
+    private object TestDomainBuilder : Builder
     
     /** Base class for all TestDomain types. */
     abstract class TestDomainNode : DomainNode {
@@ -5510,296 +5091,398 @@ class MultiWordDomain private constructor() {
     }
     
     interface Builder {
-                // Tuples
+        fun newMetaContainer() = emptyMetaContainer()
+    
+                    // Tuples
         /**
-         * Creates an instance of [MultiWordDomain.AaaAaa].
-         */
+        * Creates an instance of [MultiWordDomain.AaaAaa].
+        */
         fun aaaAaa(
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAaa
+        ): MultiWordDomain.AaaAaa =
+            MultiWordDomain.AaaAaa(
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [MultiWordDomain.AaaAab].
-         */
+        * Creates an instance of [MultiWordDomain.AaaAab].
+        */
         fun aaaAab(
             dField: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAab
+        ): MultiWordDomain.AaaAab =
+            MultiWordDomain.AaaAab(
+                dField = dField?.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AaaAab].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AaaAab].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aaaAab_(
             dField: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAab
+        ): MultiWordDomain.AaaAab =
+            MultiWordDomain.AaaAab(
+                dField = dField,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [MultiWordDomain.AaaAac].
-         */
+        * Creates an instance of [MultiWordDomain.AaaAac].
+        */
         fun aaaAac(
             dField: Long? = null,
             eField: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAac
+        ): MultiWordDomain.AaaAac =
+            MultiWordDomain.AaaAac(
+                dField = dField?.asPrimitive(),
+                eField = eField?.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AaaAac].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AaaAac].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aaaAac_(
             dField: org.partiql.pig.runtime.LongPrimitive? = null,
             eField: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAac
+        ): MultiWordDomain.AaaAac =
+            MultiWordDomain.AaaAac(
+                dField = dField,
+                eField = eField,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [MultiWordDomain.AaaAad].
-         */
+        * Creates an instance of [MultiWordDomain.AaaAad].
+        */
         fun aaaAad(
             dField: kotlin.collections.List<Long> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAad
+        ): MultiWordDomain.AaaAad =
+            MultiWordDomain.AaaAad(
+                dField = dField.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AaaAad].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AaaAad].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aaaAad_(
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAad
+        ): MultiWordDomain.AaaAad =
+            MultiWordDomain.AaaAad(
+                dField = dField,
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AaaAad].
-         */
+        * Creates an instance of [MultiWordDomain.AaaAad].
+        */
         fun aaaAad(
             vararg dField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAad
+        ): MultiWordDomain.AaaAad =
+            MultiWordDomain.AaaAad(
+                dField = dField.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AaaAad].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AaaAad].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aaaAad_(
             vararg dField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAad
+        ): MultiWordDomain.AaaAad =
+            MultiWordDomain.AaaAad(
+                dField = dField.toList(),
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [MultiWordDomain.AaaAae].
-         */
+        * Creates an instance of [MultiWordDomain.AaaAae].
+        */
         fun aaaAae(
             dField: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAae
+        ): MultiWordDomain.AaaAae =
+            MultiWordDomain.AaaAae(
+                dField = dField.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AaaAae].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AaaAae].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aaaAae_(
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAae
+        ): MultiWordDomain.AaaAae =
+            MultiWordDomain.AaaAae(
+                dField = dField,
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AaaAae].
-         */
+        * Creates an instance of [MultiWordDomain.AaaAae].
+        */
         fun aaaAae(
             dField0: Long,
             dField1: Long,
             vararg dField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAae
+        ): MultiWordDomain.AaaAae =
+            MultiWordDomain.AaaAae(
+                dField = listOfPrimitives(dField0, dField1) + dField.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AaaAae].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AaaAae].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aaaAae_(
             dField0: org.partiql.pig.runtime.LongPrimitive,
             dField1: org.partiql.pig.runtime.LongPrimitive,
             vararg dField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AaaAae
+        ): MultiWordDomain.AaaAae =
+            MultiWordDomain.AaaAae(
+                dField = listOfPrimitives(dField0, dField1) + dField.toList(),
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAaa].
-         */
+        * Creates an instance of [MultiWordDomain.AabAaa].
+        */
         fun aabAaa(
             bField: Long,
             cField: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAaa
+        ): MultiWordDomain.AabAaa =
+            MultiWordDomain.AabAaa(
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAaa].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AabAaa].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aabAaa_(
             bField: org.partiql.pig.runtime.LongPrimitive,
             cField: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAaa
+        ): MultiWordDomain.AabAaa =
+            MultiWordDomain.AabAaa(
+                bField = bField,
+                cField = cField,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAab].
-         */
+        * Creates an instance of [MultiWordDomain.AabAab].
+        */
         fun aabAab(
             bField: Long,
             cField: String,
             dField: Long? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAab
+        ): MultiWordDomain.AabAab =
+            MultiWordDomain.AabAab(
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
+                dField = dField?.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAab].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AabAab].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aabAab_(
             bField: org.partiql.pig.runtime.LongPrimitive,
             cField: org.partiql.pig.runtime.SymbolPrimitive,
             dField: org.partiql.pig.runtime.LongPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAab
+        ): MultiWordDomain.AabAab =
+            MultiWordDomain.AabAab(
+                bField = bField,
+                cField = cField,
+                dField = dField,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAac].
-         */
+        * Creates an instance of [MultiWordDomain.AabAac].
+        */
         fun aabAac(
             bField: Long,
             cField: String,
             dField: Long? = null,
             eField: String? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAac
+        ): MultiWordDomain.AabAac =
+            MultiWordDomain.AabAac(
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
+                dField = dField?.asPrimitive(),
+                eField = eField?.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAac].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AabAac].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aabAac_(
             bField: org.partiql.pig.runtime.LongPrimitive,
             cField: org.partiql.pig.runtime.SymbolPrimitive,
             dField: org.partiql.pig.runtime.LongPrimitive? = null,
             eField: org.partiql.pig.runtime.SymbolPrimitive? = null,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAac
+        ): MultiWordDomain.AabAac =
+            MultiWordDomain.AabAac(
+                bField = bField,
+                cField = cField,
+                dField = dField,
+                eField = eField,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAad].
-         */
+        * Creates an instance of [MultiWordDomain.AabAad].
+        */
         fun aabAad(
             bField: Long,
             cField: String,
             dField: kotlin.collections.List<Long> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAad
+        ): MultiWordDomain.AabAad =
+            MultiWordDomain.AabAad(
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
+                dField = dField.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAad].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AabAad].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aabAad_(
             bField: org.partiql.pig.runtime.LongPrimitive,
             cField: org.partiql.pig.runtime.SymbolPrimitive,
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAad
+        ): MultiWordDomain.AabAad =
+            MultiWordDomain.AabAad(
+                bField = bField,
+                cField = cField,
+                dField = dField,
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAad].
-         */
+        * Creates an instance of [MultiWordDomain.AabAad].
+        */
         fun aabAad(
             bField: Long,
             cField: String,
             vararg dField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAad
+        ): MultiWordDomain.AabAad =
+            MultiWordDomain.AabAad(
+                bField = bField?.asPrimitive(),
+                cField = cField?.asPrimitive(),
+                dField = dField.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAad].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AabAad].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aabAad_(
             bField: org.partiql.pig.runtime.LongPrimitive,
             cField: org.partiql.pig.runtime.SymbolPrimitive,
             vararg dField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAad
+        ): MultiWordDomain.AabAad =
+            MultiWordDomain.AabAad(
+                bField = bField,
+                cField = cField,
+                dField = dField.toList(),
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAae].
-         */
+        * Creates an instance of [MultiWordDomain.AabAae].
+        */
         fun aabAae(
             bField: Long,
             cField: String,
             dField: kotlin.collections.List<Long>,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAae
+        ): MultiWordDomain.AabAae =
+            MultiWordDomain.AabAae(
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
+                dField = dField.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAae].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AabAae].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aabAae_(
             bField: org.partiql.pig.runtime.LongPrimitive,
             cField: org.partiql.pig.runtime.SymbolPrimitive,
             dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAae
+        ): MultiWordDomain.AabAae =
+            MultiWordDomain.AabAae(
+                bField = bField,
+                cField = cField,
+                dField = dField,
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAae].
-         */
+        * Creates an instance of [MultiWordDomain.AabAae].
+        */
         fun aabAae(
             bField: Long,
             cField: String,
@@ -5807,15 +5490,20 @@ class MultiWordDomain private constructor() {
             dField1: Long,
             vararg dField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAae
+        ): MultiWordDomain.AabAae =
+            MultiWordDomain.AabAae(
+                bField = bField?.asPrimitive(),
+                cField = cField?.asPrimitive(),
+                dField = listOfPrimitives(dField0, dField1) + dField.map { it.asPrimitive() },
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [MultiWordDomain.AabAae].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [MultiWordDomain.AabAae].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun aabAae_(
             bField: org.partiql.pig.runtime.LongPrimitive,
             cField: org.partiql.pig.runtime.SymbolPrimitive,
@@ -5823,424 +5511,102 @@ class MultiWordDomain private constructor() {
             dField1: org.partiql.pig.runtime.LongPrimitive,
             vararg dField: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.AabAae
+        ): MultiWordDomain.AabAae =
+            MultiWordDomain.AabAae(
+                bField = bField,
+                cField = cField,
+                dField = listOfPrimitives(dField0, dField1) + dField.toList(),
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [MultiWordDomain.Rrr].
-         */
+        * Creates an instance of [MultiWordDomain.Rrr].
+        */
         fun rrr(
             aField: Long,
             bbbField: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.Rrr
-        
-        /**
-         * Creates an instance of [MultiWordDomain.Rrr].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun rrr_(
-            aField: org.partiql.pig.runtime.LongPrimitive,
-            bbbField: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.Rrr
-        
-        
-        // Variants for Sum: SssTtt 
-        /**
-         * Creates an instance of [MultiWordDomain.SssTtt.Lll].
-         */
-        fun lll(
-            uField: Long,
-            metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.SssTtt.Lll
-        
-        /**
-         * Creates an instance of [MultiWordDomain.SssTtt.Lll].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun lll_(
-            uField: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.SssTtt.Lll
-        
-        
-        /**
-         * Creates an instance of [MultiWordDomain.SssTtt.Mmm].
-         */
-        fun mmm(
-            vField: String,
-            metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.SssTtt.Mmm
-        
-        /**
-         * Creates an instance of [MultiWordDomain.SssTtt.Mmm].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun mmm_(
-            vField: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): MultiWordDomain.SssTtt.Mmm
-    }
-    
-    private object MultiWordDomainBuilder : Builder {
-                // Tuples
-        override fun aaaAaa(
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAaa =
-            MultiWordDomain.AaaAaa(
-                metas = metas)
-        
-        
-        override fun aaaAab(
-            dField: Long?,
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAab =
-            MultiWordDomain.AaaAab(
-                dField = dField?.asPrimitive(),
-                metas = metas)
-        
-        override fun aaaAab_(
-            dField: org.partiql.pig.runtime.LongPrimitive?,
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAab =
-            MultiWordDomain.AaaAab(
-                dField = dField,
-                metas = metas)
-        
-        
-        override fun aaaAac(
-            dField: Long?,
-            eField: String?,
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAac =
-            MultiWordDomain.AaaAac(
-                dField = dField?.asPrimitive(),
-                eField = eField?.asPrimitive(),
-                metas = metas)
-        
-        override fun aaaAac_(
-            dField: org.partiql.pig.runtime.LongPrimitive?,
-            eField: org.partiql.pig.runtime.SymbolPrimitive?,
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAac =
-            MultiWordDomain.AaaAac(
-                dField = dField,
-                eField = eField,
-                metas = metas)
-        
-        
-        override fun aaaAad(
-            dField: kotlin.collections.List<Long>,
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAad =
-            MultiWordDomain.AaaAad(
-                dField = dField.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun aaaAad_(
-            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAad =
-            MultiWordDomain.AaaAad(
-                dField = dField,
-                metas = metas)
-        
-        override fun aaaAad(
-            vararg dField: Long,
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAad =
-            MultiWordDomain.AaaAad(
-                dField = dField.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun aaaAad_(
-            vararg dField: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAad =
-            MultiWordDomain.AaaAad(
-                dField = dField.toList(),
-                metas = metas)
-        
-        
-        override fun aaaAae(
-            dField: kotlin.collections.List<Long>,
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAae =
-            MultiWordDomain.AaaAae(
-                dField = dField.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun aaaAae_(
-            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAae =
-            MultiWordDomain.AaaAae(
-                dField = dField,
-                metas = metas)
-        
-        override fun aaaAae(
-            dField0: Long,
-            dField1: Long,
-            vararg dField: Long,
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAae =
-            MultiWordDomain.AaaAae(
-                dField = listOfPrimitives(dField0, dField1) + dField.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun aaaAae_(
-            dField0: org.partiql.pig.runtime.LongPrimitive,
-            dField1: org.partiql.pig.runtime.LongPrimitive,
-            vararg dField: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): MultiWordDomain.AaaAae =
-            MultiWordDomain.AaaAae(
-                dField = listOfPrimitives(dField0, dField1) + dField.toList(),
-                metas = metas)
-        
-        
-        override fun aabAaa(
-            bField: Long,
-            cField: String,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAaa =
-            MultiWordDomain.AabAaa(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
-                metas = metas)
-        
-        override fun aabAaa_(
-            bField: org.partiql.pig.runtime.LongPrimitive,
-            cField: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAaa =
-            MultiWordDomain.AabAaa(
-                bField = bField,
-                cField = cField,
-                metas = metas)
-        
-        
-        override fun aabAab(
-            bField: Long,
-            cField: String,
-            dField: Long?,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAab =
-            MultiWordDomain.AabAab(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
-                dField = dField?.asPrimitive(),
-                metas = metas)
-        
-        override fun aabAab_(
-            bField: org.partiql.pig.runtime.LongPrimitive,
-            cField: org.partiql.pig.runtime.SymbolPrimitive,
-            dField: org.partiql.pig.runtime.LongPrimitive?,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAab =
-            MultiWordDomain.AabAab(
-                bField = bField,
-                cField = cField,
-                dField = dField,
-                metas = metas)
-        
-        
-        override fun aabAac(
-            bField: Long,
-            cField: String,
-            dField: Long?,
-            eField: String?,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAac =
-            MultiWordDomain.AabAac(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
-                dField = dField?.asPrimitive(),
-                eField = eField?.asPrimitive(),
-                metas = metas)
-        
-        override fun aabAac_(
-            bField: org.partiql.pig.runtime.LongPrimitive,
-            cField: org.partiql.pig.runtime.SymbolPrimitive,
-            dField: org.partiql.pig.runtime.LongPrimitive?,
-            eField: org.partiql.pig.runtime.SymbolPrimitive?,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAac =
-            MultiWordDomain.AabAac(
-                bField = bField,
-                cField = cField,
-                dField = dField,
-                eField = eField,
-                metas = metas)
-        
-        
-        override fun aabAad(
-            bField: Long,
-            cField: String,
-            dField: kotlin.collections.List<Long>,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAad =
-            MultiWordDomain.AabAad(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
-                dField = dField.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun aabAad_(
-            bField: org.partiql.pig.runtime.LongPrimitive,
-            cField: org.partiql.pig.runtime.SymbolPrimitive,
-            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAad =
-            MultiWordDomain.AabAad(
-                bField = bField,
-                cField = cField,
-                dField = dField,
-                metas = metas)
-        
-        override fun aabAad(
-            bField: Long,
-            cField: String,
-            vararg dField: Long,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAad =
-            MultiWordDomain.AabAad(
-                bField = bField?.asPrimitive(),
-                cField = cField?.asPrimitive(),
-                dField = dField.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun aabAad_(
-            bField: org.partiql.pig.runtime.LongPrimitive,
-            cField: org.partiql.pig.runtime.SymbolPrimitive,
-            vararg dField: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAad =
-            MultiWordDomain.AabAad(
-                bField = bField,
-                cField = cField,
-                dField = dField.toList(),
-                metas = metas)
-        
-        
-        override fun aabAae(
-            bField: Long,
-            cField: String,
-            dField: kotlin.collections.List<Long>,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAae =
-            MultiWordDomain.AabAae(
-                bField = bField.asPrimitive(),
-                cField = cField.asPrimitive(),
-                dField = dField.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun aabAae_(
-            bField: org.partiql.pig.runtime.LongPrimitive,
-            cField: org.partiql.pig.runtime.SymbolPrimitive,
-            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAae =
-            MultiWordDomain.AabAae(
-                bField = bField,
-                cField = cField,
-                dField = dField,
-                metas = metas)
-        
-        override fun aabAae(
-            bField: Long,
-            cField: String,
-            dField0: Long,
-            dField1: Long,
-            vararg dField: Long,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAae =
-            MultiWordDomain.AabAae(
-                bField = bField?.asPrimitive(),
-                cField = cField?.asPrimitive(),
-                dField = listOfPrimitives(dField0, dField1) + dField.map { it.asPrimitive() },
-                metas = metas)
-        
-        override fun aabAae_(
-            bField: org.partiql.pig.runtime.LongPrimitive,
-            cField: org.partiql.pig.runtime.SymbolPrimitive,
-            dField0: org.partiql.pig.runtime.LongPrimitive,
-            dField1: org.partiql.pig.runtime.LongPrimitive,
-            vararg dField: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): MultiWordDomain.AabAae =
-            MultiWordDomain.AabAae(
-                bField = bField,
-                cField = cField,
-                dField = listOfPrimitives(dField0, dField1) + dField.toList(),
-                metas = metas)
-        
-        
-        override fun rrr(
-            aField: Long,
-            bbbField: Long,
-            metas: MetaContainer
         ): MultiWordDomain.Rrr =
             MultiWordDomain.Rrr(
                 aField = aField.asPrimitive(),
                 bbbField = bbbField.asPrimitive(),
-                metas = metas)
+                metas = metas + newMetaContainer())
         
-        override fun rrr_(
+        /**
+        * Creates an instance of [MultiWordDomain.Rrr].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
+        fun rrr_(
             aField: org.partiql.pig.runtime.LongPrimitive,
             bbbField: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.Rrr =
             MultiWordDomain.Rrr(
                 aField = aField,
                 bbbField = bbbField,
-                metas = metas)
+                metas = metas + newMetaContainer())
         
         
         // Variants for Sum: SssTtt 
-        override fun lll(
+        /**
+        * Creates an instance of [MultiWordDomain.SssTtt.Lll].
+        */
+        fun lll(
             uField: Long,
-            metas: MetaContainer
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.SssTtt.Lll =
             MultiWordDomain.SssTtt.Lll(
                 uField = uField.asPrimitive(),
-                metas = metas)
+                metas = metas + newMetaContainer())
         
-        override fun lll_(
+        /**
+        * Creates an instance of [MultiWordDomain.SssTtt.Lll].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
+        fun lll_(
             uField: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.SssTtt.Lll =
             MultiWordDomain.SssTtt.Lll(
                 uField = uField,
-                metas = metas)
+                metas = metas + newMetaContainer())
         
         
-        override fun mmm(
+        /**
+        * Creates an instance of [MultiWordDomain.SssTtt.Mmm].
+        */
+        fun mmm(
             vField: String,
-            metas: MetaContainer
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.SssTtt.Mmm =
             MultiWordDomain.SssTtt.Mmm(
                 vField = vField.asPrimitive(),
-                metas = metas)
+                metas = metas + newMetaContainer())
         
-        override fun mmm_(
+        /**
+        * Creates an instance of [MultiWordDomain.SssTtt.Mmm].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
+        fun mmm_(
             vField: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.SssTtt.Mmm =
             MultiWordDomain.SssTtt.Mmm(
                 vField = vField,
-                metas = metas)
+                metas = metas + newMetaContainer())
     }
+    
+    /** Default implementation of [Builder] that uses all default method implementations. */
+    private object MultiWordDomainBuilder : Builder
     
     /** Base class for all MultiWordDomain types. */
     abstract class MultiWordDomainNode : DomainNode {
@@ -7788,472 +7154,334 @@ class DomainA private constructor() {
     }
     
     interface Builder {
-                // Tuples
+        fun newMetaContainer() = emptyMetaContainer()
+    
+                    // Tuples
         /**
-         * Creates an instance of [DomainA.ProductToRemove].
-         */
+        * Creates an instance of [DomainA.ProductToRemove].
+        */
         fun productToRemove(
             whatever: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.ProductToRemove
+        ): DomainA.ProductToRemove =
+            DomainA.ProductToRemove(
+                whatever = whatever.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainA.ProductToRemove].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainA.ProductToRemove].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun productToRemove_(
             whatever: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.ProductToRemove
+        ): DomainA.ProductToRemove =
+            DomainA.ProductToRemove(
+                whatever = whatever,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainA.RecordToRemove].
-         */
+        * Creates an instance of [DomainA.RecordToRemove].
+        */
         fun recordToRemove(
             irrelevant: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.RecordToRemove
+        ): DomainA.RecordToRemove =
+            DomainA.RecordToRemove(
+                irrelevant = irrelevant.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainA.RecordToRemove].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainA.RecordToRemove].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun recordToRemove_(
             irrelevant: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.RecordToRemove
+        ): DomainA.RecordToRemove =
+            DomainA.RecordToRemove(
+                irrelevant = irrelevant,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainA.ProductA].
-         */
+        * Creates an instance of [DomainA.ProductA].
+        */
         fun productA(
             one: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.ProductA
+        ): DomainA.ProductA =
+            DomainA.ProductA(
+                one = one.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainA.ProductA].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainA.ProductA].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun productA_(
             one: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.ProductA
+        ): DomainA.ProductA =
+            DomainA.ProductA(
+                one = one,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainA.RecordA].
-         */
+        * Creates an instance of [DomainA.RecordA].
+        */
         fun recordA(
             one: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.RecordA
+        ): DomainA.RecordA =
+            DomainA.RecordA(
+                one = one.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainA.RecordA].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainA.RecordA].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun recordA_(
             one: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.RecordA
+        ): DomainA.RecordA =
+            DomainA.RecordA(
+                one = one,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainA.UnpermutedProduct].
-         */
+        * Creates an instance of [DomainA.UnpermutedProduct].
+        */
         fun unpermutedProduct(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedProduct
+        ): DomainA.UnpermutedProduct =
+            DomainA.UnpermutedProduct(
+                foo = foo.asPrimitive(),
+                bar = bar.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainA.UnpermutedProduct].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainA.UnpermutedProduct].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun unpermutedProduct_(
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedProduct
+        ): DomainA.UnpermutedProduct =
+            DomainA.UnpermutedProduct(
+                foo = foo,
+                bar = bar,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainA.UnpermutedRecord].
-         */
+        * Creates an instance of [DomainA.UnpermutedRecord].
+        */
         fun unpermutedRecord(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedRecord
+        ): DomainA.UnpermutedRecord =
+            DomainA.UnpermutedRecord(
+                foo = foo.asPrimitive(),
+                bar = bar.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainA.UnpermutedRecord].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainA.UnpermutedRecord].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun unpermutedRecord_(
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedRecord
+        ): DomainA.UnpermutedRecord =
+            DomainA.UnpermutedRecord(
+                foo = foo,
+                bar = bar,
+                metas = metas + newMetaContainer())
         
         
         // Variants for Sum: SumToRemove 
         /**
-         * Creates an instance of [DomainA.SumToRemove.Doesnt].
-         */
+        * Creates an instance of [DomainA.SumToRemove.Doesnt].
+        */
         fun doesnt(
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumToRemove.Doesnt
+        ): DomainA.SumToRemove.Doesnt =
+            DomainA.SumToRemove.Doesnt(
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainA.SumToRemove.Matter].
-         */
+        * Creates an instance of [DomainA.SumToRemove.Matter].
+        */
         fun matter(
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumToRemove.Matter
+        ): DomainA.SumToRemove.Matter =
+            DomainA.SumToRemove.Matter(
+                metas = metas + newMetaContainer())
         
         
         // Variants for Sum: SumA 
         /**
-         * Creates an instance of [DomainA.SumA.Who].
-         */
+        * Creates an instance of [DomainA.SumA.Who].
+        */
         fun who(
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumA.Who
+        ): DomainA.SumA.Who =
+            DomainA.SumA.Who(
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainA.SumA.Cares].
-         */
+        * Creates an instance of [DomainA.SumA.Cares].
+        */
         fun cares(
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumA.Cares
+        ): DomainA.SumA.Cares =
+            DomainA.SumA.Cares(
+                metas = metas + newMetaContainer())
         
         
         // Variants for Sum: SumB 
         /**
-         * Creates an instance of [DomainA.SumB.WillBeUnchanged].
-         */
+        * Creates an instance of [DomainA.SumB.WillBeUnchanged].
+        */
         fun willBeUnchanged(
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumB.WillBeUnchanged
+        ): DomainA.SumB.WillBeUnchanged =
+            DomainA.SumB.WillBeUnchanged(
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainA.SumB.WillBeRemoved].
-         */
+        * Creates an instance of [DomainA.SumB.WillBeRemoved].
+        */
         fun willBeRemoved(
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumB.WillBeRemoved
+        ): DomainA.SumB.WillBeRemoved =
+            DomainA.SumB.WillBeRemoved(
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainA.SumB.WillBeReplaced].
-         */
+        * Creates an instance of [DomainA.SumB.WillBeReplaced].
+        */
         fun willBeReplaced(
             something: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumB.WillBeReplaced
+        ): DomainA.SumB.WillBeReplaced =
+            DomainA.SumB.WillBeReplaced(
+                something = something.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainA.SumB.WillBeReplaced].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainA.SumB.WillBeReplaced].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun willBeReplaced_(
             something: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.SumB.WillBeReplaced
+        ): DomainA.SumB.WillBeReplaced =
+            DomainA.SumB.WillBeReplaced(
+                something = something,
+                metas = metas + newMetaContainer())
         
         
         // Variants for Sum: UnpermutedSum 
         /**
-         * Creates an instance of [DomainA.UnpermutedSum.UnpermutedProductVariant].
-         */
+        * Creates an instance of [DomainA.UnpermutedSum.UnpermutedProductVariant].
+        */
         fun unpermutedProductVariant(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedSum.UnpermutedProductVariant
+        ): DomainA.UnpermutedSum.UnpermutedProductVariant =
+            DomainA.UnpermutedSum.UnpermutedProductVariant(
+                foo = foo.asPrimitive(),
+                bar = bar.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainA.UnpermutedSum.UnpermutedProductVariant].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainA.UnpermutedSum.UnpermutedProductVariant].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun unpermutedProductVariant_(
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedSum.UnpermutedProductVariant
+        ): DomainA.UnpermutedSum.UnpermutedProductVariant =
+            DomainA.UnpermutedSum.UnpermutedProductVariant(
+                foo = foo,
+                bar = bar,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainA.UnpermutedSum.UnpermutedRecordVariant].
-         */
+        * Creates an instance of [DomainA.UnpermutedSum.UnpermutedRecordVariant].
+        */
         fun unpermutedRecordVariant(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedSum.UnpermutedRecordVariant
+        ): DomainA.UnpermutedSum.UnpermutedRecordVariant =
+            DomainA.UnpermutedSum.UnpermutedRecordVariant(
+                foo = foo.asPrimitive(),
+                bar = bar.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainA.UnpermutedSum.UnpermutedRecordVariant].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainA.UnpermutedSum.UnpermutedRecordVariant].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun unpermutedRecordVariant_(
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.UnpermutedSum.UnpermutedRecordVariant
+        ): DomainA.UnpermutedSum.UnpermutedRecordVariant =
+            DomainA.UnpermutedSum.UnpermutedRecordVariant(
+                foo = foo,
+                bar = bar,
+                metas = metas + newMetaContainer())
     }
     
-    private object DomainABuilder : Builder {
-                // Tuples
-        override fun productToRemove(
-            whatever: String,
-            metas: MetaContainer
-        ): DomainA.ProductToRemove =
-            DomainA.ProductToRemove(
-                whatever = whatever.asPrimitive(),
-                metas = metas)
-        
-        override fun productToRemove_(
-            whatever: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
-        ): DomainA.ProductToRemove =
-            DomainA.ProductToRemove(
-                whatever = whatever,
-                metas = metas)
-        
-        
-        override fun recordToRemove(
-            irrelevant: Long,
-            metas: MetaContainer
-        ): DomainA.RecordToRemove =
-            DomainA.RecordToRemove(
-                irrelevant = irrelevant.asPrimitive(),
-                metas = metas)
-        
-        override fun recordToRemove_(
-            irrelevant: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.RecordToRemove =
-            DomainA.RecordToRemove(
-                irrelevant = irrelevant,
-                metas = metas)
-        
-        
-        override fun productA(
-            one: Long,
-            metas: MetaContainer
-        ): DomainA.ProductA =
-            DomainA.ProductA(
-                one = one.asPrimitive(),
-                metas = metas)
-        
-        override fun productA_(
-            one: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.ProductA =
-            DomainA.ProductA(
-                one = one,
-                metas = metas)
-        
-        
-        override fun recordA(
-            one: Long,
-            metas: MetaContainer
-        ): DomainA.RecordA =
-            DomainA.RecordA(
-                one = one.asPrimitive(),
-                metas = metas)
-        
-        override fun recordA_(
-            one: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.RecordA =
-            DomainA.RecordA(
-                one = one,
-                metas = metas)
-        
-        
-        override fun unpermutedProduct(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainA.UnpermutedProduct =
-            DomainA.UnpermutedProduct(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedProduct_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.UnpermutedProduct =
-            DomainA.UnpermutedProduct(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        override fun unpermutedRecord(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainA.UnpermutedRecord =
-            DomainA.UnpermutedRecord(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedRecord_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.UnpermutedRecord =
-            DomainA.UnpermutedRecord(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        // Variants for Sum: SumToRemove 
-        override fun doesnt(
-            metas: MetaContainer
-        ): DomainA.SumToRemove.Doesnt =
-            DomainA.SumToRemove.Doesnt(
-                metas = metas)
-        
-        
-        override fun matter(
-            metas: MetaContainer
-        ): DomainA.SumToRemove.Matter =
-            DomainA.SumToRemove.Matter(
-                metas = metas)
-        
-        
-        // Variants for Sum: SumA 
-        override fun who(
-            metas: MetaContainer
-        ): DomainA.SumA.Who =
-            DomainA.SumA.Who(
-                metas = metas)
-        
-        
-        override fun cares(
-            metas: MetaContainer
-        ): DomainA.SumA.Cares =
-            DomainA.SumA.Cares(
-                metas = metas)
-        
-        
-        // Variants for Sum: SumB 
-        override fun willBeUnchanged(
-            metas: MetaContainer
-        ): DomainA.SumB.WillBeUnchanged =
-            DomainA.SumB.WillBeUnchanged(
-                metas = metas)
-        
-        
-        override fun willBeRemoved(
-            metas: MetaContainer
-        ): DomainA.SumB.WillBeRemoved =
-            DomainA.SumB.WillBeRemoved(
-                metas = metas)
-        
-        
-        override fun willBeReplaced(
-            something: Long,
-            metas: MetaContainer
-        ): DomainA.SumB.WillBeReplaced =
-            DomainA.SumB.WillBeReplaced(
-                something = something.asPrimitive(),
-                metas = metas)
-        
-        override fun willBeReplaced_(
-            something: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.SumB.WillBeReplaced =
-            DomainA.SumB.WillBeReplaced(
-                something = something,
-                metas = metas)
-        
-        
-        // Variants for Sum: UnpermutedSum 
-        override fun unpermutedProductVariant(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainA.UnpermutedSum.UnpermutedProductVariant =
-            DomainA.UnpermutedSum.UnpermutedProductVariant(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedProductVariant_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.UnpermutedSum.UnpermutedProductVariant =
-            DomainA.UnpermutedSum.UnpermutedProductVariant(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        override fun unpermutedRecordVariant(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainA.UnpermutedSum.UnpermutedRecordVariant =
-            DomainA.UnpermutedSum.UnpermutedRecordVariant(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedRecordVariant_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainA.UnpermutedSum.UnpermutedRecordVariant =
-            DomainA.UnpermutedSum.UnpermutedRecordVariant(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-    }
+    /** Default implementation of [Builder] that uses all default method implementations. */
+    private object DomainABuilder : Builder
     
     /** Base class for all DomainA types. */
     abstract class DomainANode : DomainNode {
@@ -9910,425 +9138,303 @@ class DomainB private constructor() {
     }
     
     interface Builder {
-                // Tuples
+        fun newMetaContainer() = emptyMetaContainer()
+    
+                    // Tuples
         /**
-         * Creates an instance of [DomainB.UnpermutedProduct].
-         */
+        * Creates an instance of [DomainB.UnpermutedProduct].
+        */
         fun unpermutedProduct(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedProduct
+        ): DomainB.UnpermutedProduct =
+            DomainB.UnpermutedProduct(
+                foo = foo.asPrimitive(),
+                bar = bar.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainB.UnpermutedProduct].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainB.UnpermutedProduct].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun unpermutedProduct_(
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedProduct
+        ): DomainB.UnpermutedProduct =
+            DomainB.UnpermutedProduct(
+                foo = foo,
+                bar = bar,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainB.UnpermutedRecord].
-         */
+        * Creates an instance of [DomainB.UnpermutedRecord].
+        */
         fun unpermutedRecord(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedRecord
+        ): DomainB.UnpermutedRecord =
+            DomainB.UnpermutedRecord(
+                foo = foo.asPrimitive(),
+                bar = bar.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainB.UnpermutedRecord].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainB.UnpermutedRecord].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun unpermutedRecord_(
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedRecord
+        ): DomainB.UnpermutedRecord =
+            DomainB.UnpermutedRecord(
+                foo = foo,
+                bar = bar,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainB.ProductA].
-         */
+        * Creates an instance of [DomainB.ProductA].
+        */
         fun productA(
             one: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.ProductA
+        ): DomainB.ProductA =
+            DomainB.ProductA(
+                one = one.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainB.ProductA].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainB.ProductA].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun productA_(
             one: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.ProductA
+        ): DomainB.ProductA =
+            DomainB.ProductA(
+                one = one,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainB.RecordA].
-         */
+        * Creates an instance of [DomainB.RecordA].
+        */
         fun recordA(
             one: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.RecordA
+        ): DomainB.RecordA =
+            DomainB.RecordA(
+                one = one.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainB.RecordA].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainB.RecordA].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun recordA_(
             one: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.RecordA
+        ): DomainB.RecordA =
+            DomainB.RecordA(
+                one = one,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainB.NewProduct].
-         */
+        * Creates an instance of [DomainB.NewProduct].
+        */
         fun newProduct(
             foo: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.NewProduct
+        ): DomainB.NewProduct =
+            DomainB.NewProduct(
+                foo = foo.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainB.NewProduct].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainB.NewProduct].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun newProduct_(
             foo: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.NewProduct
+        ): DomainB.NewProduct =
+            DomainB.NewProduct(
+                foo = foo,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainB.NewRecord].
-         */
+        * Creates an instance of [DomainB.NewRecord].
+        */
         fun newRecord(
             foo: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.NewRecord
+        ): DomainB.NewRecord =
+            DomainB.NewRecord(
+                foo = foo.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainB.NewRecord].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainB.NewRecord].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun newRecord_(
             foo: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.NewRecord
+        ): DomainB.NewRecord =
+            DomainB.NewRecord(
+                foo = foo,
+                metas = metas + newMetaContainer())
         
         
         // Variants for Sum: UnpermutedSum 
         /**
-         * Creates an instance of [DomainB.UnpermutedSum.UnpermutedProductVariant].
-         */
+        * Creates an instance of [DomainB.UnpermutedSum.UnpermutedProductVariant].
+        */
         fun unpermutedProductVariant(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedSum.UnpermutedProductVariant
+        ): DomainB.UnpermutedSum.UnpermutedProductVariant =
+            DomainB.UnpermutedSum.UnpermutedProductVariant(
+                foo = foo.asPrimitive(),
+                bar = bar.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainB.UnpermutedSum.UnpermutedProductVariant].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainB.UnpermutedSum.UnpermutedProductVariant].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun unpermutedProductVariant_(
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedSum.UnpermutedProductVariant
+        ): DomainB.UnpermutedSum.UnpermutedProductVariant =
+            DomainB.UnpermutedSum.UnpermutedProductVariant(
+                foo = foo,
+                bar = bar,
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainB.UnpermutedSum.UnpermutedRecordVariant].
-         */
+        * Creates an instance of [DomainB.UnpermutedSum.UnpermutedRecordVariant].
+        */
         fun unpermutedRecordVariant(
             foo: String,
             bar: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedSum.UnpermutedRecordVariant
+        ): DomainB.UnpermutedSum.UnpermutedRecordVariant =
+            DomainB.UnpermutedSum.UnpermutedRecordVariant(
+                foo = foo.asPrimitive(),
+                bar = bar.asPrimitive(),
+                metas = metas + newMetaContainer())
         
         /**
-         * Creates an instance of [DomainB.UnpermutedSum.UnpermutedRecordVariant].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
+        * Creates an instance of [DomainB.UnpermutedSum.UnpermutedRecordVariant].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
         fun unpermutedRecordVariant_(
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             bar: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.UnpermutedSum.UnpermutedRecordVariant
+        ): DomainB.UnpermutedSum.UnpermutedRecordVariant =
+            DomainB.UnpermutedSum.UnpermutedRecordVariant(
+                foo = foo,
+                bar = bar,
+                metas = metas + newMetaContainer())
         
         
         // Variants for Sum: SumB 
         /**
-         * Creates an instance of [DomainB.SumB.WillBeUnchanged].
-         */
+        * Creates an instance of [DomainB.SumB.WillBeUnchanged].
+        */
         fun willBeUnchanged(
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.SumB.WillBeUnchanged
+        ): DomainB.SumB.WillBeUnchanged =
+            DomainB.SumB.WillBeUnchanged(
+                metas = metas + newMetaContainer())
         
         
         /**
-         * Creates an instance of [DomainB.SumB.WillBeReplaced].
-         */
+        * Creates an instance of [DomainB.SumB.WillBeReplaced].
+        */
         fun willBeReplaced(
             something: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.SumB.WillBeReplaced
-        
-        /**
-         * Creates an instance of [DomainB.SumB.WillBeReplaced].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun willBeReplaced_(
-            something: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.SumB.WillBeReplaced
-        
-        
-        // Variants for Sum: NewSum 
-        /**
-         * Creates an instance of [DomainB.NewSum.Eek].
-         */
-        fun eek(
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.NewSum.Eek
-        
-        
-        /**
-         * Creates an instance of [DomainB.NewSum.Whatever].
-         */
-        fun whatever(
-            metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.NewSum.Whatever
-    }
-    
-    private object DomainBBuilder : Builder {
-                // Tuples
-        override fun unpermutedProduct(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainB.UnpermutedProduct =
-            DomainB.UnpermutedProduct(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedProduct_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainB.UnpermutedProduct =
-            DomainB.UnpermutedProduct(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        override fun unpermutedRecord(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainB.UnpermutedRecord =
-            DomainB.UnpermutedRecord(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedRecord_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainB.UnpermutedRecord =
-            DomainB.UnpermutedRecord(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        override fun productA(
-            one: String,
-            metas: MetaContainer
-        ): DomainB.ProductA =
-            DomainB.ProductA(
-                one = one.asPrimitive(),
-                metas = metas)
-        
-        override fun productA_(
-            one: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
-        ): DomainB.ProductA =
-            DomainB.ProductA(
-                one = one,
-                metas = metas)
-        
-        
-        override fun recordA(
-            one: String,
-            metas: MetaContainer
-        ): DomainB.RecordA =
-            DomainB.RecordA(
-                one = one.asPrimitive(),
-                metas = metas)
-        
-        override fun recordA_(
-            one: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
-        ): DomainB.RecordA =
-            DomainB.RecordA(
-                one = one,
-                metas = metas)
-        
-        
-        override fun newProduct(
-            foo: Long,
-            metas: MetaContainer
-        ): DomainB.NewProduct =
-            DomainB.NewProduct(
-                foo = foo.asPrimitive(),
-                metas = metas)
-        
-        override fun newProduct_(
-            foo: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainB.NewProduct =
-            DomainB.NewProduct(
-                foo = foo,
-                metas = metas)
-        
-        
-        override fun newRecord(
-            foo: Long,
-            metas: MetaContainer
-        ): DomainB.NewRecord =
-            DomainB.NewRecord(
-                foo = foo.asPrimitive(),
-                metas = metas)
-        
-        override fun newRecord_(
-            foo: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainB.NewRecord =
-            DomainB.NewRecord(
-                foo = foo,
-                metas = metas)
-        
-        
-        // Variants for Sum: UnpermutedSum 
-        override fun unpermutedProductVariant(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainB.UnpermutedSum.UnpermutedProductVariant =
-            DomainB.UnpermutedSum.UnpermutedProductVariant(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedProductVariant_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainB.UnpermutedSum.UnpermutedProductVariant =
-            DomainB.UnpermutedSum.UnpermutedProductVariant(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        override fun unpermutedRecordVariant(
-            foo: String,
-            bar: Long,
-            metas: MetaContainer
-        ): DomainB.UnpermutedSum.UnpermutedRecordVariant =
-            DomainB.UnpermutedSum.UnpermutedRecordVariant(
-                foo = foo.asPrimitive(),
-                bar = bar.asPrimitive(),
-                metas = metas)
-        
-        override fun unpermutedRecordVariant_(
-            foo: org.partiql.pig.runtime.SymbolPrimitive,
-            bar: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): DomainB.UnpermutedSum.UnpermutedRecordVariant =
-            DomainB.UnpermutedSum.UnpermutedRecordVariant(
-                foo = foo,
-                bar = bar,
-                metas = metas)
-        
-        
-        // Variants for Sum: SumB 
-        override fun willBeUnchanged(
-            metas: MetaContainer
-        ): DomainB.SumB.WillBeUnchanged =
-            DomainB.SumB.WillBeUnchanged(
-                metas = metas)
-        
-        
-        override fun willBeReplaced(
-            something: String,
-            metas: MetaContainer
         ): DomainB.SumB.WillBeReplaced =
             DomainB.SumB.WillBeReplaced(
                 something = something.asPrimitive(),
-                metas = metas)
+                metas = metas + newMetaContainer())
         
-        override fun willBeReplaced_(
+        /**
+        * Creates an instance of [DomainB.SumB.WillBeReplaced].
+        *
+        * Use this variant when metas must be passed to primitive child elements.
+        *
+        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+        */
+        fun willBeReplaced_(
             something: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.SumB.WillBeReplaced =
             DomainB.SumB.WillBeReplaced(
                 something = something,
-                metas = metas)
+                metas = metas + newMetaContainer())
         
         
         // Variants for Sum: NewSum 
-        override fun eek(
-            metas: MetaContainer
+        /**
+        * Creates an instance of [DomainB.NewSum.Eek].
+        */
+        fun eek(
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.NewSum.Eek =
             DomainB.NewSum.Eek(
-                metas = metas)
+                metas = metas + newMetaContainer())
         
         
-        override fun whatever(
-            metas: MetaContainer
+        /**
+        * Creates an instance of [DomainB.NewSum.Whatever].
+        */
+        fun whatever(
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.NewSum.Whatever =
             DomainB.NewSum.Whatever(
-                metas = metas)
+                metas = metas + newMetaContainer())
     }
+    
+    /** Default implementation of [Builder] that uses all default method implementations. */
+    private object DomainBBuilder : Builder
     
     /** Base class for all DomainB types. */
     abstract class DomainBNode : DomainNode {
