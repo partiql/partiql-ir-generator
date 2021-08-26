@@ -12,15 +12,6 @@ https://freemarker.apache.org/docs/index.html
 
 https://freemarker.apache.org/docs/dgui_misc_whitespace.html
 --]
-[#-- Generates a parameter list not including (). --]
-
-
-[#macro builder_fun_parameter_list params]
-[#list params as param]
-[#if param.variadic]vararg [/#if]${param.kotlinName}: ${param.kotlinType}[#if param.defaultValue??] = ${param.defaultValue}[/#if],
-[/#list]
-metas: MetaContainer = emptyMetaContainer()
-[/#macro]
 
 [#-- Template to generate a tuple type class. --]
 [#macro tuple t index]
@@ -124,6 +115,14 @@ class ${t.kotlinName}(
 
 [/#macro]
 
+[#-- Generates a parameter list for a builder function, not including (). --]
+[#macro builder_fun_parameter_list params]
+    [#list params as param]
+        [#if param.variadic]vararg [/#if]${param.kotlinName}: ${param.kotlinType}[#if param.defaultValue??] = ${param.defaultValue}[/#if],
+    [/#list]
+    metas: MetaContainer = emptyMetaContainer()
+[/#macro]
+
 [#--Emits builder functions that wrap the constructors of the domain type defined by the builder interface.  --]
 [#macro builder_constructor_fun t return_type]
 [#list t.builderFunctions as bf]
@@ -145,7 +144,7 @@ fun ${bf.kotlinName}(
     [#list bf.constructorArguments as p]
         ${p.kotlinName} = ${p.value},
     [/#list]
-        metas = metas + newMetaContainer())
+        metas = newMetaContainer() + metas)
 
 [/#list]
 [/#macro]

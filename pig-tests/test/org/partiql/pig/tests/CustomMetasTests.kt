@@ -1,6 +1,7 @@
 package org.partiql.pig.tests
 
 import com.amazon.ionelement.api.MetaContainer
+import com.amazon.ionelement.api.metaContainerOf
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.partiql.pig.tests.generated.TestDomain
@@ -30,12 +31,14 @@ class CustomMetasTests {
         val pairPair = buildTestDomainWithNodeIds {
             intPairPair(
                 intPair(42, 43),
-                intPair(44, 45)
+                intPair(44, 45),
+                // should still be able to overwrite the metas returned by [NodeIdAssigningBuilder.newMetaContainer],
+                metas = metaContainerOf("nodeId" to 42)
             )
         }
 
         // Note: nodeIds are allocated in the order the nodes are constructed.
-        assertEquals(2, pairPair.metas["nodeId"])
+        assertEquals(42, pairPair.metas["nodeId"])
         assertEquals(0, pairPair.first.metas["nodeId"])
         assertEquals(1, pairPair.second.metas["nodeId"])
     }
