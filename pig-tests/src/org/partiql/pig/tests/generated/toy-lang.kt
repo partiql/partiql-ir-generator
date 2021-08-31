@@ -30,13 +30,18 @@ class ToyLang private constructor() {
     }
     
     interface Builder {
+        fun newMetaContainer() = emptyMetaContainer()
+    
         // Variants for Sum: Operator 
         /**
          * Creates an instance of [ToyLang.Operator.Plus].
          */
         fun plus(
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Operator.Plus
+        ): ToyLang.Operator.Plus =
+            ToyLang.Operator.Plus(
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -44,7 +49,10 @@ class ToyLang private constructor() {
          */
         fun minus(
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Operator.Minus
+        ): ToyLang.Operator.Minus =
+            ToyLang.Operator.Minus(
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -52,7 +60,10 @@ class ToyLang private constructor() {
          */
         fun times(
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Operator.Times
+        ): ToyLang.Operator.Times =
+            ToyLang.Operator.Times(
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -60,7 +71,10 @@ class ToyLang private constructor() {
          */
         fun divide(
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Operator.Divide
+        ): ToyLang.Operator.Divide =
+            ToyLang.Operator.Divide(
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -68,7 +82,10 @@ class ToyLang private constructor() {
          */
         fun modulo(
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Operator.Modulo
+        ): ToyLang.Operator.Modulo =
+            ToyLang.Operator.Modulo(
+                metas = newMetaContainer() + metas
+            )
         
         
         // Variants for Sum: Expr 
@@ -78,7 +95,11 @@ class ToyLang private constructor() {
         fun lit(
             value: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Lit
+        ): ToyLang.Expr.Lit =
+            ToyLang.Expr.Lit(
+                value = value.asAnyElement(),
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -87,7 +108,11 @@ class ToyLang private constructor() {
         fun variable(
             name: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Variable
+        ): ToyLang.Expr.Variable =
+            ToyLang.Expr.Variable(
+                name = name.asPrimitive(),
+                metas = newMetaContainer() + metas
+            )
         
         /**
          * Creates an instance of [ToyLang.Expr.Variable].
@@ -99,7 +124,11 @@ class ToyLang private constructor() {
         fun variable_(
             name: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Variable
+        ): ToyLang.Expr.Variable =
+            ToyLang.Expr.Variable(
+                name = name,
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -108,7 +137,11 @@ class ToyLang private constructor() {
         fun not(
             expr: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Not
+        ): ToyLang.Expr.Not =
+            ToyLang.Expr.Not(
+                expr = expr,
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -118,7 +151,12 @@ class ToyLang private constructor() {
             op: Operator,
             operands: kotlin.collections.List<Expr> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Nary
+        ): ToyLang.Expr.Nary =
+            ToyLang.Expr.Nary(
+                op = op,
+                operands = operands,
+                metas = newMetaContainer() + metas
+            )
         
         /**
          * Creates an instance of [ToyLang.Expr.Nary].
@@ -127,7 +165,12 @@ class ToyLang private constructor() {
             op: Operator,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Nary
+        ): ToyLang.Expr.Nary =
+            ToyLang.Expr.Nary(
+                op = op,
+                operands = operands.toList(),
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -138,7 +181,13 @@ class ToyLang private constructor() {
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Let
+        ): ToyLang.Expr.Let =
+            ToyLang.Expr.Let(
+                name = name.asPrimitive(),
+                value = value,
+                body = body,
+                metas = newMetaContainer() + metas
+            )
         
         /**
          * Creates an instance of [ToyLang.Expr.Let].
@@ -152,7 +201,13 @@ class ToyLang private constructor() {
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Let
+        ): ToyLang.Expr.Let =
+            ToyLang.Expr.Let(
+                name = name,
+                value = value,
+                body = body,
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -162,7 +217,12 @@ class ToyLang private constructor() {
             varName: String,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Function
+        ): ToyLang.Expr.Function =
+            ToyLang.Expr.Function(
+                varName = varName.asPrimitive(),
+                body = body,
+                metas = newMetaContainer() + metas
+            )
         
         /**
          * Creates an instance of [ToyLang.Expr.Function].
@@ -175,148 +235,16 @@ class ToyLang private constructor() {
             varName: org.partiql.pig.runtime.SymbolPrimitive,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLang.Expr.Function
-    }
-    
-    private object ToyLangBuilder : Builder {
-        // Variants for Sum: Operator 
-        override fun plus(
-            metas: MetaContainer
-        ): ToyLang.Operator.Plus =
-            ToyLang.Operator.Plus(
-                metas = metas)
-        
-        
-        override fun minus(
-            metas: MetaContainer
-        ): ToyLang.Operator.Minus =
-            ToyLang.Operator.Minus(
-                metas = metas)
-        
-        
-        override fun times(
-            metas: MetaContainer
-        ): ToyLang.Operator.Times =
-            ToyLang.Operator.Times(
-                metas = metas)
-        
-        
-        override fun divide(
-            metas: MetaContainer
-        ): ToyLang.Operator.Divide =
-            ToyLang.Operator.Divide(
-                metas = metas)
-        
-        
-        override fun modulo(
-            metas: MetaContainer
-        ): ToyLang.Operator.Modulo =
-            ToyLang.Operator.Modulo(
-                metas = metas)
-        
-        
-        // Variants for Sum: Expr 
-        override fun lit(
-            value: com.amazon.ionelement.api.IonElement,
-            metas: MetaContainer
-        ): ToyLang.Expr.Lit =
-            ToyLang.Expr.Lit(
-                value = value.asAnyElement(),
-                metas = metas)
-        
-        
-        override fun variable(
-            name: String,
-            metas: MetaContainer
-        ): ToyLang.Expr.Variable =
-            ToyLang.Expr.Variable(
-                name = name.asPrimitive(),
-                metas = metas)
-        
-        override fun variable_(
-            name: org.partiql.pig.runtime.SymbolPrimitive,
-            metas: MetaContainer
-        ): ToyLang.Expr.Variable =
-            ToyLang.Expr.Variable(
-                name = name,
-                metas = metas)
-        
-        
-        override fun not(
-            expr: Expr,
-            metas: MetaContainer
-        ): ToyLang.Expr.Not =
-            ToyLang.Expr.Not(
-                expr = expr,
-                metas = metas)
-        
-        
-        override fun nary(
-            op: Operator,
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer
-        ): ToyLang.Expr.Nary =
-            ToyLang.Expr.Nary(
-                op = op,
-                operands = operands,
-                metas = metas)
-        
-        override fun nary(
-            op: Operator,
-            vararg operands: Expr,
-            metas: MetaContainer
-        ): ToyLang.Expr.Nary =
-            ToyLang.Expr.Nary(
-                op = op,
-                operands = operands.toList(),
-                metas = metas)
-        
-        
-        override fun let(
-            name: String,
-            value: Expr,
-            body: Expr,
-            metas: MetaContainer
-        ): ToyLang.Expr.Let =
-            ToyLang.Expr.Let(
-                name = name.asPrimitive(),
-                value = value,
-                body = body,
-                metas = metas)
-        
-        override fun let_(
-            name: org.partiql.pig.runtime.SymbolPrimitive,
-            value: Expr,
-            body: Expr,
-            metas: MetaContainer
-        ): ToyLang.Expr.Let =
-            ToyLang.Expr.Let(
-                name = name,
-                value = value,
-                body = body,
-                metas = metas)
-        
-        
-        override fun function(
-            varName: String,
-            body: Expr,
-            metas: MetaContainer
-        ): ToyLang.Expr.Function =
-            ToyLang.Expr.Function(
-                varName = varName.asPrimitive(),
-                body = body,
-                metas = metas)
-        
-        override fun function_(
-            varName: org.partiql.pig.runtime.SymbolPrimitive,
-            body: Expr,
-            metas: MetaContainer
         ): ToyLang.Expr.Function =
             ToyLang.Expr.Function(
                 varName = varName,
                 body = body,
-                metas = metas)
+                metas = newMetaContainer() + metas
+            )
     }
+    
+    /** Default implementation of [Builder] that uses all default method implementations. */
+    private object ToyLangBuilder : Builder
     
     /** Base class for all ToyLang types. */
     abstract class ToyLangNode : DomainNode {
@@ -1513,13 +1441,18 @@ class ToyLangIndexed private constructor() {
     }
     
     interface Builder {
+        fun newMetaContainer() = emptyMetaContainer()
+    
         // Variants for Sum: Operator 
         /**
          * Creates an instance of [ToyLangIndexed.Operator.Plus].
          */
         fun plus(
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Operator.Plus
+        ): ToyLangIndexed.Operator.Plus =
+            ToyLangIndexed.Operator.Plus(
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -1527,7 +1460,10 @@ class ToyLangIndexed private constructor() {
          */
         fun minus(
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Operator.Minus
+        ): ToyLangIndexed.Operator.Minus =
+            ToyLangIndexed.Operator.Minus(
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -1535,7 +1471,10 @@ class ToyLangIndexed private constructor() {
          */
         fun times(
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Operator.Times
+        ): ToyLangIndexed.Operator.Times =
+            ToyLangIndexed.Operator.Times(
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -1543,7 +1482,10 @@ class ToyLangIndexed private constructor() {
          */
         fun divide(
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Operator.Divide
+        ): ToyLangIndexed.Operator.Divide =
+            ToyLangIndexed.Operator.Divide(
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -1551,7 +1493,10 @@ class ToyLangIndexed private constructor() {
          */
         fun modulo(
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Operator.Modulo
+        ): ToyLangIndexed.Operator.Modulo =
+            ToyLangIndexed.Operator.Modulo(
+                metas = newMetaContainer() + metas
+            )
         
         
         // Variants for Sum: Expr 
@@ -1561,7 +1506,11 @@ class ToyLangIndexed private constructor() {
         fun lit(
             value: com.amazon.ionelement.api.IonElement,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Lit
+        ): ToyLangIndexed.Expr.Lit =
+            ToyLangIndexed.Expr.Lit(
+                value = value.asAnyElement(),
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -1570,7 +1519,11 @@ class ToyLangIndexed private constructor() {
         fun not(
             expr: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Not
+        ): ToyLangIndexed.Expr.Not =
+            ToyLangIndexed.Expr.Not(
+                expr = expr,
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -1580,7 +1533,12 @@ class ToyLangIndexed private constructor() {
             op: Operator,
             operands: kotlin.collections.List<Expr> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Nary
+        ): ToyLangIndexed.Expr.Nary =
+            ToyLangIndexed.Expr.Nary(
+                op = op,
+                operands = operands,
+                metas = newMetaContainer() + metas
+            )
         
         /**
          * Creates an instance of [ToyLangIndexed.Expr.Nary].
@@ -1589,7 +1547,12 @@ class ToyLangIndexed private constructor() {
             op: Operator,
             vararg operands: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Nary
+        ): ToyLangIndexed.Expr.Nary =
+            ToyLangIndexed.Expr.Nary(
+                op = op,
+                operands = operands.toList(),
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -1599,7 +1562,12 @@ class ToyLangIndexed private constructor() {
             varName: String,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Function
+        ): ToyLangIndexed.Expr.Function =
+            ToyLangIndexed.Expr.Function(
+                varName = varName.asPrimitive(),
+                body = body,
+                metas = newMetaContainer() + metas
+            )
         
         /**
          * Creates an instance of [ToyLangIndexed.Expr.Function].
@@ -1612,7 +1580,12 @@ class ToyLangIndexed private constructor() {
             varName: org.partiql.pig.runtime.SymbolPrimitive,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Function
+        ): ToyLangIndexed.Expr.Function =
+            ToyLangIndexed.Expr.Function(
+                varName = varName,
+                body = body,
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -1622,7 +1595,12 @@ class ToyLangIndexed private constructor() {
             name: String,
             index: Long,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Variable
+        ): ToyLangIndexed.Expr.Variable =
+            ToyLangIndexed.Expr.Variable(
+                name = name.asPrimitive(),
+                index = index.asPrimitive(),
+                metas = newMetaContainer() + metas
+            )
         
         /**
          * Creates an instance of [ToyLangIndexed.Expr.Variable].
@@ -1635,7 +1613,12 @@ class ToyLangIndexed private constructor() {
             name: org.partiql.pig.runtime.SymbolPrimitive,
             index: org.partiql.pig.runtime.LongPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Variable
+        ): ToyLangIndexed.Expr.Variable =
+            ToyLangIndexed.Expr.Variable(
+                name = name,
+                index = index,
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
@@ -1647,7 +1630,14 @@ class ToyLangIndexed private constructor() {
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Let
+        ): ToyLangIndexed.Expr.Let =
+            ToyLangIndexed.Expr.Let(
+                name = name.asPrimitive(),
+                index = index.asPrimitive(),
+                value = value,
+                body = body,
+                metas = newMetaContainer() + metas
+            )
         
         /**
          * Creates an instance of [ToyLangIndexed.Expr.Let].
@@ -1662,156 +1652,18 @@ class ToyLangIndexed private constructor() {
             value: Expr,
             body: Expr,
             metas: MetaContainer = emptyMetaContainer()
-        ): ToyLangIndexed.Expr.Let
+        ): ToyLangIndexed.Expr.Let =
+            ToyLangIndexed.Expr.Let(
+                name = name,
+                index = index,
+                value = value,
+                body = body,
+                metas = newMetaContainer() + metas
+            )
     }
     
-    private object ToyLangIndexedBuilder : Builder {
-        // Variants for Sum: Operator 
-        override fun plus(
-            metas: MetaContainer
-        ): ToyLangIndexed.Operator.Plus =
-            ToyLangIndexed.Operator.Plus(
-                metas = metas)
-        
-        
-        override fun minus(
-            metas: MetaContainer
-        ): ToyLangIndexed.Operator.Minus =
-            ToyLangIndexed.Operator.Minus(
-                metas = metas)
-        
-        
-        override fun times(
-            metas: MetaContainer
-        ): ToyLangIndexed.Operator.Times =
-            ToyLangIndexed.Operator.Times(
-                metas = metas)
-        
-        
-        override fun divide(
-            metas: MetaContainer
-        ): ToyLangIndexed.Operator.Divide =
-            ToyLangIndexed.Operator.Divide(
-                metas = metas)
-        
-        
-        override fun modulo(
-            metas: MetaContainer
-        ): ToyLangIndexed.Operator.Modulo =
-            ToyLangIndexed.Operator.Modulo(
-                metas = metas)
-        
-        
-        // Variants for Sum: Expr 
-        override fun lit(
-            value: com.amazon.ionelement.api.IonElement,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Lit =
-            ToyLangIndexed.Expr.Lit(
-                value = value.asAnyElement(),
-                metas = metas)
-        
-        
-        override fun not(
-            expr: Expr,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Not =
-            ToyLangIndexed.Expr.Not(
-                expr = expr,
-                metas = metas)
-        
-        
-        override fun nary(
-            op: Operator,
-            operands: kotlin.collections.List<Expr>,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Nary =
-            ToyLangIndexed.Expr.Nary(
-                op = op,
-                operands = operands,
-                metas = metas)
-        
-        override fun nary(
-            op: Operator,
-            vararg operands: Expr,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Nary =
-            ToyLangIndexed.Expr.Nary(
-                op = op,
-                operands = operands.toList(),
-                metas = metas)
-        
-        
-        override fun function(
-            varName: String,
-            body: Expr,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Function =
-            ToyLangIndexed.Expr.Function(
-                varName = varName.asPrimitive(),
-                body = body,
-                metas = metas)
-        
-        override fun function_(
-            varName: org.partiql.pig.runtime.SymbolPrimitive,
-            body: Expr,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Function =
-            ToyLangIndexed.Expr.Function(
-                varName = varName,
-                body = body,
-                metas = metas)
-        
-        
-        override fun variable(
-            name: String,
-            index: Long,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Variable =
-            ToyLangIndexed.Expr.Variable(
-                name = name.asPrimitive(),
-                index = index.asPrimitive(),
-                metas = metas)
-        
-        override fun variable_(
-            name: org.partiql.pig.runtime.SymbolPrimitive,
-            index: org.partiql.pig.runtime.LongPrimitive,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Variable =
-            ToyLangIndexed.Expr.Variable(
-                name = name,
-                index = index,
-                metas = metas)
-        
-        
-        override fun let(
-            name: String,
-            index: Long,
-            value: Expr,
-            body: Expr,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Let =
-            ToyLangIndexed.Expr.Let(
-                name = name.asPrimitive(),
-                index = index.asPrimitive(),
-                value = value,
-                body = body,
-                metas = metas)
-        
-        override fun let_(
-            name: org.partiql.pig.runtime.SymbolPrimitive,
-            index: org.partiql.pig.runtime.LongPrimitive,
-            value: Expr,
-            body: Expr,
-            metas: MetaContainer
-        ): ToyLangIndexed.Expr.Let =
-            ToyLangIndexed.Expr.Let(
-                name = name,
-                index = index,
-                value = value,
-                body = body,
-                metas = metas)
-    }
+    /** Default implementation of [Builder] that uses all default method implementations. */
+    private object ToyLangIndexedBuilder : Builder
     
     /** Base class for all ToyLangIndexed types. */
     abstract class ToyLangIndexedNode : DomainNode {

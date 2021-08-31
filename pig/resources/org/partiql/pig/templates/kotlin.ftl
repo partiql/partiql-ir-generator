@@ -12,22 +12,6 @@ https://freemarker.apache.org/docs/index.html
 
 https://freemarker.apache.org/docs/dgui_misc_whitespace.html
 --]
-[#-- Generates a parameter list not including (). --]
-
-
-[#macro parameter_list_with_defaults params]
-[#list params as param]
-[#if param.variadic]vararg [/#if]${param.kotlinName}: ${param.kotlinType}[#if param.defaultValue??] = ${param.defaultValue}[/#if],
-[/#list]
-metas: MetaContainer = emptyMetaContainer()
-[/#macro]
-
-[#macro parameter_list_no_defaults params]
-[#list params as param]
-[#if param.variadic]vararg [/#if]${param.kotlinName}: ${param.kotlinType},
-[/#list]
-metas: MetaContainer
-[/#macro]
 
 [#-- Template to generate a tuple type class. --]
 [#macro tuple t index]
@@ -131,12 +115,20 @@ class ${t.kotlinName}(
 
 [/#macro]
 
-[#--Emits the interface for the domain's builder functions that wrap the constructors of the domain type. --]
-[#macro builder_constructor_fun_interface t return_type]
+[#-- Generates a parameter list for a builder function, not including (). --]
+[#macro builder_fun_parameter_list params]
+[#list params as param]
+[#if param.variadic]vararg [/#if]${param.kotlinName}: ${param.kotlinType}[#if param.defaultValue??] = ${param.defaultValue}[/#if],
+[/#list]
+metas: MetaContainer = emptyMetaContainer()
+[/#macro]
+
+[#--Emits builder functions that wrap the constructors of the domain type defined by the builder interface.  --]
+[#macro builder_constructor_fun t return_type]
 [#list t.builderFunctions as bf]
 /**
  * Creates an instance of [${return_type}].
-[#if bf.kotlinName?ends_with("_")]
+ [#if bf.kotlinName?ends_with("_")]
  *
  * Use this variant when metas must be passed to primitive child elements.
  *
@@ -144,27 +136,16 @@ class ${t.kotlinName}(
 [/#if]
  */
 fun ${bf.kotlinName}(
-    [@indent count=4]
-        [@parameter_list_with_defaults bf.parameters/]
-    [/@indent]
-): ${return_type}
-
-[/#list]
-[/#macro]
-
-[#--Emits builder functions that wrap the constructors of the domain type defined by the builder interface.  --]
-[#macro builder_constructor_fun t return_type]
-[#list t.builderFunctions as bf]
-override fun ${bf.kotlinName}(
-    [@indent count=4]
-        [@parameter_list_no_defaults bf.parameters/]
-    [/@indent]
+[@indent count=4]
+[@builder_fun_parameter_list bf.parameters/]
+[/@indent]
 ): ${return_type} =
     ${return_type}(
     [#list bf.constructorArguments as p]
         ${p.kotlinName} = ${p.value},
     [/#list]
-        metas = metas)
+        metas = newMetaContainer() + metas
+    )
 
 [/#list]
 [/#macro]
@@ -206,44 +187,29 @@ companion object {
 }
 
 interface Builder {
+    fun newMetaContainer() = emptyMetaContainer()
+
     [@indent count = 4]
         [#if domain.tuples?size > 0]
-        // Tuples
-        [#list domain.tuples as tuple]
-        [@builder_constructor_fun_interface tuple "${domain.kotlinName}.${tuple.kotlinName}"/]
+            // Tuples [#lt]
+            [#list domain.tuples as tuple]
+                [@builder_constructor_fun tuple "${domain.kotlinName}.${tuple.kotlinName}"/]
 
-        [/#list]
+            [/#list]
         [/#if]
         [#list domain.sums as s]
         [#-- Not sure why the [#lt] below is needed to emit the correct indentation. --]
-        // Variants for Sum: ${s.kotlinName} [#lt]
-        [#list s.variants as tuple]
-        [@builder_constructor_fun_interface tuple "${domain.kotlinName}.${s.kotlinName}.${tuple.kotlinName}"/]
+            // Variants for Sum: ${s.kotlinName} [#lt]
+            [#list s.variants as tuple]
+                [@builder_constructor_fun tuple "${domain.kotlinName}.${s.kotlinName}.${tuple.kotlinName}"/]
 
-        [/#list]
+            [/#list]
         [/#list]
     [/@indent]
 }
 
-private object ${domain.kotlinName}Builder : Builder {
-    [@indent count = 4]
-        [#if domain.tuples?size > 0]
-        // Tuples
-        [#list domain.tuples as tuple]
-        [@builder_constructor_fun tuple "${domain.kotlinName}.${tuple.kotlinName}"/]
-
-        [/#list]
-        [/#if]
-        [#list domain.sums as s]
-        [#-- Not sure why the [#lt] below is needed to emit the correct indentation. --]
-        // Variants for Sum: ${s.kotlinName} [#lt]
-        [#list s.variants as tuple]
-        [@builder_constructor_fun tuple "${domain.kotlinName}.${s.kotlinName}.${tuple.kotlinName}"/]
-
-        [/#list]
-        [/#list]
-    [/@indent]
-}
+/** Default implementation of [Builder] that uses all default method implementations. */
+private object ${domain.kotlinName}Builder : Builder
 
 /** Base class for all ${domain.kotlinName} types. */
 abstract class ${domain.kotlinName}Node : DomainNode {
