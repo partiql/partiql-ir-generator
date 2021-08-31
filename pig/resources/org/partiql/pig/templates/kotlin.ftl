@@ -117,10 +117,10 @@ class ${t.kotlinName}(
 
 [#-- Generates a parameter list for a builder function, not including (). --]
 [#macro builder_fun_parameter_list params]
-    [#list params as param]
-        [#if param.variadic]vararg [/#if]${param.kotlinName}: ${param.kotlinType}[#if param.defaultValue??] = ${param.defaultValue}[/#if],
-    [/#list]
-    metas: MetaContainer = emptyMetaContainer()
+[#list params as param]
+[#if param.variadic]vararg [/#if]${param.kotlinName}: ${param.kotlinType}[#if param.defaultValue??] = ${param.defaultValue}[/#if],
+[/#list]
+metas: MetaContainer = emptyMetaContainer()
 [/#macro]
 
 [#--Emits builder functions that wrap the constructors of the domain type defined by the builder interface.  --]
@@ -137,7 +137,7 @@ class ${t.kotlinName}(
  */
 fun ${bf.kotlinName}(
 [@indent count=4]
-    [@builder_fun_parameter_list bf.parameters/]
+[@builder_fun_parameter_list bf.parameters/]
 [/@indent]
 ): ${return_type} =
     ${return_type}(

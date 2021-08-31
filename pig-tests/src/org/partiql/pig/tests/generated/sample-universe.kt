@@ -37,9 +37,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.BoolPair].
          */
         fun boolPair(
-                    first: Boolean,
-                    second: Boolean,
-                metas: MetaContainer = emptyMetaContainer()
+            first: Boolean,
+            second: Boolean,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.BoolPair =
             TestDomain.BoolPair(
                 first = first.asPrimitive(),
@@ -55,9 +55,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun boolPair_(
-                    first: org.partiql.pig.runtime.BoolPrimitive,
-                    second: org.partiql.pig.runtime.BoolPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            first: org.partiql.pig.runtime.BoolPrimitive,
+            second: org.partiql.pig.runtime.BoolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.BoolPair =
             TestDomain.BoolPair(
                 first = first,
@@ -70,9 +70,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.IntPair].
          */
         fun intPair(
-                    first: Long,
-                    second: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            first: Long,
+            second: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IntPair =
             TestDomain.IntPair(
                 first = first.asPrimitive(),
@@ -88,9 +88,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun intPair_(
-                    first: org.partiql.pig.runtime.LongPrimitive,
-                    second: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IntPair =
             TestDomain.IntPair(
                 first = first,
@@ -103,9 +103,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.SymbolPair].
          */
         fun symbolPair(
-                    first: String,
-                    second: String,
-                metas: MetaContainer = emptyMetaContainer()
+            first: String,
+            second: String,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SymbolPair =
             TestDomain.SymbolPair(
                 first = first.asPrimitive(),
@@ -121,9 +121,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun symbolPair_(
-                    first: org.partiql.pig.runtime.SymbolPrimitive,
-                    second: org.partiql.pig.runtime.SymbolPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            first: org.partiql.pig.runtime.SymbolPrimitive,
+            second: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SymbolPair =
             TestDomain.SymbolPair(
                 first = first,
@@ -136,9 +136,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.IonPair].
          */
         fun ionPair(
-                    first: com.amazon.ionelement.api.IonElement,
-                    second: com.amazon.ionelement.api.IonElement,
-                metas: MetaContainer = emptyMetaContainer()
+            first: com.amazon.ionelement.api.IonElement,
+            second: com.amazon.ionelement.api.IonElement,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonPair =
             TestDomain.IonPair(
                 first = first.asAnyElement(),
@@ -151,9 +151,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.IntSymbolPair].
          */
         fun intSymbolPair(
-                    first: Long,
-                    second: String,
-                metas: MetaContainer = emptyMetaContainer()
+            first: Long,
+            second: String,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IntSymbolPair =
             TestDomain.IntSymbolPair(
                 first = first.asPrimitive(),
@@ -169,9 +169,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun intSymbolPair_(
-                    first: org.partiql.pig.runtime.LongPrimitive,
-                    second: org.partiql.pig.runtime.SymbolPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IntSymbolPair =
             TestDomain.IntSymbolPair(
                 first = first,
@@ -184,9 +184,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.SymbolIntPair].
          */
         fun symbolIntPair(
-                    first: String,
-                    second: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            first: String,
+            second: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SymbolIntPair =
             TestDomain.SymbolIntPair(
                 first = first.asPrimitive(),
@@ -202,9 +202,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun symbolIntPair_(
-                    first: org.partiql.pig.runtime.SymbolPrimitive,
-                    second: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            first: org.partiql.pig.runtime.SymbolPrimitive,
+            second: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SymbolIntPair =
             TestDomain.SymbolIntPair(
                 first = first,
@@ -217,9 +217,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.IonIntPair].
          */
         fun ionIntPair(
-                    first: com.amazon.ionelement.api.IonElement,
-                    second: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            first: com.amazon.ionelement.api.IonElement,
+            second: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonIntPair =
             TestDomain.IonIntPair(
                 first = first.asAnyElement(),
@@ -235,9 +235,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun ionIntPair_(
-                    first: com.amazon.ionelement.api.IonElement,
-                    second: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            first: com.amazon.ionelement.api.IonElement,
+            second: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonIntPair =
             TestDomain.IonIntPair(
                 first = first.asAnyElement(),
@@ -250,9 +250,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.IonSymbolPair].
          */
         fun ionSymbolPair(
-                    first: com.amazon.ionelement.api.IonElement,
-                    second: com.amazon.ionelement.api.IonElement,
-                metas: MetaContainer = emptyMetaContainer()
+            first: com.amazon.ionelement.api.IonElement,
+            second: com.amazon.ionelement.api.IonElement,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonSymbolPair =
             TestDomain.IonSymbolPair(
                 first = first.asAnyElement(),
@@ -265,9 +265,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.IntPairPair].
          */
         fun intPairPair(
-                    first: IntPair,
-                    second: IntPair,
-                metas: MetaContainer = emptyMetaContainer()
+            first: IntPair,
+            second: IntPair,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IntPairPair =
             TestDomain.IntPairPair(
                 first = first,
@@ -280,9 +280,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.SymbolPairPair].
          */
         fun symbolPairPair(
-                    first: SymbolPair,
-                    second: SymbolPair,
-                metas: MetaContainer = emptyMetaContainer()
+            first: SymbolPair,
+            second: SymbolPair,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SymbolPairPair =
             TestDomain.SymbolPairPair(
                 first = first,
@@ -295,9 +295,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.IonPairPair].
          */
         fun ionPairPair(
-                    first: IonPair,
-                    second: IonPair,
-                metas: MetaContainer = emptyMetaContainer()
+            first: IonPair,
+            second: IonPair,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IonPairPair =
             TestDomain.IonPairPair(
                 first = first,
@@ -310,9 +310,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.RecursivePair].
          */
         fun recursivePair(
-                    first: Long,
-                    second: RecursivePair? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            first: Long,
+            second: RecursivePair? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.RecursivePair =
             TestDomain.RecursivePair(
                 first = first.asPrimitive(),
@@ -328,9 +328,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun recursivePair_(
-                    first: org.partiql.pig.runtime.LongPrimitive,
-                    second: RecursivePair? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: RecursivePair? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.RecursivePair =
             TestDomain.RecursivePair(
                 first = first,
@@ -343,9 +343,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.AnswerPair].
          */
         fun answerPair(
-                    first: Answer,
-                    second: Answer,
-                metas: MetaContainer = emptyMetaContainer()
+            first: Answer,
+            second: Answer,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.AnswerPair =
             TestDomain.AnswerPair(
                 first = first,
@@ -358,9 +358,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.AnswerIntPair].
          */
         fun answerIntPair(
-                    first: Answer,
-                    second: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            first: Answer,
+            second: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.AnswerIntPair =
             TestDomain.AnswerIntPair(
                 first = first,
@@ -376,9 +376,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun answerIntPair_(
-                    first: Answer,
-                    second: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            first: Answer,
+            second: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.AnswerIntPair =
             TestDomain.AnswerIntPair(
                 first = first,
@@ -391,9 +391,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.IntAnswerPair].
          */
         fun intAnswerPair(
-                    first: Long,
-                    second: Answer,
-                metas: MetaContainer = emptyMetaContainer()
+            first: Long,
+            second: Answer,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IntAnswerPair =
             TestDomain.IntAnswerPair(
                 first = first.asPrimitive(),
@@ -409,9 +409,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun intAnswerPair_(
-                    first: org.partiql.pig.runtime.LongPrimitive,
-                    second: Answer,
-                metas: MetaContainer = emptyMetaContainer()
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: Answer,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.IntAnswerPair =
             TestDomain.IntAnswerPair(
                 first = first,
@@ -424,9 +424,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.SymbolAnswerPair].
          */
         fun symbolAnswerPair(
-                    first: String,
-                    second: Answer,
-                metas: MetaContainer = emptyMetaContainer()
+            first: String,
+            second: Answer,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SymbolAnswerPair =
             TestDomain.SymbolAnswerPair(
                 first = first.asPrimitive(),
@@ -442,9 +442,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun symbolAnswerPair_(
-                    first: org.partiql.pig.runtime.SymbolPrimitive,
-                    second: Answer,
-                metas: MetaContainer = emptyMetaContainer()
+            first: org.partiql.pig.runtime.SymbolPrimitive,
+            second: Answer,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SymbolAnswerPair =
             TestDomain.SymbolAnswerPair(
                 first = first,
@@ -457,9 +457,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.AnswerSymbolPair].
          */
         fun answerSymbolPair(
-                    first: Answer,
-                    second: String,
-                metas: MetaContainer = emptyMetaContainer()
+            first: Answer,
+            second: String,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.AnswerSymbolPair =
             TestDomain.AnswerSymbolPair(
                 first = first,
@@ -475,9 +475,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun answerSymbolPair_(
-                    first: Answer,
-                    second: org.partiql.pig.runtime.SymbolPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            first: Answer,
+            second: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.AnswerSymbolPair =
             TestDomain.AnswerSymbolPair(
                 first = first,
@@ -490,8 +490,8 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.VariadicMin0].
          */
         fun variadicMin0(
-                    ints: kotlin.collections.List<Long> = emptyList(),
-                metas: MetaContainer = emptyMetaContainer()
+            ints: kotlin.collections.List<Long> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin0 =
             TestDomain.VariadicMin0(
                 ints = ints.map { it.asPrimitive() },
@@ -506,8 +506,8 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variadicMin0_(
-                    ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
-                metas: MetaContainer = emptyMetaContainer()
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin0 =
             TestDomain.VariadicMin0(
                 ints = ints,
@@ -518,8 +518,8 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.VariadicMin0].
          */
         fun variadicMin0(
-                    vararg ints: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            vararg ints: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin0 =
             TestDomain.VariadicMin0(
                 ints = ints.map { it.asPrimitive() },
@@ -534,8 +534,8 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variadicMin0_(
-                    vararg ints: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            vararg ints: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin0 =
             TestDomain.VariadicMin0(
                 ints = ints.toList(),
@@ -547,8 +547,8 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.VariadicMin1].
          */
         fun variadicMin1(
-                    ints: kotlin.collections.List<Long>,
-                metas: MetaContainer = emptyMetaContainer()
+            ints: kotlin.collections.List<Long>,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin1 =
             TestDomain.VariadicMin1(
                 ints = ints.map { it.asPrimitive() },
@@ -563,8 +563,8 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variadicMin1_(
-                    ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
-                metas: MetaContainer = emptyMetaContainer()
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin1 =
             TestDomain.VariadicMin1(
                 ints = ints,
@@ -575,9 +575,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.VariadicMin1].
          */
         fun variadicMin1(
-                    ints0: Long,
-                    vararg ints: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            ints0: Long,
+            vararg ints: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin1 =
             TestDomain.VariadicMin1(
                 ints = listOfPrimitives(ints0) + ints.map { it.asPrimitive() },
@@ -592,9 +592,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variadicMin1_(
-                    ints0: org.partiql.pig.runtime.LongPrimitive,
-                    vararg ints: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            ints0: org.partiql.pig.runtime.LongPrimitive,
+            vararg ints: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.VariadicMin1 =
             TestDomain.VariadicMin1(
                 ints = listOfPrimitives(ints0) + ints.toList(),
@@ -606,9 +606,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.ElementVariadic].
          */
         fun elementVariadic(
-                    name: String,
-                    ints: kotlin.collections.List<Long> = emptyList(),
-                metas: MetaContainer = emptyMetaContainer()
+            name: String,
+            ints: kotlin.collections.List<Long> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.ElementVariadic =
             TestDomain.ElementVariadic(
                 name = name.asPrimitive(),
@@ -624,9 +624,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun elementVariadic_(
-                    name: org.partiql.pig.runtime.SymbolPrimitive,
-                    ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
-                metas: MetaContainer = emptyMetaContainer()
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.ElementVariadic =
             TestDomain.ElementVariadic(
                 name = name,
@@ -638,9 +638,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.ElementVariadic].
          */
         fun elementVariadic(
-                    name: String,
-                    vararg ints: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            name: String,
+            vararg ints: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.ElementVariadic =
             TestDomain.ElementVariadic(
                 name = name?.asPrimitive(),
@@ -656,9 +656,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun elementVariadic_(
-                    name: org.partiql.pig.runtime.SymbolPrimitive,
-                    vararg ints: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            name: org.partiql.pig.runtime.SymbolPrimitive,
+            vararg ints: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.ElementVariadic =
             TestDomain.ElementVariadic(
                 name = name,
@@ -671,8 +671,8 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.Optional1].
          */
         fun optional1(
-                    value: Long? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            value: Long? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Optional1 =
             TestDomain.Optional1(
                 value = value?.asPrimitive(),
@@ -687,8 +687,8 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun optional1_(
-                    value: org.partiql.pig.runtime.LongPrimitive? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            value: org.partiql.pig.runtime.LongPrimitive? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Optional1 =
             TestDomain.Optional1(
                 value = value,
@@ -700,9 +700,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.Optional2].
          */
         fun optional2(
-                    first: Long? = null,
-                    second: Long? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            first: Long? = null,
+            second: Long? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Optional2 =
             TestDomain.Optional2(
                 first = first?.asPrimitive(),
@@ -718,9 +718,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun optional2_(
-                    first: org.partiql.pig.runtime.LongPrimitive? = null,
-                    second: org.partiql.pig.runtime.LongPrimitive? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            first: org.partiql.pig.runtime.LongPrimitive? = null,
+            second: org.partiql.pig.runtime.LongPrimitive? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Optional2 =
             TestDomain.Optional2(
                 first = first,
@@ -733,10 +733,10 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.DomainLevelRecord].
          */
         fun domainLevelRecord(
-                    someField: Long,
-                    anotherField: String,
-                    optionalField: Long? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            someField: Long,
+            anotherField: String,
+            optionalField: Long? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.DomainLevelRecord =
             TestDomain.DomainLevelRecord(
                 someField = someField.asPrimitive(),
@@ -753,10 +753,10 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun domainLevelRecord_(
-                    someField: org.partiql.pig.runtime.LongPrimitive,
-                    anotherField: org.partiql.pig.runtime.SymbolPrimitive,
-                    optionalField: org.partiql.pig.runtime.LongPrimitive? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            someField: org.partiql.pig.runtime.LongPrimitive,
+            anotherField: org.partiql.pig.runtime.SymbolPrimitive,
+            optionalField: org.partiql.pig.runtime.LongPrimitive? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.DomainLevelRecord =
             TestDomain.DomainLevelRecord(
                 someField = someField,
@@ -770,9 +770,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.ProductWithRecord].
          */
         fun productWithRecord(
-                    value: Long,
-                    dlr: DomainLevelRecord,
-                metas: MetaContainer = emptyMetaContainer()
+            value: Long,
+            dlr: DomainLevelRecord,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.ProductWithRecord =
             TestDomain.ProductWithRecord(
                 value = value.asPrimitive(),
@@ -788,9 +788,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun productWithRecord_(
-                    value: org.partiql.pig.runtime.LongPrimitive,
-                    dlr: DomainLevelRecord,
-                metas: MetaContainer = emptyMetaContainer()
+            value: org.partiql.pig.runtime.LongPrimitive,
+            dlr: DomainLevelRecord,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.ProductWithRecord =
             TestDomain.ProductWithRecord(
                 value = value,
@@ -803,10 +803,10 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.TestSumTriplet].
          */
         fun testSumTriplet(
-                    a: TestSum,
-                    b: TestSum,
-                    c: TestSum,
-                metas: MetaContainer = emptyMetaContainer()
+            a: TestSum,
+            b: TestSum,
+            c: TestSum,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.TestSumTriplet =
             TestDomain.TestSumTriplet(
                 a = a,
@@ -820,9 +820,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.EntityPair].
          */
         fun entityPair(
-                    first: Entity,
-                    second: Entity,
-                metas: MetaContainer = emptyMetaContainer()
+            first: Entity,
+            second: Entity,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.EntityPair =
             TestDomain.EntityPair(
                 first = first,
@@ -836,7 +836,7 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.Answer.No].
          */
         fun no(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Answer.No =
             TestDomain.Answer.No(
                 metas = newMetaContainer() + metas
@@ -847,7 +847,7 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.Answer.Yes].
          */
         fun yes(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Answer.Yes =
             TestDomain.Answer.Yes(
                 metas = newMetaContainer() + metas
@@ -859,9 +859,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.SumWithRecord.VariantWithRecord].
          */
         fun variantWithRecord(
-                    value: Long,
-                    dlr: DomainLevelRecord,
-                metas: MetaContainer = emptyMetaContainer()
+            value: Long,
+            dlr: DomainLevelRecord,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SumWithRecord.VariantWithRecord =
             TestDomain.SumWithRecord.VariantWithRecord(
                 value = value.asPrimitive(),
@@ -877,9 +877,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun variantWithRecord_(
-                    value: org.partiql.pig.runtime.LongPrimitive,
-                    dlr: DomainLevelRecord,
-                metas: MetaContainer = emptyMetaContainer()
+            value: org.partiql.pig.runtime.LongPrimitive,
+            dlr: DomainLevelRecord,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.SumWithRecord.VariantWithRecord =
             TestDomain.SumWithRecord.VariantWithRecord(
                 value = value,
@@ -893,8 +893,8 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.TestSum.One].
          */
         fun one(
-                    a: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            a: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.TestSum.One =
             TestDomain.TestSum.One(
                 a = a.asPrimitive(),
@@ -909,8 +909,8 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun one_(
-                    a: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            a: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.TestSum.One =
             TestDomain.TestSum.One(
                 a = a,
@@ -922,9 +922,9 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.TestSum.Two].
          */
         fun two(
-                    a: Long,
-                    b: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            a: Long,
+            b: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.TestSum.Two =
             TestDomain.TestSum.Two(
                 a = a.asPrimitive(),
@@ -940,9 +940,9 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun two_(
-                    a: org.partiql.pig.runtime.LongPrimitive,
-                    b: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            a: org.partiql.pig.runtime.LongPrimitive,
+            b: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.TestSum.Two =
             TestDomain.TestSum.Two(
                 a = a,
@@ -955,10 +955,10 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.TestSum.Three].
          */
         fun three(
-                    a: Long,
-                    b: Long,
-                    c: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            a: Long,
+            b: Long,
+            c: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.TestSum.Three =
             TestDomain.TestSum.Three(
                 a = a.asPrimitive(),
@@ -975,10 +975,10 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun three_(
-                    a: org.partiql.pig.runtime.LongPrimitive,
-                    b: org.partiql.pig.runtime.LongPrimitive,
-                    c: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            a: org.partiql.pig.runtime.LongPrimitive,
+            b: org.partiql.pig.runtime.LongPrimitive,
+            c: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.TestSum.Three =
             TestDomain.TestSum.Three(
                 a = a,
@@ -993,7 +993,7 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.Entity.Slug].
          */
         fun slug(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Entity.Slug =
             TestDomain.Entity.Slug(
                 metas = newMetaContainer() + metas
@@ -1004,8 +1004,8 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.Entity.Android].
          */
         fun android(
-                    id: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            id: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Entity.Android =
             TestDomain.Entity.Android(
                 id = id.asPrimitive(),
@@ -1020,8 +1020,8 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun android_(
-                    id: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            id: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Entity.Android =
             TestDomain.Entity.Android(
                 id = id,
@@ -1033,12 +1033,12 @@ class TestDomain private constructor() {
          * Creates an instance of [TestDomain.Entity.Human].
          */
         fun human(
-                    firstName: String,
-                    middleNames: kotlin.collections.List<String> = emptyList(),
-                    lastName: String,
-                    title: String? = null,
-                    parent: Entity? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            firstName: String,
+            middleNames: kotlin.collections.List<String> = emptyList(),
+            lastName: String,
+            title: String? = null,
+            parent: Entity? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Entity.Human =
             TestDomain.Entity.Human(
                 firstName = firstName.asPrimitive(),
@@ -1057,12 +1057,12 @@ class TestDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun human_(
-                    firstName: org.partiql.pig.runtime.SymbolPrimitive,
-                    middleNames: kotlin.collections.List<org.partiql.pig.runtime.SymbolPrimitive> = emptyList(),
-                    lastName: org.partiql.pig.runtime.SymbolPrimitive,
-                    title: org.partiql.pig.runtime.SymbolPrimitive? = null,
-                    parent: Entity? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            firstName: org.partiql.pig.runtime.SymbolPrimitive,
+            middleNames: kotlin.collections.List<org.partiql.pig.runtime.SymbolPrimitive> = emptyList(),
+            lastName: org.partiql.pig.runtime.SymbolPrimitive,
+            title: org.partiql.pig.runtime.SymbolPrimitive? = null,
+            parent: Entity? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.Entity.Human =
             TestDomain.Entity.Human(
                 firstName = firstName,
@@ -5163,7 +5163,7 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AaaAaa].
          */
         fun aaaAaa(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAaa =
             MultiWordDomain.AaaAaa(
                 metas = newMetaContainer() + metas
@@ -5174,8 +5174,8 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AaaAab].
          */
         fun aaaAab(
-                    dField: Long? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            dField: Long? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAab =
             MultiWordDomain.AaaAab(
                 dField = dField?.asPrimitive(),
@@ -5190,8 +5190,8 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAab_(
-                    dField: org.partiql.pig.runtime.LongPrimitive? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            dField: org.partiql.pig.runtime.LongPrimitive? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAab =
             MultiWordDomain.AaaAab(
                 dField = dField,
@@ -5203,9 +5203,9 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AaaAac].
          */
         fun aaaAac(
-                    dField: Long? = null,
-                    eField: String? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            dField: Long? = null,
+            eField: String? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAac =
             MultiWordDomain.AaaAac(
                 dField = dField?.asPrimitive(),
@@ -5221,9 +5221,9 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAac_(
-                    dField: org.partiql.pig.runtime.LongPrimitive? = null,
-                    eField: org.partiql.pig.runtime.SymbolPrimitive? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            dField: org.partiql.pig.runtime.LongPrimitive? = null,
+            eField: org.partiql.pig.runtime.SymbolPrimitive? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAac =
             MultiWordDomain.AaaAac(
                 dField = dField,
@@ -5236,8 +5236,8 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AaaAad].
          */
         fun aaaAad(
-                    dField: kotlin.collections.List<Long> = emptyList(),
-                metas: MetaContainer = emptyMetaContainer()
+            dField: kotlin.collections.List<Long> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAad =
             MultiWordDomain.AaaAad(
                 dField = dField.map { it.asPrimitive() },
@@ -5252,8 +5252,8 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAad_(
-                    dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
-                metas: MetaContainer = emptyMetaContainer()
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAad =
             MultiWordDomain.AaaAad(
                 dField = dField,
@@ -5264,8 +5264,8 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AaaAad].
          */
         fun aaaAad(
-                    vararg dField: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            vararg dField: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAad =
             MultiWordDomain.AaaAad(
                 dField = dField.map { it.asPrimitive() },
@@ -5280,8 +5280,8 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAad_(
-                    vararg dField: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            vararg dField: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAad =
             MultiWordDomain.AaaAad(
                 dField = dField.toList(),
@@ -5293,8 +5293,8 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AaaAae].
          */
         fun aaaAae(
-                    dField: kotlin.collections.List<Long>,
-                metas: MetaContainer = emptyMetaContainer()
+            dField: kotlin.collections.List<Long>,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAae =
             MultiWordDomain.AaaAae(
                 dField = dField.map { it.asPrimitive() },
@@ -5309,8 +5309,8 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAae_(
-                    dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
-                metas: MetaContainer = emptyMetaContainer()
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAae =
             MultiWordDomain.AaaAae(
                 dField = dField,
@@ -5321,10 +5321,10 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AaaAae].
          */
         fun aaaAae(
-                    dField0: Long,
-                    dField1: Long,
-                    vararg dField: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            dField0: Long,
+            dField1: Long,
+            vararg dField: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAae =
             MultiWordDomain.AaaAae(
                 dField = listOfPrimitives(dField0, dField1) + dField.map { it.asPrimitive() },
@@ -5339,10 +5339,10 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aaaAae_(
-                    dField0: org.partiql.pig.runtime.LongPrimitive,
-                    dField1: org.partiql.pig.runtime.LongPrimitive,
-                    vararg dField: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            dField0: org.partiql.pig.runtime.LongPrimitive,
+            dField1: org.partiql.pig.runtime.LongPrimitive,
+            vararg dField: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AaaAae =
             MultiWordDomain.AaaAae(
                 dField = listOfPrimitives(dField0, dField1) + dField.toList(),
@@ -5354,9 +5354,9 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AabAaa].
          */
         fun aabAaa(
-                    bField: Long,
-                    cField: String,
-                metas: MetaContainer = emptyMetaContainer()
+            bField: Long,
+            cField: String,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAaa =
             MultiWordDomain.AabAaa(
                 bField = bField.asPrimitive(),
@@ -5372,9 +5372,9 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAaa_(
-                    bField: org.partiql.pig.runtime.LongPrimitive,
-                    cField: org.partiql.pig.runtime.SymbolPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAaa =
             MultiWordDomain.AabAaa(
                 bField = bField,
@@ -5387,10 +5387,10 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AabAab].
          */
         fun aabAab(
-                    bField: Long,
-                    cField: String,
-                    dField: Long? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            bField: Long,
+            cField: String,
+            dField: Long? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAab =
             MultiWordDomain.AabAab(
                 bField = bField.asPrimitive(),
@@ -5407,10 +5407,10 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAab_(
-                    bField: org.partiql.pig.runtime.LongPrimitive,
-                    cField: org.partiql.pig.runtime.SymbolPrimitive,
-                    dField: org.partiql.pig.runtime.LongPrimitive? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField: org.partiql.pig.runtime.LongPrimitive? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAab =
             MultiWordDomain.AabAab(
                 bField = bField,
@@ -5424,11 +5424,11 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AabAac].
          */
         fun aabAac(
-                    bField: Long,
-                    cField: String,
-                    dField: Long? = null,
-                    eField: String? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            bField: Long,
+            cField: String,
+            dField: Long? = null,
+            eField: String? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAac =
             MultiWordDomain.AabAac(
                 bField = bField.asPrimitive(),
@@ -5446,11 +5446,11 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAac_(
-                    bField: org.partiql.pig.runtime.LongPrimitive,
-                    cField: org.partiql.pig.runtime.SymbolPrimitive,
-                    dField: org.partiql.pig.runtime.LongPrimitive? = null,
-                    eField: org.partiql.pig.runtime.SymbolPrimitive? = null,
-                metas: MetaContainer = emptyMetaContainer()
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField: org.partiql.pig.runtime.LongPrimitive? = null,
+            eField: org.partiql.pig.runtime.SymbolPrimitive? = null,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAac =
             MultiWordDomain.AabAac(
                 bField = bField,
@@ -5465,10 +5465,10 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AabAad].
          */
         fun aabAad(
-                    bField: Long,
-                    cField: String,
-                    dField: kotlin.collections.List<Long> = emptyList(),
-                metas: MetaContainer = emptyMetaContainer()
+            bField: Long,
+            cField: String,
+            dField: kotlin.collections.List<Long> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAad =
             MultiWordDomain.AabAad(
                 bField = bField.asPrimitive(),
@@ -5485,10 +5485,10 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAad_(
-                    bField: org.partiql.pig.runtime.LongPrimitive,
-                    cField: org.partiql.pig.runtime.SymbolPrimitive,
-                    dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
-                metas: MetaContainer = emptyMetaContainer()
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAad =
             MultiWordDomain.AabAad(
                 bField = bField,
@@ -5501,10 +5501,10 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AabAad].
          */
         fun aabAad(
-                    bField: Long,
-                    cField: String,
-                    vararg dField: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            bField: Long,
+            cField: String,
+            vararg dField: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAad =
             MultiWordDomain.AabAad(
                 bField = bField?.asPrimitive(),
@@ -5521,10 +5521,10 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAad_(
-                    bField: org.partiql.pig.runtime.LongPrimitive,
-                    cField: org.partiql.pig.runtime.SymbolPrimitive,
-                    vararg dField: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            vararg dField: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAad =
             MultiWordDomain.AabAad(
                 bField = bField,
@@ -5538,10 +5538,10 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AabAae].
          */
         fun aabAae(
-                    bField: Long,
-                    cField: String,
-                    dField: kotlin.collections.List<Long>,
-                metas: MetaContainer = emptyMetaContainer()
+            bField: Long,
+            cField: String,
+            dField: kotlin.collections.List<Long>,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAae =
             MultiWordDomain.AabAae(
                 bField = bField.asPrimitive(),
@@ -5558,10 +5558,10 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAae_(
-                    bField: org.partiql.pig.runtime.LongPrimitive,
-                    cField: org.partiql.pig.runtime.SymbolPrimitive,
-                    dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
-                metas: MetaContainer = emptyMetaContainer()
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAae =
             MultiWordDomain.AabAae(
                 bField = bField,
@@ -5574,12 +5574,12 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.AabAae].
          */
         fun aabAae(
-                    bField: Long,
-                    cField: String,
-                    dField0: Long,
-                    dField1: Long,
-                    vararg dField: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            bField: Long,
+            cField: String,
+            dField0: Long,
+            dField1: Long,
+            vararg dField: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAae =
             MultiWordDomain.AabAae(
                 bField = bField?.asPrimitive(),
@@ -5596,12 +5596,12 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun aabAae_(
-                    bField: org.partiql.pig.runtime.LongPrimitive,
-                    cField: org.partiql.pig.runtime.SymbolPrimitive,
-                    dField0: org.partiql.pig.runtime.LongPrimitive,
-                    dField1: org.partiql.pig.runtime.LongPrimitive,
-                    vararg dField: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            bField: org.partiql.pig.runtime.LongPrimitive,
+            cField: org.partiql.pig.runtime.SymbolPrimitive,
+            dField0: org.partiql.pig.runtime.LongPrimitive,
+            dField1: org.partiql.pig.runtime.LongPrimitive,
+            vararg dField: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAae =
             MultiWordDomain.AabAae(
                 bField = bField,
@@ -5615,9 +5615,9 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.Rrr].
          */
         fun rrr(
-                    aField: Long,
-                    bbbField: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            aField: Long,
+            bbbField: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.Rrr =
             MultiWordDomain.Rrr(
                 aField = aField.asPrimitive(),
@@ -5633,9 +5633,9 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun rrr_(
-                    aField: org.partiql.pig.runtime.LongPrimitive,
-                    bbbField: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            aField: org.partiql.pig.runtime.LongPrimitive,
+            bbbField: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.Rrr =
             MultiWordDomain.Rrr(
                 aField = aField,
@@ -5649,8 +5649,8 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.SssTtt.Lll].
          */
         fun lll(
-                    uField: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            uField: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.SssTtt.Lll =
             MultiWordDomain.SssTtt.Lll(
                 uField = uField.asPrimitive(),
@@ -5665,8 +5665,8 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun lll_(
-                    uField: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            uField: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.SssTtt.Lll =
             MultiWordDomain.SssTtt.Lll(
                 uField = uField,
@@ -5678,8 +5678,8 @@ class MultiWordDomain private constructor() {
          * Creates an instance of [MultiWordDomain.SssTtt.Mmm].
          */
         fun mmm(
-                    vField: String,
-                metas: MetaContainer = emptyMetaContainer()
+            vField: String,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.SssTtt.Mmm =
             MultiWordDomain.SssTtt.Mmm(
                 vField = vField.asPrimitive(),
@@ -5694,8 +5694,8 @@ class MultiWordDomain private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun mmm_(
-                    vField: org.partiql.pig.runtime.SymbolPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            vField: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.SssTtt.Mmm =
             MultiWordDomain.SssTtt.Mmm(
                 vField = vField,
@@ -7259,8 +7259,8 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.ProductToRemove].
          */
         fun productToRemove(
-                    whatever: String,
-                metas: MetaContainer = emptyMetaContainer()
+            whatever: String,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.ProductToRemove =
             DomainA.ProductToRemove(
                 whatever = whatever.asPrimitive(),
@@ -7275,8 +7275,8 @@ class DomainA private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun productToRemove_(
-                    whatever: org.partiql.pig.runtime.SymbolPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            whatever: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.ProductToRemove =
             DomainA.ProductToRemove(
                 whatever = whatever,
@@ -7288,8 +7288,8 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.RecordToRemove].
          */
         fun recordToRemove(
-                    irrelevant: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            irrelevant: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.RecordToRemove =
             DomainA.RecordToRemove(
                 irrelevant = irrelevant.asPrimitive(),
@@ -7304,8 +7304,8 @@ class DomainA private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun recordToRemove_(
-                    irrelevant: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            irrelevant: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.RecordToRemove =
             DomainA.RecordToRemove(
                 irrelevant = irrelevant,
@@ -7317,8 +7317,8 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.ProductA].
          */
         fun productA(
-                    one: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            one: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.ProductA =
             DomainA.ProductA(
                 one = one.asPrimitive(),
@@ -7333,8 +7333,8 @@ class DomainA private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun productA_(
-                    one: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            one: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.ProductA =
             DomainA.ProductA(
                 one = one,
@@ -7346,8 +7346,8 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.RecordA].
          */
         fun recordA(
-                    one: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            one: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.RecordA =
             DomainA.RecordA(
                 one = one.asPrimitive(),
@@ -7362,8 +7362,8 @@ class DomainA private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun recordA_(
-                    one: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            one: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.RecordA =
             DomainA.RecordA(
                 one = one,
@@ -7375,9 +7375,9 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.UnpermutedProduct].
          */
         fun unpermutedProduct(
-                    foo: String,
-                    bar: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: String,
+            bar: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.UnpermutedProduct =
             DomainA.UnpermutedProduct(
                 foo = foo.asPrimitive(),
@@ -7393,9 +7393,9 @@ class DomainA private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun unpermutedProduct_(
-                    foo: org.partiql.pig.runtime.SymbolPrimitive,
-                    bar: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: org.partiql.pig.runtime.SymbolPrimitive,
+            bar: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.UnpermutedProduct =
             DomainA.UnpermutedProduct(
                 foo = foo,
@@ -7408,9 +7408,9 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.UnpermutedRecord].
          */
         fun unpermutedRecord(
-                    foo: String,
-                    bar: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: String,
+            bar: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.UnpermutedRecord =
             DomainA.UnpermutedRecord(
                 foo = foo.asPrimitive(),
@@ -7426,9 +7426,9 @@ class DomainA private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun unpermutedRecord_(
-                    foo: org.partiql.pig.runtime.SymbolPrimitive,
-                    bar: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: org.partiql.pig.runtime.SymbolPrimitive,
+            bar: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.UnpermutedRecord =
             DomainA.UnpermutedRecord(
                 foo = foo,
@@ -7442,7 +7442,7 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.SumToRemove.Doesnt].
          */
         fun doesnt(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.SumToRemove.Doesnt =
             DomainA.SumToRemove.Doesnt(
                 metas = newMetaContainer() + metas
@@ -7453,7 +7453,7 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.SumToRemove.Matter].
          */
         fun matter(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.SumToRemove.Matter =
             DomainA.SumToRemove.Matter(
                 metas = newMetaContainer() + metas
@@ -7465,7 +7465,7 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.SumA.Who].
          */
         fun who(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.SumA.Who =
             DomainA.SumA.Who(
                 metas = newMetaContainer() + metas
@@ -7476,7 +7476,7 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.SumA.Cares].
          */
         fun cares(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.SumA.Cares =
             DomainA.SumA.Cares(
                 metas = newMetaContainer() + metas
@@ -7488,7 +7488,7 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.SumB.WillBeUnchanged].
          */
         fun willBeUnchanged(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.SumB.WillBeUnchanged =
             DomainA.SumB.WillBeUnchanged(
                 metas = newMetaContainer() + metas
@@ -7499,7 +7499,7 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.SumB.WillBeRemoved].
          */
         fun willBeRemoved(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.SumB.WillBeRemoved =
             DomainA.SumB.WillBeRemoved(
                 metas = newMetaContainer() + metas
@@ -7510,8 +7510,8 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.SumB.WillBeReplaced].
          */
         fun willBeReplaced(
-                    something: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            something: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.SumB.WillBeReplaced =
             DomainA.SumB.WillBeReplaced(
                 something = something.asPrimitive(),
@@ -7526,8 +7526,8 @@ class DomainA private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun willBeReplaced_(
-                    something: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            something: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.SumB.WillBeReplaced =
             DomainA.SumB.WillBeReplaced(
                 something = something,
@@ -7540,9 +7540,9 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.UnpermutedSum.UnpermutedProductVariant].
          */
         fun unpermutedProductVariant(
-                    foo: String,
-                    bar: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: String,
+            bar: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.UnpermutedSum.UnpermutedProductVariant =
             DomainA.UnpermutedSum.UnpermutedProductVariant(
                 foo = foo.asPrimitive(),
@@ -7558,9 +7558,9 @@ class DomainA private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun unpermutedProductVariant_(
-                    foo: org.partiql.pig.runtime.SymbolPrimitive,
-                    bar: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: org.partiql.pig.runtime.SymbolPrimitive,
+            bar: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.UnpermutedSum.UnpermutedProductVariant =
             DomainA.UnpermutedSum.UnpermutedProductVariant(
                 foo = foo,
@@ -7573,9 +7573,9 @@ class DomainA private constructor() {
          * Creates an instance of [DomainA.UnpermutedSum.UnpermutedRecordVariant].
          */
         fun unpermutedRecordVariant(
-                    foo: String,
-                    bar: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: String,
+            bar: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.UnpermutedSum.UnpermutedRecordVariant =
             DomainA.UnpermutedSum.UnpermutedRecordVariant(
                 foo = foo.asPrimitive(),
@@ -7591,9 +7591,9 @@ class DomainA private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun unpermutedRecordVariant_(
-                    foo: org.partiql.pig.runtime.SymbolPrimitive,
-                    bar: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: org.partiql.pig.runtime.SymbolPrimitive,
+            bar: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainA.UnpermutedSum.UnpermutedRecordVariant =
             DomainA.UnpermutedSum.UnpermutedRecordVariant(
                 foo = foo,
@@ -9267,9 +9267,9 @@ class DomainB private constructor() {
          * Creates an instance of [DomainB.UnpermutedProduct].
          */
         fun unpermutedProduct(
-                    foo: String,
-                    bar: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: String,
+            bar: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.UnpermutedProduct =
             DomainB.UnpermutedProduct(
                 foo = foo.asPrimitive(),
@@ -9285,9 +9285,9 @@ class DomainB private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun unpermutedProduct_(
-                    foo: org.partiql.pig.runtime.SymbolPrimitive,
-                    bar: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: org.partiql.pig.runtime.SymbolPrimitive,
+            bar: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.UnpermutedProduct =
             DomainB.UnpermutedProduct(
                 foo = foo,
@@ -9300,9 +9300,9 @@ class DomainB private constructor() {
          * Creates an instance of [DomainB.UnpermutedRecord].
          */
         fun unpermutedRecord(
-                    foo: String,
-                    bar: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: String,
+            bar: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.UnpermutedRecord =
             DomainB.UnpermutedRecord(
                 foo = foo.asPrimitive(),
@@ -9318,9 +9318,9 @@ class DomainB private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun unpermutedRecord_(
-                    foo: org.partiql.pig.runtime.SymbolPrimitive,
-                    bar: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: org.partiql.pig.runtime.SymbolPrimitive,
+            bar: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.UnpermutedRecord =
             DomainB.UnpermutedRecord(
                 foo = foo,
@@ -9333,8 +9333,8 @@ class DomainB private constructor() {
          * Creates an instance of [DomainB.ProductA].
          */
         fun productA(
-                    one: String,
-                metas: MetaContainer = emptyMetaContainer()
+            one: String,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.ProductA =
             DomainB.ProductA(
                 one = one.asPrimitive(),
@@ -9349,8 +9349,8 @@ class DomainB private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun productA_(
-                    one: org.partiql.pig.runtime.SymbolPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            one: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.ProductA =
             DomainB.ProductA(
                 one = one,
@@ -9362,8 +9362,8 @@ class DomainB private constructor() {
          * Creates an instance of [DomainB.RecordA].
          */
         fun recordA(
-                    one: String,
-                metas: MetaContainer = emptyMetaContainer()
+            one: String,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.RecordA =
             DomainB.RecordA(
                 one = one.asPrimitive(),
@@ -9378,8 +9378,8 @@ class DomainB private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun recordA_(
-                    one: org.partiql.pig.runtime.SymbolPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            one: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.RecordA =
             DomainB.RecordA(
                 one = one,
@@ -9391,8 +9391,8 @@ class DomainB private constructor() {
          * Creates an instance of [DomainB.NewProduct].
          */
         fun newProduct(
-                    foo: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.NewProduct =
             DomainB.NewProduct(
                 foo = foo.asPrimitive(),
@@ -9407,8 +9407,8 @@ class DomainB private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun newProduct_(
-                    foo: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.NewProduct =
             DomainB.NewProduct(
                 foo = foo,
@@ -9420,8 +9420,8 @@ class DomainB private constructor() {
          * Creates an instance of [DomainB.NewRecord].
          */
         fun newRecord(
-                    foo: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.NewRecord =
             DomainB.NewRecord(
                 foo = foo.asPrimitive(),
@@ -9436,8 +9436,8 @@ class DomainB private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun newRecord_(
-                    foo: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.NewRecord =
             DomainB.NewRecord(
                 foo = foo,
@@ -9450,9 +9450,9 @@ class DomainB private constructor() {
          * Creates an instance of [DomainB.UnpermutedSum.UnpermutedProductVariant].
          */
         fun unpermutedProductVariant(
-                    foo: String,
-                    bar: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: String,
+            bar: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.UnpermutedSum.UnpermutedProductVariant =
             DomainB.UnpermutedSum.UnpermutedProductVariant(
                 foo = foo.asPrimitive(),
@@ -9468,9 +9468,9 @@ class DomainB private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun unpermutedProductVariant_(
-                    foo: org.partiql.pig.runtime.SymbolPrimitive,
-                    bar: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: org.partiql.pig.runtime.SymbolPrimitive,
+            bar: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.UnpermutedSum.UnpermutedProductVariant =
             DomainB.UnpermutedSum.UnpermutedProductVariant(
                 foo = foo,
@@ -9483,9 +9483,9 @@ class DomainB private constructor() {
          * Creates an instance of [DomainB.UnpermutedSum.UnpermutedRecordVariant].
          */
         fun unpermutedRecordVariant(
-                    foo: String,
-                    bar: Long,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: String,
+            bar: Long,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.UnpermutedSum.UnpermutedRecordVariant =
             DomainB.UnpermutedSum.UnpermutedRecordVariant(
                 foo = foo.asPrimitive(),
@@ -9501,9 +9501,9 @@ class DomainB private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun unpermutedRecordVariant_(
-                    foo: org.partiql.pig.runtime.SymbolPrimitive,
-                    bar: org.partiql.pig.runtime.LongPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            foo: org.partiql.pig.runtime.SymbolPrimitive,
+            bar: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.UnpermutedSum.UnpermutedRecordVariant =
             DomainB.UnpermutedSum.UnpermutedRecordVariant(
                 foo = foo,
@@ -9517,7 +9517,7 @@ class DomainB private constructor() {
          * Creates an instance of [DomainB.SumB.WillBeUnchanged].
          */
         fun willBeUnchanged(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.SumB.WillBeUnchanged =
             DomainB.SumB.WillBeUnchanged(
                 metas = newMetaContainer() + metas
@@ -9528,8 +9528,8 @@ class DomainB private constructor() {
          * Creates an instance of [DomainB.SumB.WillBeReplaced].
          */
         fun willBeReplaced(
-                    something: String,
-                metas: MetaContainer = emptyMetaContainer()
+            something: String,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.SumB.WillBeReplaced =
             DomainB.SumB.WillBeReplaced(
                 something = something.asPrimitive(),
@@ -9544,8 +9544,8 @@ class DomainB private constructor() {
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
         fun willBeReplaced_(
-                    something: org.partiql.pig.runtime.SymbolPrimitive,
-                metas: MetaContainer = emptyMetaContainer()
+            something: org.partiql.pig.runtime.SymbolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.SumB.WillBeReplaced =
             DomainB.SumB.WillBeReplaced(
                 something = something,
@@ -9558,7 +9558,7 @@ class DomainB private constructor() {
          * Creates an instance of [DomainB.NewSum.Eek].
          */
         fun eek(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.NewSum.Eek =
             DomainB.NewSum.Eek(
                 metas = newMetaContainer() + metas
@@ -9569,7 +9569,7 @@ class DomainB private constructor() {
          * Creates an instance of [DomainB.NewSum.Whatever].
          */
         fun whatever(
-                metas: MetaContainer = emptyMetaContainer()
+            metas: MetaContainer = emptyMetaContainer()
         ): DomainB.NewSum.Whatever =
             DomainB.NewSum.Whatever(
                 metas = newMetaContainer() + metas
