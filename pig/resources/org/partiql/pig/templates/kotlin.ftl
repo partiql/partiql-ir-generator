@@ -127,24 +127,25 @@ class ${t.kotlinName}(
 [#macro builder_constructor_fun t return_type]
 [#list t.builderFunctions as bf]
 /**
-* Creates an instance of [${return_type}].
-[#if bf.kotlinName?ends_with("_")]
-*
-* Use this variant when metas must be passed to primitive child elements.
-*
-* (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+ * Creates an instance of [${return_type}].
+ [#if bf.kotlinName?ends_with("_")]
+ *
+ * Use this variant when metas must be passed to primitive child elements.
+ *
+ * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
 [/#if]
-*/
+ */
 fun ${bf.kotlinName}(
-    [@indent count=4]
-        [@builder_fun_parameter_list bf.parameters/]
-    [/@indent]
+[@indent count=4]
+    [@builder_fun_parameter_list bf.parameters/]
+[/@indent]
 ): ${return_type} =
     ${return_type}(
     [#list bf.constructorArguments as p]
         ${p.kotlinName} = ${p.value},
     [/#list]
-        metas = newMetaContainer() + metas)
+        metas = newMetaContainer() + metas
+    )
 
 [/#list]
 [/#macro]
@@ -190,7 +191,7 @@ interface Builder {
 
     [@indent count = 4]
         [#if domain.tuples?size > 0]
-            // Tuples
+            // Tuples [#lt]
             [#list domain.tuples as tuple]
                 [@builder_constructor_fun tuple "${domain.kotlinName}.${tuple.kotlinName}"/]
 

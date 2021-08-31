@@ -32,10 +32,10 @@ class PartiqlBasic private constructor() {
     interface Builder {
         fun newMetaContainer() = emptyMetaContainer()
     
-                    // Tuples
+        // Tuples 
         /**
-        * Creates an instance of [PartiqlBasic.ExprPair].
-        */
+         * Creates an instance of [PartiqlBasic.ExprPair].
+         */
         fun exprPair(
                     first: Expr,
                     second: Expr,
@@ -44,12 +44,13 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.ExprPair(
                 first = first,
                 second = second,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.GroupByItem].
-        */
+         * Creates an instance of [PartiqlBasic.GroupByItem].
+         */
         fun groupByItem(
                     value: Expr,
                     asAlias: String? = null,
@@ -58,15 +59,16 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.GroupByItem(
                 value = value,
                 asAlias = asAlias?.asPrimitive(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.GroupByItem].
-        *
-        * Use this variant when metas must be passed to primitive child elements.
-        *
-        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-        */
+         * Creates an instance of [PartiqlBasic.GroupByItem].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
         fun groupByItem_(
                     value: Expr,
                     asAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
@@ -75,23 +77,25 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.GroupByItem(
                 value = value,
                 asAlias = asAlias,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.GroupByList].
-        */
+         * Creates an instance of [PartiqlBasic.GroupByList].
+         */
         fun groupByList(
                     items: kotlin.collections.List<GroupByItem>,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.GroupByList =
             PartiqlBasic.GroupByList(
                 items = items,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.GroupByList].
-        */
+         * Creates an instance of [PartiqlBasic.GroupByList].
+         */
         fun groupByList(
                     items0: GroupByItem,
                     vararg items: GroupByItem,
@@ -99,12 +103,13 @@ class PartiqlBasic private constructor() {
         ): PartiqlBasic.GroupByList =
             PartiqlBasic.GroupByList(
                 items = listOf(items0) + items.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.GroupBy].
-        */
+         * Creates an instance of [PartiqlBasic.GroupBy].
+         */
         fun groupBy(
                     items: GroupByList,
                     groupAsAlias: String? = null,
@@ -113,15 +118,16 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.GroupBy(
                 items = items,
                 groupAsAlias = groupAsAlias?.asPrimitive(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.GroupBy].
-        *
-        * Use this variant when metas must be passed to primitive child elements.
-        *
-        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-        */
+         * Creates an instance of [PartiqlBasic.GroupBy].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
         fun groupBy_(
                     items: GroupByList,
                     groupAsAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
@@ -130,24 +136,26 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.GroupBy(
                 items = items,
                 groupAsAlias = groupAsAlias,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         // Variants for Sum: Projection 
         /**
-        * Creates an instance of [PartiqlBasic.Projection.ProjectList].
-        */
+         * Creates an instance of [PartiqlBasic.Projection.ProjectList].
+         */
         fun projectList(
                     items: kotlin.collections.List<ProjectItem>,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Projection.ProjectList =
             PartiqlBasic.Projection.ProjectList(
                 items = items,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Projection.ProjectList].
-        */
+         * Creates an instance of [PartiqlBasic.Projection.ProjectList].
+         */
         fun projectList(
                     items0: ProjectItem,
                     vararg items: ProjectItem,
@@ -155,35 +163,38 @@ class PartiqlBasic private constructor() {
         ): PartiqlBasic.Projection.ProjectList =
             PartiqlBasic.Projection.ProjectList(
                 items = listOf(items0) + items.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Projection.ProjectValue].
-        */
+         * Creates an instance of [PartiqlBasic.Projection.ProjectValue].
+         */
         fun projectValue(
                     value: Expr,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Projection.ProjectValue =
             PartiqlBasic.Projection.ProjectValue(
                 value = value,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         // Variants for Sum: ProjectItem 
         /**
-        * Creates an instance of [PartiqlBasic.ProjectItem.ProjectAll].
-        */
+         * Creates an instance of [PartiqlBasic.ProjectItem.ProjectAll].
+         */
         fun projectAll(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.ProjectItem.ProjectAll =
             PartiqlBasic.ProjectItem.ProjectAll(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.ProjectItem.ProjectExpr].
-        */
+         * Creates an instance of [PartiqlBasic.ProjectItem.ProjectExpr].
+         */
         fun projectExpr(
                     value: Expr,
                     asAlias: String? = null,
@@ -192,15 +203,16 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.ProjectItem.ProjectExpr(
                 value = value,
                 asAlias = asAlias?.asPrimitive(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.ProjectItem.ProjectExpr].
-        *
-        * Use this variant when metas must be passed to primitive child elements.
-        *
-        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-        */
+         * Creates an instance of [PartiqlBasic.ProjectItem.ProjectExpr].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
         fun projectExpr_(
                     value: Expr,
                     asAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
@@ -209,54 +221,59 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.ProjectItem.ProjectExpr(
                 value = value,
                 asAlias = asAlias,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         // Variants for Sum: JoinType 
         /**
-        * Creates an instance of [PartiqlBasic.JoinType.Inner].
-        */
+         * Creates an instance of [PartiqlBasic.JoinType.Inner].
+         */
         fun inner(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.JoinType.Inner =
             PartiqlBasic.JoinType.Inner(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.JoinType.Left].
-        */
+         * Creates an instance of [PartiqlBasic.JoinType.Left].
+         */
         fun left(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.JoinType.Left =
             PartiqlBasic.JoinType.Left(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.JoinType.Right].
-        */
+         * Creates an instance of [PartiqlBasic.JoinType.Right].
+         */
         fun right(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.JoinType.Right =
             PartiqlBasic.JoinType.Right(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.JoinType.Outer].
-        */
+         * Creates an instance of [PartiqlBasic.JoinType.Outer].
+         */
         fun outer(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.JoinType.Outer =
             PartiqlBasic.JoinType.Outer(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         // Variants for Sum: FromSource 
         /**
-        * Creates an instance of [PartiqlBasic.FromSource.Scan].
-        */
+         * Creates an instance of [PartiqlBasic.FromSource.Scan].
+         */
         fun scan(
                     expr: Expr,
                     asAlias: String? = null,
@@ -269,15 +286,16 @@ class PartiqlBasic private constructor() {
                 asAlias = asAlias?.asPrimitive(),
                 atAlias = atAlias?.asPrimitive(),
                 byAlias = byAlias?.asPrimitive(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.FromSource.Scan].
-        *
-        * Use this variant when metas must be passed to primitive child elements.
-        *
-        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-        */
+         * Creates an instance of [PartiqlBasic.FromSource.Scan].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
         fun scan_(
                     expr: Expr,
                     asAlias: org.partiql.pig.runtime.SymbolPrimitive? = null,
@@ -290,12 +308,13 @@ class PartiqlBasic private constructor() {
                 asAlias = asAlias,
                 atAlias = atAlias,
                 byAlias = byAlias,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.FromSource.Join].
-        */
+         * Creates an instance of [PartiqlBasic.FromSource.Join].
+         */
         fun join(
                     type: JoinType,
                     left: FromSource,
@@ -308,121 +327,132 @@ class PartiqlBasic private constructor() {
                 left = left,
                 right = right,
                 predicate = predicate,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         // Variants for Sum: CaseSensitivity 
         /**
-        * Creates an instance of [PartiqlBasic.CaseSensitivity.CaseSensitive].
-        */
+         * Creates an instance of [PartiqlBasic.CaseSensitivity.CaseSensitive].
+         */
         fun caseSensitive(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.CaseSensitivity.CaseSensitive =
             PartiqlBasic.CaseSensitivity.CaseSensitive(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.CaseSensitivity.CaseInsensitive].
-        */
+         * Creates an instance of [PartiqlBasic.CaseSensitivity.CaseInsensitive].
+         */
         fun caseInsensitive(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.CaseSensitivity.CaseInsensitive =
             PartiqlBasic.CaseSensitivity.CaseInsensitive(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         // Variants for Sum: ScopeQualifier 
         /**
-        * Creates an instance of [PartiqlBasic.ScopeQualifier.Unqualified].
-        */
+         * Creates an instance of [PartiqlBasic.ScopeQualifier.Unqualified].
+         */
         fun unqualified(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.ScopeQualifier.Unqualified =
             PartiqlBasic.ScopeQualifier.Unqualified(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.ScopeQualifier.Qualified].
-        */
+         * Creates an instance of [PartiqlBasic.ScopeQualifier.Qualified].
+         */
         fun qualified(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.ScopeQualifier.Qualified =
             PartiqlBasic.ScopeQualifier.Qualified(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         // Variants for Sum: SetQuantifier 
         /**
-        * Creates an instance of [PartiqlBasic.SetQuantifier.All].
-        */
+         * Creates an instance of [PartiqlBasic.SetQuantifier.All].
+         */
         fun all(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.SetQuantifier.All =
             PartiqlBasic.SetQuantifier.All(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.SetQuantifier.Distinct].
-        */
+         * Creates an instance of [PartiqlBasic.SetQuantifier.Distinct].
+         */
         fun distinct(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.SetQuantifier.Distinct =
             PartiqlBasic.SetQuantifier.Distinct(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         // Variants for Sum: PathElement 
         /**
-        * Creates an instance of [PartiqlBasic.PathElement.PathExpr].
-        */
+         * Creates an instance of [PartiqlBasic.PathElement.PathExpr].
+         */
         fun pathExpr(
                     expr: Expr,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.PathElement.PathExpr =
             PartiqlBasic.PathElement.PathExpr(
                 expr = expr,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.PathElement.PathWildcard].
-        */
+         * Creates an instance of [PartiqlBasic.PathElement.PathWildcard].
+         */
         fun pathWildcard(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.PathElement.PathWildcard =
             PartiqlBasic.PathElement.PathWildcard(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.PathElement.PathUnpivot].
-        */
+         * Creates an instance of [PartiqlBasic.PathElement.PathUnpivot].
+         */
         fun pathUnpivot(
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.PathElement.PathUnpivot =
             PartiqlBasic.PathElement.PathUnpivot(
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         // Variants for Sum: Expr 
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Lit].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Lit].
+         */
         fun lit(
                     value: com.amazon.ionelement.api.IonElement,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Lit =
             PartiqlBasic.Expr.Lit(
                 value = value.asAnyElement(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Id].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Id].
+         */
         fun id(
                     name: String,
                     case: CaseSensitivity,
@@ -433,15 +463,16 @@ class PartiqlBasic private constructor() {
                 name = name.asPrimitive(),
                 case = case,
                 scopeQualifier = scopeQualifier,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Id].
-        *
-        * Use this variant when metas must be passed to primitive child elements.
-        *
-        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Id].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
         fun id_(
                     name: org.partiql.pig.runtime.SymbolPrimitive,
                     case: CaseSensitivity,
@@ -452,62 +483,67 @@ class PartiqlBasic private constructor() {
                 name = name,
                 case = case,
                 scopeQualifier = scopeQualifier,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Parameter].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Parameter].
+         */
         fun parameter(
                     index: Long,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Parameter =
             PartiqlBasic.Expr.Parameter(
                 index = index.asPrimitive(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Parameter].
-        *
-        * Use this variant when metas must be passed to primitive child elements.
-        *
-        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Parameter].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
         fun parameter_(
                     index: org.partiql.pig.runtime.LongPrimitive,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Parameter =
             PartiqlBasic.Expr.Parameter(
                 index = index,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Not].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Not].
+         */
         fun not(
                     expr: Expr,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Not =
             PartiqlBasic.Expr.Not(
                 expr = expr,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Plus].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Plus].
+         */
         fun plus(
                     operands: kotlin.collections.List<Expr>,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Plus =
             PartiqlBasic.Expr.Plus(
                 operands = operands,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Plus].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Plus].
+         */
         fun plus(
                     operands0: Expr,
                     operands1: Expr,
@@ -516,23 +552,25 @@ class PartiqlBasic private constructor() {
         ): PartiqlBasic.Expr.Plus =
             PartiqlBasic.Expr.Plus(
                 operands = listOf(operands0, operands1) + operands.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Minus].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Minus].
+         */
         fun minus(
                     operands: kotlin.collections.List<Expr>,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Minus =
             PartiqlBasic.Expr.Minus(
                 operands = operands,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Minus].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Minus].
+         */
         fun minus(
                     operands0: Expr,
                     operands1: Expr,
@@ -541,23 +579,25 @@ class PartiqlBasic private constructor() {
         ): PartiqlBasic.Expr.Minus =
             PartiqlBasic.Expr.Minus(
                 operands = listOf(operands0, operands1) + operands.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Times].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Times].
+         */
         fun times(
                     operands: kotlin.collections.List<Expr>,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Times =
             PartiqlBasic.Expr.Times(
                 operands = operands,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Times].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Times].
+         */
         fun times(
                     operands0: Expr,
                     operands1: Expr,
@@ -566,23 +606,25 @@ class PartiqlBasic private constructor() {
         ): PartiqlBasic.Expr.Times =
             PartiqlBasic.Expr.Times(
                 operands = listOf(operands0, operands1) + operands.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Divide].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Divide].
+         */
         fun divide(
                     operands: kotlin.collections.List<Expr>,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Divide =
             PartiqlBasic.Expr.Divide(
                 operands = operands,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Divide].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Divide].
+         */
         fun divide(
                     operands0: Expr,
                     operands1: Expr,
@@ -591,23 +633,25 @@ class PartiqlBasic private constructor() {
         ): PartiqlBasic.Expr.Divide =
             PartiqlBasic.Expr.Divide(
                 operands = listOf(operands0, operands1) + operands.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Modulo].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Modulo].
+         */
         fun modulo(
                     operands: kotlin.collections.List<Expr>,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Modulo =
             PartiqlBasic.Expr.Modulo(
                 operands = operands,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Modulo].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Modulo].
+         */
         fun modulo(
                     operands0: Expr,
                     operands1: Expr,
@@ -616,23 +660,25 @@ class PartiqlBasic private constructor() {
         ): PartiqlBasic.Expr.Modulo =
             PartiqlBasic.Expr.Modulo(
                 operands = listOf(operands0, operands1) + operands.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Concat].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Concat].
+         */
         fun concat(
                     operands: kotlin.collections.List<Expr>,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Concat =
             PartiqlBasic.Expr.Concat(
                 operands = operands,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Concat].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Concat].
+         */
         fun concat(
                     operands0: Expr,
                     operands1: Expr,
@@ -641,12 +687,13 @@ class PartiqlBasic private constructor() {
         ): PartiqlBasic.Expr.Concat =
             PartiqlBasic.Expr.Concat(
                 operands = listOf(operands0, operands1) + operands.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Like].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Like].
+         */
         fun like(
                     left: Expr,
                     right: Expr,
@@ -657,12 +704,13 @@ class PartiqlBasic private constructor() {
                 left = left,
                 right = right,
                 escape = escape,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Between].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Between].
+         */
         fun between(
                     value: Expr,
                     from: Expr,
@@ -673,12 +721,13 @@ class PartiqlBasic private constructor() {
                 value = value,
                 from = from,
                 to = to,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Path].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Path].
+         */
         fun path(
                     root: Expr,
                     elements: kotlin.collections.List<PathElement>,
@@ -687,11 +736,12 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.Expr.Path(
                 root = root,
                 elements = elements,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Path].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Path].
+         */
         fun path(
                     root: Expr,
                     elements0: PathElement,
@@ -701,12 +751,13 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.Expr.Path(
                 root = root,
                 elements = listOf(elements0) + elements.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Call].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Call].
+         */
         fun call(
                     name: String,
                     args: kotlin.collections.List<Expr>,
@@ -715,15 +766,16 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.Expr.Call(
                 name = name.asPrimitive(),
                 args = args,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Call].
-        *
-        * Use this variant when metas must be passed to primitive child elements.
-        *
-        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Call].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
         fun call_(
                     name: org.partiql.pig.runtime.SymbolPrimitive,
                     args: kotlin.collections.List<Expr>,
@@ -732,11 +784,12 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.Expr.Call(
                 name = name,
                 args = args,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Call].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Call].
+         */
         fun call(
                     name: String,
                     args0: Expr,
@@ -746,15 +799,16 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.Expr.Call(
                 name = name?.asPrimitive(),
                 args = listOf(args0) + args.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Call].
-        *
-        * Use this variant when metas must be passed to primitive child elements.
-        *
-        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Call].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
         fun call_(
                     name: org.partiql.pig.runtime.SymbolPrimitive,
                     args0: Expr,
@@ -764,12 +818,13 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.Expr.Call(
                 name = name,
                 args = listOf(args0) + args.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.CallAgg].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.CallAgg].
+         */
         fun callAgg(
                     name: String,
                     setQuantifier: SetQuantifier,
@@ -780,15 +835,16 @@ class PartiqlBasic private constructor() {
                 name = name.asPrimitive(),
                 setQuantifier = setQuantifier,
                 arg = arg,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.CallAgg].
-        *
-        * Use this variant when metas must be passed to primitive child elements.
-        *
-        * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-        */
+         * Creates an instance of [PartiqlBasic.Expr.CallAgg].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
         fun callAgg_(
                     name: org.partiql.pig.runtime.SymbolPrimitive,
                     setQuantifier: SetQuantifier,
@@ -799,12 +855,13 @@ class PartiqlBasic private constructor() {
                 name = name,
                 setQuantifier = setQuantifier,
                 arg = arg,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.SimpleCase].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.SimpleCase].
+         */
         fun simpleCase(
                     value: Expr,
                     branches: kotlin.collections.List<ExprPair>,
@@ -813,11 +870,12 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.Expr.SimpleCase(
                 value = value,
                 branches = branches,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.SimpleCase].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.SimpleCase].
+         */
         fun simpleCase(
                     value: Expr,
                     branches0: ExprPair,
@@ -827,23 +885,25 @@ class PartiqlBasic private constructor() {
             PartiqlBasic.Expr.SimpleCase(
                 value = value,
                 branches = listOf(branches0) + branches.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.SearchedCase].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.SearchedCase].
+         */
         fun searchedCase(
                     branches: kotlin.collections.List<ExprPair>,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.SearchedCase =
             PartiqlBasic.Expr.SearchedCase(
                 branches = branches,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.SearchedCase].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.SearchedCase].
+         */
         fun searchedCase(
                     branches0: ExprPair,
                     vararg branches: ExprPair,
@@ -851,81 +911,88 @@ class PartiqlBasic private constructor() {
         ): PartiqlBasic.Expr.SearchedCase =
             PartiqlBasic.Expr.SearchedCase(
                 branches = listOf(branches0) + branches.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Struct].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Struct].
+         */
         fun struct(
                     fields: kotlin.collections.List<ExprPair> = emptyList(),
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Struct =
             PartiqlBasic.Expr.Struct(
                 fields = fields,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Struct].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Struct].
+         */
         fun struct(
                     vararg fields: ExprPair,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Struct =
             PartiqlBasic.Expr.Struct(
                 fields = fields.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Bag].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Bag].
+         */
         fun bag(
                     values: kotlin.collections.List<Expr> = emptyList(),
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Bag =
             PartiqlBasic.Expr.Bag(
                 values = values,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Bag].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Bag].
+         */
         fun bag(
                     vararg values: Expr,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Bag =
             PartiqlBasic.Expr.Bag(
                 values = values.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.List].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.List].
+         */
         fun list(
                     values: kotlin.collections.List<Expr> = emptyList(),
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.List =
             PartiqlBasic.Expr.List(
                 values = values,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.List].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.List].
+         */
         fun list(
                     vararg values: Expr,
                 metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.List =
             PartiqlBasic.Expr.List(
                 values = values.toList(),
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
         
         
         /**
-        * Creates an instance of [PartiqlBasic.Expr.Select].
-        */
+         * Creates an instance of [PartiqlBasic.Expr.Select].
+         */
         fun select(
                     setq: SetQuantifier? = null,
                     project: Projection,
@@ -944,7 +1011,8 @@ class PartiqlBasic private constructor() {
                 group = group,
                 having = having,
                 limit = limit,
-                metas = newMetaContainer() + metas)
+                metas = newMetaContainer() + metas
+            )
     }
     
     /** Default implementation of [Builder] that uses all default method implementations. */
