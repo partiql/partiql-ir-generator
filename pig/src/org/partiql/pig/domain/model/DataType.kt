@@ -137,7 +137,14 @@ sealed class DataType {
                 }
             }
 
-            override fun copyAsDifferent(): Tuple = this.copy(isDifferent = true)
+            override fun copyAsDifferent(): Tuple =
+                this.copy(
+                    isDifferent = true,
+                    // we have to remove all named elements here because it may have references to types that were
+                    // removed during domain permutation.
+                    namedElements = emptyList()
+                )
+
             override fun equals(other: Any?): Boolean {
                 if (this === other) return true
                 if (other !is Tuple) return false
@@ -168,7 +175,9 @@ sealed class DataType {
             override val isDifferent: Boolean = false
         ) : UserType() {
 
-            override fun copyAsDifferent(): UserType = this.copy(isDifferent = true)
+            // TODO: can same bug happen here? need to add test case to verify...
+
+            override fun copyAsDifferent(): UserType = this.copy(isDifferent = true, variants = emptyList())
             override fun equals(other: Any?): Boolean {
                 if (this === other) return true
                 if (other !is Sum) return false

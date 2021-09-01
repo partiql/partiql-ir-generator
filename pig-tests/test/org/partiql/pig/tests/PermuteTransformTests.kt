@@ -46,11 +46,15 @@ import org.partiql.pig.tests.generated.DomainAToDomainBVisitorTransform
 class PermuteTransformTests {
 
     class TestTransform : DomainAToDomainBVisitorTransform() {
+        override fun transformWillBeReplacedWithProduct(node: DomainA.WillBeReplacedWithProduct): DomainB.WillBeReplacedWithProduct {
+            // TODO: return here--add tests for this!
+            TODO("not implemented")
+        }
+
         override fun transformProductA(node: DomainA.ProductA): DomainB.ProductA =
             DomainB.build {
                 productA(node.one.value.toString())
             }
-
 
         override fun transformRecordA(node: DomainA.RecordA): DomainB.RecordA =
             DomainB.build {
@@ -61,7 +65,6 @@ class PermuteTransformTests {
             DomainB.build {
                 willBeUnchanged()
             }
-
 
         override fun transformSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced): DomainB.SumB =
             DomainB.build {
@@ -97,7 +100,7 @@ class PermuteTransformTests {
         override fun getParameters(): List<Any> = listOf(
             TestCase(
                 DomainA.build {
-                    productA(42)
+                    productA(42, productToRemove("dontcare"))
                 },
                 DomainB.build {
                     productA("42")
@@ -105,7 +108,7 @@ class PermuteTransformTests {
             ),
             TestCase(
                 DomainA.build {
-                    recordA(43)
+                    recordA(43, productToRemove("dontcare"))
                 },
                 DomainB.build {
                     recordA("43")
@@ -129,7 +132,7 @@ class PermuteTransformTests {
             ),
             TestCase(
                 DomainA.build {
-                    productA(42)
+                    productA(42, productToRemove("dontcare"))
                 },
                 DomainB.build {
                     productA("42")
@@ -137,7 +140,7 @@ class PermuteTransformTests {
             ),
             TestCase(
                 DomainA.build {
-                    productA(42)
+                    productA(42, productToRemove("dontcare"))
                 },
                 DomainB.build {
                     productA("42")

@@ -50,8 +50,8 @@ abstract class ${class_name} : DomainVisitorTransformBase() {
     // Tuple Types
     //////////////////////////////////////
     [#items as tuple]
-    // Tuple ${tuple.kotlinName}
     [#if !tuple.transformAbstract]
+    // Tuple ${tuple.kotlinName}
     open fun transform${tuple.kotlinName}(node: ${source_domain.kotlinName}.${tuple.kotlinName}): ${dest_domain_name}.${tuple.kotlinName} {
         [@transform_fun_body dest_domain_name tuple tuple.kotlinName source_domain.kotlinName == dest_domain_name/]
     }

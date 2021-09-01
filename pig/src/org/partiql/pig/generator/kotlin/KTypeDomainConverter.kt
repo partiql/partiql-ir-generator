@@ -30,7 +30,7 @@ internal fun TypeUniverse.convertToKTypeUniverse(): KTypeUniverse {
     val allTypeDomains: List<TypeDomain> = this.computeTypeDomains()
 
     val kotlinTypeDomains: List<KTypeDomain> = allTypeDomains.map { typeDomain ->
-        KTypeDomainConverter(typeDomain, isTransform = true).convert()
+        KTypeDomainConverter(typeDomain).convert()
     }
 
     val allKTransforms = this.statements.filterIsInstance<Transform>().map { dt ->
@@ -39,7 +39,7 @@ internal fun TypeUniverse.convertToKTypeUniverse(): KTypeUniverse {
         val destDomain = allTypeDomains.single { it.tag == dt.destinationDomainTag }
         val difference = sourceDomain.computeTransform(destDomain)
 
-        val converter = KTypeDomainConverter(difference, isTransform = true)
+        val converter = KTypeDomainConverter(difference)
         val sourceDomainDifference = converter.convert()
 
         KTransform(
@@ -51,8 +51,7 @@ internal fun TypeUniverse.convertToKTypeUniverse(): KTypeUniverse {
 }
 
 private class KTypeDomainConverter(
-    private val typeDomain: TypeDomain,
-    private val isTransform: Boolean
+    private val typeDomain: TypeDomain
 ) {
     private val defaultBaseClass get() = "${typeDomain.tag}Node"
 
@@ -62,7 +61,7 @@ private class KTypeDomainConverter(
 
         typeDomain.types.forEach {
             when(it) {
-                DataType.Int, DataType.Symbol, DataType.Ion -> { /* intentionally blank */ }
+                DataType.Int, DataType.Symbol, DataType.Ion, DataType.Bool -> { /* intentionally blank */ }
                 is DataType.UserType.Tuple ->
                     ktTuples.add(
                         it.toKProduct(
