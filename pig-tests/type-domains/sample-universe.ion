@@ -129,7 +129,7 @@
         (product product_to_remove whatever::symbol)
         (record record_to_remove (irrelevant int))
         (sum sum_to_remove (doesnt) (matter))
-        (sum will_be_replaced_with_product (whichever t::product_to_remove))
+        (sum will_be_replaced_with_product (will_be_replaced_with_product_variant t::product_to_remove))
 
         // 5 different data types tested here:
         // - product
@@ -152,7 +152,7 @@
              (will_be_removed)
              (will_be_replaced something::int))
 
-        // These are here to ensure they make it through the perumute process without modification
+        // These are here to ensure they make it through the permute process without modification
 
         (product unpermuted_product foo::symbol bar::int)
         (record unpermuted_record (foo symbol) (bar int))
@@ -178,7 +178,7 @@
         (include
             (product product_a one::symbol)
             (record record_a (one symbol))
-            (product will_be_replaced_with_product)
+            (product will_be_replaced_with_product foo::symbol)
 
             // These are new to test_permute_domain_b
             (product new_product foo::int)

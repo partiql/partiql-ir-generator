@@ -175,8 +175,6 @@ sealed class DataType {
             override val isDifferent: Boolean = false
         ) : UserType() {
 
-            // TODO: can same bug happen here? need to add test case to verify...
-
             override fun copyAsDifferent(): UserType = this.copy(isDifferent = true, variants = emptyList())
             override fun equals(other: Any?): Boolean {
                 if (this === other) return true

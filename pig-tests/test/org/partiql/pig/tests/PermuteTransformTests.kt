@@ -46,10 +46,14 @@ import org.partiql.pig.tests.generated.DomainAToDomainBVisitorTransform
 class PermuteTransformTests {
 
     class TestTransform : DomainAToDomainBVisitorTransform() {
-        override fun transformWillBeReplacedWithProduct(node: DomainA.WillBeReplacedWithProduct): DomainB.WillBeReplacedWithProduct {
-            // TODO: return here--add tests for this!
-            TODO("not implemented")
-        }
+        override fun transformWillBeReplacedWithProduct(node: DomainA.WillBeReplacedWithProduct): DomainB.WillBeReplacedWithProduct =
+            DomainB.build {
+                willBeReplacedWithProduct(
+                    when (node) {
+                        is DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant -> node.t.whatever.text
+                    }
+                )
+            }
 
         override fun transformProductA(node: DomainA.ProductA): DomainB.ProductA =
             DomainB.build {
@@ -144,6 +148,14 @@ class PermuteTransformTests {
                 },
                 DomainB.build {
                     productA("42")
+                }
+            ),
+            TestCase(
+                DomainA.build {
+                    willBeReplacedWithProductVariant(productToRemove("hullo, i love you"))
+                },
+                DomainB.build {
+                    willBeReplacedWithProduct("hullo, i love you")
                 }
             )
         )
