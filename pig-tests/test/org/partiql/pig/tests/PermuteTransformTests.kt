@@ -93,8 +93,9 @@ class PermuteTransformTests {
             is DomainA.ProductA -> tt.transformProductA(tc.input)
             is DomainA.RecordA -> tt.transformRecordA(tc.input)
             is DomainA.SumB -> tt.transformSumB(tc.input)
+            is DomainA.WillBeReplacedWithProduct -> tt.transformWillBeReplacedWithProduct(tc.input)
             // `else` is needed since DomainA.DomainANode is not currently a sealed class
-            else -> fail("unexpected type")
+            else -> fail("unexpected type: ${tc.input}")
         }
 
         assertEquals(tc.expected, actual)

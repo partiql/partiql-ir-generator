@@ -175,7 +175,13 @@ sealed class DataType {
             override val isDifferent: Boolean = false
         ) : UserType() {
 
-            override fun copyAsDifferent(): UserType = this.copy(isDifferent = true, variants = emptyList())
+            override fun copyAsDifferent(): UserType = this.copy(
+                isDifferent = true,
+                // we have to remove all variants here because it may have references to types that were
+                // removed during domain permutation.
+                variants = emptyList()
+            )
+
             override fun equals(other: Any?): Boolean {
                 if (this === other) return true
                 if (other !is Sum) return false
