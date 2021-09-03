@@ -129,6 +129,7 @@
         (product product_to_remove whatever::symbol)
         (record record_to_remove (irrelevant int))
         (sum sum_to_remove (doesnt) (matter))
+        (sum sum_to_replace_with_product (sum_to_replace_with_product_variant t::product_to_remove))
 
         // 5 different data types tested here:
         // - product
@@ -138,14 +139,32 @@
         // - records sum variant
 
         // these will be removed and replaced
-        (product product_a one::int)
-        (record record_a (one int))
-        (sum sum_a (who) (cares))
+        (product product_a
+            one::int
+            // This reference to a typed removed in the permuted domain must not cause pig to crash:
+            // https://github.com/partiql/partiql-ir-generator/issues/92
+            two::product_to_remove)
+
+        (record record_a
+            (one int)
+            // This reference to a typed removed in the permuted domain must not cause pig to crash:
+            // https://github.com/partiql/partiql-ir-generator/issues/92
+            (two product_to_remove))
+
+        (sum sum_a
+             (who)
+             // These references to a typed removed in the permuted domain must not cause pig to crash:
+             // https://github.com/partiql/partiql-ir-generator/issues/92
+             (cares a::product_to_remove)
+             (noti (a product_to_remove)))
 
         // the variants of this sum will be modified as indicated by their names
-        (sum sum_b (will_be_unchanged) (will_be_removed) (will_be_replaced something::int))
+        (sum sum_b
+             (will_be_unchanged)
+             (will_be_removed)
+             (will_be_replaced something::int))
 
-        // These are here to ensure they make it through the perumute process without modification
+        // These are here to ensure they make it through the permute process without modification
 
         (product unpermuted_product foo::symbol bar::int)
         (record unpermuted_record (foo symbol) (bar int))
@@ -166,15 +185,18 @@
             product_a
             record_a
             sum_a
+            sum_to_replace_with_product
         )
         (include
             (product product_a one::symbol)
             (record record_a (one symbol))
+            (product sum_to_replace_with_product foo::symbol)
 
             // These are new to test_permute_domain_b
             (product new_product foo::int)
             (record new_record (foo int))
             (sum new_sum (eek) (whatever))
+
         )
         (with sum_b
             (exclude will_be_removed will_be_replaced)
@@ -184,4 +206,3 @@
 ))
 
 (transform domain_a domain_b)
-

@@ -45,7 +45,7 @@ class TypeDomain(
     fun resolveTypeRef(typeRef: TypeRef) =
         /**
          * This is not call `invalidDomain` because we're assuming that the domain has been checked for errors
-         * If an [InvalidStateException] is thrown here a bug probably exists in [TypeDomain]'s error checking.
+         * If an [IllegalStateException] is thrown here a bug probably exists in [TypeDomain]'s error checking.
          */
         types.find { it.tag == typeRef.typeName }
             ?: error("${locationToString(typeRef.metas.location)}: Couldn't resolve type '${typeRef.typeName}'")
@@ -90,7 +90,7 @@ class TypeDomain(
                         srcType.copy(variants = newVariants)
                     }
                     // One type is sum and one is variant, mark as removed.
-                    else -> srcType.copyAsDifferent()
+                    else -> destType.copyAsDifferent()
                 }
             }
 

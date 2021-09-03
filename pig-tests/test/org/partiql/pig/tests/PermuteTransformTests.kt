@@ -46,11 +46,21 @@ import org.partiql.pig.tests.generated.DomainAToDomainBVisitorTransform
 class PermuteTransformTests {
 
     class TestTransform : DomainAToDomainBVisitorTransform() {
+        override fun transformSumToReplaceWithProduct(
+            node: DomainA.SumToReplaceWithProduct
+        ): DomainB.SumToReplaceWithProduct =
+            DomainB.build {
+                sumToReplaceWithProduct(
+                    when (node) {
+                        is DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant -> node.t.whatever.text
+                    }
+                )
+            }
+
         override fun transformProductA(node: DomainA.ProductA): DomainB.ProductA =
             DomainB.build {
                 productA(node.one.value.toString())
             }
-
 
         override fun transformRecordA(node: DomainA.RecordA): DomainB.RecordA =
             DomainB.build {
@@ -61,7 +71,6 @@ class PermuteTransformTests {
             DomainB.build {
                 willBeUnchanged()
             }
-
 
         override fun transformSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced): DomainB.SumB =
             DomainB.build {
@@ -86,8 +95,9 @@ class PermuteTransformTests {
             is DomainA.ProductA -> tt.transformProductA(tc.input)
             is DomainA.RecordA -> tt.transformRecordA(tc.input)
             is DomainA.SumB -> tt.transformSumB(tc.input)
+            is DomainA.SumToReplaceWithProduct -> tt.transformSumToReplaceWithProduct(tc.input)
             // `else` is needed since DomainA.DomainANode is not currently a sealed class
-            else -> fail("unexpected type")
+            else -> fail("unexpected type: ${tc.input}")
         }
 
         assertEquals(tc.expected, actual)
@@ -97,7 +107,7 @@ class PermuteTransformTests {
         override fun getParameters(): List<Any> = listOf(
             TestCase(
                 DomainA.build {
-                    productA(42)
+                    productA(42, productToRemove("dontcare"))
                 },
                 DomainB.build {
                     productA("42")
@@ -105,7 +115,7 @@ class PermuteTransformTests {
             ),
             TestCase(
                 DomainA.build {
-                    recordA(43)
+                    recordA(43, productToRemove("dontcare"))
                 },
                 DomainB.build {
                     recordA("43")
@@ -129,7 +139,7 @@ class PermuteTransformTests {
             ),
             TestCase(
                 DomainA.build {
-                    productA(42)
+                    productA(42, productToRemove("dontcare"))
                 },
                 DomainB.build {
                     productA("42")
@@ -137,10 +147,19 @@ class PermuteTransformTests {
             ),
             TestCase(
                 DomainA.build {
-                    productA(42)
+                    productA(42, productToRemove("dontcare"))
                 },
                 DomainB.build {
                     productA("42")
+                }
+            ),
+            TestCase(
+                DomainA.build {
+                    sumToReplaceWithProductVariant(productToRemove("hullo, i love you"))
+                },
+                DomainB.build {
+                    // remember that `sumToReplaceWithProduct` is now a product in `DomainB`.
+                    sumToReplaceWithProduct("hullo, i love you")
                 }
             )
         )
