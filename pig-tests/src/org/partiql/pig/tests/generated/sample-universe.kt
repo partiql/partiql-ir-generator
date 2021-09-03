@@ -7468,15 +7468,15 @@ class DomainA private constructor() {
             )
         
         
-        // Variants for Sum: WillBeReplacedWithProduct 
+        // Variants for Sum: SumToReplaceWithProduct 
         /**
-         * Creates an instance of [DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant].
+         * Creates an instance of [DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant].
          */
-        fun willBeReplacedWithProductVariant(
+        fun sumToReplaceWithProductVariant(
             t: ProductToRemove,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant =
-            DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant(
+        ): DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant =
+            DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant(
                 t = t,
                 metas = newMetaContainer() + metas
             )
@@ -8069,30 +8069,30 @@ class DomainA private constructor() {
         }
     }
     
-    sealed class WillBeReplacedWithProduct(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
-        override fun copy(metas: MetaContainer): WillBeReplacedWithProduct =
+    sealed class SumToReplaceWithProduct(override val metas: MetaContainer = emptyMetaContainer()) : DomainANode() {
+        override fun copy(metas: MetaContainer): SumToReplaceWithProduct =
             when (this) {
-                is WillBeReplacedWithProductVariant -> copy(metas = metas)
+                is SumToReplaceWithProductVariant -> copy(metas = metas)
             }
     
-        class WillBeReplacedWithProductVariant(
+        class SumToReplaceWithProductVariant(
             val t: ProductToRemove,
             override val metas: MetaContainer = emptyMetaContainer()
-        ): WillBeReplacedWithProduct() {
+        ): SumToReplaceWithProduct() {
         
-            override fun copy(metas: MetaContainer): WillBeReplacedWithProductVariant =
-                WillBeReplacedWithProductVariant(
+            override fun copy(metas: MetaContainer): SumToReplaceWithProductVariant =
+                SumToReplaceWithProductVariant(
                     t = t,
                     metas = metas)
         
-            override fun withMeta(metaKey: String, metaValue: Any): WillBeReplacedWithProductVariant =
-                WillBeReplacedWithProductVariant(
+            override fun withMeta(metaKey: String, metaValue: Any): SumToReplaceWithProductVariant =
+                SumToReplaceWithProductVariant(
                     t = t,
                     metas = metas + metaContainerOf(metaKey to metaValue))
         
             override fun toIonElement(): SexpElement {
                 val elements = ionSexpOf(
-                    ionSymbol("will_be_replaced_with_product_variant"),
+                    ionSymbol("sum_to_replace_with_product_variant"),
                     t.toIonElement(),
                     metas = metas)
                 return elements
@@ -8102,16 +8102,16 @@ class DomainA private constructor() {
                 t: ProductToRemove = this.t,
                 metas: MetaContainer = this.metas
             ) =
-                WillBeReplacedWithProductVariant(
+                SumToReplaceWithProductVariant(
                     t,
                     metas)
         
             override fun equals(other: Any?): Boolean {
                 if (other == null) return false
                 if (this === other) return true
-                if (other.javaClass != WillBeReplacedWithProductVariant::class.java) return false
+                if (other.javaClass != SumToReplaceWithProductVariant::class.java) return false
         
-                other as WillBeReplacedWithProductVariant
+                other as SumToReplaceWithProductVariant
                 if (t != other.t) return false
                 return true
             }
@@ -8124,13 +8124,13 @@ class DomainA private constructor() {
             override fun hashCode(): Int = myHashCode
         }
     
-        /** Converts instances of [DomainA.WillBeReplacedWithProduct] to any [T]. */
+        /** Converts instances of [DomainA.SumToReplaceWithProduct] to any [T]. */
         interface Converter<T> {
-            fun convert(node: DomainA.WillBeReplacedWithProduct): T = when(node) {
-                is DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant -> convertWillBeReplacedWithProductVariant(node)
+            fun convert(node: DomainA.SumToReplaceWithProduct): T = when(node) {
+                is DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant -> convertSumToReplaceWithProductVariant(node)
             }
     
-            fun convertWillBeReplacedWithProductVariant(node: DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant): T
+            fun convertSumToReplaceWithProductVariant(node: DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant): T
         }
     }
     
@@ -8633,12 +8633,12 @@ class DomainA private constructor() {
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
-                // Variants for Sum Type 'WillBeReplacedWithProduct'
+                // Variants for Sum Type 'SumToReplaceWithProduct'
                 //////////////////////////////////////
-                "will_be_replaced_with_product_variant" -> {
+                "sum_to_replace_with_product_variant" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
                     val t = sexp.getRequired(0).transformExpect<ProductToRemove>()
-                    DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant(
+                    DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant(
                         t,
                         metas = sexp.metas)
                 }
@@ -8735,10 +8735,10 @@ class DomainA private constructor() {
         protected open fun visitSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt) { }
         protected open fun visitSumToRemoveMatter(node: DomainA.SumToRemove.Matter) { }
         //////////////////////////////////////
-        // Sum Type: WillBeReplacedWithProduct
+        // Sum Type: SumToReplaceWithProduct
         //////////////////////////////////////
-        protected open fun visitWillBeReplacedWithProduct(node: DomainA.WillBeReplacedWithProduct) { }
-        protected open fun visitWillBeReplacedWithProductWillBeReplacedWithProductVariant(node: DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant) { }
+        protected open fun visitSumToReplaceWithProduct(node: DomainA.SumToReplaceWithProduct) { }
+        protected open fun visitSumToReplaceWithProductSumToReplaceWithProductVariant(node: DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant) { }
         //////////////////////////////////////
         // Sum Type: SumA
         //////////////////////////////////////
@@ -8829,17 +8829,17 @@ class DomainA private constructor() {
         }
     
         //////////////////////////////////////
-        // Sum Type: WillBeReplacedWithProduct
+        // Sum Type: SumToReplaceWithProduct
         //////////////////////////////////////
-        open fun walkWillBeReplacedWithProduct(node: DomainA.WillBeReplacedWithProduct) {
-            visitWillBeReplacedWithProduct(node)
+        open fun walkSumToReplaceWithProduct(node: DomainA.SumToReplaceWithProduct) {
+            visitSumToReplaceWithProduct(node)
             when(node) {
-                is DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant -> walkWillBeReplacedWithProductWillBeReplacedWithProductVariant(node)
+                is DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant -> walkSumToReplaceWithProductSumToReplaceWithProductVariant(node)
             }
         }
     
-        open fun walkWillBeReplacedWithProductWillBeReplacedWithProductVariant(node: DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant) {
-            visitWillBeReplacedWithProductWillBeReplacedWithProductVariant(node)
+        open fun walkSumToReplaceWithProductSumToReplaceWithProductVariant(node: DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant) {
+            visitSumToReplaceWithProductSumToReplaceWithProductVariant(node)
             walkProductToRemove(node.t)
             walkMetas(node.metas)
         }
@@ -8950,10 +8950,10 @@ class DomainA private constructor() {
         open protected fun visitSumToRemoveDoesnt(node: DomainA.SumToRemove.Doesnt, accumulator: T): T = accumulator
         open protected fun visitSumToRemoveMatter(node: DomainA.SumToRemove.Matter, accumulator: T): T = accumulator
         //////////////////////////////////////
-        // Sum Type: WillBeReplacedWithProduct
+        // Sum Type: SumToReplaceWithProduct
         //////////////////////////////////////
-        open protected fun visitWillBeReplacedWithProduct(node: DomainA.WillBeReplacedWithProduct, accumulator: T): T = accumulator
-        open protected fun visitWillBeReplacedWithProductWillBeReplacedWithProductVariant(node: DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant, accumulator: T): T = accumulator
+        open protected fun visitSumToReplaceWithProduct(node: DomainA.SumToReplaceWithProduct, accumulator: T): T = accumulator
+        open protected fun visitSumToReplaceWithProductSumToReplaceWithProductVariant(node: DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant, accumulator: T): T = accumulator
         //////////////////////////////////////
         // Sum Type: SumA
         //////////////////////////////////////
@@ -9060,18 +9060,18 @@ class DomainA private constructor() {
         }
     
         //////////////////////////////////////
-        // Sum Type: WillBeReplacedWithProduct
+        // Sum Type: SumToReplaceWithProduct
         //////////////////////////////////////
-        open fun walkWillBeReplacedWithProduct(node: DomainA.WillBeReplacedWithProduct, accumulator: T): T {
-            val current = visitWillBeReplacedWithProduct(node, accumulator)
+        open fun walkSumToReplaceWithProduct(node: DomainA.SumToReplaceWithProduct, accumulator: T): T {
+            val current = visitSumToReplaceWithProduct(node, accumulator)
             return when(node) {
-                is DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant -> walkWillBeReplacedWithProductWillBeReplacedWithProductVariant(node, current)
+                is DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant -> walkSumToReplaceWithProductSumToReplaceWithProductVariant(node, current)
             }
         }
     
-        open fun walkWillBeReplacedWithProductWillBeReplacedWithProductVariant(node: DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant, accumulator: T): T {
+        open fun walkSumToReplaceWithProductSumToReplaceWithProductVariant(node: DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant, accumulator: T): T {
             var current = accumulator
-            current = visitWillBeReplacedWithProductWillBeReplacedWithProductVariant(node, current)
+            current = visitSumToReplaceWithProductSumToReplaceWithProductVariant(node, current)
             current = walkProductToRemove(node.t, current)
             current = walkMetas(node.metas, current)
             return current
@@ -9367,21 +9367,21 @@ class DomainA private constructor() {
             transformMetas(node.metas)
     
         //////////////////////////////////////
-        // Sum Type: WillBeReplacedWithProduct
+        // Sum Type: SumToReplaceWithProduct
         //////////////////////////////////////
-        open fun transformWillBeReplacedWithProduct(node: DomainA.WillBeReplacedWithProduct): DomainA.WillBeReplacedWithProduct =
+        open fun transformSumToReplaceWithProduct(node: DomainA.SumToReplaceWithProduct): DomainA.SumToReplaceWithProduct =
             when(node) {
-                is DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant -> transformWillBeReplacedWithProductWillBeReplacedWithProductVariant(node)
+                is DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant -> transformSumToReplaceWithProductSumToReplaceWithProductVariant(node)
             }
-        // Variant WillBeReplacedWithProductWillBeReplacedWithProductVariant
-        open fun transformWillBeReplacedWithProductWillBeReplacedWithProductVariant(node: DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant): DomainA.WillBeReplacedWithProduct  {
-            val new_t = transformWillBeReplacedWithProductWillBeReplacedWithProductVariant_t(node)
-            val new_metas = transformWillBeReplacedWithProductWillBeReplacedWithProductVariant_metas(node)
+        // Variant SumToReplaceWithProductSumToReplaceWithProductVariant
+        open fun transformSumToReplaceWithProductSumToReplaceWithProductVariant(node: DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant): DomainA.SumToReplaceWithProduct  {
+            val new_t = transformSumToReplaceWithProductSumToReplaceWithProductVariant_t(node)
+            val new_metas = transformSumToReplaceWithProductSumToReplaceWithProductVariant_metas(node)
             return if (
                 node.t !== new_t ||
                 node.metas !== new_metas
             ) {
-                DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant(
+                DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant(
                     t = new_t,
                     metas = new_metas
                 )
@@ -9389,9 +9389,9 @@ class DomainA private constructor() {
                 node
             }
         }
-        open fun transformWillBeReplacedWithProductWillBeReplacedWithProductVariant_t(node: DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant) =
+        open fun transformSumToReplaceWithProductSumToReplaceWithProductVariant_t(node: DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant) =
             transformProductToRemove(node.t)
-        open fun transformWillBeReplacedWithProductWillBeReplacedWithProductVariant_metas(node: DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant) =
+        open fun transformSumToReplaceWithProductSumToReplaceWithProductVariant_metas(node: DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant) =
             transformMetas(node.metas)
     
         //////////////////////////////////////
@@ -9734,29 +9734,29 @@ class DomainB private constructor() {
         
         
         /**
-         * Creates an instance of [DomainB.WillBeReplacedWithProduct].
+         * Creates an instance of [DomainB.SumToReplaceWithProduct].
          */
-        fun willBeReplacedWithProduct(
+        fun sumToReplaceWithProduct(
             foo: String,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.WillBeReplacedWithProduct =
-            DomainB.WillBeReplacedWithProduct(
+        ): DomainB.SumToReplaceWithProduct =
+            DomainB.SumToReplaceWithProduct(
                 foo = foo.asPrimitive(),
                 metas = newMetaContainer() + metas
             )
         
         /**
-         * Creates an instance of [DomainB.WillBeReplacedWithProduct].
+         * Creates an instance of [DomainB.SumToReplaceWithProduct].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
-        fun willBeReplacedWithProduct_(
+        fun sumToReplaceWithProduct_(
             foo: org.partiql.pig.runtime.SymbolPrimitive,
             metas: MetaContainer = emptyMetaContainer()
-        ): DomainB.WillBeReplacedWithProduct =
-            DomainB.WillBeReplacedWithProduct(
+        ): DomainB.SumToReplaceWithProduct =
+            DomainB.SumToReplaceWithProduct(
                 foo = foo,
                 metas = newMetaContainer() + metas
             )
@@ -10180,24 +10180,24 @@ class DomainB private constructor() {
         override fun hashCode(): Int = myHashCode
     }
     
-    class WillBeReplacedWithProduct(
+    class SumToReplaceWithProduct(
         val foo: org.partiql.pig.runtime.SymbolPrimitive,
         override val metas: MetaContainer = emptyMetaContainer()
     ): DomainBNode() {
     
-        override fun copy(metas: MetaContainer): WillBeReplacedWithProduct =
-            WillBeReplacedWithProduct(
+        override fun copy(metas: MetaContainer): SumToReplaceWithProduct =
+            SumToReplaceWithProduct(
                 foo = foo,
                 metas = metas)
     
-        override fun withMeta(metaKey: String, metaValue: Any): WillBeReplacedWithProduct =
-            WillBeReplacedWithProduct(
+        override fun withMeta(metaKey: String, metaValue: Any): SumToReplaceWithProduct =
+            SumToReplaceWithProduct(
                 foo = foo,
                 metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
-                ionSymbol("will_be_replaced_with_product"),
+                ionSymbol("sum_to_replace_with_product"),
                 foo.toIonElement(),
                 metas = metas)
             return elements
@@ -10207,16 +10207,16 @@ class DomainB private constructor() {
             foo: org.partiql.pig.runtime.SymbolPrimitive = this.foo,
             metas: MetaContainer = this.metas
         ) =
-            WillBeReplacedWithProduct(
+            SumToReplaceWithProduct(
                 foo,
                 metas)
     
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
-            if (other.javaClass != WillBeReplacedWithProduct::class.java) return false
+            if (other.javaClass != SumToReplaceWithProduct::class.java) return false
     
-            other as WillBeReplacedWithProduct
+            other as SumToReplaceWithProduct
             if (foo != other.foo) return false
             return true
         }
@@ -10694,10 +10694,10 @@ class DomainB private constructor() {
             
                     RecordA(one, metas = sexp.metas)
                 }
-                "will_be_replaced_with_product" -> {
+                "sum_to_replace_with_product" -> {
                     sexp.requireArityOrMalformed(IntRange(1, 1))
                     val foo = sexp.getRequired(0).toSymbolPrimitive()
-                    DomainB.WillBeReplacedWithProduct(
+                    DomainB.SumToReplaceWithProduct(
                         foo,
                         metas = sexp.metas)
                 }
@@ -10785,7 +10785,7 @@ class DomainB private constructor() {
         open fun visitUnpermutedRecord(node: DomainB.UnpermutedRecord) { }
         open fun visitProductA(node: DomainB.ProductA) { }
         open fun visitRecordA(node: DomainB.RecordA) { }
-        open fun visitWillBeReplacedWithProduct(node: DomainB.WillBeReplacedWithProduct) { }
+        open fun visitSumToReplaceWithProduct(node: DomainB.SumToReplaceWithProduct) { }
         open fun visitNewProduct(node: DomainB.NewProduct) { }
         open fun visitNewRecord(node: DomainB.NewRecord) { }
         //////////////////////////////////////
@@ -10840,8 +10840,8 @@ class DomainB private constructor() {
             walkMetas(node.metas)
         }
     
-        open fun walkWillBeReplacedWithProduct(node: DomainB.WillBeReplacedWithProduct) {
-            visitWillBeReplacedWithProduct(node)
+        open fun walkSumToReplaceWithProduct(node: DomainB.SumToReplaceWithProduct) {
+            visitSumToReplaceWithProduct(node)
             walkSymbolPrimitive(node.foo)
             walkMetas(node.metas)
         }
@@ -10941,7 +10941,7 @@ class DomainB private constructor() {
         open protected fun visitUnpermutedRecord(node: DomainB.UnpermutedRecord, accumulator: T): T = accumulator
         open protected fun visitProductA(node: DomainB.ProductA, accumulator: T): T = accumulator
         open protected fun visitRecordA(node: DomainB.RecordA, accumulator: T): T = accumulator
-        open protected fun visitWillBeReplacedWithProduct(node: DomainB.WillBeReplacedWithProduct, accumulator: T): T = accumulator
+        open protected fun visitSumToReplaceWithProduct(node: DomainB.SumToReplaceWithProduct, accumulator: T): T = accumulator
         open protected fun visitNewProduct(node: DomainB.NewProduct, accumulator: T): T = accumulator
         open protected fun visitNewRecord(node: DomainB.NewRecord, accumulator: T): T = accumulator
         //////////////////////////////////////
@@ -11004,9 +11004,9 @@ class DomainB private constructor() {
             return current
         }
     
-        open fun walkWillBeReplacedWithProduct(node: DomainB.WillBeReplacedWithProduct, accumulator: T): T {
+        open fun walkSumToReplaceWithProduct(node: DomainB.SumToReplaceWithProduct, accumulator: T): T {
             var current = accumulator
-            current = visitWillBeReplacedWithProduct(node, current)
+            current = visitSumToReplaceWithProduct(node, current)
             current = walkSymbolPrimitive(node.foo, current)
             current = walkMetas(node.metas, current)
             return current
@@ -11207,15 +11207,15 @@ class DomainB private constructor() {
         open fun transformRecordA_metas(node: DomainB.RecordA) =
             transformMetas(node.metas)
     
-        // Tuple WillBeReplacedWithProduct
-        open fun transformWillBeReplacedWithProduct(node: DomainB.WillBeReplacedWithProduct): DomainB.WillBeReplacedWithProduct {
-            val new_foo = transformWillBeReplacedWithProduct_foo(node)
-            val new_metas = transformWillBeReplacedWithProduct_metas(node)
+        // Tuple SumToReplaceWithProduct
+        open fun transformSumToReplaceWithProduct(node: DomainB.SumToReplaceWithProduct): DomainB.SumToReplaceWithProduct {
+            val new_foo = transformSumToReplaceWithProduct_foo(node)
+            val new_metas = transformSumToReplaceWithProduct_metas(node)
             return if (
                 node.foo !== new_foo ||
                 node.metas !== new_metas
             ) {
-                DomainB.WillBeReplacedWithProduct(
+                DomainB.SumToReplaceWithProduct(
                     foo = new_foo,
                     metas = new_metas
                 )
@@ -11223,9 +11223,9 @@ class DomainB private constructor() {
                 node
             }
         }
-        open fun transformWillBeReplacedWithProduct_foo(node: DomainB.WillBeReplacedWithProduct) =
+        open fun transformSumToReplaceWithProduct_foo(node: DomainB.SumToReplaceWithProduct) =
             transformSymbolPrimitive(node.foo)
-        open fun transformWillBeReplacedWithProduct_metas(node: DomainB.WillBeReplacedWithProduct) =
+        open fun transformSumToReplaceWithProduct_metas(node: DomainB.SumToReplaceWithProduct) =
             transformMetas(node.metas)
     
         // Tuple NewProduct
@@ -11428,7 +11428,7 @@ abstract class DomainAToDomainBVisitorTransform : DomainVisitorTransformBase() {
     //////////////////////////////////////
     // Tuple Types
     //////////////////////////////////////
-    abstract fun transformWillBeReplacedWithProduct(node:DomainA.WillBeReplacedWithProduct): DomainB.WillBeReplacedWithProduct
+    abstract fun transformSumToReplaceWithProduct(node:DomainA.SumToReplaceWithProduct): DomainB.SumToReplaceWithProduct
     abstract fun transformProductA(node:DomainA.ProductA): DomainB.ProductA
     abstract fun transformRecordA(node:DomainA.RecordA): DomainB.RecordA
     // Tuple UnpermutedProduct

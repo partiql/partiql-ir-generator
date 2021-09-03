@@ -46,11 +46,13 @@ import org.partiql.pig.tests.generated.DomainAToDomainBVisitorTransform
 class PermuteTransformTests {
 
     class TestTransform : DomainAToDomainBVisitorTransform() {
-        override fun transformWillBeReplacedWithProduct(node: DomainA.WillBeReplacedWithProduct): DomainB.WillBeReplacedWithProduct =
+        override fun transformSumToReplaceWithProduct(
+            node: DomainA.SumToReplaceWithProduct
+        ): DomainB.SumToReplaceWithProduct =
             DomainB.build {
-                willBeReplacedWithProduct(
+                sumToReplaceWithProduct(
                     when (node) {
-                        is DomainA.WillBeReplacedWithProduct.WillBeReplacedWithProductVariant -> node.t.whatever.text
+                        is DomainA.SumToReplaceWithProduct.SumToReplaceWithProductVariant -> node.t.whatever.text
                     }
                 )
             }
@@ -93,7 +95,7 @@ class PermuteTransformTests {
             is DomainA.ProductA -> tt.transformProductA(tc.input)
             is DomainA.RecordA -> tt.transformRecordA(tc.input)
             is DomainA.SumB -> tt.transformSumB(tc.input)
-            is DomainA.WillBeReplacedWithProduct -> tt.transformWillBeReplacedWithProduct(tc.input)
+            is DomainA.SumToReplaceWithProduct -> tt.transformSumToReplaceWithProduct(tc.input)
             // `else` is needed since DomainA.DomainANode is not currently a sealed class
             else -> fail("unexpected type: ${tc.input}")
         }
@@ -153,10 +155,11 @@ class PermuteTransformTests {
             ),
             TestCase(
                 DomainA.build {
-                    willBeReplacedWithProductVariant(productToRemove("hullo, i love you"))
+                    sumToReplaceWithProductVariant(productToRemove("hullo, i love you"))
                 },
                 DomainB.build {
-                    willBeReplacedWithProduct("hullo, i love you")
+                    // remember that `sumToReplaceWithProduct` is now a product in `DomainB`.
+                    sumToReplaceWithProduct("hullo, i love you")
                 }
             )
         )
