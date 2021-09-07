@@ -1137,7 +1137,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1194,7 +1194,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1251,7 +1251,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1308,7 +1308,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1365,7 +1365,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1422,7 +1422,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1479,7 +1479,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1536,7 +1536,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1593,7 +1593,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1650,7 +1650,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1707,7 +1707,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1764,7 +1764,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1821,7 +1821,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1878,7 +1878,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1935,7 +1935,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1992,7 +1992,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -2049,7 +2049,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -2099,7 +2099,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = ints.hashCode()
             hc
         }
@@ -2148,7 +2148,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = ints.hashCode()
             hc
         }
@@ -2204,7 +2204,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = name.hashCode()
             hc = 31 * hc + ints.hashCode()
             hc
@@ -2254,7 +2254,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = value.hashCode()
             hc
         }
@@ -2310,7 +2310,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -2375,7 +2375,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = someField.hashCode()
             hc = 31 * hc + anotherField.hashCode()
             hc = 31 * hc + optionalField.hashCode()
@@ -2433,7 +2433,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = value.hashCode()
             hc = 31 * hc + dlr.hashCode()
             hc
@@ -2497,7 +2497,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = a.hashCode()
             hc = 31 * hc + b.hashCode()
             hc = 31 * hc + c.hashCode()
@@ -2555,7 +2555,7 @@ class TestDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -2704,7 +2704,7 @@ class TestDomain private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = value.hashCode()
                 hc = 31 * hc + dlr.hashCode()
                 hc
@@ -2772,7 +2772,7 @@ class TestDomain private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = a.hashCode()
                 hc
             }
@@ -2828,7 +2828,7 @@ class TestDomain private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = a.hashCode()
                 hc = 31 * hc + b.hashCode()
                 hc
@@ -2892,7 +2892,7 @@ class TestDomain private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = a.hashCode()
                 hc = 31 * hc + b.hashCode()
                 hc = 31 * hc + c.hashCode()
@@ -2996,7 +2996,7 @@ class TestDomain private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = id.hashCode()
                 hc
             }
@@ -3074,7 +3074,7 @@ class TestDomain private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = firstName.hashCode()
                 hc = 31 * hc + middleNames.hashCode()
                 hc = 31 * hc + lastName.hashCode()
@@ -5790,7 +5790,7 @@ class MultiWordDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = dField.hashCode()
             hc
         }
@@ -5846,7 +5846,7 @@ class MultiWordDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = dField.hashCode()
             hc = 31 * hc + eField.hashCode()
             hc
@@ -5896,7 +5896,7 @@ class MultiWordDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = dField.hashCode()
             hc
         }
@@ -5945,7 +5945,7 @@ class MultiWordDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = dField.hashCode()
             hc
         }
@@ -6001,7 +6001,7 @@ class MultiWordDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = bField.hashCode()
             hc = 31 * hc + cField.hashCode()
             hc
@@ -6065,7 +6065,7 @@ class MultiWordDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = bField.hashCode()
             hc = 31 * hc + cField.hashCode()
             hc = 31 * hc + dField.hashCode()
@@ -6137,7 +6137,7 @@ class MultiWordDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = bField.hashCode()
             hc = 31 * hc + cField.hashCode()
             hc = 31 * hc + dField.hashCode()
@@ -6203,7 +6203,7 @@ class MultiWordDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = bField.hashCode()
             hc = 31 * hc + cField.hashCode()
             hc = 31 * hc + dField.hashCode()
@@ -6268,7 +6268,7 @@ class MultiWordDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = bField.hashCode()
             hc = 31 * hc + cField.hashCode()
             hc = 31 * hc + dField.hashCode()
@@ -6327,7 +6327,7 @@ class MultiWordDomain private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = aField.hashCode()
             hc = 31 * hc + bbbField.hashCode()
             hc
@@ -6389,7 +6389,7 @@ class MultiWordDomain private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = uField.hashCode()
                 hc
             }
@@ -6438,7 +6438,7 @@ class MultiWordDomain private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = vField.hashCode()
                 hc
             }
@@ -7695,7 +7695,7 @@ class DomainA private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = whatever.hashCode()
             hc
         }
@@ -7745,7 +7745,7 @@ class DomainA private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = irrelevant.hashCode()
             hc
         }
@@ -7801,7 +7801,7 @@ class DomainA private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = one.hashCode()
             hc = 31 * hc + two.hashCode()
             hc
@@ -7859,7 +7859,7 @@ class DomainA private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = one.hashCode()
             hc = 31 * hc + two.hashCode()
             hc
@@ -7916,7 +7916,7 @@ class DomainA private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = foo.hashCode()
             hc = 31 * hc + bar.hashCode()
             hc
@@ -7974,7 +7974,7 @@ class DomainA private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = foo.hashCode()
             hc = 31 * hc + bar.hashCode()
             hc
@@ -8116,7 +8116,7 @@ class DomainA private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = t.hashCode()
                 hc
             }
@@ -8214,7 +8214,7 @@ class DomainA private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = a.hashCode()
                 hc
             }
@@ -8264,7 +8264,7 @@ class DomainA private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = a.hashCode()
                 hc
             }
@@ -8397,7 +8397,7 @@ class DomainA private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = something.hashCode()
                 hc
             }
@@ -8474,7 +8474,7 @@ class DomainA private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = foo.hashCode()
                 hc = 31 * hc + bar.hashCode()
                 hc
@@ -8532,7 +8532,7 @@ class DomainA private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = foo.hashCode()
                 hc = 31 * hc + bar.hashCode()
                 hc
@@ -10014,7 +10014,7 @@ class DomainB private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = foo.hashCode()
             hc = 31 * hc + bar.hashCode()
             hc
@@ -10072,7 +10072,7 @@ class DomainB private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = foo.hashCode()
             hc = 31 * hc + bar.hashCode()
             hc
@@ -10122,7 +10122,7 @@ class DomainB private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = one.hashCode()
             hc
         }
@@ -10172,7 +10172,7 @@ class DomainB private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = one.hashCode()
             hc
         }
@@ -10221,7 +10221,7 @@ class DomainB private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = foo.hashCode()
             hc
         }
@@ -10270,7 +10270,7 @@ class DomainB private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = foo.hashCode()
             hc
         }
@@ -10320,7 +10320,7 @@ class DomainB private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = foo.hashCode()
             hc
         }
@@ -10388,7 +10388,7 @@ class DomainB private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = foo.hashCode()
                 hc = 31 * hc + bar.hashCode()
                 hc
@@ -10446,7 +10446,7 @@ class DomainB private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = foo.hashCode()
                 hc = 31 * hc + bar.hashCode()
                 hc
@@ -10546,7 +10546,7 @@ class DomainB private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = something.hashCode()
                 hc
             }

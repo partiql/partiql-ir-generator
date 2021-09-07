@@ -100,7 +100,7 @@ class ${t.kotlinName}(
     }
 
     [#list t.properties]
-    private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+    private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
         [#items as p]
         [#if p?index == 0]var hc = [#else]hc = 31 * hc + [/#if]${p.kotlinName}.hashCode()
         [/#items]
