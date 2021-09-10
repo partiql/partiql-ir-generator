@@ -495,7 +495,7 @@ class ToyLang private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = value.hashCode()
                 hc
             }
@@ -544,7 +544,7 @@ class ToyLang private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = name.hashCode()
                 hc
             }
@@ -593,7 +593,7 @@ class ToyLang private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = expr.hashCode()
                 hc
             }
@@ -649,7 +649,7 @@ class ToyLang private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = op.hashCode()
                 hc = 31 * hc + operands.hashCode()
                 hc
@@ -713,7 +713,7 @@ class ToyLang private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = name.hashCode()
                 hc = 31 * hc + value.hashCode()
                 hc = 31 * hc + body.hashCode()
@@ -771,7 +771,7 @@ class ToyLang private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = varName.hashCode()
                 hc = 31 * hc + body.hashCode()
                 hc
@@ -1914,7 +1914,7 @@ class ToyLangIndexed private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = value.hashCode()
                 hc
             }
@@ -1963,7 +1963,7 @@ class ToyLangIndexed private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = expr.hashCode()
                 hc
             }
@@ -2019,7 +2019,7 @@ class ToyLangIndexed private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = op.hashCode()
                 hc = 31 * hc + operands.hashCode()
                 hc
@@ -2076,7 +2076,7 @@ class ToyLangIndexed private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = varName.hashCode()
                 hc = 31 * hc + body.hashCode()
                 hc
@@ -2133,7 +2133,7 @@ class ToyLangIndexed private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = name.hashCode()
                 hc = 31 * hc + index.hashCode()
                 hc
@@ -2204,7 +2204,7 @@ class ToyLangIndexed private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = name.hashCode()
                 hc = 31 * hc + index.hashCode()
                 hc = 31 * hc + value.hashCode()

@@ -1078,7 +1078,7 @@ class PartiqlBasic private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
             hc
@@ -1135,7 +1135,7 @@ class PartiqlBasic private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = value.hashCode()
             hc = 31 * hc + asAlias.hashCode()
             hc
@@ -1185,7 +1185,7 @@ class PartiqlBasic private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = items.hashCode()
             hc
         }
@@ -1241,7 +1241,7 @@ class PartiqlBasic private constructor() {
             return true
         }
     
-        private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = items.hashCode()
             hc = 31 * hc + groupAsAlias.hashCode()
             hc
@@ -1303,7 +1303,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = items.hashCode()
                 hc
             }
@@ -1352,7 +1352,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = value.hashCode()
                 hc
             }
@@ -1458,7 +1458,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = value.hashCode()
                 hc = 31 * hc + asAlias.hashCode()
                 hc
@@ -1697,7 +1697,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = expr.hashCode()
                 hc = 31 * hc + asAlias.hashCode()
                 hc = 31 * hc + atAlias.hashCode()
@@ -1770,7 +1770,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = type.hashCode()
                 hc = 31 * hc + left.hashCode()
                 hc = 31 * hc + right.hashCode()
@@ -2085,7 +2085,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = expr.hashCode()
                 hc
             }
@@ -2236,7 +2236,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = value.hashCode()
                 hc
             }
@@ -2299,7 +2299,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = name.hashCode()
                 hc = 31 * hc + case.hashCode()
                 hc = 31 * hc + scopeQualifier.hashCode()
@@ -2350,7 +2350,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = index.hashCode()
                 hc
             }
@@ -2399,7 +2399,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = expr.hashCode()
                 hc
             }
@@ -2448,7 +2448,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = operands.hashCode()
                 hc
             }
@@ -2497,7 +2497,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = operands.hashCode()
                 hc
             }
@@ -2546,7 +2546,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = operands.hashCode()
                 hc
             }
@@ -2595,7 +2595,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = operands.hashCode()
                 hc
             }
@@ -2644,7 +2644,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = operands.hashCode()
                 hc
             }
@@ -2693,7 +2693,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = operands.hashCode()
                 hc
             }
@@ -2756,7 +2756,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = left.hashCode()
                 hc = 31 * hc + right.hashCode()
                 hc = 31 * hc + escape.hashCode()
@@ -2821,7 +2821,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = value.hashCode()
                 hc = 31 * hc + from.hashCode()
                 hc = 31 * hc + to.hashCode()
@@ -2879,7 +2879,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = root.hashCode()
                 hc = 31 * hc + elements.hashCode()
                 hc
@@ -2936,7 +2936,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = name.hashCode()
                 hc = 31 * hc + args.hashCode()
                 hc
@@ -3000,7 +3000,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = name.hashCode()
                 hc = 31 * hc + setQuantifier.hashCode()
                 hc = 31 * hc + arg.hashCode()
@@ -3058,7 +3058,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = value.hashCode()
                 hc = 31 * hc + branches.hashCode()
                 hc
@@ -3108,7 +3108,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = branches.hashCode()
                 hc
             }
@@ -3157,7 +3157,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = fields.hashCode()
                 hc
             }
@@ -3206,7 +3206,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = values.hashCode()
                 hc
             }
@@ -3255,7 +3255,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = values.hashCode()
                 hc
             }
@@ -3347,7 +3347,7 @@ class PartiqlBasic private constructor() {
                 return true
             }
         
-            private val myHashCode by lazy(LazyThreadSafetyMode.NONE) {
+            private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
                 var hc = setq.hashCode()
                 hc = 31 * hc + project.hashCode()
                 hc = 31 * hc + from.hashCode()
