@@ -2,9 +2,24 @@
 
 # The PartiQL I.R. Generator
 
-The PariQL I.R. Generator (PIG) is a [nanopass](http://nanopass.org/) inspired type domain code generator currently 
-targeting Kotlin.
+PIG a compiler framework, domain modeling tool and code generator for tree data structures such as ASTs (Abstract Syntax Tree), database logical plans, database physical plans, and other intermediate representations.  Using PIG, the developer concisely defines the structure of a tree by specifying named constraints for every possible node and its attribues.  Every constraint is known as a "data type", and collections of data types are known as a "type domain".
 
+## Permuted Domains
+
+Query engines and other kinds of compilers often have numerous such type domains, starting with an AST.  Query engines for example typically parse a query, producing an AST, and then apply multiple passes over the AST to transform it to a logical plan, then a physical plan, and possibly other intermediate representations.  Compiler passes of this sort are large, complex, and difficult to maintain.  PIG's "permuted domains" feature increases the maintainability of such compiler passes by allowing new type domains to be created by specifying only the *differences* to another type domain.  This avoids having to duplicate the data type definitions that are common to both type domains, allowing more numerous, smaller, less complex and more maintainable compiler passes.
+
+PIG's permuted domain feature has been heavily inspired by the [Nanopass Framework](https://nanopass.org/).
+
+## Code Generation
+
+PIG generates the following components in Kotlin, but may generate code for other languages in the future: 
+
+- Immutable, strongly typed classes representing each data type within each type domain.
+- Abstract base classes for implementing compiler passes:
+    - Transform from one type domain to another (the developer must only account for the *differences* between the domains!).
+    - Transform to modified tree of the same domain.
+- Functions to convert each tree to and from [Ion s-expressions](https://amzn.github.io/ion-docs/docs/spec.html#sexp), a compact binary form suitable for transmission accross process boundaries or to persistent storage. 
+- Builder functions, for composing trees in code.
 ## API Status
 
 PIG is usable now but its API and the API of the generated Kotlin code is under development and might change.
