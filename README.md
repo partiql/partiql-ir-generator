@@ -2,8 +2,31 @@
 
 # The PartiQL I.R. Generator
 
-The PariQL I.R. Generator (PIG) is a [nanopass](http://nanopass.org/) inspired type domain code generator currently 
-targeting Kotlin.
+PIG is a compiler framework, domain modeling tool and code generator for tree data structures such as ASTs (Abstract Syntax Tree), database logical plans, database physical plans, and other intermediate representations.  Using PIG, the developer concisely defines the structure of a tree by specifying named constraints for every node and their attribues. Every constraint is known as a "data type", a collection of data types is known as a "type domain" and a collection of type domains is known as a "type universe".
+
+Every type domain has two representations:
+
+- An [Ion s-expression](https://amzn.github.io/ion-docs/docs/spec.html#sexp) representation, allowing type domains to serve as a language and platform neutral wire protocol and compact serialization format.
+- A strongly typed set of data types specific to a target language such as Kotlin.
+
+PIG also provides facitiles that allow for manipulation and rewriting of trees for the purposes of program optimizaiton, query planning and code generation.
+
+## Permuted Domains
+
+Query engines and other kinds of compilers require numerous tree-like representations of a program, starting with an AST.  Query engines for example typically parse a query, producing an AST, and then apply multiple passes over the AST to transform it to a logical plan, then a physical plan, and possibly other intermediate representations.  Compiler passes of this sort are large, complex, and difficult to maintain.  PIG's "permuted domains" feature increases the maintainability of such compiler passes by allowing new type domains to be created by specifying only the *differences* to another type domain.  This avoids having to duplicate the data type definitions that are common to both type domains, allowing more numerous, smaller, less complex and more maintainable compiler passes.
+
+PIG's permuted domain feature has been heavily inspired by the [Nanopass Framework](https://nanopass.org/).
+
+## Code Generation
+
+PIG generates the following components in Kotlin (and may generate similar components in languages such as Rust in the future): 
+
+- Immutable, strongly typed classes representing each data type within each type domain.
+- Abstract base classes for implementing compiler passes that:
+    - Transform from one type domain to another (the developer must only account for the *differences* between the domains!).
+    - Transform to a modified tree of the same domain.
+- Functions to convert each tree between instances of the generated classes and its s-expression representation.
+- Builder functions, for easily composing deeply nested instances of the strongly typed classes.
 
 ## API Status
 
