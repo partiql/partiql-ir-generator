@@ -21,7 +21,7 @@ PIG generates the following components in Kotlin (and may generate similar compo
     - Transform from one type domain to another (the developer must only account for the *differences* between the domains!).
     - Transform to a modified tree of the same domain.
 - Functions to convert each tree between instances of the generated classes and its s-expression representation.
-- Builder functions, for composing trees in code.
+- Builder functions, for easily composing deeply nested instances of the strongly typed classes.
 
 ## Permuted Domains
 
