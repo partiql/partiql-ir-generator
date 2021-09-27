@@ -12,6 +12,12 @@ Every type domain has two representations:
 
 PIG also provides facitiles that allow for manipulation and restructuring of trees for the purposes of program optimizaiton and query planning.
 
+## Permuted Domains
+
+Query engines and other kinds of compilers reuqire numerous tree-like representations of a program, starting with an AST.  Query engines for example typically parse a query, producing an AST, and then apply multiple passes over the AST to transform it to a logical plan, then a physical plan, and possibly other intermediate representations.  Compiler passes of this sort are large, complex, and difficult to maintain.  PIG's "permuted domains" feature increases the maintainability of such compiler passes by allowing new type domains to be created by specifying only the *differences* to another type domain.  This avoids having to duplicate the data type definitions that are common to both type domains, allowing more numerous, smaller, less complex and more maintainable compiler passes.
+
+PIG's permuted domain feature has been heavily inspired by the [Nanopass Framework](https://nanopass.org/).
+
 ## Code Generation
 
 PIG generates the following components in Kotlin (and may generate similar components in languages such as Rust in the future): 
@@ -22,12 +28,6 @@ PIG generates the following components in Kotlin (and may generate similar compo
     - Transform to a modified tree of the same domain.
 - Functions to convert each tree between instances of the generated classes and its s-expression representation.
 - Builder functions, for easily composing deeply nested instances of the strongly typed classes.
-
-## Permuted Domains
-
-Query engines and other kinds of compilers reuqire numerous tree-like representations of a program, starting with an AST.  Query engines for example typically parse a query, producing an AST, and then apply multiple passes over the AST to transform it to a logical plan, then a physical plan, and possibly other intermediate representations.  Compiler passes of this sort are large, complex, and difficult to maintain.  PIG's "permuted domains" feature increases the maintainability of such compiler passes by allowing new type domains to be created by specifying only the *differences* to another type domain.  This avoids having to duplicate the data type definitions that are common to both type domains, allowing more numerous, smaller, less complex and more maintainable compiler passes.
-
-PIG's permuted domain feature has been heavily inspired by the [Nanopass Framework](https://nanopass.org/).
 
 ## API Status
 
