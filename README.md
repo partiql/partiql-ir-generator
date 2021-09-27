@@ -3,7 +3,7 @@
 # The PartiQL I.R. Generator
 
 PIG is a compiler framework, domain modeling tool and code generator for tree data structures such as ASTs (Abstract Syntax Tree), database logical plans, database physical plans, and other intermediate representations.  Using PIG, the developer concisely defines the structure of a tree by specifying named 
-constraints for every node and their attribues.  Every constraint is known as a "data type", and a collection of data types is known as a "type domain".  
+constraints for every node and their attribues. Every constraint is known as a "data type", a collection of data types is known as a "type domain" and a collection of type domains is known as a "type universe".
 
 Every type domain has two representations:
 
