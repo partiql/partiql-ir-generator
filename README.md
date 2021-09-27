@@ -10,7 +10,7 @@ Every type domain has two representations:
 - An [Ion s-expression](https://amzn.github.io/ion-docs/docs/spec.html#sexp) representation, allowing type domains to serve as a language and platform neutral wire protocol and compact serialization format.
 - A strongly typed set of data types specific to a target language such as Kotlin.
 
-PIG also provides facitiles that allow for manipulation and restructuring of trees for the purposes of program optimizaiton and query planning.
+PIG also provides facitiles that allow for manipulation and rewriting of trees for the purposes of program optimizaiton, query planning and code generation.
 
 ## Permuted Domains
 
