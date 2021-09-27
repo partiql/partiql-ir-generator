@@ -2,7 +2,7 @@
 
 # The PartiQL I.R. Generator
 
-PIG is a compiler framework, domain modeling tool and code generator for tree data structures such as ASTs (Abstract Syntax Tree), database logical plans, database physical plans, and other intermediate representations.  Using PIG, the developer concisely defines the structure of a tree by specifying named constraints for every node and their attribues.  Every constraint is known as a "data type", and collections of data types are known as a "type domain".
+PIG is a compiler framework, domain modeling tool and code generator for tree data structures such as ASTs (Abstract Syntax Tree), database logical plans, database physical plans, and other intermediate representations.  Using PIG, the developer concisely defines the structure of a tree by specifying named constraints for every node and their attribues.  Every constraint is known as a "data type", and a collection of data types is known as a "type domain".
 
 ## Permuted Domains
 
@@ -12,7 +12,7 @@ PIG's permuted domain feature has been heavily inspired by the [Nanopass Framewo
 
 ## Code Generation
 
-PIG generates the following components in Kotlin, but may generate code for other languages in the future: 
+PIG generates the following components in Kotlin (and may generate similar components in languages such as Rust in the future): 
 
 - Immutable, strongly typed classes representing each data type within each type domain.
 - Abstract base classes for implementing compiler passes that:
