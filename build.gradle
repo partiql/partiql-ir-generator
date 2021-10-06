@@ -27,7 +27,7 @@ allprojects {
 
 subprojects {
     group = 'org.partiql'
-    version = '0.3.0'
+    version = '0.3.3'
 }
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
