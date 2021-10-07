@@ -1,39 +1,40 @@
-[![Build Status](https://travis-ci.org/partiql/partiql-ir-generator.svg?branch=master)](https://travis-ci.org/partiql/partiql-ir-generator)
+Travis: [![Build Status](https://travis-ci.org/partiql/partiql-ir-generator.svg?branch=master)](https://travis-ci.org/partiql/partiql-ir-generator)
+Generator: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.partiql/partiql-ir-generator/badge.svg?)](https://search.maven.org/artifact/org.partiql/partiql-ir-generator)
+Runtime: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.partiql/partiql-ir-generator-runtime/badge.svg?)](https://search.maven.org/artifact/org.partiql/partiql-ir-generator-runtime)
 
 # The PartiQL I.R. Generator
-
-- [The PartiQL I.R. Generator](#the-partiql-ir-generator)
-    * [PIG Overview](#pig-overview)
-        + [Permuted Domains](#permuted-domains)
-        + [Code Generation](#code-generation)
-    * [API Status](#api-status)
-    * [PIG's Type Domain Modeling Language](#pig-s-type-domain-modeling-language)
-        + [`product` Types](#-product--types)
-            - [Generated Data Model](#generated-data-model)
-            - [Generated Builders](#generated-builders)
-            - [Product Element Restrictions](#product-element-restrictions)
-        + [`record` Types](#-record--types)
-        + [`sum` Types](#-sum--types)
-            - [Converter\<T\>](#converter--t--)
-            - [`record`s as `sum` variants](#-record-s-as--sum--variants)
-        + [Metas](#metas)
-        + [Traversing & Transforming Trees](#traversing---transforming-trees)
-            - [`Visitor`](#-visitor-)
-            - [`VisitorFold<T>`](#-visitorfold-t--)
-            - [`VisitorTransform`](#-visitortransform-)
-        + [Permuted Domains](#permuted-domains-1)
-            - [Cross-domain `VisitorTransform`](#cross-domain--visitortransform-)
-    * [S-Expression Representation of Data Types](#s-expression-representation-of-data-types)
-    * [Generating Code for Your Project](#generating-code-for-your-project)
-        + [Using Gradle](#using-gradle)
-        + [Command-line](#command-line)
-    * [Appendices](#appendices)
-        + [Type Universe Grammar](#type-universe-grammar)
-            - [Type References](#type-references)
-                * [`ion_type`](#-ion-type-)
-                * [Arity](#arity)
-                * [Arity Ordering](#arity-ordering)
-    * [License](#license)
+- [PIG Overview](#pig-overview)
+    * [Permuted Domains](#permuted-domains)
+    * [Code Generation](#code-generation)
+- [API Status](#api-status)
+- [PIG's Type Domain Modeling Language](#pig-s-type-domain-modeling-language)
+    * [`product` Types](#-product--types)
+        + [Generated Data Model](#generated-data-model)
+        + [Generated Builders](#generated-builders)
+        + [Product Element Restrictions](#product-element-restrictions)
+    * [`record` Types](#-record--types)
+    * [`sum` Types](#-sum--types)
+        + [Converter\<T\>](#converter--t--)
+        + [`record`s as `sum` variants](#-record-s-as--sum--variants)
+    * [Metas](#metas)
+    * [Traversing & Transforming Trees](#traversing---transforming-trees)
+        + [`Visitor`](#-visitor-)
+        + [`VisitorFold<T>`](#-visitorfold-t--)
+        + [`VisitorTransform`](#-visitortransform-)
+    * [Permuted Domains](#permuted-domains-1)
+        + [Cross-domain `VisitorTransform`](#cross-domain--visitortransform-)
+- [S-Expression Representation of Data Types](#s-expression-representation-of-data-types)
+- [Using PIG In Your Project](#using-pig-in-your-project)
+    * [Using Gradle](#using-gradle)
+    * [Other Build Systems](#other-build-systems)
+        + [Obtaining the PIG Executable](#obtaining-the-pig-executable)
+- [Appendices](#appendices)
+    * [Type Universe Grammar](#type-universe-grammar)
+        + [Type References](#type-references)
+            - [`ion_type`](#-ion-type-)
+            - [Arity](#arity)
+            - [Arity Ordering](#arity-ordering)
+- [License](#license)
 
 [comment]: <> (Table of contents generated with markdown-toc: http://ecotrust-canada.github.io/markdown-toc/)
 
@@ -140,7 +141,7 @@ and `copy`) always preserve the original version and return modified copies.
 ```Kotlin
 /** The Kotlin implementation of the type domain named `sample_type_domain`. */
 class SampleTypeDomain private constructor() {
-    
+
     // ... other stuff
 
     /**
@@ -217,10 +218,10 @@ a namespace. Some projects have many type domains sharing the same class names a
 namespace pollution.
 
 The next thing the reader might notice is that `Person` implements some functionality provided by Kotlin
-[data classes](https://kotlinlang.org/docs/data-classes.html). Such as `.copy`, `.equals` and `.hashCode`. This is
-necessary because data classes always include all of their properties in the `.hashCode()` and `.equals()`
-implementations, we do include [metas] in the definition of equivalence for any PIG-generated class. (More on metas
-later.)
+[data classes](https://kotlinlang.org/docs/data-classes.html). Such as `.copy`, `.equals` and `.hashCode`.
+The `data class` feature of Kotlin can't be used in this case because data classes always include all of their
+properties in the `.hashCode()` and `.equals()` implementations be we do we do not include [metas] in the definition of
+equivalence for any PIG-generated class. (More on metas later.)
 
 #### Generated Builders
 
@@ -347,10 +348,7 @@ The `operator` `sum` declares five different arithmetic operations: `plus`, `min
 Due to the syntax used here (more on that later), each of these is a `product` type, and each gets a Kotlin class
 similar to the example shown above (shown below). However, none of these have any elements.
 
-The `expr` `sum` defines two possible types of expressions that exist our toy calculator:
-
-- `lit`
-- `binary`
+The `expr` `sum` defines two possible types of expressions that exist our toy calculator: `lit` and  `binary`.
 
 The Kotlin equivalent of a `sum` type is a [`sealed class`](https://kotlinlang.org/docs/sealed-classes.html).
 
@@ -380,7 +378,7 @@ class CalculatorAst private constructor() {
 
 The builder API shown in previous examples works here as well:
 
-```Kolin
+```Kotlin
 // 1 + 2 * 3
 val expr = CalculatorAst.build {
     binary(
@@ -389,7 +387,9 @@ val expr = CalculatorAst.build {
         binary(
             times(),
             lit(2),
-            lit(3)))
+            lit(3)
+        )
+    )
 }   
 ```
 
@@ -407,32 +407,37 @@ val expr = CalculatorAst.build {
 /** Evaluates an instance of CalculatorAst.Expr */
 class CalculatorAstEvaluator : CalculatorAst.Expr.Converter<Long> {
     override fun convertLit(node: CalculatorAst.Expr.Lit): Long = node.value.value
-    override fun convertBinary(node: CalculatorAst.Expr.Binary): Long =
+    override fun convertBinary(node: CalculatorAst.Expr.Binary): Long {
+        val leftValue = convert(node.left)
+        val rightValue = cvonvert(node.right)
         when (node.op) {
-            is CalculatorAst.Operator.Plus -> convert(node.left) + convert(node.right)
-            is CalculatorAst.Operator.Minus -> convert(node.left) - convert(node.right)
-            is CalculatorAst.Operator.Times -> convert(node.left) * convert(node.right)
-            is CalculatorAst.Operator.Divide -> convert(node.left) / convert(node.right)
-            is CalculatorAst.Operator.Modulo -> convert(node.left) % convert(node.right)
+            is CalculatorAst.Operator.Plus -> leftValue + rightValue
+            is CalculatorAst.Operator.Minus -> leftValue - rightValue
+            is CalculatorAst.Operator.Times -> leftValue * rightValue
+            is CalculatorAst.Operator.Divide -> leftValue / rightValue
+            is CalculatorAst.Operator.Modulo -> leftValue % rightValue
         }
+    }
 }
 
 val evaluator = CalculatorAstEvaluator()
 println(evaluator.convert(expr))
 // prints: 7
 
-
 /** Converts an instance of CalculatorAst.Expr into source code. */
 class ExprStringifier : CalculatorAst.Expr.Converter<String> {
     override fun convertLit(node: CalculatorAst.Expr.Lit): String = node.value.toString()
-    override fun convertBinary(node: CalculatorAst.Expr.Binary): String =
-        when (node.op) {
-            is CalculatorAst.Operator.Plus -> "${convert(node.left)} + ${convert(node.right)}"
-            is CalculatorAst.Operator.Minus -> "${convert(node.left)} - ${convert(node.right)}"
-            is CalculatorAst.Operator.Times -> "${convert(node.left)} * ${convert(node.right)}"
-            is CalculatorAst.Operator.Divide -> "${convert(node.left)} / ${convert(node.right)}"
-            is CalculatorAst.Operator.Modulo -> "${convert(node.left)} % ${convert(node.right)}"
+    override fun convertBinary(node: CalculatorAst.Expr.Binary): String {
+        val leftString = convert(node.left)
+        val rightString = cvonvert(node.right)
+        return when (node.op) {
+            is CalculatorAst.Operator.Plus -> "$leftString + $rightString"
+            is CalculatorAst.Operator.Minus -> "$leftString - $rightString"
+            is CalculatorAst.Operator.Times -> "$leftString * $rightString"
+            is CalculatorAst.Operator.Divide -> "$leftString / $rightString"
+            is CalculatorAst.Operator.Modulo -> "$leftString % $rightString"
         }
+    }
 }
 
 val stringifier = ExprStringifier()
@@ -440,15 +445,12 @@ println(stringifier.convert(expr))
 // prints: 1 + 2 * 3
 ```
 
-It is common to use [`when`](https://kotlinlang.org/docs/control-flow.html#when-expression) with PIG-generated `sum`
-types, which are Kotlin sealead classes. Here's a simple evaluator for our simple calculator language:
-
 #### `record`s as `sum` variants
 
 PIG uses the syntax used to define a variant's elements to determine if it is a `product` or `record`.
 
 ```text
-(define some_ast
+(define toy_ast
     (domain
         (sum expr
             // This syntax defines a `product` variant.  Note the similarity to a non-variant `product`.
@@ -480,7 +482,7 @@ TODO...
 
 #### `Visitor`
 
-TODO...
+Visitors are most useful for performing simple semantic checks or validation of type domain instances.
 
 #### `VisitorFold<T>`
 
@@ -498,16 +500,31 @@ TODO...
 
 TODO...
 
-## Generating Code for Your Project
+## Using PIG In Your Project
+
+There are two components of PIG to be aware of:  the
+[code generator](https://search.maven.org/artifact/org.partiql/partiql-ir-generator) and the
+[runtime library](https://search.maven.org/artifact/org.partiql/partiql-ir-generator-runtime). Both are available
+in [Maven Central](https://search.maven.org/search?q=partiql-ir-generator).  **Both of them must have be same version.**
+
+There are [plans to make a Gradle plugin for PIG](https://github.com/partiql/partiql-ir-generator/issues/102) but one
+has not been completed yet.
 
 ### Using Gradle
 
-TODO
+Without the aforementioned plugin, the best way to use pig with gradle is:
 
-Add `buildSrc` reference to maven project, then do something like 
-  [this](https://github.com/partiql/partiql-lang-kotlin/blob/28701e23cf3bd397a67e8d9ab4f68feff953aea1/lang/build.gradle#L64-L87).
+- Add a dependency on PIG in your project's `buildSrc/build.gradle` file. This will make the API of PIG available to all
+  other `build.gradle` files in your project.
+  ([Example](https://github.com/partiql/partiql-lang-kotlin/blob/main/buildSrc/build.gradle#L9))
+- Add a custom task that uses PIG's internal
+  APIs. ([Example](https://github.com/partiql/partiql-lang-kotlin/blob/28701e23cf3bd397a67e8d9ab4f68feff953aea1/lang/build.gradle#L64-L87))
+- Make sure your custom task executes *before* the `compileKotlin` task.
+  ([Example](https://github.com/partiql/partiql-lang-kotlin/blob/28701e23cf3bd397a67e8d9ab4f68feff953aea1/lang/build.gradle#L89))
 
-### Command-line
+### Other Build Systems
+
+If you are not using Gradle, it will be necessary to invoke PIG via the command line.
 
 At build time and before compilation of your application or library, the following should be executed:
 
@@ -524,6 +541,24 @@ pig \
 - `<namespace>`: the name used in the `package` statement at the top of the output file
 
 Execute: `pig --help` for all command-line options.
+
+#### Obtaining the PIG Executable
+
+To obtain the `pig` executable:
+
+- Clone this repository.
+- Check out the tag of the [release](https://github.com/partiql/partiql-ir-generator/releases) you wish to utilize,
+  e.g. `git checkout v0.4.0`
+- Execute `./gradlew assemble`
+
+After the build completes, the `pig` executable and dependencies will be located
+in `pig/build/distributions/pig/pig-x.y.z.[tar.gz|zip]`.
+
+**Finally, make sure that the version of the `partiql-ir-generator-runtime` library that you are using corresponds to
+the version of the executable.**
+
+Verify this with the `--version` command line option of
+PIG.  ([When it becomes available](https://github.com/partiql/partiql-ir-generator/issues/103).)
 
 ## Appendices
 
@@ -627,7 +662,6 @@ In other words, `product`s may have any number of `required` types and cannot ha
 `variadic` types. If `variadic` type is present, only one is allowed.
 
 These constraints exist to reduce the complexity of the generated code and its uses.
-
 
 ## License
 
