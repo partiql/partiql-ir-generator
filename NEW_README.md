@@ -1,43 +1,6 @@
-Travis: [![Build Status](https://travis-ci.org/partiql/partiql-ir-generator.svg?branch=master)](https://travis-ci.org/partiql/partiql-ir-generator)
-Generator: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.partiql/partiql-ir-generator/badge.svg?)](https://search.maven.org/artifact/org.partiql/partiql-ir-generator)
-Runtime: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.partiql/partiql-ir-generator-runtime/badge.svg?)](https://search.maven.org/artifact/org.partiql/partiql-ir-generator-runtime)
+[![Build Status](https://travis-ci.org/partiql/partiql-ir-generator.svg?branch=master)](https://travis-ci.org/partiql/partiql-ir-generator)
 
 # The PartiQL I.R. Generator
-
-- [PIG Overview](#pig-overview)
-    * [Permuted Domains](#permuted-domains)
-    * [Code Generation](#code-generation)
-- [API Status](#api-status)
-- [PIG's Type Domain Modeling Language](#pig-s-type-domain-modeling-language)
-    * [`product` Types](#-product--types)
-        + [Generated Data Model](#generated-data-model)
-        + [Generated Builders](#generated-builders)
-        + [Product Element Restrictions](#product-element-restrictions)
-    * [`record` Types](#-record--types)
-    * [`sum` Types](#-sum--types)
-        + [Converter\<T\>](#converter--t--)
-        + [`record`s as `sum` variants](#-record-s-as--sum--variants)
-    * [Metas](#metas)
-    * [Traversing & Transforming Trees](#traversing---transforming-trees)
-        + [`Visitor`](#-visitor-)
-        + [`VisitorFold<T>`](#-visitorfold-t--)
-        + [`VisitorTransform`](#-visitortransform-)
-    * [Permuted Domains](#permuted-domains-1)
-        + [Cross-domain `VisitorTransform`](#cross-domain--visitortransform-)
-- [S-Expression Representation of Data Types](#s-expression-representation-of-data-types)
-- [Using PIG In Your Project](#using-pig-in-your-project)
-    * [Using Gradle](#using-gradle)
-    * [Other Build Systems](#other-build-systems)
-        + [Obtaining the PIG Executable](#obtaining-the-pig-executable)
-- [Appendices](#appendices)
-    * [Type Universe Grammar](#type-universe-grammar)
-        + [Type References](#type-references)
-            - [`ion_type`](#-ion-type-)
-            - [Arity](#arity)
-            - [Arity Ordering](#arity-ordering)
-- [License](#license)
-
-[comment]: <> (Table of contents generated with markdown-toc: http://ecotrust-canada.github.io/markdown-toc/)
 
 ## PIG Overview
 
@@ -142,7 +105,7 @@ and `copy`) always preserve the original version and return modified copies.
 ```Kotlin
 /** The Kotlin implementation of the type domain named `sample_type_domain`. */
 class SampleTypeDomain private constructor() {
-
+    
     // ... other stuff
 
     /**
@@ -219,10 +182,10 @@ a namespace. Some projects have many type domains sharing the same class names a
 namespace pollution.
 
 The next thing the reader might notice is that `Person` implements some functionality provided by Kotlin
-[data classes](https://kotlinlang.org/docs/data-classes.html). Such as `.copy`, `.equals` and `.hashCode`.
-The `data class` feature of Kotlin can't be used in this case because data classes always include all of their
-properties in the `.hashCode()` and `.equals()` implementations be we do we do not include [metas] in the definition of
-equivalence for any PIG-generated class. (More on metas later.)
+[data classes](https://kotlinlang.org/docs/data-classes.html). Such as `.copy`, `.equals` and `.hashCode`. This is
+necessary because data classes always include all of their properties in the `.hashCode()` and `.equals()`
+implementations, we do include [metas] in the definition of equivalence for any PIG-generated class. (More on metas
+later.)
 
 #### Generated Builders
 
@@ -321,7 +284,7 @@ The Kotlin class of this record type isn't shown because it has the same API as 
 
 Also note that `Builder` interface also includes definitions needed to construct `record` types as well.
 
-### `sum` Types
+### `sum` Types.
 
 `sum` types are used to hold a value that could take on several different, but fixed, types. Only one of the types can
 be in use at any one time, and the name of the type, known as a tag, explicitly indicates which one is in use.  `sum`
@@ -349,7 +312,10 @@ The `operator` `sum` declares five different arithmetic operations: `plus`, `min
 Due to the syntax used here (more on that later), each of these is a `product` type, and each gets a Kotlin class
 similar to the example shown above (shown below). However, none of these have any elements.
 
-The `expr` `sum` defines two possible types of expressions that exist our toy calculator: `lit` and  `binary`.
+The `expr` `sum` defines two possible types of expressions that exist our toy calculator:
+
+- `lit`
+- `binary`
 
 The Kotlin equivalent of a `sum` type is a [`sealed class`](https://kotlinlang.org/docs/sealed-classes.html).
 
@@ -379,7 +345,7 @@ class CalculatorAst private constructor() {
 
 The builder API shown in previous examples works here as well:
 
-```Kotlin
+```Kolin
 // 1 + 2 * 3
 val expr = CalculatorAst.build {
     binary(
@@ -388,9 +354,7 @@ val expr = CalculatorAst.build {
         binary(
             times(),
             lit(2),
-            lit(3)
-        )
-    )
+            lit(3)))
 }   
 ```
 
@@ -408,37 +372,32 @@ val expr = CalculatorAst.build {
 /** Evaluates an instance of CalculatorAst.Expr */
 class CalculatorAstEvaluator : CalculatorAst.Expr.Converter<Long> {
     override fun convertLit(node: CalculatorAst.Expr.Lit): Long = node.value.value
-    override fun convertBinary(node: CalculatorAst.Expr.Binary): Long {
-        val leftValue = convert(node.left)
-        val rightValue = cvonvert(node.right)
+    override fun convertBinary(node: CalculatorAst.Expr.Binary): Long =
         when (node.op) {
-            is CalculatorAst.Operator.Plus -> leftValue + rightValue
-            is CalculatorAst.Operator.Minus -> leftValue - rightValue
-            is CalculatorAst.Operator.Times -> leftValue * rightValue
-            is CalculatorAst.Operator.Divide -> leftValue / rightValue
-            is CalculatorAst.Operator.Modulo -> leftValue % rightValue
+            is CalculatorAst.Operator.Plus -> convert(node.left) + convert(node.right)
+            is CalculatorAst.Operator.Minus -> convert(node.left) - convert(node.right)
+            is CalculatorAst.Operator.Times -> convert(node.left) * convert(node.right)
+            is CalculatorAst.Operator.Divide -> convert(node.left) / convert(node.right)
+            is CalculatorAst.Operator.Modulo -> convert(node.left) % convert(node.right)
         }
-    }
 }
 
 val evaluator = CalculatorAstEvaluator()
 println(evaluator.convert(expr))
 // prints: 7
 
+
 /** Converts an instance of CalculatorAst.Expr into source code. */
 class ExprStringifier : CalculatorAst.Expr.Converter<String> {
     override fun convertLit(node: CalculatorAst.Expr.Lit): String = node.value.toString()
-    override fun convertBinary(node: CalculatorAst.Expr.Binary): String {
-        val leftString = convert(node.left)
-        val rightString = cvonvert(node.right)
-        return when (node.op) {
-            is CalculatorAst.Operator.Plus -> "$leftString + $rightString"
-            is CalculatorAst.Operator.Minus -> "$leftString - $rightString"
-            is CalculatorAst.Operator.Times -> "$leftString * $rightString"
-            is CalculatorAst.Operator.Divide -> "$leftString / $rightString"
-            is CalculatorAst.Operator.Modulo -> "$leftString % $rightString"
+    override fun convertBinary(node: CalculatorAst.Expr.Binary): String =
+        when (node.op) {
+            is CalculatorAst.Operator.Plus -> "${convert(node.left)} + ${convert(node.right)}"
+            is CalculatorAst.Operator.Minus -> "${convert(node.left)} - ${convert(node.right)}"
+            is CalculatorAst.Operator.Times -> "${convert(node.left)} * ${convert(node.right)}"
+            is CalculatorAst.Operator.Divide -> "${convert(node.left)} / ${convert(node.right)}"
+            is CalculatorAst.Operator.Modulo -> "${convert(node.left)} % ${convert(node.right)}"
         }
-    }
 }
 
 val stringifier = ExprStringifier()
@@ -446,24 +405,26 @@ println(stringifier.convert(expr))
 // prints: 1 + 2 * 3
 ```
 
+It is common to use [`when`](https://kotlinlang.org/docs/control-flow.html#when-expression) with PIG-generated `sum`
+types, which are Kotlin sealead classes. Here's a simple evaluator for our simple calculator language:
+
 #### `record`s as `sum` variants
 
 PIG uses the syntax used to define a variant's elements to determine if it is a `product` or `record`.
 
 ```text
-(define toy_ast
+(define some_ast
     (domain
         (sum expr
+            // This syntax defines a `product` variant.  Note the similarity to a non-variant `product`.
+            (binary op::operator left::expr right::expr)
+            
             // This syntax defines a `record` variant.  Note the similarity to a non-variant `record`.
             (let
                 (name symbol)
                 (value expr)
                 optional_name::(body expr))
-                
-            // This syntax defines a `product` variant.  Note the similarity to a non-variant `product`.
-            (binary op::operator left::expr right::expr)
         )
-        // ... 
     )
 )
 ```
@@ -476,255 +437,39 @@ Metas are arbitrary key/value pairs that can be associated with any node. Metas 
 node, such as the location in the source text of the grammar element it represents, or the data type of the value
 returned by an expression.
 
-## Traversing & Transforming Trees
+### Traversing & Transforming Trees
 
-PIG generates four different types of tree traversals for performing various tasks. Each is described in the
-sub-headings of this section.
-
-For the examples below we will use an `enhanced_calculator_ast`. This is like the `calculator_ast` from before but also
-includes a `let` and `variable` expressions.
-
-```text
-(define enhanced_calculator_ast
-        (domain
-            (sum expr
-                 (lit value::int)
-                 (binary op::operator left::expr right::expr)
-                 (let name::symbol value::expr body::expr)
-                 (variable name::symbol) 
-             )
-
-            (sum operator (plus) (minus) (times) (divide) (modulo))
-        )
-)
-```
-
-### `VisitorTransform`
-
-The PIG-generated `VisitorTransform` base classes are by far the most commonly used type of tree traversal.  Using a 
-`VisitorTransform`, it is possible to implement many kinds of compiler optimizations, static type inference, expression 
-normalization, and syntactic de-sugaring.
-
-By default, every type domain gets one `VisitorTransform` capable of  
-
-Each `VisitorTransform` has an input type domain, and an output type domain.  
-
-Thus, `VisitorTransform`s 
-can be used to convert from one type domain to another.  More details on that later.  For now, we will focus on the
-`VisitorTransform` that is generated for every type domain and transforms from that type domain to 
-
-Every type domain gets a `VisitorTransform` base class with 
-
-
-The example below shows how to perform constant folding with our `enhanced_calculator_ast`:
-
-```Kotlin
-
-```
-
-### Permuted Domains and Cross-Domain `VisitorTransform`s
+PIG generates four different types of tree traversals for performing various tasks such as:
 
 TODO...
 
-### `Visitor`
+#### `Visitor`
 
-Visitors are most useful for performing simple semantic checks or validation of type domain instances, but are not
-usually very useful for performing most *transformations* of trees into some other types of data.
+TODO...
 
-Every generated `Visitor` class receives one `visit*` and `walk*` function.
+#### `VisitorFold<T>`
 
-This is different from the typical visitor pattern in that the `walk*` functions reside on the `Visitor` class and
-*not* on the classes for each node. This allows for the `walk*` functions to be customized as needed, for example, if
-the traversal order needs to be modified, of custom logic needs to be applied between child nodes.
+TODO...
 
-An example visitor for the `enhanced_calculator_ast` domain resides below.
+#### `VisitorTransform`
 
-```Kotlin
-open class Visitor : DomainVisitorBase() {
-    // Sum Type: Expr
-    protected open fun visitExpr(node: EnhancedCalculatorAst.Expr) {}
-    protected open fun visitExprLet(node: EnhancedCalculatorAst.Expr.Let) {}
-    protected open fun visitExprVariable(node: EnhancedCalculatorAst.Expr.Variable) {}
-    protected open fun visitExprLit(node: EnhancedCalculatorAst.Expr.Lit) {}
-    protected open fun visitExprBinary(node: EnhancedCalculatorAst.Expr.Binary) {}
+### Permuted Domains
 
-    // Walk Functions
+TODO...
 
-    // Sum Type: Expr
-    open fun walkExpr(node: EnhancedCalculatorAst.Expr) {
-        // Calls visitExpr
-        visitExpr(node)
-
-        // Dispatch to walkExpr* function for specific variant of the `expr` sum type.
-        when (node) {
-            is EnhancedCalculatorAst.Expr.Let -> walkExprLet(node)
-            is EnhancedCalculatorAst.Expr.Variable -> walkExprVariable(node)
-            is EnhancedCalculatorAst.Expr.Lit -> walkExprLit(node)
-            is EnhancedCalculatorAst.Expr.Binary -> walkExprBinary(node)
-        }
-    }
-
-    open fun walkExprLet(node: EnhancedCalculatorAst.Expr.Let) {
-        // calls `visitExprLet`
-        visitExprLet(node)
-
-        // calls `walk*` for each child node
-        walkSymbolPrimitive(node.name)
-        walkExpr(node.value)
-        walkExpr(node.body)
-        walkMetas(node.metas)
-
-    }
-
-    open fun walkExprVariable(node: EnhancedCalculatorAst.Expr.Variable) {
-        /* calls visitExprVariable, then walkExpr for each child node. */
-    }
-
-    // And so on for all expr variants...
-
-    // Sum Type: `operator` was removed for brevity.  Like `expr`, the `operator` sum type gets
-    // one visitOperator and walkOperator function, and for each of its variants: one visitOperator*
-    // and one walkOperator* function variants, just like `expr` does.
-}
-```
-
-#### `Visitor` Example
-
-The simple example below (using the `enhanced_calculator_ast` type domain from a previous example) shows how to prevent
-certain names from being used as variables:
-
-```Kotlin 
-class VariableThatShallNotBeNamedValidator : EnhancedCalculatorAst.Visitor() {
-    override fun visitExprLet(node: EnhancedCalculatorAst.Expr.Let) {
-        if(node.name.text == "voldemort") {
-            error("A variable was named after he who shall not be named.")
-        }
-    }
-}
-
-val x = EnhancedCalculatorAst.build {
-    // let voldemort = 42 in 43
-    let("voldemort", lit(42), lit(43))
-}
-
-val validator = VariableThatShallNotBeNamedValidator()
-validator.walkExpr(x) // <-- throws IllegalStateException("A variable was named...")
-```
-
-### `VisitorFold<T>`
-
-Each type domain gets a class named `VisitorFold<T>`, implementations of which are often used to extract data from trees
-either in list or aggregate form. This is similar to a
-[functional fold](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) except that it applies to every single
-node of a tree instead of to the items in a collection.
-
-A `VisitorFold<T>` implementation is similar in structure to the visitors described in the previous section, but each 
-`visit*` and `walk*` function has a second argument: the accumulator. The `T` type argument is the type of the 
-accumulator.
-
-```Kotlin
-open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
-    // Sum Type: Expr
-    open protected fun visitExpr(node: EnhancedCalculatorAst.Expr, accumulator: T): T = accumulator
-    open protected fun visitExprLit(node: EnhancedCalculatorAst.Expr.Lit, accumulator: T): T = accumulator
-    open protected fun visitExprBinary(node: EnhancedCalculatorAst.Expr.Binary, accumulator: T): T = accumulator
-    open protected fun visitExprLet(node: EnhancedCalculatorAst.Expr.Let, accumulator: T): T = accumulator
-    open protected fun visitExprVariable(node: EnhancedCalculatorAst.Expr.Variable, accumulator: T): T = accumulator
-
-    // Sum Type: Expr
-    open fun walkExpr(node: EnhancedCalculatorAst.Expr, accumulator: T): T {
-        // Calls visitExpr 
-        val current = visitExpr(node, accumulator)
-
-        // Dispatch to walkExpr* function for specific variant of the `expr` sum type.
-        return when (node) {
-            is EnhancedCalculatorAst.Expr.Lit -> walkExprLit(node, current)
-            is EnhancedCalculatorAst.Expr.Binary -> walkExprBinary(node, current)
-            is EnhancedCalculatorAst.Expr.Let -> walkExprLet(node, current)
-            is EnhancedCalculatorAst.Expr.Variable -> walkExprVariable(node, current)
-        }
-    }
-
-    open fun walkExprBinary(node: EnhancedCalculatorAst.Expr.Binary, accumulator: T): T {
-        var current = accumulator
-        current = visitExprBinary(node, current)
-        current = walkOperator(node.op, current)
-        current = walkExpr(node.left, current)
-        current = walkExpr(node.right, current)
-        current = walkMetas(node.metas, current)
-        return current
-    }
-
-    // And so on for all expr variants...    
-
-    // Generated code for the `operator` sum type was removed for brevity.  Like `expr`, the `operator` sum type gets
-    // one `visitOperator` and `walkOperator` function, and each of its variants also gets one `visitOperator*` and
-    // one `walkOperator*` function.
-}
-```
-
-#### `VisitorFold<T>` Example
-
-The example below returns a list of all variables defined in an `enhanced_calculator_ast`:
-
-```Kotlin
-class VariableFinder : EnhancedCalculatorAst.VisitorFold<List<String>>() {
-    override fun visitExprLet(node: EnhancedCalculatorAst.Expr.Let, accumulator: List<String>): List<String> =
-        accumulator + listOf(node.name.text)
-}
-
-// This expression declares two variables, 'meaning_of_life' and 'zaphod'.
-val x = EnhancedCalculatorAst.build {
-    let(
-        name = "meaning_of_life",
-        value = lit(42),
-        body = let(
-            name = "zaphod",
-            value = lit(43),
-            body = binary(plus(), variable("meaning_of_life"), variable("zaphod"))
-        )
-    )
-}
-
-val finder = VariableFinder()
-val foundVariables = finder.walkExpr(x, emptyList())
-
-println(foundVariables)
-// prints:
-// [meaning_of_life, zaphod]
-```
+#### Cross-domain `VisitorTransform`
 
 ## S-Expression Representation of Data Types
 
 TODO...
 
-## Using PIG In Your Project
-
-There are two components of PIG to be aware of:  the
-[code generator](https://search.maven.org/artifact/org.partiql/partiql-ir-generator) and the
-[runtime library](https://search.maven.org/artifact/org.partiql/partiql-ir-generator-runtime). Both are available
-in [Maven Central](https://search.maven.org/search?q=partiql-ir-generator).  **Both of them must be same version.**
+## Generating Code for Your Project
 
 ### Using Gradle
 
-There are [plans to make a Gradle plugin for PIG](https://github.com/partiql/partiql-ir-generator/issues/102) but one
-has not been completed yet.
+TODO
 
-Without the aforementioned plugin, the best way to use pig with gradle is:
-
-- Add a dependency on PIG in your project's `buildSrc/build.gradle` file. This will make the API of PIG available to all
-  other `build.gradle` files in your project.
-  ([Example](https://github.com/partiql/partiql-lang-kotlin/blob/main/buildSrc/build.gradle#L9))
-- Add a dependency on PIG's runtime library in your project.  
-  ([Example](https://github.com/partiql/partiql-lang-kotlin/blob/28701e23cf3bd397a67e8d9ab4f68feff953aea1/lang/build.gradle#L48))
-- Add a custom task that uses PIG's internal
-  APIs. ([Example](https://github.com/partiql/partiql-lang-kotlin/blob/28701e23cf3bd397a67e8d9ab4f68feff953aea1/lang/build.gradle#L64-L87))
-- Make sure your custom task executes *before* the `compileKotlin` task.
-  ([Example](https://github.com/partiql/partiql-lang-kotlin/blob/28701e23cf3bd397a67e8d9ab4f68feff953aea1/lang/build.gradle#L89))
-
-### Other Build Systems
-
-If you are not using Gradle, it will be necessary to invoke PIG via the command line.
+### Command-line
 
 At build time and before compilation of your application or library, the following should be executed:
 
@@ -741,24 +486,6 @@ pig \
 - `<namespace>`: the name used in the `package` statement at the top of the output file
 
 Execute: `pig --help` for all command-line options.
-
-#### Obtaining the PIG Executable
-
-To obtain the `pig` executable:
-
-- Clone this repository.
-- Check out the tag of the [release](https://github.com/partiql/partiql-ir-generator/releases) you wish to utilize,
-  e.g. `git checkout v0.4.0`
-- Execute `./gradlew assemble`
-
-After the build completes, the `pig` executable and dependencies will be located
-in `pig/build/distributions/pig/pig-x.y.z.[tar.gz|zip]`.
-
-**Finally, make sure that the version of the `partiql-ir-generator-runtime` library that you are using corresponds to
-the version of the executable.**
-
-Verify this with the `--version` command line option of
-PIG.  ([When it becomes available](https://github.com/partiql/partiql-ir-generator/issues/103).)
 
 ## Appendices
 
@@ -862,8 +589,3 @@ In other words, `product`s may have any number of `required` types and cannot ha
 `variadic` types. If `variadic` type is present, only one is allowed.
 
 These constraints exist to reduce the complexity of the generated code and its uses.
-
-## License
-
-This project is licensed under the Apache-2.0 License.
-
