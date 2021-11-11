@@ -12,18 +12,23 @@
             [/#list]
             node.metas !== new_metas
         ) {
-            [/#if]
             ${destDomainName}.${t.constructorName}(
                 [#list t.properties as p]
                 ${p.kotlinName} = new_${p.kotlinName},
                 [/#list]
                 metas = new_metas
             )
-[#if avoidCopyingUnchangedNodes]
         } else {
             node
         }
-[/#if]
+    [#else][#t]
+        ${destDomainName}.${t.constructorName}([#lt]
+        [#list t.properties as p]
+            ${p.kotlinName} = new_${p.kotlinName},
+        [/#list]
+            metas = new_metas
+        )
+    [/#if]
 [/#macro]
 
 [#macro transform_property_functions source_domain tuple sumName]
@@ -74,7 +79,7 @@ abstract class ${class_name} : DomainVisitorTransformBase() {
 [#list s.variants as tuple]
     // Variant ${s.kotlinName}${tuple.kotlinName}
     [#if !tuple.transformAbstract]
-    open fun transform${s.kotlinName}${tuple.kotlinName}(node: ${source_domain.kotlinName}.${s.kotlinName}.${tuple.kotlinName}): ${dest_domain_name}.${s.kotlinName}  {
+    open fun transform${s.kotlinName}${tuple.kotlinName}(node: ${source_domain.kotlinName}.${s.kotlinName}.${tuple.kotlinName}): ${dest_domain_name}.${s.kotlinName} {
         [@transform_fun_body dest_domain_name, tuple, "${s.kotlinName}${tuple.kotlinName}" source_domain.kotlinName == dest_domain_name/]
     }
     [@transform_property_functions source_domain tuple s.kotlinName /]

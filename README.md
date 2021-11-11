@@ -491,11 +491,12 @@ pig \
     -u <type universe.ion> \
     -t kotlin \ 
     -n <namespace> \ 
-    -o path/to/package/<output file>
+    -d <output directory>
 ```
 
 - `<type universe.ion>`:  path to the Ion text file containing the type universe
-- `<output file>`: path to the file for the generated code 
+- `<output directory>`: path to the directory to place the generated code.  One file per type domain and cross domain 
+visitor transform will be generated. All files will have the `.generated.kt` extension.  
 - `<namespace>`: the name used in the `package` statement at the top of the output file
 
 Execute: `pig --help` for all command-line options.
