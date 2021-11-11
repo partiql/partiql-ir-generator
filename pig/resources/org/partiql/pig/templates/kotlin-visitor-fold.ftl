@@ -1,7 +1,7 @@
 [#ftl output_format="plainText"]
 [#-- @ftlvariable name="universe" type="org.partiql.pig.generator.kotlin.KTypeUniverse" --]
 
-[#macro tuple_walker_body t visitSuffix]
+[#macro tuple_visitor_fold_walker_body t visitSuffix]
     [@indent count=4]
     var current = accumulator
     current = visit${visitSuffix}(node, current)
@@ -19,7 +19,7 @@
     [/@indent]
 [/#macro]
 
-
+[#macro visitor_fold_class]
 open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
     ////////////////////////////////////////////////////////////////////////////
     // Visit Functions
@@ -53,7 +53,7 @@ open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
     //////////////////////////////////////
     [#items as t]
     open fun walk${t.kotlinName}(node: ${domain.kotlinName}.${t.kotlinName}, accumulator: T): T {
-        [@tuple_walker_body t t.kotlinName/][#t]
+        [@tuple_visitor_fold_walker_body t t.kotlinName/][#t]
     }
 
         [/#items]
@@ -73,9 +73,10 @@ open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
 
         [#list s.variants as t]
     open fun walk${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}, accumulator: T): T {
-        [@tuple_walker_body t "${s.kotlinName}${t.kotlinName}"/]
+        [@tuple_visitor_fold_walker_body t "${s.kotlinName}${t.kotlinName}"/]
     }
 
         [/#list]
     [/#list]
 }
+[/#macro]

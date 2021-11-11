@@ -15,28 +15,78 @@
 
 package org.partiql.pig.generator.kotlin
 
-import freemarker.template.Template
+import freemarker.template.Configuration
 import org.partiql.pig.generator.createDefaultFreeMarkerConfiguration
 import org.partiql.pig.generator.setClassLoaderForTemplates
+import java.io.File
 import java.io.PrintWriter
 import java.time.OffsetDateTime
 
+const val KOTLIN_SOURCE_SUFFIX = "generated.kt"
 
-fun applyKotlinTemplate(
+fun generateKotlinCode(
     namespace: String,
     kotlinTypeUniverse: KTypeUniverse,
-    output: PrintWriter
+    outputDirectory: File
 ) {
-    val renderModel = KotlinFreeMarkerGlobals(
-        namespace = namespace,
-        universe = kotlinTypeUniverse,
-        generatedDate = OffsetDateTime.now()
-    )
-    createKotlinTemplate().process(renderModel, output)
+    val freemarkerConfig: Configuration = createDefaultFreeMarkerConfiguration()
+
+    // Allow .getTemplate below and [#include...] directives to look in this .jar's embedded resources.
+    freemarkerConfig.setClassLoaderForTemplates()
+
+    generateDomainFiles(freemarkerConfig, kotlinTypeUniverse, namespace, outputDirectory)
+    generateCrossDomainVisitorTransforms(freemarkerConfig, kotlinTypeUniverse.transforms, namespace, outputDirectory)
 }
 
-private fun createKotlinTemplate(): Template {
-    val cfg = createDefaultFreeMarkerConfiguration()
-    cfg.setClassLoaderForTemplates()
-    return cfg.getTemplate("kotlin.ftl")!!
+private fun generateDomainFiles(
+    freemarkerConfig: Configuration,
+    kotlinTypeUniverse: KTypeUniverse,
+    namespace: String,
+    outputDirectory: File
+) {
+    // Load the template
+    val template = freemarkerConfig.getTemplate("kotlin-domain.ftl")!!
+
+    // Apply the kotlin template once for each type domain... this creates one `*.generated.kt` file per domain.
+    kotlinTypeUniverse.domains.forEach { domain ->
+        val renderModel = KotlinDomainFreeMarkerGlobals(
+            namespace = namespace,
+            domain = domain,
+            generatedDate = OffsetDateTime.now()
+        )
+
+        val outputFile = File(outputDirectory, "${domain.kotlinName}.$KOTLIN_SOURCE_SUFFIX")
+
+        PrintWriter(outputFile).use { printWriter ->
+            template.process(renderModel, printWriter)
+        }
+    }
+}
+
+private fun generateCrossDomainVisitorTransforms(
+    freemarkerConfig: Configuration,
+    transforms: List<KTransform>,
+    namespace: String,
+    outputDirectory: File
+) {
+    // Load the template
+    val template = freemarkerConfig.getTemplate("kotlin-cross-domain-transform.ftl")!!
+
+    transforms.forEach { transform ->
+   // Apply the kotlin template once for each type domain... this creates one `*.generated.kt` file per domain.
+        val renderModel = KotlinCrossDomainFreeMarkerGlobals(
+            namespace = namespace,
+            transform = transform,
+            generatedDate = OffsetDateTime.now()
+        )
+
+        val outputFile = File(
+            outputDirectory,
+            "${transform.sourceDomainDifference.kotlinName}To${transform.destDomainKotlinName}.$KOTLIN_SOURCE_SUFFIX"
+        )
+
+        PrintWriter(outputFile).use { printWriter ->
+            template.process(renderModel, printWriter)
+        }
+    }
 }

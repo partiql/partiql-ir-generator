@@ -86,7 +86,3 @@ abstract class ${class_name} : DomainVisitorTransformBase() {
 }
 [/#macro]
 
-[#--Always generate a visitor transform for domain to same domain --]
-[@visitor_transform_class "VisitorTransform" domain domain.kotlinName/]
-
-

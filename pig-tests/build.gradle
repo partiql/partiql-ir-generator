@@ -62,7 +62,6 @@ universesToGenerate.each({ u ->
         group 'pig'
         def pathToPig = new File(projectDir, '../pig/build/install/pig/bin/pig').getCanonicalPath().toString()
         def pathToUniverseFile = Paths.get(projectDir.toString(), PIG_INPUT_DIR, "${u}.ion")
-        def pathToOutputFile = Paths.get(projectDir.toString(), PIG_OUTPUT_DIR, "${u}.kt")
 
         tasks.findByName("pig_all").dependsOn generateTask
 
@@ -74,13 +73,24 @@ universesToGenerate.each({ u ->
         doLast {
             exec {
                 workingDir projectDir
-                commandLine pathToPig, '-u', pathToUniverseFile, '-t', 'kotlin', '-n', PIG_TARGET_PACKAGE, '-o', pathToOutputFile
+                commandLine pathToPig, '-u', pathToUniverseFile, '-t', 'kotlin', '-n', PIG_TARGET_PACKAGE, '-d', PIG_OUTPUT_DIR
             }
         }
     }
 })
 
+// This task removes any *.generated.kt files left behind from previous builds runs.  Without this, there is nothing to
+// remove generated code for deleted and renamed PIG domains, which could be very confusing.
+tasks.register('clean-pig-generated-files', Delete) {
+    group 'pig'
+    delete fileTree(PIG_OUTPUT_DIR).matching {
+        include "*.generated.kt"
+    }
+}
+
+pig_all.dependsOn('clean-pig-generated-files')
+
+
 test {
     useJUnitPlatform()
 }
-

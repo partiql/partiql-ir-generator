@@ -19,7 +19,7 @@ import freemarker.template.Configuration
 import freemarker.template.TemplateExceptionHandler
 import freemarker.template.TemplateMethodModelEx
 import freemarker.template.TemplateModelException
-import org.partiql.pig.generator.kotlin.KotlinFreeMarkerGlobals
+import org.partiql.pig.generator.kotlin.KotlinDomainFreeMarkerGlobals
 import org.partiql.pig.util.snakeToCamelCase
 import org.partiql.pig.util.snakeToPascalCase
 
@@ -33,7 +33,7 @@ internal fun Configuration.setClassLoaderForTemplates() {
     // Specify the source where the template files come from. Here we set a
     // the classloader of [TopLevelFreeMarkerGlobals] and set the root package.
     this.setClassLoaderForTemplateLoading(
-        KotlinFreeMarkerGlobals::class.java.classLoader,
+        KotlinDomainFreeMarkerGlobals::class.java.classLoader,
         "/org/partiql/pig/templates")
 }
 
