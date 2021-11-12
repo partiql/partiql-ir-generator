@@ -1,7 +1,7 @@
 [#ftl output_format="plainText"]
-[#-- @ftlvariable name="universe" type="org.partiql.pig.generator.kotlin.KTypeUniverse" --]
+[#-- @ftlvariable name="domain" type="org.partiql.pig.generator.kotlin.KTypeDomain" --]
 
-[#macro tuple_walker_body t visitSuffix]
+[#macro tuple_visitor_walker_body t visitSuffix]
     [@indent count=4]
     visit${visitSuffix}(node)
         [#list t.properties as p]
@@ -17,6 +17,7 @@
     [/@indent]
 [/#macro]
 
+[#macro visitor_class]
 open class Visitor : DomainVisitorBase() {
     ////////////////////////////////////////////////////////////////////////////
     // Visit Functions
@@ -50,7 +51,7 @@ open class Visitor : DomainVisitorBase() {
     //////////////////////////////////////
     [#items as t]
     open fun walk${t.kotlinName}(node: ${domain.kotlinName}.${t.kotlinName}) {
-        [@tuple_walker_body t t.kotlinName/][#t]
+        [@tuple_visitor_walker_body t t.kotlinName/][#t]
     }
 
     [/#items]
@@ -70,9 +71,10 @@ open class Visitor : DomainVisitorBase() {
 
 [#list s.variants as t]
     open fun walk${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}) {
-        [@tuple_walker_body t "${s.kotlinName}${t.kotlinName}"/]
+        [@tuple_visitor_walker_body t "${s.kotlinName}${t.kotlinName}"/]
     }
 
 [/#list]
 [/#list]
 }
+[/#macro]

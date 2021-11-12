@@ -22,15 +22,17 @@ import java.io.PrintStream
 
 class CommandLineParser {
     private enum class LanguageTargetType(
-        val requireNamespace: Boolean = false,
-        val requireTemplate: Boolean = false
+        val requireNamespace: Boolean,
+        val requireTemplateFile: Boolean,
+        val requireOutputFile: Boolean,
+        val requireOutputDirectory: Boolean
     ) {
-        KOTLIN(requireNamespace = true),
-        CUSTOM(requireTemplate = true),
-        HTML
+        KOTLIN(requireNamespace = true, requireTemplateFile = false, requireOutputFile = false, requireOutputDirectory = true),
+        CUSTOM(requireNamespace = false, requireTemplateFile = true, requireOutputFile = true, requireOutputDirectory = false),
+        HTML(requireNamespace = false, requireTemplateFile = false, requireOutputFile = true, requireOutputDirectory = false)
     }
 
-    private object languageTargetTypeValueConverter : ValueConverter<LanguageTargetType> {
+    private object LanguageTargetTypeValueConverter : ValueConverter<LanguageTargetType> {
         private val lookup = LanguageTargetType.values().associateBy { it.name.toLowerCase() }
 
         override fun convert(value: String?): LanguageTargetType {
@@ -52,15 +54,27 @@ class CommandLineParser {
             return """PartiQL I.R. Generator
                 |
                 |${super.format(options)}
+                |Each target requires certain arguments:
+                |
+                |   --target=kotlin requires --namespace=<ns> and --output-directory=<out-dir>
+                |   --target=custom requires --template=<path-to-template> and --output-file=<generated-file>
+                |   --target=html   requires --output-file=<output-html-file>
+                |
                 |Notes:
                 |
-                |  --target=kotlin requires --namespace=<ns>
-                |  --target=custom requires --template=<path-to-template>
+                |   If -d or --output-directory is specified and the directory does not exist, it will be created. 
                 | 
                 |Examples:
                 |
-                |  pig --target=kotlin --universe=universe.ion --output=example.kt --namespace=org.example.domain
-                |  pig --target=custom --universe=universe.ion --output=example.txt --template=template.ftl
+                |  pig --target=kotlin \   
+                |      --universe=universe.ion \ 
+                |      --output-directory=generated-src \
+                |      --namespace=org.example.domain
+                |  
+                |  pig --target=custom \
+                |      --universe=universe.ion \ 
+                |      --output-file=example.txt \
+                |      --template=template.ftl 
                 |     
         """.trimMargin()
         }
@@ -76,19 +90,21 @@ class CommandLineParser {
         .ofType(File::class.java)
         .required()
 
-    private val outputOpt = optParser.acceptsAll(listOf("output", "o"), "Generated output file")
-        .withRequiredArg()
-        .ofType(File::class.java)
-        .required()
-
     private val targetTypeOpt = optParser.acceptsAll(listOf("target", "t"), "Target language")
         .withRequiredArg()
-        //.ofType(LanguageTargetType::class.java)
-        .withValuesConvertedBy(languageTargetTypeValueConverter)
+        .withValuesConvertedBy(LanguageTargetTypeValueConverter)
         .required()
 
-    private val namespaceOpt = optParser.acceptsAll(listOf("namespace", "n"), "Namespace for generated code")
+    private val outputFileOpt = optParser.acceptsAll(listOf("output-file", "o"), "Generated output file (for targets that output a single file)")
         .withRequiredArg()
+        .ofType(File::class.java)
+
+    private val outputDirectoryOpt = optParser.acceptsAll(listOf("output-directory", "d"), "Generated output directory (for targets that output multiple files)")
+        .withRequiredArg()
+        .ofType(File::class.java)
+
+    private val namespaceOpt = optParser.acceptsAll(listOf("namespace", "n"), "Namespace for generated code")
+        .withOptionalArg()
         .ofType(String::class.java)
 
     private val templateOpt = optParser.acceptsAll(listOf("template", "e"), "Path to an Apache FreeMarker template")
@@ -118,8 +134,8 @@ class CommandLineParser {
                     // !! is fine in this case since we define these options as .required() above.
                     val typeUniverseFile: File = optSet.valueOf(universeOpt)!!
                     val targetType = optSet.valueOf(targetTypeOpt)!!
-                    val outputFile: File = optSet.valueOf(outputOpt)!!
 
+                    // --namespace
                     if (targetType.requireNamespace) {
                         if (!optSet.has(namespaceOpt)) {
                             return Command.InvalidCommandLineArguments(
@@ -130,7 +146,30 @@ class CommandLineParser {
                             "The selected language target does not allow the --namespace argument")
                     }
 
-                    if(targetType.requireTemplate) {
+                    // --output-file
+                    if (targetType.requireOutputFile) {
+                        if (!optSet.has(outputFileOpt)) {
+                            return Command.InvalidCommandLineArguments(
+                                "The selected language target requires the --output-file argument")
+                        }
+                    } else if(optSet.has(outputFileOpt)) {
+                        return Command.InvalidCommandLineArguments(
+                            "The selected language target does not allow the --output-file argument")
+                    }
+
+                    // --output-directory
+                    if (targetType.requireOutputDirectory) {
+                        if (!optSet.has(outputDirectoryOpt)) {
+                            return Command.InvalidCommandLineArguments(
+                                "The selected language target requires the --output-directory argument")
+                        }
+                    } else if(optSet.has(outputDirectoryOpt)) {
+                        return Command.InvalidCommandLineArguments(
+                            "The selected language target does not allow the --output-directory argument")
+                    }
+
+                    // --template
+                    if(targetType.requireTemplateFile) {
                         if(!optSet.has(templateOpt)) {
                             return Command.InvalidCommandLineArguments("The selected language target requires the --template argument")
                         }
@@ -140,12 +179,18 @@ class CommandLineParser {
                     }
 
                     val target = when(targetType) {
-                        LanguageTargetType.HTML -> TargetLanguage.Html
-                        LanguageTargetType.KOTLIN -> TargetLanguage.Kotlin(optSet.valueOf(namespaceOpt))
-                        LanguageTargetType.CUSTOM -> TargetLanguage.Custom(optSet.valueOf(templateOpt))
+                        LanguageTargetType.HTML -> TargetLanguage.Html(optSet.valueOf(outputFileOpt) as File)
+                        LanguageTargetType.KOTLIN -> TargetLanguage.Kotlin(
+                            namespace = optSet.valueOf(namespaceOpt) as String,
+                            outputDirectory = optSet.valueOf(outputDirectoryOpt) as File
+                        )
+                        LanguageTargetType.CUSTOM -> TargetLanguage.Custom(
+                            templateFile = optSet.valueOf(templateOpt),
+                            outputFile = optSet.valueOf(outputFileOpt) as File
+                        )
                     }
 
-                    Command.Generate(typeUniverseFile, outputFile, target)
+                    Command.Generate(typeUniverseFile, target)
                 }
             }
         } catch(ex: OptionException) {
