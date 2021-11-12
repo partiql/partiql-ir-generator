@@ -183,8 +183,8 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
     /**
      * Validate the ordering of argument arities.  Rules are:
      *
-     * - A product may have zero or more required arguments followed by only one of the following:
-     * - One or more optional arguments  - A single variadic argument.
+     * The elements in a product follows the pattern: (REQUIRED|OPTIONAL)*[VARIADIC]?
+     * Meaning that there can be any number of REQUIRED or OPTIONAL in any order, followed by 0 or 1 VARIADIC.
      *
      *  This is implemented as a simple state machine.
      */
@@ -194,41 +194,18 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
         p.namedElements.forEach { element ->
             val arity = element.typeReference.arity
             when (currentState) {
-                ArgumentState.REQUIRED -> {
-                    when (arity) {
-                        Arity.Required -> { /* do nothing, it's all good */
-                        }
-                        is Arity.Optional -> {
-                            currentState = ArgumentState.OPTIONAL
-                        }
-                        is Arity.Variadic -> {
-                            currentState = ArgumentState.VARIADIC
-                        }
-                    }
-                }
-                ArgumentState.OPTIONAL -> {
-                    when (arity) {
-                        Arity.Required -> {
-                            semanticError(element.metas, SemanticErrorContext.RequiredElementAfterOptional)
-                        }
-                        is Arity.Optional -> {/* do nothing, it's all good */
-                        }
-                        is Arity.Variadic -> {
-                            semanticError(element.metas, SemanticErrorContext.ProductCannotHaveBothOptionalAndVariadicElements)
-                        }
+                ArgumentState.REQUIRED, ArgumentState.OPTIONAL -> {
+                    currentState = when (arity) {
+                        is Arity.Required -> ArgumentState.REQUIRED
+                        is Arity.Optional -> ArgumentState.OPTIONAL
+                        is Arity.Variadic -> ArgumentState.VARIADIC
                     }
                 }
                 ArgumentState.VARIADIC -> {
                     when (arity) {
-                        Arity.Required -> {
-                            semanticError(element.metas, SemanticErrorContext.RequiredElementAfterVariadic)
-                        }
-                        is Arity.Optional -> {
-                            semanticError(element.metas, SemanticErrorContext.OptionalElementAfterVariadic)
-                        }
-                        is Arity.Variadic -> {
-                            semanticError(element.metas, SemanticErrorContext.MoreThanOneVariadicElement)
-                        }
+                        is Arity.Required -> semanticError(element.metas, SemanticErrorContext.RequiredElementAfterVariadic)
+                        is Arity.Optional -> semanticError(element.metas, SemanticErrorContext.OptionalElementAfterVariadic)
+                        is Arity.Variadic -> semanticError(element.metas, SemanticErrorContext.MoreThanOneVariadicElement)
                     }
                 }
             }
