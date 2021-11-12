@@ -188,7 +188,6 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
      *
      *  This is implemented as a simple state machine.
      */
-
     private fun checkProductArgumentOrder(p: DataType.UserType.Tuple) {
         var currentState = ArgumentState.REQUIRED
         p.namedElements.forEach { element ->

@@ -38,8 +38,6 @@ dependencies {
     implementation 'com.amazon.ion:ion-element:0.2.0'
     //implementation ':runtime'
 
-    implementation project(':pig-runtime')
-
     // test-time dependencies
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
