@@ -63,6 +63,13 @@ class TypeDomainSemanticCheckerTests {
             TestCase("(define some_domain (domain (sum empty_sum)))",
                      makeErr(1, 29, SemanticErrorContext.EmptySumType("empty_sum"))),
 
+            // Product element arity ordering
+            TestCase("(define some_domain (domain (product some_product x::(? int) y::int)))",
+                     makeErr(1, 62, SemanticErrorContext.RequiredElementAfterOptional)),
+
+            TestCase("(define some_domain (domain (product some_product x::(? int) y::(* int 1))))",
+                     makeErr(1, 62, SemanticErrorContext.ProductCannotHaveBothOptionalAndVariadicElements)),
+
             TestCase("(define some_domain (domain (product some_product x::(* int 1) y::int)))",
                      makeErr(1, 64, SemanticErrorContext.RequiredElementAfterVariadic)),
 

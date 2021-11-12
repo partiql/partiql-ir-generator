@@ -41,6 +41,12 @@ sealed class SemanticErrorContext(val msgFormatter: () -> String): ErrorContext 
     data class NotATypeName(val variantName: String)
         : SemanticErrorContext({ "Cannot use a variant name '$variantName' here"})
 
+    object RequiredElementAfterOptional
+        : SemanticErrorContext({ "Required fields not allowed after optional fields"})
+
+    object ProductCannotHaveBothOptionalAndVariadicElements
+        : SemanticErrorContext({ "A product cannot have both optional and variadic fields"})
+
     object RequiredElementAfterVariadic
         : SemanticErrorContext({ "Required fields are not allowed after a variadic field" })
 
