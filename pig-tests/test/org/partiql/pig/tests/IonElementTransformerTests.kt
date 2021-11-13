@@ -353,6 +353,244 @@ class IonElementTransformerTests {
             ))
     }
 
+
+
+    @ParameterizedTest
+    @ArgumentsSource(RequiredOptionalVariadicTestArgumentsProvider::class)
+    fun requiredOptionalVariadic(tc: TestCase) = runTestCase(tc)
+    class RequiredOptionalVariadicTestArgumentsProvider: ArgumentsProviderBase() {
+        override fun getParameters(): List<Any> = listOf(
+
+            // required_optional
+
+            TestCase(
+                TestDomain.build { requiredOptional(1L, 1L) },
+                "(required_optional 1 1)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptional(1L, null) },
+                "(required_optional 1 null)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptional(1L) },
+                "(required_optional 1 null)"
+            ),
+
+            // optional_required
+
+            TestCase(
+                TestDomain.build { optionalRequired(1L, 1L) },
+                "(optional_required 1 1)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequired(null, 1L) },
+                "(optional_required null 1)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequired(second = 1L) },
+                "(optional_required null 1)"
+            ),
+
+            // required_variadic
+
+            TestCase(
+                TestDomain.build { requiredVariadic(0L, listOf()) },
+                "(required_variadic 0)"
+            ),
+            TestCase(
+                TestDomain.build { requiredVariadic(0L, listOf(1L)) },
+                "(required_variadic 0 1)"
+            ),
+            TestCase(
+                TestDomain.build { requiredVariadic(0L, listOf(1L, 2L)) },
+                "(required_variadic 0 1 2)"
+            ),
+            TestCase(
+                TestDomain.build { requiredVariadic(0L, listOf(1L, 2L, 3L)) },
+                "(required_variadic 0 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { requiredVariadic(0L) },
+                "(required_variadic 0)"
+            ),
+            TestCase(
+                TestDomain.build { requiredVariadic(0L, 1L) },
+                "(required_variadic 0 1)"
+            ),
+            TestCase(
+                TestDomain.build { requiredVariadic(0L, 1L, 2L) },
+                "(required_variadic 0 1 2)"
+            ),
+            TestCase(
+                TestDomain.build { requiredVariadic(0L, 1L, 2L, 3L) },
+                "(required_variadic 0 1 2 3)"
+            ),
+
+            // optional_variadic
+
+            TestCase(
+                TestDomain.build { optionalVariadic(0L, listOf()) },
+                "(optional_variadic 0)"
+            ),
+            TestCase(
+                TestDomain.build { optionalVariadic(0L, listOf(1L)) },
+                "(optional_variadic 0 1)"
+            ),
+            TestCase(
+                TestDomain.build { optionalVariadic(0L, listOf(1L, 2L)) },
+                "(optional_variadic 0 1 2)"
+            ),
+            TestCase(
+                TestDomain.build { optionalVariadic(0L, listOf(1L, 2L, 3L)) },
+                "(optional_variadic 0 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { optionalVariadic(0L) },
+                "(optional_variadic 0)"
+            ),
+            TestCase(
+                TestDomain.build { optionalVariadic(0L, 1L) },
+                "(optional_variadic 0 1)"
+            ),
+            TestCase(
+                TestDomain.build { optionalVariadic(0L, 1L, 2L) },
+                "(optional_variadic 0 1 2)"
+            ),
+            TestCase(
+                TestDomain.build { optionalVariadic(0L, 1L, 2L, 3L) },
+                "(optional_variadic 0 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { optionalVariadic(null, listOf(1L, 2L, 3L)) },
+                "(optional_variadic null 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { optionalVariadic(null, 1L, 2L, 3L) },
+                "(optional_variadic null 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { optionalVariadic(null) },
+                "(optional_variadic null)"
+            ),
+            TestCase(
+                TestDomain.build { optionalVariadic(second = listOf(1L)) },
+                "(optional_variadic null 1)"
+            ),
+
+            // required_optional_variadic
+
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L, 1L, listOf()) },
+                "(required_optional_variadic 0 1)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L, 1L, listOf(2L)) },
+                "(required_optional_variadic 0 1 2)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L, 1L, listOf(2L, 3L)) },
+                "(required_optional_variadic 0 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L, 1L, listOf(2L, 3L, 4L)) },
+                "(required_optional_variadic 0 1 2 3 4)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L, 1L) },
+                "(required_optional_variadic 0 1)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L, 1L, 2L) },
+                "(required_optional_variadic 0 1 2)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L, 1L, 2L, 3L) },
+                "(required_optional_variadic 0 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L, 1L, 2L, 3L, 4L) },
+                "(required_optional_variadic 0 1 2 3 4)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L, null, listOf(1L, 2L, 3L)) },
+                "(required_optional_variadic 0 null 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L, null, 1L, 2L, 3L) },
+                "(required_optional_variadic 0 null 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L, null) },
+                "(required_optional_variadic 0 null)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L) },
+                "(required_optional_variadic 0 null)"
+            ),
+            TestCase(
+                TestDomain.build { requiredOptionalVariadic(0L, third = listOf(1L)) },
+                "(required_optional_variadic 0 null 1)"
+            ),
+
+            // optional_required_variadic
+
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(0L, 1L, listOf()) },
+                "(optional_required_variadic 0 1)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(0L, 1L, listOf(2L)) },
+                "(optional_required_variadic 0 1 2)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(0L, 1L, listOf(2L, 3L)) },
+                "(optional_required_variadic 0 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(0L, 1L, listOf(2L, 3L, 4L)) },
+                "(optional_required_variadic 0 1 2 3 4)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(0L, 1L) },
+                "(optional_required_variadic 0 1)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(0L, 1L, 2L) },
+                "(optional_required_variadic 0 1 2)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(0L, 1L, 2L, 3L) },
+                "(optional_required_variadic 0 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(0L, 1L, 2L, 3L, 4L) },
+                "(optional_required_variadic 0 1 2 3 4)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(null, 0L, listOf(1L, 2L, 3L)) },
+                "(optional_required_variadic null 0 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(null, 0L, 1L, 2L, 3L) },
+                "(optional_required_variadic null 0 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(null, 0L) },
+                "(optional_required_variadic null 0)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(second = 0L, third = listOf(1L, 2L , 3L)) },
+                "(optional_required_variadic null 0 1 2 3)"
+            ),
+            TestCase(
+                TestDomain.build { optionalRequiredVariadic(second = 0L) },
+                "(optional_required_variadic null 0)"
+            )
+        )
+    }
+
+
+
     @ParameterizedTest
     @ArgumentsSource(SumTestArgumentsProvider::class)
     fun sumTests(tc: TestCase) {
