@@ -489,6 +489,134 @@ class TestDomain private constructor() {
         
         
         /**
+         * Creates an instance of [TestDomain.Optional1].
+         */
+        fun optional1(
+            value: Long? = null,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.Optional1 =
+            TestDomain.Optional1(
+                value = value?.asPrimitive(),
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.Optional1].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        fun optional1_(
+            value: org.partiql.pig.runtime.LongPrimitive? = null,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.Optional1 =
+            TestDomain.Optional1(
+                value = value,
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.Optional2].
+         */
+        fun optional2(
+            first: Long? = null,
+            second: Long? = null,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.Optional2 =
+            TestDomain.Optional2(
+                first = first?.asPrimitive(),
+                second = second?.asPrimitive(),
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.Optional2].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        fun optional2_(
+            first: org.partiql.pig.runtime.LongPrimitive? = null,
+            second: org.partiql.pig.runtime.LongPrimitive? = null,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.Optional2 =
+            TestDomain.Optional2(
+                first = first,
+                second = second,
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.RequiredOptional].
+         */
+        fun requiredOptional(
+            first: Long,
+            second: Long? = null,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.RequiredOptional =
+            TestDomain.RequiredOptional(
+                first = first.asPrimitive(),
+                second = second?.asPrimitive(),
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.RequiredOptional].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        fun requiredOptional_(
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: org.partiql.pig.runtime.LongPrimitive? = null,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.RequiredOptional =
+            TestDomain.RequiredOptional(
+                first = first,
+                second = second,
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.OptionalRequired].
+         */
+        fun optionalRequired(
+            first: Long? = null,
+            second: Long,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.OptionalRequired =
+            TestDomain.OptionalRequired(
+                first = first?.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.OptionalRequired].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        fun optionalRequired_(
+            first: org.partiql.pig.runtime.LongPrimitive? = null,
+            second: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.OptionalRequired =
+            TestDomain.OptionalRequired(
+                first = first,
+                second = second,
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
          * Creates an instance of [TestDomain.VariadicMin0].
          */
         fun variadicMin0(
@@ -670,63 +798,277 @@ class TestDomain private constructor() {
         
         
         /**
-         * Creates an instance of [TestDomain.Optional1].
+         * Creates an instance of [TestDomain.RequiredVariadic].
          */
-        fun optional1(
-            value: Long? = null,
+        fun requiredVariadic(
+            first: Long,
+            second: kotlin.collections.List<Long> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Optional1 =
-            TestDomain.Optional1(
-                value = value?.asPrimitive(),
+        ): TestDomain.RequiredVariadic =
+            TestDomain.RequiredVariadic(
+                first = first.asPrimitive(),
+                second = second.map { it.asPrimitive() },
                 metas = newMetaContainer() + metas
             )
         
         /**
-         * Creates an instance of [TestDomain.Optional1].
+         * Creates an instance of [TestDomain.RequiredVariadic].
          *
          * Use this variant when metas must be passed to primitive child elements.
          *
          * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
          */
-        fun optional1_(
-            value: org.partiql.pig.runtime.LongPrimitive? = null,
+        fun requiredVariadic_(
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
             metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Optional1 =
-            TestDomain.Optional1(
-                value = value,
-                metas = newMetaContainer() + metas
-            )
-        
-        
-        /**
-         * Creates an instance of [TestDomain.Optional2].
-         */
-        fun optional2(
-            first: Long? = null,
-            second: Long? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Optional2 =
-            TestDomain.Optional2(
-                first = first?.asPrimitive(),
-                second = second?.asPrimitive(),
-                metas = newMetaContainer() + metas
-            )
-        
-        /**
-         * Creates an instance of [TestDomain.Optional2].
-         *
-         * Use this variant when metas must be passed to primitive child elements.
-         *
-         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
-         */
-        fun optional2_(
-            first: org.partiql.pig.runtime.LongPrimitive? = null,
-            second: org.partiql.pig.runtime.LongPrimitive? = null,
-            metas: MetaContainer = emptyMetaContainer()
-        ): TestDomain.Optional2 =
-            TestDomain.Optional2(
+        ): TestDomain.RequiredVariadic =
+            TestDomain.RequiredVariadic(
                 first = first,
                 second = second,
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.RequiredVariadic].
+         */
+        fun requiredVariadic(
+            first: Long,
+            vararg second: Long,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.RequiredVariadic =
+            TestDomain.RequiredVariadic(
+                first = first?.asPrimitive(),
+                second = second.map { it.asPrimitive() },
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.RequiredVariadic].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        fun requiredVariadic_(
+            first: org.partiql.pig.runtime.LongPrimitive,
+            vararg second: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.RequiredVariadic =
+            TestDomain.RequiredVariadic(
+                first = first,
+                second = second.toList(),
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.OptionalVariadic].
+         */
+        fun optionalVariadic(
+            first: Long? = null,
+            second: kotlin.collections.List<Long> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.OptionalVariadic =
+            TestDomain.OptionalVariadic(
+                first = first?.asPrimitive(),
+                second = second.map { it.asPrimitive() },
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.OptionalVariadic].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        fun optionalVariadic_(
+            first: org.partiql.pig.runtime.LongPrimitive? = null,
+            second: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.OptionalVariadic =
+            TestDomain.OptionalVariadic(
+                first = first,
+                second = second,
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.OptionalVariadic].
+         */
+        fun optionalVariadic(
+            first: Long? = null,
+            vararg second: Long,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.OptionalVariadic =
+            TestDomain.OptionalVariadic(
+                first = first?.asPrimitive(),
+                second = second.map { it.asPrimitive() },
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.OptionalVariadic].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        fun optionalVariadic_(
+            first: org.partiql.pig.runtime.LongPrimitive? = null,
+            vararg second: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.OptionalVariadic =
+            TestDomain.OptionalVariadic(
+                first = first,
+                second = second.toList(),
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.RequiredOptionalVariadic].
+         */
+        fun requiredOptionalVariadic(
+            first: Long,
+            second: Long? = null,
+            third: kotlin.collections.List<Long> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.RequiredOptionalVariadic =
+            TestDomain.RequiredOptionalVariadic(
+                first = first.asPrimitive(),
+                second = second?.asPrimitive(),
+                third = third.map { it.asPrimitive() },
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.RequiredOptionalVariadic].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        fun requiredOptionalVariadic_(
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: org.partiql.pig.runtime.LongPrimitive? = null,
+            third: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.RequiredOptionalVariadic =
+            TestDomain.RequiredOptionalVariadic(
+                first = first,
+                second = second,
+                third = third,
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.RequiredOptionalVariadic].
+         */
+        fun requiredOptionalVariadic(
+            first: Long,
+            second: Long? = null,
+            vararg third: Long,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.RequiredOptionalVariadic =
+            TestDomain.RequiredOptionalVariadic(
+                first = first?.asPrimitive(),
+                second = second?.asPrimitive(),
+                third = third.map { it.asPrimitive() },
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.RequiredOptionalVariadic].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        fun requiredOptionalVariadic_(
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: org.partiql.pig.runtime.LongPrimitive? = null,
+            vararg third: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.RequiredOptionalVariadic =
+            TestDomain.RequiredOptionalVariadic(
+                first = first,
+                second = second,
+                third = third.toList(),
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.OptionalRequiredVariadic].
+         */
+        fun optionalRequiredVariadic(
+            first: Long? = null,
+            second: Long,
+            third: kotlin.collections.List<Long> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.OptionalRequiredVariadic =
+            TestDomain.OptionalRequiredVariadic(
+                first = first?.asPrimitive(),
+                second = second.asPrimitive(),
+                third = third.map { it.asPrimitive() },
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.OptionalRequiredVariadic].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        fun optionalRequiredVariadic_(
+            first: org.partiql.pig.runtime.LongPrimitive? = null,
+            second: org.partiql.pig.runtime.LongPrimitive,
+            third: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = emptyList(),
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.OptionalRequiredVariadic =
+            TestDomain.OptionalRequiredVariadic(
+                first = first,
+                second = second,
+                third = third,
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.OptionalRequiredVariadic].
+         */
+        fun optionalRequiredVariadic(
+            first: Long? = null,
+            second: Long,
+            vararg third: Long,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.OptionalRequiredVariadic =
+            TestDomain.OptionalRequiredVariadic(
+                first = first?.asPrimitive(),
+                second = second?.asPrimitive(),
+                third = third.map { it.asPrimitive() },
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.OptionalRequiredVariadic].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        fun optionalRequiredVariadic_(
+            first: org.partiql.pig.runtime.LongPrimitive? = null,
+            second: org.partiql.pig.runtime.LongPrimitive,
+            vararg third: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.OptionalRequiredVariadic =
+            TestDomain.OptionalRequiredVariadic(
+                first = first,
+                second = second,
+                third = third.toList(),
                 metas = newMetaContainer() + metas
             )
         
@@ -2060,6 +2402,226 @@ class TestDomain private constructor() {
         override fun hashCode(): Int = myHashCode
     }
     
+    class Optional1(
+        val value: org.partiql.pig.runtime.LongPrimitive?,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): TestDomainNode() {
+    
+        override fun copy(metas: MetaContainer): Optional1 =
+            Optional1(
+                value = value,
+                metas = metas)
+    
+        override fun withMeta(metaKey: String, metaValue: Any): Optional1 =
+            Optional1(
+                value = value,
+                metas = metas + metaContainerOf(metaKey to metaValue))
+    
+        override fun toIonElement(): SexpElement {
+            val elements = ionSexpOf(
+                ionSymbol("optional_1"),
+                value?.toIonElement() ?: ionNull(),
+                metas = metas)
+            return elements
+        }
+    
+        fun copy(
+            value: org.partiql.pig.runtime.LongPrimitive? = this.value,
+            metas: MetaContainer = this.metas
+        ) =
+            Optional1(
+                value,
+                metas)
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != Optional1::class.java) return false
+    
+            other as Optional1
+            if (value != other.value) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
+            var hc = value.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
+    class Optional2(
+        val first: org.partiql.pig.runtime.LongPrimitive?,
+        val second: org.partiql.pig.runtime.LongPrimitive?,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): TestDomainNode() {
+    
+        override fun copy(metas: MetaContainer): Optional2 =
+            Optional2(
+                first = first,
+                second = second,
+                metas = metas)
+    
+        override fun withMeta(metaKey: String, metaValue: Any): Optional2 =
+            Optional2(
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
+    
+        override fun toIonElement(): SexpElement {
+            val elements = ionSexpOf(
+                ionSymbol("optional_2"),
+                first?.toIonElement() ?: ionNull(),
+                second?.toIonElement() ?: ionNull(),
+                metas = metas)
+            return elements
+        }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.LongPrimitive? = this.first,
+            second: org.partiql.pig.runtime.LongPrimitive? = this.second,
+            metas: MetaContainer = this.metas
+        ) =
+            Optional2(
+                first,
+                second,
+                metas)
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != Optional2::class.java) return false
+    
+            other as Optional2
+            if (first != other.first) return false
+            if (second != other.second) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
+    class RequiredOptional(
+        val first: org.partiql.pig.runtime.LongPrimitive,
+        val second: org.partiql.pig.runtime.LongPrimitive?,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): TestDomainNode() {
+    
+        override fun copy(metas: MetaContainer): RequiredOptional =
+            RequiredOptional(
+                first = first,
+                second = second,
+                metas = metas)
+    
+        override fun withMeta(metaKey: String, metaValue: Any): RequiredOptional =
+            RequiredOptional(
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
+    
+        override fun toIonElement(): SexpElement {
+            val elements = ionSexpOf(
+                ionSymbol("required_optional"),
+                first.toIonElement(),
+                second?.toIonElement() ?: ionNull(),
+                metas = metas)
+            return elements
+        }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.LongPrimitive = this.first,
+            second: org.partiql.pig.runtime.LongPrimitive? = this.second,
+            metas: MetaContainer = this.metas
+        ) =
+            RequiredOptional(
+                first,
+                second,
+                metas)
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != RequiredOptional::class.java) return false
+    
+            other as RequiredOptional
+            if (first != other.first) return false
+            if (second != other.second) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
+    class OptionalRequired(
+        val first: org.partiql.pig.runtime.LongPrimitive?,
+        val second: org.partiql.pig.runtime.LongPrimitive,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): TestDomainNode() {
+    
+        override fun copy(metas: MetaContainer): OptionalRequired =
+            OptionalRequired(
+                first = first,
+                second = second,
+                metas = metas)
+    
+        override fun withMeta(metaKey: String, metaValue: Any): OptionalRequired =
+            OptionalRequired(
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
+    
+        override fun toIonElement(): SexpElement {
+            val elements = ionSexpOf(
+                ionSymbol("optional_required"),
+                first?.toIonElement() ?: ionNull(),
+                second.toIonElement(),
+                metas = metas)
+            return elements
+        }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.LongPrimitive? = this.first,
+            second: org.partiql.pig.runtime.LongPrimitive = this.second,
+            metas: MetaContainer = this.metas
+        ) =
+            OptionalRequired(
+                first,
+                second,
+                metas)
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != OptionalRequired::class.java) return false
+    
+            other as OptionalRequired
+            if (first != other.first) return false
+            if (second != other.second) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
     class VariadicMin0(
         val ints: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
         override val metas: MetaContainer = emptyMetaContainer()
@@ -2215,88 +2777,39 @@ class TestDomain private constructor() {
         override fun hashCode(): Int = myHashCode
     }
     
-    class Optional1(
-        val value: org.partiql.pig.runtime.LongPrimitive?,
+    class RequiredVariadic(
+        val first: org.partiql.pig.runtime.LongPrimitive,
+        val second: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
         override val metas: MetaContainer = emptyMetaContainer()
     ): TestDomainNode() {
     
-        override fun copy(metas: MetaContainer): Optional1 =
-            Optional1(
-                value = value,
-                metas = metas)
-    
-        override fun withMeta(metaKey: String, metaValue: Any): Optional1 =
-            Optional1(
-                value = value,
-                metas = metas + metaContainerOf(metaKey to metaValue))
-    
-        override fun toIonElement(): SexpElement {
-            val elements = ionSexpOf(
-                ionSymbol("optional_1"),
-                value?.toIonElement() ?: ionNull(),
-                metas = metas)
-            return elements
-        }
-    
-        fun copy(
-            value: org.partiql.pig.runtime.LongPrimitive? = this.value,
-            metas: MetaContainer = this.metas
-        ) =
-            Optional1(
-                value,
-                metas)
-    
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other.javaClass != Optional1::class.java) return false
-    
-            other as Optional1
-            if (value != other.value) return false
-            return true
-        }
-    
-        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
-            var hc = value.hashCode()
-            hc
-        }
-    
-        override fun hashCode(): Int = myHashCode
-    }
-    
-    class Optional2(
-        val first: org.partiql.pig.runtime.LongPrimitive?,
-        val second: org.partiql.pig.runtime.LongPrimitive?,
-        override val metas: MetaContainer = emptyMetaContainer()
-    ): TestDomainNode() {
-    
-        override fun copy(metas: MetaContainer): Optional2 =
-            Optional2(
+        override fun copy(metas: MetaContainer): RequiredVariadic =
+            RequiredVariadic(
                 first = first,
                 second = second,
                 metas = metas)
     
-        override fun withMeta(metaKey: String, metaValue: Any): Optional2 =
-            Optional2(
+        override fun withMeta(metaKey: String, metaValue: Any): RequiredVariadic =
+            RequiredVariadic(
                 first = first,
                 second = second,
                 metas = metas + metaContainerOf(metaKey to metaValue))
     
         override fun toIonElement(): SexpElement {
             val elements = ionSexpOf(
-                ionSymbol("optional_2"),
-                first?.toIonElement() ?: ionNull(),
-                second?.toIonElement() ?: ionNull(),
+                ionSymbol("required_variadic"),
+                first.toIonElement(),
+                *second.map { it.toIonElement() }.toTypedArray(),
                 metas = metas)
             return elements
         }
     
         fun copy(
-            first: org.partiql.pig.runtime.LongPrimitive? = this.first,
-            second: org.partiql.pig.runtime.LongPrimitive? = this.second,
+            first: org.partiql.pig.runtime.LongPrimitive = this.first,
+            second: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.second,
             metas: MetaContainer = this.metas
         ) =
-            Optional2(
+            RequiredVariadic(
                 first,
                 second,
                 metas)
@@ -2304,9 +2817,9 @@ class TestDomain private constructor() {
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
             if (this === other) return true
-            if (other.javaClass != Optional2::class.java) return false
+            if (other.javaClass != RequiredVariadic::class.java) return false
     
-            other as Optional2
+            other as RequiredVariadic
             if (first != other.first) return false
             if (second != other.second) return false
             return true
@@ -2315,6 +2828,193 @@ class TestDomain private constructor() {
         private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
             var hc = first.hashCode()
             hc = 31 * hc + second.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
+    class OptionalVariadic(
+        val first: org.partiql.pig.runtime.LongPrimitive?,
+        val second: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): TestDomainNode() {
+    
+        override fun copy(metas: MetaContainer): OptionalVariadic =
+            OptionalVariadic(
+                first = first,
+                second = second,
+                metas = metas)
+    
+        override fun withMeta(metaKey: String, metaValue: Any): OptionalVariadic =
+            OptionalVariadic(
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
+    
+        override fun toIonElement(): SexpElement {
+            val elements = ionSexpOf(
+                ionSymbol("optional_variadic"),
+                first?.toIonElement() ?: ionNull(),
+                *second.map { it.toIonElement() }.toTypedArray(),
+                metas = metas)
+            return elements
+        }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.LongPrimitive? = this.first,
+            second: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.second,
+            metas: MetaContainer = this.metas
+        ) =
+            OptionalVariadic(
+                first,
+                second,
+                metas)
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != OptionalVariadic::class.java) return false
+    
+            other as OptionalVariadic
+            if (first != other.first) return false
+            if (second != other.second) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
+    class RequiredOptionalVariadic(
+        val first: org.partiql.pig.runtime.LongPrimitive,
+        val second: org.partiql.pig.runtime.LongPrimitive?,
+        val third: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): TestDomainNode() {
+    
+        override fun copy(metas: MetaContainer): RequiredOptionalVariadic =
+            RequiredOptionalVariadic(
+                first = first,
+                second = second,
+                third = third,
+                metas = metas)
+    
+        override fun withMeta(metaKey: String, metaValue: Any): RequiredOptionalVariadic =
+            RequiredOptionalVariadic(
+                first = first,
+                second = second,
+                third = third,
+                metas = metas + metaContainerOf(metaKey to metaValue))
+    
+        override fun toIonElement(): SexpElement {
+            val elements = ionSexpOf(
+                ionSymbol("required_optional_variadic"),
+                first.toIonElement(),
+                second?.toIonElement() ?: ionNull(),
+                *third.map { it.toIonElement() }.toTypedArray(),
+                metas = metas)
+            return elements
+        }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.LongPrimitive = this.first,
+            second: org.partiql.pig.runtime.LongPrimitive? = this.second,
+            third: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.third,
+            metas: MetaContainer = this.metas
+        ) =
+            RequiredOptionalVariadic(
+                first,
+                second,
+                third,
+                metas)
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != RequiredOptionalVariadic::class.java) return false
+    
+            other as RequiredOptionalVariadic
+            if (first != other.first) return false
+            if (second != other.second) return false
+            if (third != other.third) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
+            hc = 31 * hc + third.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
+    class OptionalRequiredVariadic(
+        val first: org.partiql.pig.runtime.LongPrimitive?,
+        val second: org.partiql.pig.runtime.LongPrimitive,
+        val third: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive>,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): TestDomainNode() {
+    
+        override fun copy(metas: MetaContainer): OptionalRequiredVariadic =
+            OptionalRequiredVariadic(
+                first = first,
+                second = second,
+                third = third,
+                metas = metas)
+    
+        override fun withMeta(metaKey: String, metaValue: Any): OptionalRequiredVariadic =
+            OptionalRequiredVariadic(
+                first = first,
+                second = second,
+                third = third,
+                metas = metas + metaContainerOf(metaKey to metaValue))
+    
+        override fun toIonElement(): SexpElement {
+            val elements = ionSexpOf(
+                ionSymbol("optional_required_variadic"),
+                first?.toIonElement() ?: ionNull(),
+                second.toIonElement(),
+                *third.map { it.toIonElement() }.toTypedArray(),
+                metas = metas)
+            return elements
+        }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.LongPrimitive? = this.first,
+            second: org.partiql.pig.runtime.LongPrimitive = this.second,
+            third: kotlin.collections.List<org.partiql.pig.runtime.LongPrimitive> = this.third,
+            metas: MetaContainer = this.metas
+        ) =
+            OptionalRequiredVariadic(
+                first,
+                second,
+                third,
+                metas)
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != OptionalRequiredVariadic::class.java) return false
+    
+            other as OptionalRequiredVariadic
+            if (first != other.first) return false
+            if (second != other.second) return false
+            if (third != other.third) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
+            hc = 31 * hc + third.hashCode()
             hc
         }
     
@@ -3267,6 +3967,40 @@ class TestDomain private constructor() {
                         second,
                         metas = sexp.metas)
                 }
+                "optional_1" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 1))
+                    val value = sexp.getOptional(0)?.toLongPrimitive()
+                    TestDomain.Optional1(
+                        value,
+                        metas = sexp.metas)
+                }
+                "optional_2" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 2))
+                    val first = sexp.getOptional(0)?.toLongPrimitive()
+                    val second = sexp.getOptional(1)?.toLongPrimitive()
+                    TestDomain.Optional2(
+                        first,
+                        second,
+                        metas = sexp.metas)
+                }
+                "required_optional" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 2))
+                    val first = sexp.getRequired(0).toLongPrimitive()
+                    val second = sexp.getOptional(1)?.toLongPrimitive()
+                    TestDomain.RequiredOptional(
+                        first,
+                        second,
+                        metas = sexp.metas)
+                }
+                "optional_required" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 2))
+                    val first = sexp.getOptional(0)?.toLongPrimitive()
+                    val second = sexp.getRequired(1).toLongPrimitive()
+                    TestDomain.OptionalRequired(
+                        first,
+                        second,
+                        metas = sexp.metas)
+                }
                 "variadic_min_0" -> {
                     sexp.requireArityOrMalformed(IntRange(0, 2147483647))
                     val ints = sexp.values.drop(1).map { it.toLongPrimitive() }
@@ -3290,20 +4024,44 @@ class TestDomain private constructor() {
                         ints,
                         metas = sexp.metas)
                 }
-                "optional_1" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 1))
-                    val value = sexp.getOptional(0)?.toLongPrimitive()
-                    TestDomain.Optional1(
-                        value,
-                        metas = sexp.metas)
-                }
-                "optional_2" -> {
-                    sexp.requireArityOrMalformed(IntRange(0, 2))
-                    val first = sexp.getOptional(0)?.toLongPrimitive()
-                    val second = sexp.getOptional(1)?.toLongPrimitive()
-                    TestDomain.Optional2(
+                "required_variadic" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
+                    val first = sexp.getRequired(0).toLongPrimitive()
+                    val second = sexp.values.drop(2).map { it.toLongPrimitive() }
+                    TestDomain.RequiredVariadic(
                         first,
                         second,
+                        metas = sexp.metas)
+                }
+                "optional_variadic" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 2147483647))
+                    val first = sexp.getOptional(0)?.toLongPrimitive()
+                    val second = sexp.values.drop(2).map { it.toLongPrimitive() }
+                    TestDomain.OptionalVariadic(
+                        first,
+                        second,
+                        metas = sexp.metas)
+                }
+                "required_optional_variadic" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
+                    val first = sexp.getRequired(0).toLongPrimitive()
+                    val second = sexp.getOptional(1)?.toLongPrimitive()
+                    val third = sexp.values.drop(3).map { it.toLongPrimitive() }
+                    TestDomain.RequiredOptionalVariadic(
+                        first,
+                        second,
+                        third,
+                        metas = sexp.metas)
+                }
+                "optional_required_variadic" -> {
+                    sexp.requireArityOrMalformed(IntRange(1, 2147483647))
+                    val first = sexp.getOptional(0)?.toLongPrimitive()
+                    val second = sexp.getRequired(1).toLongPrimitive()
+                    val third = sexp.values.drop(3).map { it.toLongPrimitive() }
+                    TestDomain.OptionalRequiredVariadic(
+                        first,
+                        second,
+                        third,
                         metas = sexp.metas)
                 }
                 "domain_level_record" -> {
@@ -3459,11 +4217,17 @@ class TestDomain private constructor() {
         open fun visitIntAnswerPair(node: TestDomain.IntAnswerPair) { }
         open fun visitSymbolAnswerPair(node: TestDomain.SymbolAnswerPair) { }
         open fun visitAnswerSymbolPair(node: TestDomain.AnswerSymbolPair) { }
+        open fun visitOptional1(node: TestDomain.Optional1) { }
+        open fun visitOptional2(node: TestDomain.Optional2) { }
+        open fun visitRequiredOptional(node: TestDomain.RequiredOptional) { }
+        open fun visitOptionalRequired(node: TestDomain.OptionalRequired) { }
         open fun visitVariadicMin0(node: TestDomain.VariadicMin0) { }
         open fun visitVariadicMin1(node: TestDomain.VariadicMin1) { }
         open fun visitElementVariadic(node: TestDomain.ElementVariadic) { }
-        open fun visitOptional1(node: TestDomain.Optional1) { }
-        open fun visitOptional2(node: TestDomain.Optional2) { }
+        open fun visitRequiredVariadic(node: TestDomain.RequiredVariadic) { }
+        open fun visitOptionalVariadic(node: TestDomain.OptionalVariadic) { }
+        open fun visitRequiredOptionalVariadic(node: TestDomain.RequiredOptionalVariadic) { }
+        open fun visitOptionalRequiredVariadic(node: TestDomain.OptionalRequiredVariadic) { }
         open fun visitDomainLevelRecord(node: TestDomain.DomainLevelRecord) { }
         open fun visitProductWithRecord(node: TestDomain.ProductWithRecord) { }
         open fun visitTestSumTriplet(node: TestDomain.TestSumTriplet) { }
@@ -3620,6 +4384,33 @@ class TestDomain private constructor() {
             walkMetas(node.metas)
         }
     
+        open fun walkOptional1(node: TestDomain.Optional1) {
+            visitOptional1(node)
+            node.value?.let { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOptional2(node: TestDomain.Optional2) {
+            visitOptional2(node)
+            node.first?.let { walkLongPrimitive(it) }
+            node.second?.let { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkRequiredOptional(node: TestDomain.RequiredOptional) {
+            visitRequiredOptional(node)
+            walkLongPrimitive(node.first)
+            node.second?.let { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOptionalRequired(node: TestDomain.OptionalRequired) {
+            visitOptionalRequired(node)
+            node.first?.let { walkLongPrimitive(it) }
+            walkLongPrimitive(node.second)
+            walkMetas(node.metas)
+        }
+    
         open fun walkVariadicMin0(node: TestDomain.VariadicMin0) {
             visitVariadicMin0(node)
             node.ints.map { walkLongPrimitive(it) }
@@ -3639,16 +4430,33 @@ class TestDomain private constructor() {
             walkMetas(node.metas)
         }
     
-        open fun walkOptional1(node: TestDomain.Optional1) {
-            visitOptional1(node)
-            node.value?.let { walkLongPrimitive(it) }
+        open fun walkRequiredVariadic(node: TestDomain.RequiredVariadic) {
+            visitRequiredVariadic(node)
+            walkLongPrimitive(node.first)
+            node.second.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
     
-        open fun walkOptional2(node: TestDomain.Optional2) {
-            visitOptional2(node)
+        open fun walkOptionalVariadic(node: TestDomain.OptionalVariadic) {
+            visitOptionalVariadic(node)
             node.first?.let { walkLongPrimitive(it) }
+            node.second.map { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkRequiredOptionalVariadic(node: TestDomain.RequiredOptionalVariadic) {
+            visitRequiredOptionalVariadic(node)
+            walkLongPrimitive(node.first)
             node.second?.let { walkLongPrimitive(it) }
+            node.third.map { walkLongPrimitive(it) }
+            walkMetas(node.metas)
+        }
+    
+        open fun walkOptionalRequiredVariadic(node: TestDomain.OptionalRequiredVariadic) {
+            visitOptionalRequiredVariadic(node)
+            node.first?.let { walkLongPrimitive(it) }
+            walkLongPrimitive(node.second)
+            node.third.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
     
@@ -3812,11 +4620,17 @@ class TestDomain private constructor() {
         open protected fun visitIntAnswerPair(node: TestDomain.IntAnswerPair, accumulator: T): T = accumulator
         open protected fun visitSymbolAnswerPair(node: TestDomain.SymbolAnswerPair, accumulator: T): T = accumulator
         open protected fun visitAnswerSymbolPair(node: TestDomain.AnswerSymbolPair, accumulator: T): T = accumulator
+        open protected fun visitOptional1(node: TestDomain.Optional1, accumulator: T): T = accumulator
+        open protected fun visitOptional2(node: TestDomain.Optional2, accumulator: T): T = accumulator
+        open protected fun visitRequiredOptional(node: TestDomain.RequiredOptional, accumulator: T): T = accumulator
+        open protected fun visitOptionalRequired(node: TestDomain.OptionalRequired, accumulator: T): T = accumulator
         open protected fun visitVariadicMin0(node: TestDomain.VariadicMin0, accumulator: T): T = accumulator
         open protected fun visitVariadicMin1(node: TestDomain.VariadicMin1, accumulator: T): T = accumulator
         open protected fun visitElementVariadic(node: TestDomain.ElementVariadic, accumulator: T): T = accumulator
-        open protected fun visitOptional1(node: TestDomain.Optional1, accumulator: T): T = accumulator
-        open protected fun visitOptional2(node: TestDomain.Optional2, accumulator: T): T = accumulator
+        open protected fun visitRequiredVariadic(node: TestDomain.RequiredVariadic, accumulator: T): T = accumulator
+        open protected fun visitOptionalVariadic(node: TestDomain.OptionalVariadic, accumulator: T): T = accumulator
+        open protected fun visitRequiredOptionalVariadic(node: TestDomain.RequiredOptionalVariadic, accumulator: T): T = accumulator
+        open protected fun visitOptionalRequiredVariadic(node: TestDomain.OptionalRequiredVariadic, accumulator: T): T = accumulator
         open protected fun visitDomainLevelRecord(node: TestDomain.DomainLevelRecord, accumulator: T): T = accumulator
         open protected fun visitProductWithRecord(node: TestDomain.ProductWithRecord, accumulator: T): T = accumulator
         open protected fun visitTestSumTriplet(node: TestDomain.TestSumTriplet, accumulator: T): T = accumulator
@@ -4007,6 +4821,41 @@ class TestDomain private constructor() {
             return current
         }
     
+        open fun walkOptional1(node: TestDomain.Optional1, accumulator: T): T {
+            var current = accumulator
+            current = visitOptional1(node, current)
+            node.value?.let { current = walkLongPrimitive(it, current) }
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkOptional2(node: TestDomain.Optional2, accumulator: T): T {
+            var current = accumulator
+            current = visitOptional2(node, current)
+            node.first?.let { current = walkLongPrimitive(it, current) }
+            node.second?.let { current = walkLongPrimitive(it, current) }
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkRequiredOptional(node: TestDomain.RequiredOptional, accumulator: T): T {
+            var current = accumulator
+            current = visitRequiredOptional(node, current)
+            current = walkLongPrimitive(node.first, current)
+            node.second?.let { current = walkLongPrimitive(it, current) }
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkOptionalRequired(node: TestDomain.OptionalRequired, accumulator: T): T {
+            var current = accumulator
+            current = visitOptionalRequired(node, current)
+            node.first?.let { current = walkLongPrimitive(it, current) }
+            current = walkLongPrimitive(node.second, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
         open fun walkVariadicMin0(node: TestDomain.VariadicMin0, accumulator: T): T {
             var current = accumulator
             current = visitVariadicMin0(node, current)
@@ -4032,19 +4881,40 @@ class TestDomain private constructor() {
             return current
         }
     
-        open fun walkOptional1(node: TestDomain.Optional1, accumulator: T): T {
+        open fun walkRequiredVariadic(node: TestDomain.RequiredVariadic, accumulator: T): T {
             var current = accumulator
-            current = visitOptional1(node, current)
-            node.value?.let { current = walkLongPrimitive(it, current) }
+            current = visitRequiredVariadic(node, current)
+            current = walkLongPrimitive(node.first, current)
+            node.second.map { current = walkLongPrimitive(it, current) }
             current = walkMetas(node.metas, current)
             return current
         }
     
-        open fun walkOptional2(node: TestDomain.Optional2, accumulator: T): T {
+        open fun walkOptionalVariadic(node: TestDomain.OptionalVariadic, accumulator: T): T {
             var current = accumulator
-            current = visitOptional2(node, current)
+            current = visitOptionalVariadic(node, current)
             node.first?.let { current = walkLongPrimitive(it, current) }
+            node.second.map { current = walkLongPrimitive(it, current) }
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkRequiredOptionalVariadic(node: TestDomain.RequiredOptionalVariadic, accumulator: T): T {
+            var current = accumulator
+            current = visitRequiredOptionalVariadic(node, current)
+            current = walkLongPrimitive(node.first, current)
             node.second?.let { current = walkLongPrimitive(it, current) }
+            node.third.map { current = walkLongPrimitive(it, current) }
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkOptionalRequiredVariadic(node: TestDomain.OptionalRequiredVariadic, accumulator: T): T {
+            var current = accumulator
+            current = visitOptionalRequiredVariadic(node, current)
+            node.first?.let { current = walkLongPrimitive(it, current) }
+            current = walkLongPrimitive(node.second, current)
+            node.third.map { current = walkLongPrimitive(it, current) }
             current = walkMetas(node.metas, current)
             return current
         }
@@ -4656,6 +5526,105 @@ class TestDomain private constructor() {
         open fun transformAnswerSymbolPair_metas(node: TestDomain.AnswerSymbolPair) =
             transformMetas(node.metas)
     
+        // Tuple Optional1
+        open fun transformOptional1(node: TestDomain.Optional1): TestDomain.Optional1 {
+            val new_value = transformOptional1_value(node)
+            val new_metas = transformOptional1_metas(node)
+            return if (
+                node.value !== new_value ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.Optional1(
+                    value = new_value,
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOptional1_value(node: TestDomain.Optional1) =
+            node.value?.let { transformLongPrimitive(it) }
+        open fun transformOptional1_metas(node: TestDomain.Optional1) =
+            transformMetas(node.metas)
+    
+        // Tuple Optional2
+        open fun transformOptional2(node: TestDomain.Optional2): TestDomain.Optional2 {
+            val new_first = transformOptional2_first(node)
+            val new_second = transformOptional2_second(node)
+            val new_metas = transformOptional2_metas(node)
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.Optional2(
+                    first = new_first,
+                    second = new_second,
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOptional2_first(node: TestDomain.Optional2) =
+            node.first?.let { transformLongPrimitive(it) }
+        open fun transformOptional2_second(node: TestDomain.Optional2) =
+            node.second?.let { transformLongPrimitive(it) }
+        open fun transformOptional2_metas(node: TestDomain.Optional2) =
+            transformMetas(node.metas)
+    
+        // Tuple RequiredOptional
+        open fun transformRequiredOptional(node: TestDomain.RequiredOptional): TestDomain.RequiredOptional {
+            val new_first = transformRequiredOptional_first(node)
+            val new_second = transformRequiredOptional_second(node)
+            val new_metas = transformRequiredOptional_metas(node)
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.RequiredOptional(
+                    first = new_first,
+                    second = new_second,
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformRequiredOptional_first(node: TestDomain.RequiredOptional) =
+            transformLongPrimitive(node.first)
+        open fun transformRequiredOptional_second(node: TestDomain.RequiredOptional) =
+            node.second?.let { transformLongPrimitive(it) }
+        open fun transformRequiredOptional_metas(node: TestDomain.RequiredOptional) =
+            transformMetas(node.metas)
+    
+        // Tuple OptionalRequired
+        open fun transformOptionalRequired(node: TestDomain.OptionalRequired): TestDomain.OptionalRequired {
+            val new_first = transformOptionalRequired_first(node)
+            val new_second = transformOptionalRequired_second(node)
+            val new_metas = transformOptionalRequired_metas(node)
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.OptionalRequired(
+                    first = new_first,
+                    second = new_second,
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOptionalRequired_first(node: TestDomain.OptionalRequired) =
+            node.first?.let { transformLongPrimitive(it) }
+        open fun transformOptionalRequired_second(node: TestDomain.OptionalRequired) =
+            transformLongPrimitive(node.second)
+        open fun transformOptionalRequired_metas(node: TestDomain.OptionalRequired) =
+            transformMetas(node.metas)
+    
         // Tuple VariadicMin0
         open fun transformVariadicMin0(node: TestDomain.VariadicMin0): TestDomain.VariadicMin0 {
             val new_ints = transformVariadicMin0_ints(node)
@@ -4724,38 +5693,17 @@ class TestDomain private constructor() {
         open fun transformElementVariadic_metas(node: TestDomain.ElementVariadic) =
             transformMetas(node.metas)
     
-        // Tuple Optional1
-        open fun transformOptional1(node: TestDomain.Optional1): TestDomain.Optional1 {
-            val new_value = transformOptional1_value(node)
-            val new_metas = transformOptional1_metas(node)
-            return if (
-                node.value !== new_value ||
-                node.metas !== new_metas
-            ) {
-                TestDomain.Optional1(
-                    value = new_value,
-                    metas = new_metas
-                )
-            } else {
-                node
-            }
-        }
-        open fun transformOptional1_value(node: TestDomain.Optional1) =
-            node.value?.let { transformLongPrimitive(it) }
-        open fun transformOptional1_metas(node: TestDomain.Optional1) =
-            transformMetas(node.metas)
-    
-        // Tuple Optional2
-        open fun transformOptional2(node: TestDomain.Optional2): TestDomain.Optional2 {
-            val new_first = transformOptional2_first(node)
-            val new_second = transformOptional2_second(node)
-            val new_metas = transformOptional2_metas(node)
+        // Tuple RequiredVariadic
+        open fun transformRequiredVariadic(node: TestDomain.RequiredVariadic): TestDomain.RequiredVariadic {
+            val new_first = transformRequiredVariadic_first(node)
+            val new_second = transformRequiredVariadic_second(node)
+            val new_metas = transformRequiredVariadic_metas(node)
             return if (
                 node.first !== new_first ||
                 node.second !== new_second ||
                 node.metas !== new_metas
             ) {
-                TestDomain.Optional2(
+                TestDomain.RequiredVariadic(
                     first = new_first,
                     second = new_second,
                     metas = new_metas
@@ -4764,11 +5712,99 @@ class TestDomain private constructor() {
                 node
             }
         }
-        open fun transformOptional2_first(node: TestDomain.Optional2) =
+        open fun transformRequiredVariadic_first(node: TestDomain.RequiredVariadic) =
+            transformLongPrimitive(node.first)
+        open fun transformRequiredVariadic_second(node: TestDomain.RequiredVariadic) =
+            node.second.map { transformLongPrimitive(it) }
+        open fun transformRequiredVariadic_metas(node: TestDomain.RequiredVariadic) =
+            transformMetas(node.metas)
+    
+        // Tuple OptionalVariadic
+        open fun transformOptionalVariadic(node: TestDomain.OptionalVariadic): TestDomain.OptionalVariadic {
+            val new_first = transformOptionalVariadic_first(node)
+            val new_second = transformOptionalVariadic_second(node)
+            val new_metas = transformOptionalVariadic_metas(node)
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.OptionalVariadic(
+                    first = new_first,
+                    second = new_second,
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOptionalVariadic_first(node: TestDomain.OptionalVariadic) =
             node.first?.let { transformLongPrimitive(it) }
-        open fun transformOptional2_second(node: TestDomain.Optional2) =
+        open fun transformOptionalVariadic_second(node: TestDomain.OptionalVariadic) =
+            node.second.map { transformLongPrimitive(it) }
+        open fun transformOptionalVariadic_metas(node: TestDomain.OptionalVariadic) =
+            transformMetas(node.metas)
+    
+        // Tuple RequiredOptionalVariadic
+        open fun transformRequiredOptionalVariadic(node: TestDomain.RequiredOptionalVariadic): TestDomain.RequiredOptionalVariadic {
+            val new_first = transformRequiredOptionalVariadic_first(node)
+            val new_second = transformRequiredOptionalVariadic_second(node)
+            val new_third = transformRequiredOptionalVariadic_third(node)
+            val new_metas = transformRequiredOptionalVariadic_metas(node)
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.third !== new_third ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.RequiredOptionalVariadic(
+                    first = new_first,
+                    second = new_second,
+                    third = new_third,
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformRequiredOptionalVariadic_first(node: TestDomain.RequiredOptionalVariadic) =
+            transformLongPrimitive(node.first)
+        open fun transformRequiredOptionalVariadic_second(node: TestDomain.RequiredOptionalVariadic) =
             node.second?.let { transformLongPrimitive(it) }
-        open fun transformOptional2_metas(node: TestDomain.Optional2) =
+        open fun transformRequiredOptionalVariadic_third(node: TestDomain.RequiredOptionalVariadic) =
+            node.third.map { transformLongPrimitive(it) }
+        open fun transformRequiredOptionalVariadic_metas(node: TestDomain.RequiredOptionalVariadic) =
+            transformMetas(node.metas)
+    
+        // Tuple OptionalRequiredVariadic
+        open fun transformOptionalRequiredVariadic(node: TestDomain.OptionalRequiredVariadic): TestDomain.OptionalRequiredVariadic {
+            val new_first = transformOptionalRequiredVariadic_first(node)
+            val new_second = transformOptionalRequiredVariadic_second(node)
+            val new_third = transformOptionalRequiredVariadic_third(node)
+            val new_metas = transformOptionalRequiredVariadic_metas(node)
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.third !== new_third ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.OptionalRequiredVariadic(
+                    first = new_first,
+                    second = new_second,
+                    third = new_third,
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformOptionalRequiredVariadic_first(node: TestDomain.OptionalRequiredVariadic) =
+            node.first?.let { transformLongPrimitive(it) }
+        open fun transformOptionalRequiredVariadic_second(node: TestDomain.OptionalRequiredVariadic) =
+            transformLongPrimitive(node.second)
+        open fun transformOptionalRequiredVariadic_third(node: TestDomain.OptionalRequiredVariadic) =
+            node.third.map { transformLongPrimitive(it) }
+        open fun transformOptionalRequiredVariadic_metas(node: TestDomain.OptionalRequiredVariadic) =
             transformMetas(node.metas)
     
         // Tuple DomainLevelRecord

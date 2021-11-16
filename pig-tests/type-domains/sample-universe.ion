@@ -15,9 +15,10 @@
         - Product with no fields (definitely possible for sum variants--possible with top-level products too?)- with only required fields
         - with only optional fields
         - with only a variadic field
-        - with required and optiona field
-        - with required and variadic fields.  (TODO:  not supported yet)
-        - Note:  products cannot have both optional and variadic fields.
+        - with required and optional field
+        - with required, followed by one variadic field
+        - with optional, followed by one variadic field
+        - with required and optional, followed by one variadic fields.
     - Sum variants...
         - product variant (repeat as above)
         - Records with more than one required, optional and variadic field.
@@ -49,12 +50,18 @@
         (product symbol_answer_pair first::symbol second::answer)
         (product answer_symbol_pair first::answer second::symbol)
 
+        (product optional_1 value::(? int))
+        (product optional_2 first::(? int) second::(? int))
+        (product required_optional first::int second::(? int))
+        (product optional_required first::(? int) second::int)
+
         (product variadic_min_0 ints::(* int 0 ))
         (product variadic_min_1 ints::(* int 1 ))
         (product element_variadic name::symbol ints::(* int 0 ))
-
-        (product optional_1 value::(? int))
-        (product optional_2 first::(? int) second::(? int))
+        (product required_variadic first::int second::(* int 0 ))
+        (product optional_variadic first::(? int) second::(* int 0 ))
+        (product required_optional_variadic first::int second::(? int) third::(* int 0 ))
+        (product optional_required_variadic first::(? int) second::int third::(* int 0 ))
 
         (record domain_level_record
             (some_field int)
