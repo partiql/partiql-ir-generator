@@ -1,4 +1,7 @@
 
+// These type domains are used to help come up with accurate samples for the main `README.md` file at the root
+// of this project.  They are not used by tests.  They are left here to aid maintenance of the `README.md` that
+// will be needed when changes to the generated code are made.
 
 // This is an "AST" for a simple hypothetical language named "Toy".
 // Toy has literals, variables, basic arithmetic and functions that accept a single argument.
