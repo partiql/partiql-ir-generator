@@ -4,40 +4,45 @@ Runtime: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.
 
 # The PartiQL I.R. Generator
 
-- [PIG Overview](#pig-overview)
-    * [Permuted Domains](#permuted-domains)
-    * [Code Generation](#code-generation)
-- [API Status](#api-status)
-- [PIG's Type Domain Modeling Language](#pig-s-type-domain-modeling-language)
-    * [`product` Types](#-product--types)
-        + [Generated Data Model](#generated-data-model)
-        + [Generated Builders](#generated-builders)
-        + [Product Element Restrictions](#product-element-restrictions)
-    * [`record` Types](#-record--types)
-    * [`sum` Types](#-sum--types)
-        + [Converter\<T\>](#converter--t--)
-        + [`record`s as `sum` variants](#-record-s-as--sum--variants)
-    * [Metas](#metas)
+- [The PartiQL I.R. Generator](#the-partiql-ir-generator)
+    * [PIG Overview](#pig-overview)
+        + [Permuted Domains](#permuted-domains)
+        + [Code Generation](#code-generation)
+    * [API Status](#api-status)
+    * [PIG's Type Domain Modeling Language](#pig-s-type-domain-modeling-language)
+        + [`product` Types](#-product--types)
+            - [Generated Product Type Model - Kotlin](#generated-product-type-model---kotlin)
+            - [Generated Builders](#generated-builders)
+            - [Product Element Restrictions](#product-element-restrictions)
+        + [`record` Types](#-record--types)
+        + [`sum` Types](#-sum--types)
+            - [Generated Sum Type - Kotlin](#generated-sum-type---kotlin)
+            - [Converter\<T\>](#converter--t--)
+            - [`record`s as `sum` variants](#-record-s-as--sum--variants)
+        + [Metas](#metas)
     * [Traversing & Transforming Trees](#traversing---transforming-trees)
-        + [`Visitor`](#-visitor-)
-        + [`VisitorFold<T>`](#-visitorfold-t--)
         + [`VisitorTransform`](#-visitortransform-)
-    * [Permuted Domains](#permuted-domains-1)
-        + [Cross-domain `VisitorTransform`](#cross-domain--visitortransform-)
-- [S-Expression Representation of Data Types](#s-expression-representation-of-data-types)
-- [Using PIG In Your Project](#using-pig-in-your-project)
-    * [Using Gradle](#using-gradle)
-    * [Other Build Systems](#other-build-systems)
-        + [Obtaining the PIG Executable](#obtaining-the-pig-executable)
-- [Appendices](#appendices)
-    * [Type Universe Grammar](#type-universe-grammar)
-        + [Type References](#type-references)
-            - [`ion_type`](#-ion-type-)
-            - [Arity](#arity)
-            - [Arity Ordering](#arity-ordering)
-- [License](#license)
+        + [Permuted Domains and Cross-Domain `VisitorTransform`s](#permuted-domains-and-cross-domain--visitortransform-s)
+        + [`Visitor`](#-visitor-)
+            - [`Visitor` Example](#-visitor--example)
+        + [`VisitorFold<T>`](#-visitorfold-t--)
+            - [`VisitorFold<T>` Example](#-visitorfold-t---example)
+    * [S-Expression Representation of Data Types](#s-expression-representation-of-data-types)
+    * [Using PIG In Your Project](#using-pig-in-your-project)
+        + [Using Gradle](#using-gradle)
+        + [Other Build Systems](#other-build-systems)
+            - [Obtaining the PIG Executable](#obtaining-the-pig-executable)
+    * [Appendices](#appendices)
+        + [Type Universe Grammar](#type-universe-grammar)
+            - [Type References](#type-references)
+                * [`ion_type`](#-ion-type-)
+                * [Arity](#arity)
+                * [Arity Ordering](#arity-ordering)
+    * [License](#license)
 
 [comment]: <> (Table of contents generated with markdown-toc: http://ecotrust-canada.github.io/markdown-toc/)
+
+[comment]: <> (After adding, removing, or changing any heading in this document, please regenerate the TOC there.)
 
 ## PIG Overview
 
@@ -51,20 +56,22 @@ Every type domain has two representations:
 
 - An [Ion s-expression](https://amzn.github.io/ion-docs/docs/spec.html#sexp) representation, allowing type domains to
   serve as a language and platform neutral wire protocol and compact serialization format.
-- A strongly typed set of data types specific to a target language such as Kotlin.
+- A strongly typed set of data types specific to a target language such as Kotlin (the only currently supported language
+  target).
 
-PIG also provides facitiles that allow for manipulation and rewriting of trees for the purposes of program optimizaiton,
-query planning and code generation.
+PIG also provides facilities that allow for manipulation and rewriting of trees for the purposes such as program
+optimization, query planning and code generation.
 
 ### Permuted Domains
 
 Query engines and other kinds of compilers require numerous tree-like representations of a program, starting with an
 AST. Query engines for example typically parse a query, producing an AST, and then apply multiple passes over the AST to
-transform it to a logical plan, then a physical plan, and possibly other intermediate representations. Compiler passes
-of this sort are large, complex, and difficult to maintain. PIG's "permuted domains" feature increases the
-maintainability of such compiler passes by allowing new type domains to be created by specifying only the *differences*
-to another type domain. This avoids having to duplicate the data type definitions that are common to both type domains,
-allowing more numerous, smaller, less complex and more maintainable compiler passes.
+*inrecmentally* transform it to a logical plan, then a physical plan, and possibly other intermediate representations.
+Compiler passes and related data structures of this sort are large, complex, and difficult to maintain. PIG's "permuted
+domains" feature increases the maintainability of such compiler passes and related data structures by allowing new type
+domains to be created by specifying only the *differences* to another type domain. This avoids having to duplicate the
+data type definitions that are common to both type domains, allowing more numerous, smaller, less complex and more
+maintainable compiler passes.
 
 PIG's permuted domain feature has been heavily inspired by the [Nanopass Framework](https://nanopass.org/).
 
@@ -83,25 +90,29 @@ future):
 
 ## API Status
 
-PIG is usable now but its API and the API of the generated Kotlin code is under development and might change.
+PIG is fully feature now but its API and the API of the generated Kotlin code is under development and might change.
 
 ## PIG's Type Domain Modeling Language
 
-A simple DSL based on the [Ion text format](https://amzn.github.io/ion-docs/docs/spec.html) is used to define a type
-universe. Within a type universe, the developer defines one or more type domains, each of which consists of a number
-of `product`, `record` and `sum` type definitions. Together, these type definitions describe the complete structure of a
-tree and comprise all the data used to generate the code listed in the previous section.
+A simple DSL (domain specific language) based on the [Ion text format](https://amzn.github.io/ion-docs/docs/spec.html)
+is used to define a type universe. Within a type universe, the developer defines one or more type domains, each of which
+consists of a number of `product`, `record` and `sum` type definitions. Together, these type definitions describe the
+complete structure of a tree and comprise all the data used to generate the code listed in the previous section.
 
 > **A Note About Terminology**
 >
 > Although PIG currently only generates code for Kotlin, In the future PIG will generate source code for other
 > languages. Thus, we felt we should avoid terms like "enum", "class", "struct", since these all have different
-> meanings unique to each language.
+> meanings unique to each language.  
 
 Each type definition consists of a name and zero or more definitions for its elements. The element definition consists
 of a name and data type.
 
 ### `product` Types
+
+PIG's `product` types are named after the same from 
+[type theory](https://en.wikipedia.org/wiki/Type_theory#Product_Type).  Conceptually, `product`s are tuples, 
+represented as a `class` in Kotlin.
 
 Here is a simple example of a tree definition that uses only a single `product` type.
 
@@ -132,7 +143,7 @@ Where:
   `int`, `symbol`, `bool`, `ion`, or any other data type defined in the same domain (excluding sum variants which will
   be discussed below).
 
-#### Generated Data Model
+#### Generated Product Type Model - Kotlin
 
 For the `person` example, PIG generates code that looks like the example below. This class is
 a [persistent data structure](https://en.wikipedia.org/wiki/Persistent_data_structure)
@@ -221,7 +232,7 @@ namespace pollution.
 The next thing the reader might notice is that `Person` implements some functionality provided by Kotlin
 [data classes](https://kotlinlang.org/docs/data-classes.html). Such as `.copy`, `.equals` and `.hashCode`.
 The `data class` feature of Kotlin can't be used in this case because data classes always include all of their
-properties in the `.hashCode()` and `.equals()` implementations be we do we do not include [metas] in the definition of
+properties in the `.hashCode()` and `.equals()` implementations, and we do not include [metas] in the definition of
 equivalence for any PIG-generated class. (More on metas later.)
 
 #### Generated Builders
@@ -352,6 +363,8 @@ similar to the example shown above (shown below). However, none of these have an
 The `expr` `sum` defines two possible types of expressions that exist our toy calculator: `lit` and  `binary`.
 
 The Kotlin equivalent of a `sum` type is a [`sealed class`](https://kotlinlang.org/docs/sealed-classes.html).
+
+#### Generated Sum Type - Kotlin
 
 ```Kotlin
 class CalculatorAst private constructor() {
@@ -501,25 +514,24 @@ includes a `let` and `variable` expressions.
 
 ### `VisitorTransform`
 
-The PIG-generated `VisitorTransform` base classes are by far the most commonly used type of tree traversal.  Using a 
-`VisitorTransform`, it is possible to implement many kinds of compiler optimizations, static type inference, expression 
+The PIG-generated `VisitorTransform` base classes are by far the most commonly used type of tree traversal. Using a
+`VisitorTransform`, it is possible to implement many kinds of compiler optimizations, static type inference, expression
 normalization, and syntactic de-sugaring.
 
-By default, every type domain gets one `VisitorTransform` capable of  
+By default, every type domain gets one `VisitorTransform` capable of
 
-Each `VisitorTransform` has an input type domain, and an output type domain.  
+Each `VisitorTransform` has an input type domain, and an output type domain.
 
-Thus, `VisitorTransform`s 
-can be used to convert from one type domain to another.  More details on that later.  For now, we will focus on the
-`VisitorTransform` that is generated for every type domain and transforms from that type domain to 
+Thus, `VisitorTransform`s can be used to convert from one type domain to another. More details on that later. For now,
+we will focus on the
+`VisitorTransform` that is generated for every type domain and transforms from that type domain to
 
-Every type domain gets a `VisitorTransform` base class with 
-
+Every type domain gets a `VisitorTransform` base class with
 
 The example below shows how to perform constant folding with our `enhanced_calculator_ast`:
 
 ```Kotlin
-
+// TODO!!  For now, please search for examples in the pig-tests sub-project.
 ```
 
 ### Permuted Domains and Cross-Domain `VisitorTransform`s
@@ -618,8 +630,8 @@ either in list or aggregate form. This is similar to a
 [functional fold](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) except that it applies to every single
 node of a tree instead of to the items in a collection.
 
-A `VisitorFold<T>` implementation is similar in structure to the visitors described in the previous section, but each 
-`visit*` and `walk*` function has a second argument: the accumulator. The `T` type argument is the type of the 
+A `VisitorFold<T>` implementation is similar in structure to the visitors described in the previous section, but each
+`visit*` and `walk*` function has a second argument: the accumulator. The `T` type argument is the type of the
 accumulator.
 
 ```Kotlin
