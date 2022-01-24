@@ -17,10 +17,14 @@ package org.partiql.pig.generator.kotlin
 
 import java.time.OffsetDateTime
 
-/** The properties of [KotlinFreeMarkerGlobals] become global variables for our freemarker templates. */
+/**
+ * The properties of [KotlinDomainFreeMarkerGlobals] become global variables for our freemarker templates that
+ * generate everything but the cross-domain `VisitorTransform`.
+ */
 @Suppress("unused")
-class KotlinFreeMarkerGlobals(
+class KotlinDomainFreeMarkerGlobals(
     val namespace: String,
-    val universe: KTypeUniverse,
+    val domain: KTypeDomain,
     val generatedDate: OffsetDateTime
 )
+

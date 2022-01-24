@@ -20,5 +20,5 @@ import java.io.File
 sealed class Command {
     object ShowHelp : Command()
     data class InvalidCommandLineArguments(val message: String) : Command()
-    data class Generate(val typeUniverseFile: File, val outputFile: File, val target: TargetLanguage) : Command()
+    data class Generate(val typeUniverseFile: File, val target: TargetLanguage) : Command()
 }

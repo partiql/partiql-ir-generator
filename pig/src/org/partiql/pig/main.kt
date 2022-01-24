@@ -24,8 +24,9 @@ import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.generator.custom.applyCustomTemplate
 import org.partiql.pig.generator.html.applyHtmlTemplate
-import org.partiql.pig.generator.kotlin.applyKotlinTemplate
+import org.partiql.pig.generator.kotlin.generateKotlinCode
 import org.partiql.pig.generator.kotlin.convertToKTypeUniverse
+import java.io.File
 import java.io.FileInputStream
 import java.io.PrintWriter
 import kotlin.system.exitProcess
@@ -43,6 +44,7 @@ fun main(args: Array<String>) {
         is Command.ShowHelp -> cmdParser.printHelp(System.out)
         is Command.InvalidCommandLineArguments -> {
             System.err.println(command.message)
+            exitProcess(-1)
         }
         is Command.Generate -> {
             try {
@@ -62,7 +64,6 @@ fun main(args: Array<String>) {
  */
 fun generateCode(command: Command.Generate) {
     progress("universe file: ${command.typeUniverseFile}")
-    progress("output file  : ${command.outputFile}")
 
     progress("parsing the universe...")
     val typeUniverse: TypeUniverse = FileInputStream(command.typeUniverseFile).use { inputStream ->
@@ -71,26 +72,42 @@ fun generateCode(command: Command.Generate) {
 
     progress("permuting domains...")
 
-    PrintWriter(command.outputFile).use { printWriter ->
-        when (command.target) {
-            is TargetLanguage.Kotlin -> {
-                progress("applying Kotlin pre-processing")
-                val kotlinTypeUniverse = typeUniverse.convertToKTypeUniverse()
+    when (command.target) {
+        is TargetLanguage.Kotlin -> {
+            progress("applying Kotlin pre-processing")
+            val kotlinTypeUniverse = typeUniverse.convertToKTypeUniverse()
+            prepareOutputDirectory(command.target.outputDirectory)
+            progress("applying the Kotlin template once for each domain...")
 
-                progress("applying the Kotlin template...")
-                applyKotlinTemplate(command.target.namespace, kotlinTypeUniverse, printWriter)
-            }
-            is TargetLanguage.Custom -> {
-                progress("applying ${command.target.templateFile}")
+            generateKotlinCode(command.target.namespace, kotlinTypeUniverse, command.target.outputDirectory)
+        }
+        is TargetLanguage.Custom -> {
+            progress("output file  : ${command.target.outputFile}")
+            progress("applying ${command.target.templateFile}")
+
+            PrintWriter(command.target.outputFile).use { printWriter ->
                 applyCustomTemplate(command.target.templateFile, typeUniverse.computeTypeDomains(), printWriter)
             }
-            is TargetLanguage.Html -> {
-                progress("applying the HTML template")
+        }
+        is TargetLanguage.Html -> {
+            progress("output file  : ${command.target.outputFile}")
+            progress("applying the HTML template")
+            PrintWriter(command.target.outputFile).use { printWriter ->
                 applyHtmlTemplate(typeUniverse.computeTypeDomains(), printWriter)
             }
         }
+
     }
 
     progress("universe generation complete!")
 }
 
+private fun prepareOutputDirectory(dir: File) {
+    if(dir.exists()) {
+        if(!dir.isDirectory) {
+            error("The path specified as the output directory exists but is not a directory.")
+        }
+    } else {
+        dir.mkdirs()
+    }
+}

@@ -50,16 +50,21 @@ class CommandLineParserTests {
             // No --universe
             TestCase(
                 Command.InvalidCommandLineArguments("Missing required option(s) [u/universe]"),
-                "--target=kotlin", "--output=output.kt", "--namespace=some.package"),
+                "--target=kotlin", "--output-directory=out_dir", "--namespace=some.package"),
 
             // No --target
             TestCase(
                 Command.InvalidCommandLineArguments("Missing required option(s) [t/target]"),
-                "--universe=input.ion", "--output=output.kt", "--namespace=some.package"),
+                "--universe=input.ion", "--output-directory=out_dir", "--namespace=some.package"),
 
-            // No the --output argument
+            // No --output-file argument
             TestCase(
-                Command.InvalidCommandLineArguments("Missing required option(s) [o/output]"),
+                Command.InvalidCommandLineArguments("The selected language target requires the --output-file argument"),
+                "--universe=input.ion", "--target=custom", "--template=some.template"),
+
+            // No --output-directory argument
+            TestCase(
+                Command.InvalidCommandLineArguments("The selected language target requires the --output-directory argument"),
                 "--universe=input.ion", "--target=kotlin", "--namespace=some.package"),
 
             ////////////////////////////////////////////////////////
@@ -67,43 +72,43 @@ class CommandLineParserTests {
             ////////////////////////////////////////////////////////
             // long parameter names
             TestCase(
-                Command.Generate(File("input.ion"), File("output.kt"), TargetLanguage.Kotlin("some.package")),
-                "--universe=input.ion", "--target=kotlin", "--output=output.kt", "--namespace=some.package"),
+                Command.Generate(File("input.ion"), TargetLanguage.Kotlin("some.package", File("out_dir"))),
+                "--universe=input.ion", "--target=kotlin", "--output-directory=out_dir", "--namespace=some.package"),
 
             // short parameter names
             TestCase(
-                Command.Generate(File("input.ion"), File("output.kt"), TargetLanguage.Kotlin("some.package")),
-                "-u=input.ion", "-t=kotlin", "-o=output.kt", "-n=some.package"),
+                Command.Generate(File("input.ion"), TargetLanguage.Kotlin("some.package", File("out_dir"))),
+                "-u=input.ion", "-t=kotlin", "-d=out_dir", "-n=some.package"),
 
             // missing the --namespace argument
             TestCase(
                 Command.InvalidCommandLineArguments("The selected language target requires the --namespace argument"),
-                "-u=input.ion", "-t=kotlin", "-o=output.kt"),
+                "-u=input.ion", "-t=kotlin", "-o=out_dir"),
 
             ////////////////////////////////////////////////////////
             // Html target
             ////////////////////////////////////////////////////////
             // long parameter names
             TestCase(
-                Command.Generate(File("input.ion"), File("output.html"), TargetLanguage.Html),
-                "--universe=input.ion", "--target=html", "--output=output.html"),
+                Command.Generate(File("input.ion"), TargetLanguage.Html(File("output.html"))),
+                "--universe=input.ion", "--target=html", "--output-file=output.html"),
 
             // short parameter names
             TestCase(
-                Command.Generate(File("input.ion"), File("output.html"), TargetLanguage.Html),
-                "-u=input.ion", "-target=html", "--output=output.html"),
+                Command.Generate(File("input.ion"), TargetLanguage.Html(File("output.html"))),
+                "-u=input.ion", "-target=html", "--output-file=output.html"),
 
             ////////////////////////////////////////////////////////
             // Custom target
             ////////////////////////////////////////////////////////
             // long parameter names
             TestCase(
-                Command.Generate(File("input.ion"), File("output.txt"), TargetLanguage.Custom(File("template.ftl"))),
-                "--universe=input.ion", "--target=custom", "--output=output.txt", "--template=template.ftl"),
+                Command.Generate(File("input.ion"), TargetLanguage.Custom(File("template.ftl"), File("output.txt"))),
+                "--universe=input.ion", "--target=custom", "--output-file=output.txt", "--template=template.ftl"),
 
             // short parameter names
             TestCase(
-                Command.Generate(File("input.ion"), File("output.txt"), TargetLanguage.Custom(File("template.ftl"))),
+                Command.Generate(File("input.ion"), TargetLanguage.Custom(File("template.ftl"), File("output.txt"))),
                 "-u=input.ion", "-t=custom", "-o=output.txt", "-e=template.ftl"),
 
             // missing the --template argument
