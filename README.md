@@ -1,4 +1,3 @@
-Travis: [![Build Status](https://travis-ci.org/partiql/partiql-ir-generator.svg?branch=master)](https://travis-ci.org/partiql/partiql-ir-generator)
 Generator: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.partiql/partiql-ir-generator/badge.svg?)](https://search.maven.org/artifact/org.partiql/partiql-ir-generator)
 Runtime: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.partiql/partiql-ir-generator-runtime/badge.svg?)](https://search.maven.org/artifact/org.partiql/partiql-ir-generator-runtime)
 
@@ -48,7 +47,7 @@ Runtime: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.
 
 PIG is a compiler framework, domain modeling tool and code generator for tree data structures such as ASTs (Abstract
 Syntax Tree), database logical plans, database physical plans, and other intermediate representations. Using PIG, the
-developer concisely defines the structure of a tree by specifying named constraints for every node and their attribues.
+developer concisely defines the structure of a tree by specifying named constraints for every node and their attributes.
 Every constraint is known as a "data type", a collection of data types is known as a "type domain" and a collection of
 type domains is known as a "type universe".
 
@@ -90,7 +89,7 @@ future):
 
 ## API Status
 
-PIG is fully feature now but its API and the API of the generated Kotlin code is under development and might change.
+PIG is mature but its API and the API of the generated Kotlin code is under development and might change.
 
 ## PIG's Type Domain Modeling Language
 
@@ -518,15 +517,11 @@ The PIG-generated `VisitorTransform` base classes are by far the most commonly u
 `VisitorTransform`, it is possible to implement many kinds of compiler optimizations, static type inference, expression
 normalization, and syntactic de-sugaring.
 
-By default, every type domain gets one `VisitorTransform` capable of
-
-Each `VisitorTransform` has an input type domain, and an output type domain.
-
-Thus, `VisitorTransform`s can be used to convert from one type domain to another. More details on that later. For now,
-we will focus on the
-`VisitorTransform` that is generated for every type domain and transforms from that type domain to
-
-Every type domain gets a `VisitorTransform` base class with
+By default, every type domain gets one `VisitorTransform` class which can be used to effectively perform a deep copy of
+the input tree. Functions of the `VisitorTransform` may be overridden by derived classes to customize how these copies
+of are made, allowing for trees to be manipulated in a variety of ways.  In reality, the `VisitorTransform` does not
+actually copy all nodes of the tree--only the modified nodes and their parent nodes are replaced.   (This is possible
+because PIG-generated nodes are always immutable.)`
 
 The example below shows how to perform constant folding with our `enhanced_calculator_ast`:
 
@@ -536,14 +531,14 @@ The example below shows how to perform constant folding with our `enhanced_calcu
 
 ### Permuted Domains and Cross-Domain `VisitorTransform`s
 
-TODO...
+TODO...  For now, please search for examples in the pig-tests sub-project.
 
 ### `Visitor`
 
-Visitors are most useful for performing simple semantic checks or validation of type domain instances, but are not
-usually very useful for performing most *transformations* of trees into some other types of data.
+Plain visitors are most useful for performing simple semantic checks or validation of type domain instances, but are 
+not usually very useful for performing most *transformations* of trees into some other types of data.
 
-Every generated `Visitor` class receives one `visit*` and `walk*` function.
+Every PIG-generated `Visitor` class receives one `visit*` and `walk*` function.
 
 This is different from the typical visitor pattern in that the `walk*` functions reside on the `Visitor` class and
 *not* on the classes for each node. This allows for the `walk*` functions to be customized as needed, for example, if
