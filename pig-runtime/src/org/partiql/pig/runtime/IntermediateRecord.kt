@@ -57,7 +57,7 @@ class IntermediateRecord(
      */
     fun <T> processRequiredField(fieldName: String, deserFunc: (AnyElement) -> T): T =
         processOptionalField(fieldName, deserFunc)
-            ?: errMalformed(location, "Required field '${fieldName}' was not found within '$recordTagName' record")
+            ?: errMalformed(location, "Required field '$fieldName' was not found within '$recordTagName' record")
 
     /**
      * Processes a variadic record field.
@@ -76,11 +76,12 @@ class IntermediateRecord(
         this@requireArityOrMalformed.requireArityOrMalformed(fieldName, IntRange(size, size))
 
     private fun List<AnyElement>.requireArityOrMalformed(fieldName: String, arityRange: IntRange) {
-        if(this.size !in arityRange) {
+        if (this.size !in arityRange) {
             errMalformed(
                 location,
                 "$arityRange values(s) were required to for field '$fieldName' of record '$recordTagName' " +
-                    "but ${this.size} was/were supplied.")
+                    "but ${this.size} was/were supplied."
+            )
         }
     }
 
@@ -90,7 +91,7 @@ class IntermediateRecord(
      * [fieldMap].  This would indicate that a mis-named field was present.
      */
     fun malformedIfAnyUnprocessedFieldsRemain() {
-        if(fieldMap.isNotEmpty()) {
+        if (fieldMap.isNotEmpty()) {
             errUnexpectedField(location, fieldMap.keys.first())
         }
     }

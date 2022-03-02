@@ -15,10 +15,14 @@
 
 package org.partiql.pig.cmdline
 
-import joptsimple.*
+import joptsimple.BuiltinHelpFormatter
+import joptsimple.OptionDescriptor
+import joptsimple.OptionException
+import joptsimple.OptionParser
+import joptsimple.ValueConversionException
+import joptsimple.ValueConverter
 import java.io.File
 import java.io.PrintStream
-
 
 class CommandLineParser {
     private enum class LanguageTargetType(
@@ -36,8 +40,8 @@ class CommandLineParser {
         private val lookup = LanguageTargetType.values().associateBy { it.name.toLowerCase() }
 
         override fun convert(value: String?): LanguageTargetType {
-            if(value == null) throw ValueConversionException("Value was null")
-            return lookup[value] ?: throw ValueConversionException("Invalid language target type: ${value}")
+            if (value == null) throw ValueConversionException("Value was null")
+            return lookup[value] ?: throw ValueConversionException("Invalid language target type: $value")
         }
 
         override fun valueType(): Class<out LanguageTargetType> {
@@ -81,7 +85,6 @@ class CommandLineParser {
     }
     private val optParser = OptionParser().also { it.formatHelpWith(formatter) }
 
-
     private val helpOpt = optParser.acceptsAll(listOf("help", "h", "?"), "prints this help")
         .forHelp()
 
@@ -111,7 +114,6 @@ class CommandLineParser {
         .withOptionalArg()
         .ofType(File::class.java)
 
-
     /**
      * Prints help to the specified [PrintStream].
      */
@@ -139,46 +141,53 @@ class CommandLineParser {
                     if (targetType.requireNamespace) {
                         if (!optSet.has(namespaceOpt)) {
                             return Command.InvalidCommandLineArguments(
-                                "The selected language target requires the --namespace argument")
+                                "The selected language target requires the --namespace argument"
+                            )
                         }
-                    } else if(optSet.has(namespaceOpt)) {
+                    } else if (optSet.has(namespaceOpt)) {
                         return Command.InvalidCommandLineArguments(
-                            "The selected language target does not allow the --namespace argument")
+                            "The selected language target does not allow the --namespace argument"
+                        )
                     }
 
                     // --output-file
                     if (targetType.requireOutputFile) {
                         if (!optSet.has(outputFileOpt)) {
                             return Command.InvalidCommandLineArguments(
-                                "The selected language target requires the --output-file argument")
+                                "The selected language target requires the --output-file argument"
+                            )
                         }
-                    } else if(optSet.has(outputFileOpt)) {
+                    } else if (optSet.has(outputFileOpt)) {
                         return Command.InvalidCommandLineArguments(
-                            "The selected language target does not allow the --output-file argument")
+                            "The selected language target does not allow the --output-file argument"
+                        )
                     }
 
                     // --output-directory
                     if (targetType.requireOutputDirectory) {
                         if (!optSet.has(outputDirectoryOpt)) {
                             return Command.InvalidCommandLineArguments(
-                                "The selected language target requires the --output-directory argument")
+                                "The selected language target requires the --output-directory argument"
+                            )
                         }
-                    } else if(optSet.has(outputDirectoryOpt)) {
+                    } else if (optSet.has(outputDirectoryOpt)) {
                         return Command.InvalidCommandLineArguments(
-                            "The selected language target does not allow the --output-directory argument")
+                            "The selected language target does not allow the --output-directory argument"
+                        )
                     }
 
                     // --template
-                    if(targetType.requireTemplateFile) {
-                        if(!optSet.has(templateOpt)) {
+                    if (targetType.requireTemplateFile) {
+                        if (!optSet.has(templateOpt)) {
                             return Command.InvalidCommandLineArguments("The selected language target requires the --template argument")
                         }
-                    } else if(optSet.has(templateOpt)) {
+                    } else if (optSet.has(templateOpt)) {
                         return Command.InvalidCommandLineArguments(
-                            "The selected language target does not allow the --template argument")
+                            "The selected language target does not allow the --template argument"
+                        )
                     }
 
-                    val target = when(targetType) {
+                    val target = when (targetType) {
                         LanguageTargetType.HTML -> TargetLanguage.Html(optSet.valueOf(outputFileOpt) as File)
                         LanguageTargetType.KOTLIN -> TargetLanguage.Kotlin(
                             namespace = optSet.valueOf(namespaceOpt) as String,
@@ -193,10 +202,8 @@ class CommandLineParser {
                     Command.Generate(typeUniverseFile, target)
                 }
             }
-        } catch(ex: OptionException) {
+        } catch (ex: OptionException) {
             Command.InvalidCommandLineArguments(ex.message!!)
         }
-
     }
-
 }

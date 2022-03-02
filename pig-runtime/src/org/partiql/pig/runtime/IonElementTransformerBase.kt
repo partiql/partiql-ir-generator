@@ -20,19 +20,20 @@ import com.amazon.ionelement.api.IonElementException
 import com.amazon.ionelement.api.SexpElement
 import com.amazon.ionelement.api.location
 
-abstract class IonElementTransformerBase<T: DomainNode> {
+abstract class IonElementTransformerBase<T : DomainNode> {
     fun transform(maybeSexp: SexpElement): T =
         try {
             innerTransform(maybeSexp)
-        } catch(ex: IonElementException) {
+        } catch (ex: IonElementException) {
             throw MalformedDomainDataException(ex.location, ex.description, ex)
         }
 
-    protected inline fun <reified R: T> AnyElement.transformExpect(): R {
+    protected inline fun <reified R : T> AnyElement.transformExpect(): R {
         val domainObject = innerTransform(this.asSexp())
         return (domainObject as? R) ?: errMalformed(
             this.metas.location,
-            "Expected '${R::class.java}' but found '${domainObject.javaClass}'")
+            "Expected '${R::class.java}' but found '${domainObject.javaClass}'"
+        )
     }
 
     protected abstract fun innerTransform(sexp: SexpElement): T

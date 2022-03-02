@@ -18,7 +18,6 @@ package org.partiql.pig.domain.model
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.emptyMetaContainer
 
-
 /**
  * Base class for all PIG data types, including primitives and products, records and sums.
  */

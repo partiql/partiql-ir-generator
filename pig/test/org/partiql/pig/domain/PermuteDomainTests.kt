@@ -74,9 +74,9 @@ class PermuteDomainTests {
         // In test.domain the "thing" sum has "a", "b", and "c" variants.
         val thing = concreteDomain.types.single { it.tag == "thing" } as DataType.UserType.Sum
         assertEquals(3, thing.variants.size)
-        assertEquals(1, thing.variants.filter { it.tag == "a"}.size)
-        assertEquals(1, thing.variants.filter { it.tag == "b"}.size)
-        assertEquals(1, thing.variants.filter { it.tag == "c"}.size)
+        assertEquals(1, thing.variants.filter { it.tag == "a" }.size)
+        assertEquals(1, thing.variants.filter { it.tag == "b" }.size)
+        assertEquals(1, thing.variants.filter { it.tag == "c" }.size)
 
         // Then we verify the permuted domain
         val permutedDomain = concretes.single { it.tag == "permuted_domain" }
@@ -92,10 +92,10 @@ class PermuteDomainTests {
         // In the permuted domain, the "thing.a" variant has been replaced with "thing.d" and "thing.e" has been added
         val exThing = permutedDomain.types.single { it.tag == "thing" } as DataType.UserType.Sum
         assertEquals(4, exThing.variants.size)
-        assertTrue(exThing.variants.none { it.tag == "a"})
-        assertEquals(1, exThing.variants.filter { it.tag == "b"}.size)
-        assertEquals(1, exThing.variants.filter { it.tag == "c"}.size)
-        assertEquals(1, exThing.variants.filter { it.tag == "d"}.size)
-        assertEquals(1, exThing.variants.filter { it.tag == "e"}.size)
+        assertTrue(exThing.variants.none { it.tag == "a" })
+        assertEquals(1, exThing.variants.filter { it.tag == "b" }.size)
+        assertEquals(1, exThing.variants.filter { it.tag == "c" }.size)
+        assertEquals(1, exThing.variants.filter { it.tag == "d" }.size)
+        assertEquals(1, exThing.variants.filter { it.tag == "e" }.size)
     }
 }

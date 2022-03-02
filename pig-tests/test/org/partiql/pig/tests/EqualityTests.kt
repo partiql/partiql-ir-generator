@@ -49,178 +49,209 @@ class EqualityTests {
     }
 
     data class TestCase(val left: TestDomain.TestDomainNode, val right: TestDomain.TestDomainNode, val isEqual: Boolean)
-    class EqualityTestsArgumentsProvider: ArgumentsProviderBase() {
+    class EqualityTestsArgumentsProvider : ArgumentsProviderBase() {
 
         @Suppress("BooleanLiteralArgument")
         override fun getParameters(): List<Any> = listOf(
-            /////////////////////////////////////////////////
+            // ///////////////////////////////////////////////
             // Products
-            /////////////////////////////////////////////////
+            // ///////////////////////////////////////////////
             TestCase(
                 TestDomain.build { boolPair(true, true) },
                 TestDomain.build { boolPair(true, true) },
-                isEqual = true),
+                isEqual = true
+            ),
 
             TestCase(
                 TestDomain.build { boolPair(true, true) },
                 TestDomain.build { boolPair(true, false) },
-                isEqual = false),
+                isEqual = false
+            ),
             TestCase(
                 TestDomain.build { boolPair(false, true) },
                 TestDomain.build { boolPair(true, false) },
-                isEqual = false),
+                isEqual = false
+            ),
             TestCase(
                 TestDomain.build { boolPair(true, false) },
                 TestDomain.build { boolPair(false, true) },
-                isEqual = false),
+                isEqual = false
+            ),
 
             TestCase(
                 TestDomain.build { intPair(1, 1) },
                 TestDomain.build { intPair(1, 1) },
-                isEqual = true),
+                isEqual = true
+            ),
             TestCase(
                 TestDomain.build { intPair(1, 1) },
                 TestDomain.build { intPair(1, 2) },
-                isEqual = false),
+                isEqual = false
+            ),
             TestCase(
                 TestDomain.build { intPair(2, 1) },
                 TestDomain.build { intPair(1, 2) },
-                isEqual = false),
+                isEqual = false
+            ),
 
             TestCase(
                 TestDomain.build { symbolPair("a", "a") },
                 TestDomain.build { symbolPair("a", "a") },
-                isEqual = true),
+                isEqual = true
+            ),
             TestCase(
                 TestDomain.build { symbolPair("a", "a") },
                 TestDomain.build { symbolPair("a", "b") },
-                isEqual = false),
+                isEqual = false
+            ),
             TestCase(
                 TestDomain.build { symbolPair("b", "a") },
                 TestDomain.build { symbolPair("a", "b") },
-                isEqual = false),
+                isEqual = false
+            ),
 
             TestCase(
                 TestDomain.build { ionPair(ionString("a"), ionString("a")) },
                 TestDomain.build { ionPair(ionString("a"), ionString("a")) },
-                isEqual = true),
+                isEqual = true
+            ),
             TestCase(
                 TestDomain.build { ionPair(ionString("a"), ionString("a")) },
                 TestDomain.build { ionPair(ionString("a"), ionString("b")) },
-                isEqual = false),
+                isEqual = false
+            ),
             TestCase(
                 TestDomain.build { ionPair(ionString("b"), ionString("a")) },
                 TestDomain.build { ionPair(ionString("a"), ionString("b")) },
-                isEqual = false),
+                isEqual = false
+            ),
 
-
-            /////////////////////////////////////////////////
+            // ///////////////////////////////////////////////
             // Sum variants
-            /////////////////////////////////////////////////
+            // ///////////////////////////////////////////////
             TestCase(
                 TestDomain.build { yes() },
                 TestDomain.build { yes() },
-                isEqual = true),
+                isEqual = true
+            ),
             TestCase(
                 TestDomain.build { no() },
                 TestDomain.build { no() },
-                isEqual = true),
+                isEqual = true
+            ),
 
             TestCase(
                 TestDomain.build { yes() },
                 TestDomain.build { no() },
-                isEqual = false),
+                isEqual = false
+            ),
 
             TestCase(
                 TestDomain.build { answerPair(yes(), yes()) },
                 TestDomain.build { answerPair(yes(), yes()) },
-                isEqual = true),
+                isEqual = true
+            ),
 
             TestCase(
                 TestDomain.build { answerPair(no(), no()) },
                 TestDomain.build { answerPair(no(), no()) },
-                isEqual = true),
+                isEqual = true
+            ),
 
             TestCase(
                 TestDomain.build { answerPair(no(), yes()) },
                 TestDomain.build { answerPair(no(), yes()) },
-                isEqual = true),
+                isEqual = true
+            ),
 
             TestCase(
                 TestDomain.build { answerPair(yes(), no()) },
                 TestDomain.build { answerPair(yes(), no()) },
-                isEqual = true),
+                isEqual = true
+            ),
 
             TestCase(
                 TestDomain.build { answerPair(yes(), yes()) },
                 TestDomain.build { answerPair(yes(), no()) },
-                isEqual = false),
+                isEqual = false
+            ),
 
             TestCase(
                 TestDomain.build { answerPair(yes(), no()) },
                 TestDomain.build { answerPair(yes(), yes()) },
-                isEqual = false),
+                isEqual = false
+            ),
 
             TestCase(
                 TestDomain.build { answerPair(no(), yes()) },
                 TestDomain.build { answerPair(yes(), yes()) },
-                isEqual = false),
+                isEqual = false
+            ),
 
             TestCase(
                 TestDomain.build { answerPair(yes(), yes()) },
                 TestDomain.build { answerPair(no(), yes()) },
-                isEqual = false),
+                isEqual = false
+            ),
 
             TestCase(
                 TestDomain.build { android(1) },
                 TestDomain.build { android(1) },
-                isEqual = true),
+                isEqual = true
+            ),
 
             TestCase(
                 TestDomain.build { android(1) },
                 TestDomain.build { android(2) },
-                isEqual = false),
-
+                isEqual = false
+            ),
 
             // Record with only required fields are specified
             TestCase(
                 TestDomain.build { human(firstName = "Jean Luc", lastName = "Picard") },
                 TestDomain.build { human(firstName = "Jean Luc", lastName = "Picard") },
-                isEqual = true),
+                isEqual = true
+            ),
             TestCase(
                 TestDomain.build { human(firstName = "JeanLuc", lastName = "Picard") },
                 TestDomain.build { human(firstName = "Jean Luc", lastName = "Picard") },
-                isEqual = false),
+                isEqual = false
+            ),
 
             // One record has optional field specified
             TestCase(
                 TestDomain.build { human(firstName = "Jean Luc", lastName = "Picard") },
                 TestDomain.build { human(firstName = "Jean Luc", lastName = "Picard", title = "Captain") },
-                isEqual = false),
+                isEqual = false
+            ),
 
             // Optional field is different
             TestCase(
                 TestDomain.build { human(firstName = "Jean Luc", lastName = "Picard", title = "Captain") },
                 TestDomain.build { human(firstName = "Jean Luc", lastName = "Picard", title = "First Officer") },
-                isEqual = false),
+                isEqual = false
+            ),
 
             // Recursive value is same
             TestCase(
                 TestDomain.build { human(firstName = "Bob", lastName = "Robert", parent = android(9)) },
                 TestDomain.build { human(firstName = "Bob", lastName = "Robert", parent = android(9)) },
-                isEqual = true),
+                isEqual = true
+            ),
 
             // One record has a recursive field specified
             TestCase(
                 TestDomain.build { human(firstName = "Bob", lastName = "Robert") },
                 TestDomain.build { human(firstName = "Bob", lastName = "Robert", parent = android(9)) },
-                isEqual = false),
+                isEqual = false
+            ),
 
             // Recursive value is different
             TestCase(
                 TestDomain.build { human(firstName = "Bob", lastName = "Robert", title = "Professional Nerd", parent = android(9)) },
                 TestDomain.build { human(firstName = "Bob", lastName = "Robert", title = "Professional Nerd", parent = android(10)) },
-                isEqual = false)
+                isEqual = false
+            )
         )
     }
 }

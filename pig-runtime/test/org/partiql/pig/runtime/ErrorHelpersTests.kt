@@ -15,20 +15,21 @@
 
 package org.partiql.pig.runtime
 
+import com.amazon.ionelement.api.ElementType
 import com.amazon.ionelement.api.ionInt
 import com.amazon.ionelement.api.ionNull
 import com.amazon.ionelement.api.ionSexpOf
 import com.amazon.ionelement.api.ionSymbol
-import com.amazon.ionelement.api.ElementType
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-
 
 class ErrorHelpersTests {
     // Note that "arity" is the number of elements following the tag.
     val someSexp = ionSexpOf(ionSymbol("some_tag"), ionInt(1), ionNull(ElementType.STRING)) // <-- has an arity of 2.
-
 
     @Test
     fun requireArityOrMalformed() {
@@ -36,7 +37,7 @@ class ErrorHelpersTests {
         assertThrows<MalformedDomainDataException> {
             someSexp.requireArityOrMalformed(1)
         }.also {
-                assertTrue(it.message!!.contains("1..1"))
+            assertTrue(it.message!!.contains("1..1"))
         }
 
         assertDoesNotThrow {
@@ -65,7 +66,7 @@ class ErrorHelpersTests {
         }.also {
             assertTrue(it.message!!.contains("index 3"))
         }
-   }
+    }
 
     @Test
     fun getRequiredIon() {
@@ -77,7 +78,7 @@ class ErrorHelpersTests {
         }.also {
             assertTrue(it.message!!.contains("index 2"))
         }
-   }
+    }
 
     @Test
     fun getOptional() {
@@ -88,5 +89,5 @@ class ErrorHelpersTests {
         }.also {
             assertTrue(it.message!!.contains("index 2"))
         }
-   }
+    }
 }

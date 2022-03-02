@@ -19,20 +19,20 @@ import com.amazon.ion.system.IonReaderBuilder
 import org.partiql.pig.cmdline.Command
 import org.partiql.pig.cmdline.CommandLineParser
 import org.partiql.pig.cmdline.TargetLanguage
-import org.partiql.pig.errors.PigException
 import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.domain.parser.parseTypeUniverse
+import org.partiql.pig.errors.PigException
 import org.partiql.pig.generator.custom.applyCustomTemplate
 import org.partiql.pig.generator.html.applyHtmlTemplate
-import org.partiql.pig.generator.kotlin.generateKotlinCode
 import org.partiql.pig.generator.kotlin.convertToKTypeUniverse
+import org.partiql.pig.generator.kotlin.generateKotlinCode
 import java.io.File
 import java.io.FileInputStream
 import java.io.PrintWriter
 import kotlin.system.exitProcess
 
- fun progress(msg: String) =
-    println("pig: ${msg}")
+fun progress(msg: String) =
+    println("pig: $msg")
 
 /**
  * Entry point for when pig is being invoked from the command-line.
@@ -40,7 +40,7 @@ import kotlin.system.exitProcess
 fun main(args: Array<String>) {
     val cmdParser = CommandLineParser()
 
-    when(val command = cmdParser.parse(args)) {
+    when (val command = cmdParser.parse(args)) {
         is Command.ShowHelp -> cmdParser.printHelp(System.out)
         is Command.InvalidCommandLineArguments -> {
             System.err.println(command.message)
@@ -96,15 +96,14 @@ fun generateCode(command: Command.Generate) {
                 applyHtmlTemplate(typeUniverse.computeTypeDomains(), printWriter)
             }
         }
-
     }
 
     progress("universe generation complete!")
 }
 
 private fun prepareOutputDirectory(dir: File) {
-    if(dir.exists()) {
-        if(!dir.isDirectory) {
+    if (dir.exists()) {
+        if (!dir.isDirectory) {
             error("The path specified as the output directory exists but is not a directory.")
         }
     } else {

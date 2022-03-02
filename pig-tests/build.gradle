@@ -90,6 +90,11 @@ tasks.register('clean-pig-generated-files', Delete) {
 
 pig_all.shouldRunAfter('clean-pig-generated-files')
 
+ktlint {
+    filter {
+        exclude("**/*.generated.kt")
+    }
+}
 
 test {
     useJUnitPlatform()

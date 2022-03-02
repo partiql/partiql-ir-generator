@@ -44,7 +44,7 @@ class VisitorTests {
         }
 
         override fun visitMetas(metas: MetaContainer) {
-            if(metas.containsKey(NUMBER_KEY)) {
+            if (metas.containsKey(NUMBER_KEY)) {
                 numberAccumulator += metas[NUMBER_KEY] as Int
             }
         }

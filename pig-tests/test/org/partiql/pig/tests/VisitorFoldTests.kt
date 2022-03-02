@@ -31,7 +31,7 @@ class VisitorFoldTests {
                 node.containsKey(NUMBER_KEY) -> accumulator + node[NUMBER_KEY] as Int
                 else -> accumulator
             }
-        }
+    }
 
     // Because the folding walker & visitor are stateless, the same instances may be reused for all tests
     private val visitorFold = DummyVisitor()
@@ -87,4 +87,3 @@ class VisitorFoldTests {
         assertEquals(15, result3)
     }
 }
-

@@ -58,13 +58,15 @@ class SumConverterTests {
                 let(
                     "x",
                     lit(ionInt(38)),
-                    nary(plus(), variable("x"), lit(ionInt(4))))
+                    nary(plus(), variable("x"), lit(ionInt(4)))
+                )
             },
             case("let x = 38 in x + 4") {
                 let(
                     "x",
                     lit(ionInt(38)),
-                    nary(plus(), variable("x"), lit(ionInt(4))))
+                    nary(plus(), variable("x"), lit(ionInt(4)))
+                )
             },
             case("fun (n) -> n + 42") {
                 function("n", nary(plus(), variable("n"), lit(ionInt(42))))
@@ -80,4 +82,3 @@ class SumConverterTests {
         assertEquals(tc.expectedStringRepresentation, converted)
     }
 }
-

@@ -27,7 +27,6 @@ sealed class Scope {
      */
     abstract fun findIndex(id: String): Long
 
-
     object Global : Scope() {
         override fun nest(name: String): Lexical = Lexical(name, 0, this)
         override fun findIndex(id: String): Long = error("Undefined variable '$id'")
@@ -46,4 +45,3 @@ sealed class Scope {
             }
     }
 }
-

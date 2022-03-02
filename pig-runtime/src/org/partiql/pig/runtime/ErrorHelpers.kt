@@ -33,10 +33,11 @@ fun SexpElement.requireArityOrMalformed(arity: Int) =
 fun SexpElement.requireArityOrMalformed(arityRange: IntRange) {
     // Note: arity does not include the tag!
     val argCount = size - 1
-    if(argCount !in arityRange) {
+    if (argCount !in arityRange) {
         errMalformed(
             metas.location,
-            "$arityRange argument(s) were required to `${this.head}`, but $argCount was/were supplied.")
+            "$arityRange argument(s) were required to `${this.head}`, but $argCount was/were supplied."
+        )
     }
 }
 

@@ -26,11 +26,11 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class  IonElementTransformerBaseTests {
+class IonElementTransformerBaseTests {
 
     abstract class DummyDomainNode : DomainNode
 
-    data class CorrectDomainNode(val someString: String, override val metas: MetaContainer = emptyMetaContainer()): DummyDomainNode() {
+    data class CorrectDomainNode(val someString: String, override val metas: MetaContainer = emptyMetaContainer()) : DummyDomainNode() {
         override fun copy(metas: MetaContainer): DomainNode {
             error("does not need to be implemented for tests")
         }
@@ -43,7 +43,7 @@ class  IonElementTransformerBaseTests {
         }
     }
 
-    data class IncorrectDomainNode(val someString: String): DummyDomainNode() {
+    data class IncorrectDomainNode(val someString: String) : DummyDomainNode() {
         override fun copy(metas: MetaContainer): DomainNode {
             error("does not need to be implemented for tests")
         }
@@ -100,5 +100,4 @@ class  IonElementTransformerBaseTests {
         assertTrue(ex.cause is IonElementConstraintException)
         assertTrue(ex.message!!.contains("oh_my_an_error"))
     }
-
 }

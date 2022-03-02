@@ -23,7 +23,6 @@ import org.partiql.pig.generator.kotlin.KotlinDomainFreeMarkerGlobals
 import org.partiql.pig.util.snakeToCamelCase
 import org.partiql.pig.util.snakeToPascalCase
 
-
 /**
  * When applying a template for a pre-packaged language target such as Kotlin, we
  * call this to load the templates from resources.  The `custom` language target
@@ -34,9 +33,9 @@ internal fun Configuration.setClassLoaderForTemplates() {
     // the classloader of [TopLevelFreeMarkerGlobals] and set the root package.
     this.setClassLoaderForTemplateLoading(
         KotlinDomainFreeMarkerGlobals::class.java.classLoader,
-        "/org/partiql/pig/templates")
+        "/org/partiql/pig/templates"
+    )
 }
-
 
 /**
  * Creates the default Apache FreeMarker [Configuration] object that should be used
@@ -85,11 +84,11 @@ class SnakeToCamelCaseTemplateMethod : TemplateMethodModelEx {
         checkArguments(arguments)
         return arguments[0].toString().snakeToCamelCase()
     }
-
 }
 private fun checkArguments(arguments: MutableList<Any?>) {
     if (arguments.size != 1) {
         throw TemplateModelException(
-            "Incorrect number of arguments, expected 1 but was supplied with ${arguments.size}")
+            "Incorrect number of arguments, expected 1 but was supplied with ${arguments.size}"
+        )
     }
 }

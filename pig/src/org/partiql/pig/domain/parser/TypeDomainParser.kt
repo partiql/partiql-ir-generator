@@ -15,10 +15,30 @@
 
 package org.partiql.pig.domain.parser
 
-import com.amazon.ionelement.api.*
 import com.amazon.ion.IonReader
 import com.amazon.ion.system.IonReaderBuilder
-import org.partiql.pig.domain.model.*
+import com.amazon.ionelement.api.AnyElement
+import com.amazon.ionelement.api.IonElement
+import com.amazon.ionelement.api.IonElementException
+import com.amazon.ionelement.api.IonElementLoaderOptions
+import com.amazon.ionelement.api.MetaContainer
+import com.amazon.ionelement.api.SexpElement
+import com.amazon.ionelement.api.SymbolElement
+import com.amazon.ionelement.api.createIonElementLoader
+import com.amazon.ionelement.api.head
+import com.amazon.ionelement.api.tag
+import com.amazon.ionelement.api.tail
+import org.partiql.pig.domain.model.Arity
+import org.partiql.pig.domain.model.DataType
+import org.partiql.pig.domain.model.NamedElement
+import org.partiql.pig.domain.model.PermutedDomain
+import org.partiql.pig.domain.model.PermutedSum
+import org.partiql.pig.domain.model.Statement
+import org.partiql.pig.domain.model.Transform
+import org.partiql.pig.domain.model.TupleType
+import org.partiql.pig.domain.model.TypeDomain
+import org.partiql.pig.domain.model.TypeRef
+import org.partiql.pig.domain.model.TypeUniverse
 
 /** Parses a type universe contained in [universeText]. */
 fun parseTypeUniverse(universeText: String) =
@@ -39,11 +59,11 @@ fun parseTypeUniverse(reader: IonReader): TypeUniverse {
                 "transform" -> parseTransform(topLevelSexp)
                 else -> parseError(
                     topLevelSexp.head,
-                    ParserErrorContext.InvalidTopLevelTag(topLevelSexp.tag))
+                    ParserErrorContext.InvalidTopLevelTag(topLevelSexp.tag)
+                )
             }
         }
-    }
-    catch(iee: IonElementException) {
+    } catch (iee: IonElementException) {
         parseError(iee.location, ParserErrorContext.IonElementError(iee))
     }
 
@@ -61,7 +81,8 @@ private fun parseDefine(sexp: SexpElement): Statement {
         "permute_domain" -> parsePermuteDomain(name, valueSexp)
         else -> parseError(
             valueSexp.head,
-            ParserErrorContext.UnknownConstructor(valueSexp.tag))
+            ParserErrorContext.UnknownConstructor(valueSexp.tag)
+        )
     }
 }
 
@@ -76,7 +97,7 @@ fun parseTransform(sexp: SexpElement): Statement {
 
 private fun parseTypeDomain(domainName: String, sexp: SexpElement): TypeDomain {
     val args = sexp.tail // Skip tag
-    //val typesSexps = args.tail
+    // val typesSexps = args.tail
 
     val userTypes = args.map { tlv ->
         val tlvs = tlv.asSexp()
@@ -86,7 +107,8 @@ private fun parseTypeDomain(domainName: String, sexp: SexpElement): TypeDomain {
     return TypeDomain(
         tag = domainName,
         userTypes = userTypes,
-        metas = sexp.metas)
+        metas = sexp.metas
+    )
 }
 
 private fun parseDomainLevelStatement(tlvs: SexpElement): DataType.UserType {
@@ -109,7 +131,7 @@ private fun parseVariant(
     val elements = bodyArguments.tail
 
     // If there are no elements, definitely not a record.
-    val isRecord = if(elements.none()) {
+    val isRecord = if (elements.none()) {
         false
     } else {
         // if the head element is an s-exp that does not start with `?` or `*` then we're parsing a record
@@ -144,7 +166,7 @@ private fun parseProductBody(bodyArguments: List<AnyElement>, metas: MetaContain
 
 private fun parseProductElements(values: List<IonElement>): List<NamedElement> =
     values.map {
-        val identifier = when(it.annotations.size) {
+        val identifier = when (it.annotations.size) {
             // TODO: add tests for these errrors
             0 -> parseError(it, ParserErrorContext.MissingElementIdentifierAnnotation)
             1 -> it.annotations.single()
@@ -152,10 +174,11 @@ private fun parseProductElements(values: List<IonElement>): List<NamedElement> =
         }
 
         NamedElement(
-            tag = "",  // NOTE: tag is not used in the s-expression representation of products!
+            tag = "", // NOTE: tag is not used in the s-expression representation of products!
             identifier = identifier,
             typeReference = parseSingleTypeRef(it),
-            metas = it.metas)
+            metas = it.metas
+        )
     }
 
 private fun parseRecordBody(bodyArguments: List<AnyElement>, metas: MetaContainer): DataType.UserType.Tuple {
@@ -168,11 +191,11 @@ fun parseRecordElements(elementSexps: List<AnyElement>): List<NamedElement> =
     elementSexps.asSequence()
         .map { it.asSexp() }
         .map { elementSexp ->
-            if(elementSexp.values.size != 2) {
+            if (elementSexp.values.size != 2) {
                 parseError(elementSexp, ParserErrorContext.InvalidArity(2, elementSexp.size))
             }
             val tag = elementSexp.values[0].symbolValue
-            val identifier = when(elementSexp.annotations.size) {
+            val identifier = when (elementSexp.annotations.size) {
                 0 -> tag
                 1 -> elementSexp.annotations.single()
                 else -> parseError(elementSexp, ParserErrorContext.MultipleElementIdentifierAnnotations)
@@ -182,7 +205,8 @@ fun parseRecordElements(elementSexps: List<AnyElement>): List<NamedElement> =
                 identifier = identifier,
                 tag = tag,
                 typeReference = typeRef,
-                metas = elementSexp.metas)
+                metas = elementSexp.metas
+            )
         }
         .toList()
 
@@ -236,7 +260,7 @@ private fun parsePermuteDomain(domainName: String, sexp: SexpElement): PermutedD
 
     val alterSexps = args.tail
     alterSexps.map { it.asSexp() }.forEach { alterSexp ->
-        when(alterSexp.head.symbolValue) {
+        when (alterSexp.head.symbolValue) {
             "with" -> permutedSums.add(parseWithSum(alterSexp))
             "exclude" -> alterSexp.tail.mapTo(removedTypes) { it.symbolValue }
             "include" -> alterSexp.tail.mapTo(newTypes) { parseDomainLevelStatement(it.asSexp()) }
@@ -250,7 +274,8 @@ private fun parsePermuteDomain(domainName: String, sexp: SexpElement): PermutedD
         excludedTypes = removedTypes,
         includedTypes = newTypes,
         permutedSums = permutedSums,
-        metas = sexp.metas)
+        metas = sexp.metas
+    )
 }
 
 private fun parseWithSum(sexp: SexpElement): PermutedSum {
@@ -275,7 +300,7 @@ private fun parseWithSum(sexp: SexpElement): PermutedSum {
 private fun requireArityForTag(sexp: SexpElement, arity: Int) {
     // Note: arity does not include the tag!
     val argCount = sexp.values.size - 1
-    if(argCount != arity) {
+    if (argCount != arity) {
         parseError(sexp, ParserErrorContext.InvalidArityForTag(IntRange(arity, arity), sexp.head.symbolValue, argCount))
     }
 }
@@ -283,7 +308,7 @@ private fun requireArityForTag(sexp: SexpElement, arity: Int) {
 private fun requireArityForTag(sexp: SexpElement, arityRange: IntRange) {
     // Note: arity does not include the tag!
     val argCount = sexp.values.size - 1
-    if(argCount !in arityRange) {
+    if (argCount !in arityRange) {
         parseError(sexp, ParserErrorContext.InvalidArityForTag(arityRange, sexp.head.symbolValue, argCount))
     }
 }

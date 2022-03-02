@@ -53,61 +53,73 @@ class TypeDomainParserErrorsTest {
         fun parametersForErrorsTest() = listOf(
             TestCase(
                 "(", // note:  ParserErrorContext.IonElementError.equals doesn't check the exception
-                makeErr( ParserErrorContext.IonElementError(IonElementLoaderException(null, "")))),
+                makeErr(ParserErrorContext.IonElementError(IonElementLoaderException(null, "")))
+            ),
 
             TestCase(
                 "(bad_tag)",
-                makeErr(1, 2, ParserErrorContext.InvalidTopLevelTag("bad_tag"))),
+                makeErr(1, 2, ParserErrorContext.InvalidTopLevelTag("bad_tag"))
+            ),
 
             TestCase(
                 "(define huh hee hoo)",
-                makeErr(1, 1, ParserErrorContext.InvalidArityForTag(2..2, "define", 3))),
+                makeErr(1, 1, ParserErrorContext.InvalidArityForTag(2..2, "define", 3))
+            ),
 
             TestCase(
                 "(define huh (invalid_constructor))",
-                makeErr(1, 14, ParserErrorContext.UnknownConstructor("invalid_constructor"))),
+                makeErr(1, 14, ParserErrorContext.UnknownConstructor("invalid_constructor"))
+            ),
 
             TestCase(
                 "(define huh (domain (bad_tag)))",
-                makeErr(1, 22, ParserErrorContext.InvalidDomainLevelTag("bad_tag"))),
+                makeErr(1, 22, ParserErrorContext.InvalidDomainLevelTag("bad_tag"))
+            ),
 
             TestCase(
                 "(define huh (domain (product one::huh two::int three::(bad_tag))))",
-                makeErr(1, 56, ParserErrorContext.ExpectedTypeReferenceArityTag("bad_tag"))),
+                makeErr(1, 56, ParserErrorContext.ExpectedTypeReferenceArityTag("bad_tag"))
+            ),
 
             TestCase(
                 "(define huh (permute_domain huh (bad_tag)))",
-                makeErr(1, 33, ParserErrorContext.InvalidPermutedDomainTag("bad_tag"))),
+                makeErr(1, 33, ParserErrorContext.InvalidPermutedDomainTag("bad_tag"))
+            ),
 
             TestCase(
                 "(define huh (permute_domain huh (with huh (bad_tag))))",
-                makeErr(1, 43, ParserErrorContext.InvalidWithSumTag("bad_tag"))),
+                makeErr(1, 43, ParserErrorContext.InvalidWithSumTag("bad_tag"))
+            ),
 
             TestCase(
                 "(define huh (domain (product x::huh y::(? ))))",
-                makeErr(1, 37, ParserErrorContext.InvalidArityForTag(IntRange(1, 1), "?", 0))),
+                makeErr(1, 37, ParserErrorContext.InvalidArityForTag(IntRange(1, 1), "?", 0))
+            ),
 
             TestCase(
                 "(define huh (domain (product huh x::(? o::one t::two))))",
-                makeErr(1, 34, ParserErrorContext.InvalidArityForTag(IntRange(1, 1), "?", 2))),
+                makeErr(1, 34, ParserErrorContext.InvalidArityForTag(IntRange(1, 1), "?", 2))
+            ),
 
             TestCase(
                 "(define huh (domain (record foo (name_field_with_too_few_elements))))",
-                makeErr(1, 33, ParserErrorContext.InvalidArity(2, 1))),
+                makeErr(1, 33, ParserErrorContext.InvalidArity(2, 1))
+            ),
 
             TestCase(
                 "(define huh (domain (record foo (name_field_with_too many elements))))",
-                makeErr(1, 33, ParserErrorContext.InvalidArity(2, 3))),
+                makeErr(1, 33, ParserErrorContext.InvalidArity(2, 3))
+            ),
 
             TestCase( // Covers first place in parser this can be thrown
                 "(define huh (domain (product huh x::42)))",
-                makeErr(1, 34, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT))),
+                makeErr(1, 34, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT))
+            ),
 
             TestCase( // Covers second place in parser this can be thrown
                 "(define huh (domain (product huh x::int y::42)))",
-                makeErr(1, 41, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT)))
+                makeErr(1, 41, ParserErrorContext.ExpectedSymbolOrSexp(ElementType.INT))
+            )
         )
     }
 }
-
-

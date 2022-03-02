@@ -19,8 +19,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class CapitalizerTests {
-    
-    
+
     @Test
     fun snakeToPascalCase() {
         assertEquals("One", "one".snakeToPascalCase())

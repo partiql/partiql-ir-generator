@@ -30,24 +30,26 @@ class TypeDomainParserTests {
 
     @Test
     fun testProduct() = runTestCase(
-            """
+        """
                 (define test_domain 
                     (domain 
                         (product foo a::string b::(* int 2))
                         (product bar a::bat b::(? baz) c::(* blargh 10))))
-            """)
+            """
+    )
     @Test
     fun testTransform() = runTestCase("(transform domain_a domain_b)")
 
     @Test
     fun testRecord() = runTestCase(
-            """
+        """
                 (define test_domain 
                     (domain 
                         (record foo (bat int) (blorg (? int)))
                         (record bar (bloo int) (blat (* int 1)))
                         (record bat xx::(x int) yy::(y int))))
-            """)
+            """
+    )
 
     @Test
     fun testSum() =
@@ -68,11 +70,12 @@ class TypeDomainParserTests {
                             // Record with three elements
                             (crowd first::int second::symbol third::ion)
                             )))
-            """)
+            """
+        )
 
     @Test
     fun testPermuteDomain() = runTestCase(
-            """
+        """
                 (define permuted_domain 
                     (permute_domain some_domain
                         (exclude excluded_type)
@@ -82,7 +85,8 @@ class TypeDomainParserTests {
                             (exclude removed_variant)
                             (include
                                 (added_variant a::int b::int)))))
-            """)
+            """
+    )
 
     private fun runTestCase(tc: String) {
         val expected = assertDoesNotThrow("loading the expected type universe") {
@@ -97,9 +101,9 @@ class TypeDomainParserTests {
         assertEquals(
             ionSexpOf(
                 ionSymbol("universe"),
-                expected),
-            parsed.toIonElement())
+                expected
+            ),
+            parsed.toIonElement()
+        )
     }
 }
-
-

@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test
 import org.partiql.pig.tests.generated.MultiWordDomain
 import kotlin.test.assertEquals
 
-
 class MultiWordDomainNamingTest {
 
     // The main check here is if the conversion from snake_case to PascalCase is happening correctly

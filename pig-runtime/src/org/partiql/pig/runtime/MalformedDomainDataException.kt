@@ -18,5 +18,5 @@ package org.partiql.pig.runtime
 import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.locationToString
 
-class MalformedDomainDataException(val location: IonLocation?, message: String, cause: Throwable? = null)
-    : Exception("${locationToString(location)}: $message", cause)
+class MalformedDomainDataException(val location: IonLocation?, message: String, cause: Throwable? = null) :
+    Exception("${locationToString(location)}: $message", cause)

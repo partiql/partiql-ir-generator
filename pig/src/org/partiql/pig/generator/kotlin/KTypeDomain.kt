@@ -15,8 +15,6 @@
 
 package org.partiql.pig.generator.kotlin
 
-import org.partiql.pig.domain.model.TypeDomain
-
 /*
   Note a big design consideration for the classes in this file is that they are easy to consume by the
   Apache FreeMarker template.  FreeMarker, like all template languages, is not great at expressing complex
@@ -36,7 +34,8 @@ data class KTransform(
      * difference is computed.
      */
     val sourceDomainDifference: KTypeDomain,
-    val destDomainKotlinName: String)
+    val destDomainKotlinName: String
+)
 
 data class KTypeDomain(
     /** The name of the type domain in the generated Kotlin code. .*/
@@ -71,7 +70,6 @@ data class KConstructorArgument(
     val kotlinName: String,
     val value: String
 )
-
 
 data class KBuilderFunction(
     val kotlinName: String,

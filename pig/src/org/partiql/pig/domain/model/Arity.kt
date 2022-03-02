@@ -18,6 +18,6 @@ package org.partiql.pig.domain.model
 /** Base class representing an element's arity. */
 sealed class Arity {
     object Required : Arity()
-    object Optional: Arity()
+    object Optional : Arity()
     data class Variadic(val minimumArity: Int) : Arity()
 }

@@ -39,4 +39,5 @@ fun applyCustomTemplate(
 internal fun createCustomFreeMarkerGlobals(domains: List<TypeDomain>): CustomFreeMarkerGlobals =
     CustomFreeMarkerGlobals(
         domains = domains.map { it.toCTypeDomain() },
-        generatedDate = OffsetDateTime.now())
+        generatedDate = OffsetDateTime.now()
+    )

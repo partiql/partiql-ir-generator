@@ -22,7 +22,6 @@ import org.partiql.pig.generator.custom.createCustomFreeMarkerGlobals
 import org.partiql.pig.generator.setClassLoaderForTemplates
 import java.io.PrintWriter
 
-
 fun applyHtmlTemplate(
     domains: List<TypeDomain>,
     output: PrintWriter

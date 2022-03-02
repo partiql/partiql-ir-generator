@@ -77,4 +77,3 @@ class LongPrimitiveTests {
         // Note: hashCode is *likely* to be different, but it is not guaranteed, so therefore no assertion for that.
     }
 }
-

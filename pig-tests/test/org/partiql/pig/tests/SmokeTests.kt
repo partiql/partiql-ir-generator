@@ -48,13 +48,18 @@ class SmokeTests {
                     projectExpr(
                         plus(
                             lit(ionInt(1)),
-                            lit(ionInt(41))),
-                        "select_alias")),
+                            lit(ionInt(41))
+                        ),
+                        "select_alias"
+                    )
+                ),
                 scan(
                     id("foo", caseSensitive(), unqualified()),
                     "as_foo",
                     "at_foo",
-                    "by_foo"))
+                    "by_foo"
+                )
+            )
         }
 
         val expectedIiv = node.toIonElement()
@@ -66,5 +71,3 @@ class SmokeTests {
         assertEquals(expectedIiv, roundTrippedIiv)
     }
 }
-
-
