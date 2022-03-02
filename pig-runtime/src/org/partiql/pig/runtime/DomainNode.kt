@@ -22,7 +22,7 @@ import com.amazon.ionelement.api.MetaContainer
 interface DomainNode : MetaContainingNode {
 
     /** Creates a copy of the current node with [metas] as the new metas. */
-    fun copy(metas : MetaContainer): DomainNode
+    fun copy(metas: MetaContainer): DomainNode
 
     /** Converts the current node to an instance of `IonElement`. */
     fun toIonElement(): IonElement
@@ -33,4 +33,3 @@ interface DomainNode : MetaContainingNode {
     /** Converts the current node to a String.  Most nodes should simply call `toIonElement().toString()`. */
     override fun toString(): String
 }
-

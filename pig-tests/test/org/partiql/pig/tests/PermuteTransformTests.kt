@@ -20,8 +20,8 @@ import org.junit.jupiter.api.fail
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ArgumentsSource
 import org.partiql.pig.tests.generated.DomainA
-import org.partiql.pig.tests.generated.DomainB
 import org.partiql.pig.tests.generated.DomainAToDomainBVisitorTransform
+import org.partiql.pig.tests.generated.DomainB
 
 /**
  * Test cases for the 5 basic scenarios for domain permutation.
@@ -82,7 +82,8 @@ class PermuteTransformTests {
 
     data class TestCase(
         val input: DomainA.DomainANode,
-        val expected: DomainB.DomainBNode)
+        val expected: DomainB.DomainBNode
+    )
 
     @ParameterizedTest
     @ArgumentsSource(TestArguments::class)
@@ -91,7 +92,7 @@ class PermuteTransformTests {
         // on the generated visitor transform that will transform *any* [DomainA.DomainANode].
         // It is possible that one may be added in the future.
         // https://github.com/partiql/partiql-ir-generator/issues/66
-        val actual = when(tc.input) {
+        val actual = when (tc.input) {
             is DomainA.ProductA -> tt.transformProductA(tc.input)
             is DomainA.RecordA -> tt.transformRecordA(tc.input)
             is DomainA.SumB -> tt.transformSumB(tc.input)
@@ -165,4 +166,3 @@ class PermuteTransformTests {
         )
     }
 }
-

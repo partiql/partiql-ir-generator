@@ -18,9 +18,9 @@ package org.partiql.pig.domain.model
 import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.location
-import org.partiql.pig.errors.PigException
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
+import org.partiql.pig.errors.PigException
 
 /**
  * Encapsulates all error context information in an easily testable way.
@@ -29,74 +29,80 @@ import org.partiql.pig.errors.PigError
  *        being sure that every error condition is tested easier but complicates [SemanticErrorContext] due
  *        to the increased number of derived classes. (Currently [NameAlreadyUsed] is used at several places.)
  */
-sealed class SemanticErrorContext(val msgFormatter: () -> String): ErrorContext {
+sealed class SemanticErrorContext(val msgFormatter: () -> String) : ErrorContext {
     override val message: String get() = msgFormatter()
 
-    object EmptyUniverse
-        : SemanticErrorContext({ "The universe was empty" })
+    object EmptyUniverse :
+        SemanticErrorContext({ "The universe was empty" })
 
-    data class UndefinedType(val typeName: String)
-        : SemanticErrorContext({ "Undefined type: '$typeName'"})
+    data class UndefinedType(val typeName: String) :
+        SemanticErrorContext({ "Undefined type: '$typeName'" })
 
-    data class NotATypeName(val variantName: String)
-        : SemanticErrorContext({ "Cannot use a variant name '$variantName' here"})
+    data class NotATypeName(val variantName: String) :
+        SemanticErrorContext({ "Cannot use a variant name '$variantName' here" })
 
-    object RequiredElementAfterVariadic
-        : SemanticErrorContext({ "Required fields are not allowed after a variadic field" })
+    object RequiredElementAfterVariadic :
+        SemanticErrorContext({ "Required fields are not allowed after a variadic field" })
 
-    object OptionalElementAfterVariadic
-        : SemanticErrorContext({ "Optional fields are not allowed after a variadic field"})
+    object OptionalElementAfterVariadic :
+        SemanticErrorContext({ "Optional fields are not allowed after a variadic field" })
 
-    object MoreThanOneVariadicElement
-        : SemanticErrorContext({ "A product may not have more than one variadic field" })
+    object MoreThanOneVariadicElement :
+        SemanticErrorContext({ "A product may not have more than one variadic field" })
 
-    object OptionalIonTypeElement
-        : SemanticErrorContext({ "A product may not have optional Ion type field" })
+    object OptionalIonTypeElement :
+        SemanticErrorContext({ "A product may not have optional Ion type field" })
 
-    object EmptyRecord
-        : SemanticErrorContext({ "Records must have at least one field" })
+    object EmptyRecord :
+        SemanticErrorContext({ "Records must have at least one field" })
 
-    data class CannotRemoveBuiltinType(val typeName: String)
-        : SemanticErrorContext({ "Cannot remove built-in type '$typeName'" })
+    data class CannotRemoveBuiltinType(val typeName: String) :
+        SemanticErrorContext({ "Cannot remove built-in type '$typeName'" })
 
-    data class DuplicateTypeDomainName(val domainName: String)
-        : SemanticErrorContext({ "Duplicate type domain tag: '${domainName} "})
+    data class DuplicateTypeDomainName(val domainName: String) :
+        SemanticErrorContext({ "Duplicate type domain tag: '$domainName " })
 
-    data class DuplicateRecordElementTag(val elementName: String)
-        : SemanticErrorContext({ "Duplicate record element tag: '${elementName} "})
+    data class DuplicateRecordElementTag(val elementName: String) :
+        SemanticErrorContext({ "Duplicate record element tag: '$elementName " })
 
-    data class DuplicateElementIdentifier(val elementName: String)
-        : SemanticErrorContext({ "Duplicate element identifier: '${elementName} "})
+    data class DuplicateElementIdentifier(val elementName: String) :
+        SemanticErrorContext({ "Duplicate element identifier: '$elementName " })
 
-    data class NameAlreadyUsed(val name: String, val domainName: String)
-        : SemanticErrorContext({ "Name '$name' was previously used in the `$domainName` type domain" })
+    data class NameAlreadyUsed(val name: String, val domainName: String) :
+        SemanticErrorContext({ "Name '$name' was previously used in the `$domainName` type domain" })
 
-    data class CannotRemoveNonExistentSumVariant(val sumTypeName: String, val variantName: String)
-        : SemanticErrorContext({ "Permuted sum type '${sumTypeName}' tries to remove variant '${variantName}' which " +
-                               "does not exist in the original sum type" })
+    data class CannotRemoveNonExistentSumVariant(val sumTypeName: String, val variantName: String) :
+        SemanticErrorContext({
+            "Permuted sum type '$sumTypeName' tries to remove variant '$variantName' which " +
+                "does not exist in the original sum type"
+        })
 
-    data class DomainPermutesNonExistentDomain(val domainName: String, val permutedDomain: String)
-        : SemanticErrorContext({ "Domain '$domainName' permutes non-existent domain '$permutedDomain'"})
+    data class DomainPermutesNonExistentDomain(val domainName: String, val permutedDomain: String) :
+        SemanticErrorContext({ "Domain '$domainName' permutes non-existent domain '$permutedDomain'" })
 
-    data class CannotRemoveNonExistentType(val typeName: String, val permutingDomain: String, val permuteeDomain: String)
-        : SemanticErrorContext({ "Domain '$permutingDomain' tries to remove type '$typeName', which does not exist in the " +
-                               "domain being permuted: '$permuteeDomain'." })
+    data class CannotRemoveNonExistentType(val typeName: String, val permutingDomain: String, val permuteeDomain: String) :
+        SemanticErrorContext({
+            "Domain '$permutingDomain' tries to remove type '$typeName', which does not exist in the " +
+                "domain being permuted: '$permuteeDomain'."
+        })
 
-    data class CannotPermuteNonExistentSum(val typeName: String, val permutingDomain: String, val permuteeDomain: String)
-        : SemanticErrorContext({ "Domain '$permutingDomain' tries to permute type '$typeName', which does not exist in the " +
-                               "domain being permuted: '$permuteeDomain'." })
+    data class CannotPermuteNonExistentSum(val typeName: String, val permutingDomain: String, val permuteeDomain: String) :
+        SemanticErrorContext({
+            "Domain '$permutingDomain' tries to permute type '$typeName', which does not exist in the " +
+                "domain being permuted: '$permuteeDomain'."
+        })
 
-    data class CannotPermuteNonSumType(val typeName: String)
-        : SemanticErrorContext({ "Cannot permute type '$typeName' because it is not a sum" })
+    data class CannotPermuteNonSumType(val typeName: String) :
+        SemanticErrorContext({ "Cannot permute type '$typeName' because it is not a sum" })
 
-    data class EmptySumType(val sumTypeName: String)
-        : SemanticErrorContext({ "Sum type '$sumTypeName' is empty" })
+    data class EmptySumType(val sumTypeName: String) :
+        SemanticErrorContext({ "Sum type '$sumTypeName' is empty" })
 
-    data class SourceDomainDoesNotExist(val name: String)
-        : SemanticErrorContext({ "Source domain '$name' does not exist" })
+    data class SourceDomainDoesNotExist(val name: String) :
+        SemanticErrorContext({ "Source domain '$name' does not exist" })
 
-    data class DestinationDomainDoesNotExist(val name: String)
-        : SemanticErrorContext({ "Destination domain '$name' does not exist" })
+    data class DestinationDomainDoesNotExist(val name: String) :
+        SemanticErrorContext({ "Destination domain '$name' does not exist" })
 }
 
 /**

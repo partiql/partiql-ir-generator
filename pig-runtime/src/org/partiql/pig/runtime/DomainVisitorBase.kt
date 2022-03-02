@@ -40,7 +40,7 @@ open class DomainVisitorBase {
         // default does nothing.
     }
 
-    ///////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////
 
     open fun walkBoolPrimitive(node: BoolPrimitive) {
         visitBoolPrimitive(node)

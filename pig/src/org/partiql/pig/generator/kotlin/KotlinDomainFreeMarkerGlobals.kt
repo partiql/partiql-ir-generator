@@ -27,4 +27,3 @@ class KotlinDomainFreeMarkerGlobals(
     val domain: KTypeDomain,
     val generatedDate: OffsetDateTime
 )
-

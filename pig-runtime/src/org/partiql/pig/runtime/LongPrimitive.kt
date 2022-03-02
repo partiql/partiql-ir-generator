@@ -60,4 +60,3 @@ class LongPrimitive(val value: Long, override val metas: MetaContainer) : Domain
         return value.hashCode()
     }
 }
-

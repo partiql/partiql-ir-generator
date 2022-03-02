@@ -38,50 +38,55 @@ fun makeErr(line: Int, col: Int, errorContext: ErrorContext) =
 fun makeErr(errorContext: ErrorContext) =
     PigError(null, errorContext)
 
-
 /*
  * The [toIonElement] functions below generate an s-expression representation of a [TypeUniverse].
  */
 
-
 fun TypeUniverse.toIonElement(): IonElement =
     ionSexpOf(
         ionSymbol("universe"),
-        *statements.map { it.toIonElement() }.toTypedArray())
-
+        *statements.map { it.toIonElement() }.toTypedArray()
+    )
 
 fun Statement.toIonElement(): IonElement =
-        when(this) {
-            is TypeDomain ->
+    when (this) {
+        is TypeDomain ->
+            ionSexpOf(
+                ionSymbol("define"),
+                ionSymbol(tag),
                 ionSexpOf(
-                    ionSymbol("define"),
-                    ionSymbol(tag),
-                    ionSexpOf(
-                        ionSymbol("domain"),
-                        *userTypes
-                            .filterNot { it.isDifferent }
-                            .map { it.toIonElement(includeTypeTag = true) }.toTypedArray()))
-            is PermutedDomain ->
+                    ionSymbol("domain"),
+                    *userTypes
+                        .filterNot { it.isDifferent }
+                        .map { it.toIonElement(includeTypeTag = true) }.toTypedArray()
+                )
+            )
+        is PermutedDomain ->
+            ionSexpOf(
+                ionSymbol("define"),
+                ionSymbol(tag),
                 ionSexpOf(
-                        ionSymbol("define"),
-                        ionSymbol(tag),
+                    listOf(
+                        ionSymbol("permute_domain"),
+                        ionSymbol(permutesDomain),
                         ionSexpOf(
-                            listOf(
-                                ionSymbol("permute_domain"),
-                                ionSymbol(permutesDomain),
-                                ionSexpOf(
-                                    ionSymbol("exclude"),
-                                    *excludedTypes.map { ionSymbol(it) }.toTypedArray()),
-                                ionSexpOf(
-                                    ionSymbol("include"),
-                                    *includedTypes.map { it.toIonElement(includeTypeTag = true) }.toTypedArray())
-                        ) + permutedSums.map { it.toIonElement() }))
-            is Transform ->
-                ionSexpOf(
-                    ionSymbol("transform"),
-                    ionSymbol(this.sourceDomainTag),
-                    ionSymbol(this.destinationDomainTag))
-        }
+                            ionSymbol("exclude"),
+                            *excludedTypes.map { ionSymbol(it) }.toTypedArray()
+                        ),
+                        ionSexpOf(
+                            ionSymbol("include"),
+                            *includedTypes.map { it.toIonElement(includeTypeTag = true) }.toTypedArray()
+                        )
+                    ) + permutedSums.map { it.toIonElement() }
+                )
+            )
+        is Transform ->
+            ionSexpOf(
+                ionSymbol("transform"),
+                ionSymbol(this.sourceDomainTag),
+                ionSymbol(this.destinationDomainTag)
+            )
+    }
 
 fun PermutedSum.toIonElement(): IonElement =
     ionSexpOf(
@@ -89,13 +94,15 @@ fun PermutedSum.toIonElement(): IonElement =
         ionSymbol(tag),
         ionSexpOf(
             ionSymbol("exclude"),
-            *removedVariants.map { ionSymbol(it) }.toTypedArray()),
+            *removedVariants.map { ionSymbol(it) }.toTypedArray()
+        ),
         ionSexpOf(
             ionSymbol("include"),
-            *addedVariants.map { it.toIonElement(includeTypeTag = false) }.toTypedArray()))
+            *addedVariants.map { it.toIonElement(includeTypeTag = false) }.toTypedArray()
+        )
+    )
 
-
-fun DataType.toIonElement(includeTypeTag: Boolean): IonElement = when(this) {
+fun DataType.toIonElement(includeTypeTag: Boolean): IonElement = when (this) {
     DataType.Ion -> ionSymbol("ion")
     DataType.Bool -> ionSymbol("bool")
     DataType.Int -> ionSymbol("int")
@@ -103,20 +110,23 @@ fun DataType.toIonElement(includeTypeTag: Boolean): IonElement = when(this) {
     is DataType.UserType.Tuple ->
         ionSexpOf(
             listOfNotNull(
-                if(includeTypeTag) ionSymbol(tupleType.toString().toLowerCase()) else null,
+                if (includeTypeTag) ionSymbol(tupleType.toString().toLowerCase()) else null,
                 ionSymbol(tag),
-                *namedElements.map { it.toIonElement(this.tupleType) }.toTypedArray()))
+                *namedElements.map { it.toIonElement(this.tupleType) }.toTypedArray()
+            )
+        )
     is DataType.UserType.Sum ->
         ionSexpOf(
             ionSymbol("sum"),
             ionSymbol(tag),
             *variants
                 .filterNot { it.isDifferent }
-                .map { it.toIonElement(includeTypeTag = false) }.toTypedArray())
+                .map { it.toIonElement(includeTypeTag = false) }.toTypedArray()
+        )
 }
 
 fun NamedElement.toIonElement(tupleType: TupleType) =
-    when(tupleType) {
+    when (tupleType) {
         TupleType.PRODUCT -> typeReference.toIonElement().withAnnotations(identifier)
         TupleType.RECORD ->
             ionSexpOf(ionSymbol(tag), typeReference.toIonElement()).let {

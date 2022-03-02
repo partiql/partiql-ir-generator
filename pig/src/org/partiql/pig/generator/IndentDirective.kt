@@ -15,9 +15,15 @@
 
 package org.partiql.pig.generator
 
-import freemarker.core.*
-import freemarker.template.*
-import java.io.*
+import freemarker.core.Environment
+import freemarker.template.TemplateDirectiveBody
+import freemarker.template.TemplateDirectiveModel
+import freemarker.template.TemplateException
+import freemarker.template.TemplateModel
+import freemarker.template.TemplateModelException
+import freemarker.template.TemplateNumberModel
+import java.io.IOException
+import java.io.StringWriter
 
 /**
  * This was shamelessly copied from https://stackoverflow.com/questions/1235179/simple-way-to-repeat-a-string-in-java
@@ -27,7 +33,9 @@ class IndentDirective : TemplateDirectiveModel {
 
     @Throws(TemplateException::class, IOException::class)
     override fun execute(
-        environment: Environment, parameters: Map<*, *>, templateModels: Array<TemplateModel>,
+        environment: Environment,
+        parameters: Map<*, *>,
+        templateModels: Array<TemplateModel>,
         body: TemplateDirectiveBody
     ) {
         var count: Int? = null
@@ -69,5 +77,4 @@ class IndentDirective : TemplateDirectiveModel {
 
         private val COUNT = "count"
     }
-
 }

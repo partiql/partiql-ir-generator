@@ -73,7 +73,7 @@ private fun generateCrossDomainVisitorTransforms(
     val template = freemarkerConfig.getTemplate("kotlin-cross-domain-transform.ftl")!!
 
     transforms.forEach { transform ->
-   // Apply the kotlin template once for each type domain... this creates one `*.generated.kt` file per domain.
+        // Apply the kotlin template once for each type domain... this creates one `*.generated.kt` file per domain.
         val renderModel = KotlinCrossDomainFreeMarkerGlobals(
             namespace = namespace,
             transform = transform,

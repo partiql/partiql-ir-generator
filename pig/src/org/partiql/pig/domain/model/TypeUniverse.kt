@@ -26,13 +26,13 @@ data class TypeUniverse(val statements: List<Statement>) {
      * @throws [PigException] when the first semantic error is encountered.
      */
     fun computeTypeDomains(): List<TypeDomain> {
-        if(statements.none()) {
+        if (statements.none()) {
             semanticError(null, SemanticErrorContext.EmptyUniverse)
         }
 
         val domains = mutableMapOf<String, TypeDomain>()
         statements.filter { it !is Transform }.map { stmt ->
-            val typeDomain = when(stmt) {
+            val typeDomain = when (stmt) {
                 is Transform -> error("should not happen")
                 is TypeDomain -> stmt
                 is PermutedDomain -> {
@@ -50,10 +50,10 @@ data class TypeUniverse(val statements: List<Statement>) {
         }
 
         statements.filterIsInstance<Transform>().forEach {
-            if(!domains.containsKey(it.sourceDomainTag)) {
+            if (!domains.containsKey(it.sourceDomainTag)) {
                 semanticError(it.metas, SemanticErrorContext.SourceDomainDoesNotExist(it.sourceDomainTag))
             }
-            if(!domains.containsKey(it.destinationDomainTag)) {
+            if (!domains.containsKey(it.destinationDomainTag)) {
                 semanticError(it.metas, SemanticErrorContext.DestinationDomainDoesNotExist(it.destinationDomainTag))
             }
         }
@@ -61,4 +61,3 @@ data class TypeUniverse(val statements: List<Statement>) {
         return domains.values.toList()
     }
 }
-

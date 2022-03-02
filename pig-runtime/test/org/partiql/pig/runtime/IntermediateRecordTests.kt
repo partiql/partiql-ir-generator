@@ -66,7 +66,7 @@ class IntermediateRecordTests {
         ir.processVariadicField("variadic_empty", 0) { foundFields.add(it) }
 
         // Variadic field with minimum arity of 0 that is not present (should not throw)
-        ir.processVariadicField("variadic_not_present", 0) { fail("should not get called")}
+        ir.processVariadicField("variadic_not_present", 0) { fail("should not get called") }
 
         assertDoesNotThrow { ir.malformedIfAnyUnprocessedFieldsRemain() }
         assertEquals(listOf(ionInt(1), ionInt(2), ionInt(3), ionInt(4)), foundFields)
@@ -90,24 +90,29 @@ class IntermediateRecordTests {
         fun parametersForMalformedTest() = listOf(
             MalformedTestCase(
                 "required field missing",
-                { createIntermediateRecord("(some_record (foo 1))").processRequiredField("bad_field")  { fail("should not be called")} },
-                listOf("bad_field")),
+                { createIntermediateRecord("(some_record (foo 1))").processRequiredField("bad_field") { fail("should not be called") } },
+                listOf("bad_field")
+            ),
             MalformedTestCase(
                 "required field arity too high",
-                { createIntermediateRecord("(some_record (foo 1 2))").processRequiredField("foo")  { fail("should not be called")} },
-                listOf("foo", "1..1")),
+                { createIntermediateRecord("(some_record (foo 1 2))").processRequiredField("foo") { fail("should not be called") } },
+                listOf("foo", "1..1")
+            ),
             MalformedTestCase(
                 "optional field arity too high",
-                { createIntermediateRecord("(some_record (foo 1 2))").processOptionalField("foo")  { fail("should not be called")} },
-                listOf("foo", "1..1")),
+                { createIntermediateRecord("(some_record (foo 1 2))").processOptionalField("foo") { fail("should not be called") } },
+                listOf("foo", "1..1")
+            ),
             MalformedTestCase(
                 "variadic arity too low",
-                { createIntermediateRecord("(some_record (foo 1 2))").processVariadicField("foo", 3)  { fail("should not be called")} },
-                listOf("foo", "3..2147483647")),
+                { createIntermediateRecord("(some_record (foo 1 2))").processVariadicField("foo", 3) { fail("should not be called") } },
+                listOf("foo", "3..2147483647")
+            ),
             MalformedTestCase(
                 "variadic arity too low",
                 { createIntermediateRecord("(some_record (foo 1 2))").malformedIfAnyUnprocessedFieldsRemain() },
-                listOf("Unexpected", "foo"))
+                listOf("Unexpected", "foo")
+            )
         )
 
         private fun createIntermediateRecord(recordIonText: String): IntermediateRecord =
@@ -118,6 +123,7 @@ class IntermediateRecordTests {
         data class MalformedTestCase(
             val name: String,
             val blockThrowingMalformedDomainDataException: () -> Unit,
-            val messageMustContainStrings: List<String>)
+            val messageMustContainStrings: List<String>
+        )
     }
 }

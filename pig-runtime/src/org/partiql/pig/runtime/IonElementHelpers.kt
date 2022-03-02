@@ -20,7 +20,6 @@ import com.amazon.ionelement.api.ionInt
 import com.amazon.ionelement.api.ionNull
 import com.amazon.ionelement.api.ionSymbol
 
-
 /**
  * This seemingly useless function reduces complexity of the Kotlin template by providing a consistent way to
  * convert (or not) a variable to an [IonElement].  This has the same signature as the other `.toIonElement()`
@@ -41,6 +40,3 @@ fun String?.toIonElement() = this?.let { ionSymbol(this) } ?: ionNull()
  * extensions in package.
  */
 fun Long.toIonElement() = ionInt(this)
-
-
-

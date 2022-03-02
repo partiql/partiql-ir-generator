@@ -29,7 +29,7 @@ data class TypeRef(val typeName: String, val arity: Arity, val metas: MetaContai
      * syntax.
      */
     fun toIonElement(): IonElement =
-        when(arity) {
+        when (arity) {
             Arity.Required -> ionSymbol(typeName)
             Arity.Optional -> ionSexpOf(ionSymbol("?"), ionSymbol(typeName))
             is Arity.Variadic -> ionSexpOf(ionSymbol("*"), ionSymbol(typeName), ionInt(arity.minimumArity.toLong()))

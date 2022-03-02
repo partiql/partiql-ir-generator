@@ -30,11 +30,11 @@ const val INDEX_META_KEY = "index"
 
 class VisitorTransformTests {
 
-    /** 
-    * This is a VisitorTransform implementation that transforms variable references from names to indexes.
-    * 
-    * The outermost visitor simply establishes the root [ScopeTracker] and recurses into it. 
-    */
+    /**
+     * This is a VisitorTransform implementation that transforms variable references from names to indexes.
+     *
+     * The outermost visitor simply establishes the root [ScopeTracker] and recurses into it.
+     */
     class VariableResolverWithMetas(
         private val scope: Scope = Scope.Global
     ) : ToyLang.VisitorTransform() {
@@ -62,7 +62,9 @@ class VisitorTransformTests {
                 let(
                     "bar",
                     lit(ionInt(48)),
-                    nary(plus(), variable("foo"), variable("bar"))))
+                    nary(plus(), variable("foo"), variable("bar"))
+                )
+            )
         }
 
         val resolver = VariableResolverWithMetas()
@@ -139,8 +141,11 @@ class VisitorTransformTests {
     fun doesNotMakeUnnecessaryCopiesWithWithLongPrimitives() {
         val input = TestDomain.build { intPair(1, 2) }
         val output = object : TestDomain.VisitorTransform() { }.transformIntPair(input)
-        assertSame(input, output, "Expected same instance of IntPair to be returned from a VisitorTransform " +
-            "that doesn't change it.")
+        assertSame(
+            input, output,
+            "Expected same instance of IntPair to be returned from a VisitorTransform " +
+                "that doesn't change it."
+        )
     }
 
     @Test
@@ -148,16 +153,22 @@ class VisitorTransformTests {
         @Suppress("BooleanLiteralArgument")
         val input = TestDomain.build { boolPair(true, false) }
         val output = object : TestDomain.VisitorTransform() { }.transformBoolPair(input)
-        assertSame(input, output, "Expected same instance of BoolPair to be returned from a VisitorTransform " +
-            "that doesn't change it.")
+        assertSame(
+            input, output,
+            "Expected same instance of BoolPair to be returned from a VisitorTransform " +
+                "that doesn't change it."
+        )
     }
 
     @Test
     fun doesNotMakeUnnecessaryCopiesWithWithSymbolPrimitives() {
         val input = TestDomain.build { symbolPair("a", "b") }
         val output = object : TestDomain.VisitorTransform() { }.transformSymbolPair(input)
-        assertSame(input, output, "Expected same instance of SymbolPair to be returned from a VisitorTransform " +
-            "that doesn't change it.")
+        assertSame(
+            input, output,
+            "Expected same instance of SymbolPair to be returned from a VisitorTransform " +
+                "that doesn't change it."
+        )
     }
 
     @Test
@@ -167,7 +178,7 @@ class VisitorTransformTests {
         // Create a transform that changes any 4 to a 5.
         val output = object : TestDomain.VisitorTransform() {
             override fun transformLongPrimitive(lng: LongPrimitive): LongPrimitive =
-                if(lng.value == 4L) {
+                if (lng.value == 4L) {
                     lng.copy(value = 5L)
                 } else {
                     super.transformLongPrimitive(lng)
@@ -178,11 +189,15 @@ class VisitorTransformTests {
 
         assertNotSame(input, output, "The root node has a changed child, therefore it should also be changed.")
 
-        assertSame(input.first, output.first,
-            "The `first` element of the root is unchanged from its original, therefore should not be changed.")
+        assertSame(
+            input.first, output.first,
+            "The `first` element of the root is unchanged from its original, therefore should not be changed."
+        )
 
-        assertNotSame(input.second, output.second,
-            "The `second` element is changed, and therefore should be a new instance.")
+        assertNotSame(
+            input.second, output.second,
+            "The `second` element is changed, and therefore should be a new instance."
+        )
     }
 
     private val nameMangler = object : TestDomain.VisitorTransform() {
@@ -201,4 +216,3 @@ class VisitorTransformTests {
         assertEquals(expectedAst, output)
     }
 }
-

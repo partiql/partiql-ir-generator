@@ -50,10 +50,9 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
     private fun collectNames() {
         typeDomain.types.forEach { dataType ->
             // Check that the data type name isn't already used.
-            if(this.names.putIfAbsent(dataType.tag, NameType.TYPE) != null) {
+            if (this.names.putIfAbsent(dataType.tag, NameType.TYPE) != null) {
                 semanticError(dataType.metas, SemanticErrorContext.NameAlreadyUsed(dataType.tag, typeDomain.tag))
             }
-
 
             when (dataType) {
                 is DataType.UserType.Tuple -> checkElementNames(dataType)
@@ -73,7 +72,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
                 DataType.Symbol -> {
                     /* do nothing, these are always valid */
                 }
-            }.let{}
+            }.let {}
         }
     }
 
@@ -136,7 +135,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
     }
 
     private fun checkTupleForErrors(t: DataType.UserType.Tuple) {
-        when(t.tupleType) {
+        when (t.tupleType) {
             TupleType.PRODUCT -> checkProductForErrors(t)
             TupleType.RECORD -> checkRecordForErrors(t)
         }
@@ -153,7 +152,7 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
     }
 
     private fun checkRecordForErrors(r: DataType.UserType.Tuple) {
-        if(r.namedElements.none()) {
+        if (r.namedElements.none()) {
             semanticError(r.metas, SemanticErrorContext.EmptyRecord)
         }
         r.namedElements.forEach {
@@ -172,7 +171,6 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
             NameType.TYPE -> { /* [et] refers to a type!  this is the success case! */ }
         }
     }
-
 
     private enum class ArgumentState {
         REQUIRED,

@@ -28,7 +28,7 @@ abstract class DomainVisitorTransformBase {
 
     open fun transformAnyElement(node: AnyElement): AnyElement {
         val newMetas = transformMetas(node.metas)
-        return if(node.metas !== newMetas) {
+        return if (node.metas !== newMetas) {
             node.copy(metas = newMetas).asAnyElement()
         } else {
             node
@@ -40,7 +40,7 @@ abstract class DomainVisitorTransformBase {
     open fun transformBoolPrimitive(b: BoolPrimitive): BoolPrimitive {
         val newValue = transformBoolPrimitiveValue(b)
         val newMetas = transformBoolPrimitiveMetas(b)
-        return if(b.value != newValue || b.metas !== newMetas) {
+        return if (b.value != newValue || b.metas !== newMetas) {
             BoolPrimitive(newValue, newMetas)
         } else {
             b
@@ -56,7 +56,7 @@ abstract class DomainVisitorTransformBase {
     open fun transformLongPrimitive(lng: LongPrimitive): LongPrimitive {
         val newValue = transformLongPrimitiveValue(lng)
         val newMetas = transformLongPrimitiveMetas(lng)
-        return if(lng.value != newValue || lng.metas !== newMetas) {
+        return if (lng.value != newValue || lng.metas !== newMetas) {
             LongPrimitive(newValue, newMetas)
         } else {
             lng
@@ -72,7 +72,7 @@ abstract class DomainVisitorTransformBase {
     open fun transformSymbolPrimitive(sym: SymbolPrimitive): SymbolPrimitive {
         val newText = transformSymbolPrimitiveText(sym)
         val newMetas = transformSymbolPrimitiveMetas(sym)
-        return if(sym.text != newText || sym.metas !== newMetas) {
+        return if (sym.text != newText || sym.metas !== newMetas) {
             SymbolPrimitive(newText, newMetas)
         } else {
             sym
@@ -82,8 +82,4 @@ abstract class DomainVisitorTransformBase {
     open fun transformSymbolPrimitiveText(sym: SymbolPrimitive) = sym.text
 
     open fun transformSymbolPrimitiveMetas(sym: SymbolPrimitive) = transformMetas(sym.metas)
-
-
-
 }
-

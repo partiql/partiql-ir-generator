@@ -39,9 +39,11 @@ class CopyTests {
 
     @Test
     fun `copy with same values test`() {
-        val copiedNode = node.copy(first = LongPrimitive(1, emptyMetaContainer()),
-                                   second = LongPrimitive(2, emptyMetaContainer()),
-                                   metas = metaContainerOf(NUMBER_KEY to 3))
+        val copiedNode = node.copy(
+            first = LongPrimitive(1, emptyMetaContainer()),
+            second = LongPrimitive(2, emptyMetaContainer()),
+            metas = metaContainerOf(NUMBER_KEY to 3)
+        )
         assertEquals(node, copiedNode)
         assertNotSame(node, copiedNode)
     }
@@ -59,8 +61,10 @@ class CopyTests {
 
     @Test
     fun `copy multiple elements test`() {
-        val copiedNode = node.copy(first = LongPrimitive(0, emptyMetaContainer()),
-                                   second = LongPrimitive(0, emptyMetaContainer()))
+        val copiedNode = node.copy(
+            first = LongPrimitive(0, emptyMetaContainer()),
+            second = LongPrimitive(0, emptyMetaContainer())
+        )
 
         assertNotEquals(node.first, copiedNode.first)
         assertNotEquals(node.second, copiedNode.second)

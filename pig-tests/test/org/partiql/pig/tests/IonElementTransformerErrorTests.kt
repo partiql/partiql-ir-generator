@@ -42,31 +42,38 @@ class IonElementTransformerErrorTests {
             // Empty s-exp
             ErrorTestCase(
                 "()",
-                "1:1: Cannot get head of empty container"),
+                "1:1: Cannot get head of empty container"
+            ),
             // Undefined tag
             ErrorTestCase(
                 "(asdfasdf)",
-                "1:2: Unknown tag 'asdfasdf' for domain 'partiql_basic'"),
+                "1:2: Unknown tag 'asdfasdf' for domain 'partiql_basic'"
+            ),
             // Invalid arity (too few)
             ErrorTestCase(
                 "(lit)",
-                "1:1: 1..1 argument(s) were required to `lit`, but 0 was/were supplied."),
+                "1:1: 1..1 argument(s) were required to `lit`, but 0 was/were supplied."
+            ),
             // Invalid arity (too many)
             ErrorTestCase(
                 "(lit 1 2)",
-                "1:1: 1..1 argument(s) were required to `lit`, but 2 was/were supplied."),
+                "1:1: 1..1 argument(s) were required to `lit`, but 2 was/were supplied."
+            ),
             // Incorrect type of second argument to plus
             ErrorTestCase(
                 "(plus (lit 1) (project_value (lit 1)))",
-                "1:15: Expected 'class org.partiql.pig.tests.generated.PartiqlBasic${'$'}Expr' but found 'class org.partiql.pig.tests.generated.PartiqlBasic${'$'}Projection${'$'}ProjectValue'"),
+                "1:15: Expected 'class org.partiql.pig.tests.generated.PartiqlBasic${'$'}Expr' but found 'class org.partiql.pig.tests.generated.PartiqlBasic${'$'}Projection${'$'}ProjectValue'"
+            ),
             // Missing record field
             ErrorTestCase(
                 "(select (from (scan (lit foo))))",
-                "1:1: Required field 'project' was not found within 'select' record"),
+                "1:1: Required field 'project' was not found within 'select' record"
+            ),
             // Undefined record field
             ErrorTestCase(
                 "(select (extra_field 1) (project (project_value (lit 1))) (from (scan (lit foo) null null null)))",
-                "1:1: Unexpected field 'extra_field' encountered")
+                "1:1: Unexpected field 'extra_field' encountered"
+            )
         )
     }
 }

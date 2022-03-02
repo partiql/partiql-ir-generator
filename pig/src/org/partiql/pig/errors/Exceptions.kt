@@ -15,9 +15,6 @@
 
 package org.partiql.pig.errors
 
-import org.partiql.pig.errors.PigError
-
-class PigException(val error: PigError, cause: Throwable? = null): Exception(error.toString(), cause)
+class PigException(val error: PigError, cause: Throwable? = null) : Exception(error.toString(), cause)
 
 class TypeDomainParseException(message: String) : Exception(message)
-

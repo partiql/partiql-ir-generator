@@ -38,7 +38,8 @@ class IonElementTransformerTests {
         val input = TestDomain.build {
             intPair_(
                 1.asPrimitive().withMeta("life", 42),
-                2.asPrimitive().withMeta("so long", "thanks for all the fish"))
+                2.asPrimitive().withMeta("so long", "thanks for all the fish")
+            )
         }
 
         val element = input.toIonElement()
@@ -62,7 +63,8 @@ class IonElementTransformerTests {
         val input = TestDomain.build {
             symbolPair_(
                 "foo".asPrimitive(metaContainerOf("life" to 42)),
-                "bar".asPrimitive(metaContainerOf("so long" to "thanks for all the fish")))
+                "bar".asPrimitive(metaContainerOf("so long" to "thanks for all the fish"))
+            )
         }
 
         val element = input.toIonElement()
@@ -86,7 +88,7 @@ class IonElementTransformerTests {
     @ParameterizedTest
     @ArgumentsSource(AllElementTypesTestArgumentProvider::class)
     fun allElementTypesTest(tc: TestCase) = runTestCase(tc)
-    class AllElementTypesTestArgumentProvider: ArgumentsProviderBase() {
+    class AllElementTypesTestArgumentProvider : ArgumentsProviderBase() {
         @Suppress("BooleanLiteralArgument")
         override fun getParameters(): List<Any> = listOf(
             TestCase(
@@ -199,7 +201,7 @@ class IonElementTransformerTests {
     @ParameterizedTest
     @ArgumentsSource(VariadicElementssTestArgumentsProvider::class)
     fun variadicElements(tc: TestCase) = runTestCase(tc)
-    class VariadicElementssTestArgumentsProvider: ArgumentsProviderBase() {
+    class VariadicElementssTestArgumentsProvider : ArgumentsProviderBase() {
         override fun getParameters(): List<Any> = listOf(
 
             // variadicMin0 has a single variadic element with no minimum arity
@@ -296,12 +298,10 @@ class IonElementTransformerTests {
         )
     }
 
-
-
     @ParameterizedTest
     @ArgumentsSource(OptionalElementsTestArgumentsProvider::class)
     fun optionalDataTypes(tc: TestCase) = runTestCase(tc)
-    class OptionalElementsTestArgumentsProvider: ArgumentsProviderBase() {
+    class OptionalElementsTestArgumentsProvider : ArgumentsProviderBase() {
         override fun getParameters(): List<Any> = listOf(
 
             // optional1
@@ -350,15 +350,14 @@ class IonElementTransformerTests {
             TestCase(
                 TestDomain.build { optional2(second = 2L) },
                 "(optional_2 null 2)"
-            ))
+            )
+        )
     }
-
-
 
     @ParameterizedTest
     @ArgumentsSource(RequiredOptionalVariadicTestArgumentsProvider::class)
     fun requiredOptionalVariadic(tc: TestCase) = runTestCase(tc)
-    class RequiredOptionalVariadicTestArgumentsProvider: ArgumentsProviderBase() {
+    class RequiredOptionalVariadicTestArgumentsProvider : ArgumentsProviderBase() {
         override fun getParameters(): List<Any> = listOf(
 
             // required_optional
@@ -579,7 +578,7 @@ class IonElementTransformerTests {
                 "(optional_required_variadic null 0)"
             ),
             TestCase(
-                TestDomain.build { optionalRequiredVariadic(second = 0L, third = listOf(1L, 2L , 3L)) },
+                TestDomain.build { optionalRequiredVariadic(second = 0L, third = listOf(1L, 2L, 3L)) },
                 "(optional_required_variadic null 0 1 2 3)"
             ),
             TestCase(
@@ -589,15 +588,13 @@ class IonElementTransformerTests {
         )
     }
 
-
-
     @ParameterizedTest
     @ArgumentsSource(SumTestArgumentsProvider::class)
     fun sumTests(tc: TestCase) {
         runTestCase(tc)
     }
 
-    class SumTestArgumentsProvider: ArgumentsProviderBase() {
+    class SumTestArgumentsProvider : ArgumentsProviderBase() {
         override fun getParameters(): List<Any> = listOf(
             TestCase(
                 TestDomain.build { entityPair(slug(), slug()) },
@@ -615,7 +612,8 @@ class IonElementTransformerTests {
                 TestDomain.build {
                     entityPair(
                         android(789),
-                        human(firstName = "billy", middleNames = listOf("joe", "johnson", "jack"), lastName = "bob"))
+                        human(firstName = "billy", middleNames = listOf("joe", "johnson", "jack"), lastName = "bob")
+                    )
                 },
                 """
                     (entity_pair 
@@ -632,7 +630,8 @@ class IonElementTransformerTests {
                         title = "mister",
                         firstName = "joe",
                         lastName = "schmoe",
-                        parent = slug())
+                        parent = slug()
+                    )
                 },
                 """
                     (human 
@@ -662,19 +661,22 @@ class IonElementTransformerTests {
         assertEquals(
             tc.expectedDomainInstance,
             actualTransformed,
-            "Check #2: The expected domain type instance and the transformed instance must match.")
+            "Check #2: The expected domain type instance and the transformed instance must match."
+        )
 
         assertEquals(
             tc.expectedDomainInstance.hashCode(),
             actualTransformed.hashCode(),
-            "Check #3: The hash codes of the expected domain type and transformed instances must match. ")
+            "Check #3: The hash codes of the expected domain type and transformed instances must match. "
+        )
 
         // Serialize and assert that the result is as expected.
         val actualSerialized = tc.expectedDomainInstance.toIonElement()
         assertEquals(
             expectedIonElement,
             actualSerialized,
-            "Check #4: The expected serialized domain type and the serialized instance must match")
+            "Check #4: The expected serialized domain type and the serialized instance must match"
+        )
 
         // Add some metas to expectedIonElement, transform again and verify that the metas are present
         val expectedIonElementWithMetas = expectedIonElement.withMetas(metaContainerOf("foo" to 1, "bar" to 2))

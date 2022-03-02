@@ -19,7 +19,6 @@ import com.amazon.ionelement.api.AnyElement
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.emptyMetaContainer
 
-
 fun AnyElement.toBoolPrimitive() =
     BoolPrimitive(this.booleanValue, this.metas)
 
@@ -49,8 +48,8 @@ fun listOfPrimitives(vararg values: String) = values.map { it.asPrimitive() }
 
 /**
  * This function behaves identically to `listOf<LongPrimitive>()`.
- * 
- * This exists to reduce the complexity of the `kotlin.ftl` template.  Without it, the template would have to know 
+ *
+ * This exists to reduce the complexity of the `kotlin.ftl` template.  Without it, the template would have to know
  * if a call to `listOf<LongPrimitive>()` or `listOfPrimitives<Long>()` should be emitted.
  */
 fun listOfPrimitives(vararg values: LongPrimitive) = values.toList()

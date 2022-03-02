@@ -59,4 +59,3 @@ class SymbolPrimitive(val text: String, override val metas: MetaContainer) : Dom
         return text.hashCode()
     }
 }
-

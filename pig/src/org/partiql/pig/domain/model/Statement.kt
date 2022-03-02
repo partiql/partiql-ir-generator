@@ -20,8 +20,7 @@ import com.amazon.ionelement.api.emptyMetaContainer
 import com.amazon.ionelement.api.location
 import com.amazon.ionelement.api.locationToString
 
-
-/** Base class for top level statements of a type universe definition. */ 
+/** Base class for top level statements of a type universe definition. */
 sealed class Statement {
     abstract val metas: MetaContainer
 }
@@ -37,7 +36,7 @@ class TypeDomain(
     /** The list of user-defined types.  Does not include primitive types. */
     val userTypes: List<DataType.UserType>,
     override val metas: MetaContainer = emptyMetaContainer()
-): Statement() {
+) : Statement() {
 
     /** All data types. (User types + primitives). */
     val types: List<DataType> = listOf(DataType.Bool, DataType.Int, DataType.Symbol, DataType.Ion) + userTypes
@@ -145,7 +144,7 @@ data class PermutedDomain(
     fun computePermutation(domains: Map<String, TypeDomain>): TypeDomain {
         val permutingDomain =
             domains[this.permutesDomain]
-            ?: semanticError(metas, SemanticErrorContext.DomainPermutesNonExistentDomain(tag, permutesDomain))
+                ?: semanticError(metas, SemanticErrorContext.DomainPermutesNonExistentDomain(tag, permutesDomain))
 
         val newTypes = permutingDomain.types.toMutableList()
 
@@ -154,15 +153,16 @@ data class PermutedDomain(
 
             when {
                 typeToRemove == null -> {
-                   semanticError(
-                       metas,
-                       SemanticErrorContext.CannotRemoveNonExistentType(removedTypeName, tag, permutesDomain))
+                    semanticError(
+                        metas,
+                        SemanticErrorContext.CannotRemoveNonExistentType(removedTypeName, tag, permutesDomain)
+                    )
                 }
                 typeToRemove.isBuiltin -> {
                     semanticError(this.metas, SemanticErrorContext.CannotRemoveBuiltinType(removedTypeName))
                 }
                 else -> {
-                    if(!newTypes.removeIf { oldType -> oldType.tag == removedTypeName }) {
+                    if (!newTypes.removeIf { oldType -> oldType.tag == removedTypeName }) {
                         error("Failed to remove $removedTypeName for some reason")
                     }
                 }
@@ -172,11 +172,12 @@ data class PermutedDomain(
         // We do alterations first since if we alter a new type and then add another with the same name
         // it will cause a duplicate type name error.  This would not happen in the reverse order.
         permutedSums.forEach { extSum ->
-            when(val typeToAlter = newTypes.singleOrNull { it.tag == extSum.tag }) {
+            when (val typeToAlter = newTypes.singleOrNull { it.tag == extSum.tag }) {
                 null -> {
                     semanticError(
                         extSum.metas,
-                        SemanticErrorContext.CannotPermuteNonExistentSum(extSum.tag, tag, permutesDomain))
+                        SemanticErrorContext.CannotPermuteNonExistentSum(extSum.tag, tag, permutesDomain)
+                    )
                 }
                 is DataType.UserType.Tuple, is DataType.Int, is DataType.Symbol -> {
                     semanticError(extSum.metas, SemanticErrorContext.CannotPermuteNonSumType(extSum.tag))
@@ -186,10 +187,11 @@ data class PermutedDomain(
 
                     val removedVariantTags = extSum.removedVariants.toSet()
                     removedVariantTags.forEach { removedTagName ->
-                        if(!newVariants.removeIf { it.tag == removedTagName}) {
+                        if (!newVariants.removeIf { it.tag == removedTagName }) {
                             semanticError(
                                 extSum.metas,
-                                SemanticErrorContext.CannotRemoveNonExistentSumVariant(extSum.tag, removedTagName))
+                                SemanticErrorContext.CannotRemoveNonExistentSumVariant(extSum.tag, removedTagName)
+                            )
                         }
                     }
 
@@ -200,8 +202,8 @@ data class PermutedDomain(
                         metas = metas
                     )
 
-                    if(!newTypes.remove(typeToAlter))
-                        // If this happens it's a bug
+                    if (!newTypes.remove(typeToAlter))
+                    // If this happens it's a bug
                         error("Failed to remove altered type '${typeToAlter.tag}' for some reason")
 
                     newTypes.add(newSumType)
@@ -295,4 +297,3 @@ data class Transform(
         return result
     }
 }
-

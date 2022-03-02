@@ -18,7 +18,13 @@ package org.partiql.pig.generator.custom
 import com.amazon.ionelement.api.emptyMetaContainer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.partiql.pig.domain.model.*
+import org.partiql.pig.domain.model.Arity
+import org.partiql.pig.domain.model.DataType
+import org.partiql.pig.domain.model.NamedElement
+import org.partiql.pig.domain.model.TupleType
+import org.partiql.pig.domain.model.TypeDomain
+import org.partiql.pig.domain.model.TypeRef
+import org.partiql.pig.domain.model.TypeUniverse
 import java.time.OffsetDateTime
 
 class CreateCustomFreeMarkerGlobalsTest {
@@ -40,8 +46,10 @@ class CreateCustomFreeMarkerGlobalsTest {
                                 tag = "foo",
                                 tupleType = TupleType.PRODUCT,
                                 namedElements = listOf(
-                                    NamedElement("bat", "baz", TypeRef("int", Arity.Required, em), em)),
-                                metas = em),
+                                    NamedElement("bat", "baz", TypeRef("int", Arity.Required, em), em)
+                                ),
+                                metas = em
+                            ),
                             DataType.UserType.Sum(
                                 "some_sum",
                                 variants = listOf(
@@ -49,9 +57,17 @@ class CreateCustomFreeMarkerGlobalsTest {
                                         tag = "bar",
                                         tupleType = TupleType.PRODUCT,
                                         namedElements = listOf(
-                                            NamedElement("bloo", "blar", TypeRef("int", Arity.Required, em), em)),
-                                        metas = em)),
-                                metas = em)))))
+                                            NamedElement("bloo", "blar", TypeRef("int", Arity.Required, em), em)
+                                        ),
+                                        metas = em
+                                    )
+                                ),
+                                metas = em
+                            )
+                        )
+                    )
+                )
+            )
 
         val actualFreemarkerGlobals = createCustomFreeMarkerGlobals(inputTypeUniverse.computeTypeDomains()).copy(
             generatedDate = OffsetDateTime.MAX // For the assertion below
@@ -74,27 +90,38 @@ class CreateCustomFreeMarkerGlobalsTest {
                                         type = "int",
                                         isVariadic = false,
                                         isOptional = false
-                                    )),
+                                    )
+                                ),
                                 arity = IntRange(1, 1),
-                                memberOfType = null)),
+                                memberOfType = null
+                            )
+                        ),
                         sums = listOf(
                             CSum(
                                 name = "some_sum",
-                                variants= listOf(
+                                variants = listOf(
                                     CTuple(
-                                        tag ="bar",
-                                        memberOfType="some_sum",
-                                        elements=listOf(
-                                                CElement(
-                                                    identifier="bloo",
-                                                    tag="blar",
-                                                    type="int",
-                                                    isVariadic=false,
-                                                    isOptional=false)),
-                                        arity=1..1,
-                                        tupleType=TupleType.PRODUCT)))))),
-                generatedDate = OffsetDateTime.MAX)
-
+                                        tag = "bar",
+                                        memberOfType = "some_sum",
+                                        elements = listOf(
+                                            CElement(
+                                                identifier = "bloo",
+                                                tag = "blar",
+                                                type = "int",
+                                                isVariadic = false,
+                                                isOptional = false
+                                            )
+                                        ),
+                                        arity = 1..1,
+                                        tupleType = TupleType.PRODUCT
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                generatedDate = OffsetDateTime.MAX
+            )
 
         assertEquals(expectedFreeMarkerGlobals, actualFreemarkerGlobals)
     }

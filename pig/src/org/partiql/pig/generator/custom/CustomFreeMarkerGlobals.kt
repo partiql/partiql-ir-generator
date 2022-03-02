@@ -23,4 +23,3 @@ data class CustomFreeMarkerGlobals(
     val domains: List<CTypeDomain>,
     val generatedDate: OffsetDateTime
 )
-

@@ -50,4 +50,3 @@ class FreeMarkerFunctionsTest {
         assertEquals("FooBar", applyDummyTemplate("""${'$'}{snakeToPascalCase("foo_bar")}"""))
     }
 }
-

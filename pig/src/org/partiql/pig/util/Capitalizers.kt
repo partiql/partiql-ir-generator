@@ -26,7 +26,7 @@ fun String.snakeToCamelCase(): String =
     this.split('_')
         .filter { it.isNotEmpty() }
         .mapIndexed { i, str ->
-            when(i) {
+            when (i) {
                 0 -> str
                 else -> str.capitalize()
             }

@@ -52,7 +52,8 @@ class PermuteTransformSmokeTests {
                     name = node.name,
                     index = nestedScope.index.asPrimitive(),
                     value = transformExpr(node.value),
-                    body = VariableResolverToPermutedDomain(scope.nest(node.name.text)).transformExpr(node.body))
+                    body = VariableResolverToPermutedDomain(scope.nest(node.name.text)).transformExpr(node.body)
+                )
             }
     }
 
@@ -71,9 +72,10 @@ class PermuteTransformSmokeTests {
                 let(
                     "bar",
                     lit(ionInt(48)),
-                    nary(plus(), variable("foo"), variable("bar"))))
+                    nary(plus(), variable("foo"), variable("bar"))
+                )
+            )
         }
-
 
         val resolver = VariableResolverToPermutedDomain()
         val outerLet = resolver.transformExpr(unindexed) as ToyLangIndexed.Expr.Let
@@ -87,7 +89,9 @@ class PermuteTransformSmokeTests {
                     "bar",
                     1,
                     lit(ionInt(48)),
-                    nary(plus(), variable("foo", 0), variable("bar", 1))))
+                    nary(plus(), variable("foo", 0), variable("bar", 1))
+                )
+            )
         }
         assertEquals(indexed, outerLet)
 
@@ -98,7 +102,8 @@ class PermuteTransformSmokeTests {
                 ToyLang.build {
                     variable_(
                         name = node.name,
-                        metas = node.metas)
+                        metas = node.metas
+                    )
                 }
 
             override fun transformExprLet(node: ToyLangIndexed.Expr.Let): ToyLang.Expr =
@@ -107,7 +112,8 @@ class PermuteTransformSmokeTests {
                         name = node.name,
                         value = transformExpr(node.value),
                         body = transformExpr(node.body),
-                        metas = node.metas)
+                        metas = node.metas
+                    )
                 }
         }
 
