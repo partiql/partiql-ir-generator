@@ -18,7 +18,7 @@
 plugins {
     id 'application'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version '0.9.18'
+    id 'org.jetbrains.dokka' version '1.6.10'
     id 'org.jetbrains.kotlin.jvm'
     id 'signing'
 }
@@ -54,12 +54,10 @@ test {
     useJUnitPlatform()
 }
 
-dokka {
-    outputFormat = "html"
-    outputDirectory = "$buildDir/javadoc"
+tasks.dokkaHtml.configure {
+    outputDirectory.set(file("$buildDir/javadoc"))
     //todo: includes = ["path/to/module.md"]
 }
-
 
 //create a single Jar with all dependencies
 jar {
@@ -77,8 +75,8 @@ task sourcesJar(type: Jar) {
 }
 
 task javadocJar(type: Jar) {
-    from dokka
-    classifier = "javadoc"
+    from dokkaHtml
+    archiveClassifier.set("javadoc")
 }
 
 build {
