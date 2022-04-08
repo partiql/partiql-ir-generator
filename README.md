@@ -3,6 +3,42 @@ Runtime: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.
 
 # The PartiQL I.R. Generator
 
+- [The PartiQL I.R. Generator](#the-partiql-ir-generator)
+  - [PIG Overview](#pig-overview)
+    - [Permuted Domains](#permuted-domains)
+    - [Code Generation](#code-generation)
+  - [API Status](#api-status)
+  - [PIG's Type Domain Modeling Language](#pigs-type-domain-modeling-language)
+    - [`product` Types](#product-types)
+      - [Generated Product Type Model - Kotlin](#generated-product-type-model---kotlin)
+      - [Generated Builders](#generated-builders)
+      - [Product Element Restrictions](#product-element-restrictions)
+    - [`record` Types](#record-types)
+    - [`sum` Types](#sum-types)
+      - [Generated Sum Type - Kotlin](#generated-sum-type---kotlin)
+      - [Converter\<T\>](#convertert)
+      - [`record`s as `sum` variants](#records-as-sum-variants)
+    - [Metas](#metas)
+  - [Traversing & Transforming Trees](#traversing--transforming-trees)
+    - [`VisitorTransform`](#visitortransform)
+    - [Permuted Domains and Cross-Domain `VisitorTransform`s](#permuted-domains-and-cross-domain-visitortransforms)
+    - [`Visitor`](#visitor)
+      - [`Visitor` Example](#visitor-example)
+    - [`VisitorFold<T>`](#visitorfoldt)
+      - [`VisitorFold<T>` Example](#visitorfoldt-example)
+  - [S-Expression Representation of Data Types](#s-expression-representation-of-data-types)
+  - [Using PIG In Your Project](#using-pig-in-your-project)
+    - [Using Gradle](#using-gradle)
+    - [Other Build Systems](#other-build-systems)
+      - [Obtaining the PIG Executable](#obtaining-the-pig-executable)
+  - [Appendices](#appendices)
+    - [Type Universe Grammar](#type-universe-grammar)
+      - [Type References](#type-references)
+        - [`ion_type`](#ion_type)
+        - [Arity](#arity)
+        - [Arity Ordering](#arity-ordering)
+  - [License](#license)
+
 ## PIG Overview
 
 PIG is a compiler framework, domain modeling tool and code generator for tree data structures such as ASTs (Abstract
