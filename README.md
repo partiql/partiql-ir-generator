@@ -685,7 +685,7 @@ Without the aforementioned plugin, the best way to use pig with gradle is:
 - Add a dependency on PIG's runtime library in your project.  
   ([Example](https://github.com/partiql/partiql-lang-kotlin/blob/28701e23cf3bd397a67e8d9ab4f68feff953aea1/lang/build.gradle#L48))
 - Add a custom task that uses PIG's internal
-  APIs. ([Example](https://github.com/partiql/partiql-lang-kotlin/blob/28701e23cf3bd397a67e8d9ab4f68feff953aea1/lang/build.gradle#L64-L87))
+  APIs. ([Example](https://github.com/partiql/partiql-lang-kotlin/blob/51e7da7b5e63e45f01c4df101168b2117a17a2d1/lang/build.gradle#L64-L96))
 - Make sure your custom task executes *before* the `compileKotlin` task.
   ([Example](https://github.com/partiql/partiql-lang-kotlin/blob/28701e23cf3bd397a67e8d9ab4f68feff953aea1/lang/build.gradle#L89))
 
