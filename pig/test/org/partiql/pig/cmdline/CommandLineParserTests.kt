@@ -108,6 +108,21 @@ class CommandLineParserTests {
             ),
 
             // //////////////////////////////////////////////////////
+            // Ion target
+            // //////////////////////////////////////////////////////
+            // long parameter names
+            TestCase(
+                Command.Generate(File("input.ion"), TargetLanguage.Ion(File("output.ion"))),
+                "--universe=input.ion", "--target=ion", "--output-file=output.ion"
+            ),
+
+            // short parameter names
+            TestCase(
+                Command.Generate(File("input.ion"), TargetLanguage.Ion(File("output.ion"))),
+                "-u=input.ion", "-target=ion", "--output-file=output.ion"
+            ),
+
+            // //////////////////////////////////////////////////////
             // Custom target
             // //////////////////////////////////////////////////////
             // long parameter names

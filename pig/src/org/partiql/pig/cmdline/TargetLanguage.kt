@@ -21,4 +21,5 @@ sealed class TargetLanguage {
     data class Kotlin(val namespace: String, val outputDirectory: File) : TargetLanguage()
     data class Custom(val templateFile: File, val outputFile: File) : TargetLanguage()
     data class Html(val outputFile: File) : TargetLanguage()
+    data class Ion(val outputFile: File) : TargetLanguage()
 }
