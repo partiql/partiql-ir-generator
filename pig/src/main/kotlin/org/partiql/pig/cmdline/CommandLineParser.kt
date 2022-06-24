@@ -34,7 +34,8 @@ class CommandLineParser {
     ) {
         KOTLIN(requireNamespace = true, requireTemplateFile = false, requireOutputFile = false, requireOutputDirectory = true),
         CUSTOM(requireNamespace = false, requireTemplateFile = true, requireOutputFile = true, requireOutputDirectory = false),
-        HTML(requireNamespace = false, requireTemplateFile = false, requireOutputFile = true, requireOutputDirectory = false)
+        HTML(requireNamespace = false, requireTemplateFile = false, requireOutputFile = true, requireOutputDirectory = false),
+        ION(requireNamespace = false, requireTemplateFile = false, requireOutputFile = true, requireOutputDirectory = false)
     }
 
     private object LanguageTargetTypeValueConverter : ValueConverter<LanguageTargetType> {
@@ -64,6 +65,7 @@ class CommandLineParser {
                 |   --target=kotlin requires --namespace=<ns> and --output-directory=<out-dir>
                 |   --target=custom requires --template=<path-to-template> and --output-file=<generated-file>
                 |   --target=html   requires --output-file=<output-html-file>
+                |   --target=ion    requires --output-file=<output-ion-file>
                 |
                 |Notes:
                 |
@@ -81,6 +83,11 @@ class CommandLineParser {
                 |      --output-file=example.txt \
                 |      --template=template.ftl 
                 |     
+                |  pig --target=ion \
+                |      --universe=universe.ion \ 
+                |      --output-file=example.ion
+                |     
+        ""${'"'}.trimMargin()
         """.trimMargin()
         }
     }
@@ -213,6 +220,9 @@ class CommandLineParser {
                         )
                         LanguageTargetType.CUSTOM -> TargetLanguage.Custom(
                             templateFile = optSet.valueOf(templateOpt),
+                            outputFile = optSet.valueOf(outputFileOpt) as File
+                        )
+                        LanguageTargetType.ION -> TargetLanguage.Ion(
                             outputFile = optSet.valueOf(outputFileOpt) as File
                         )
                     }

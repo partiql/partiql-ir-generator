@@ -16,10 +16,13 @@
 package org.partiql.pig
 
 import com.amazon.ion.system.IonReaderBuilder
+import com.amazon.ionelement.api.ionSexpOf
+import com.amazon.ionelement.api.ionSymbol
 import org.partiql.pig.cmdline.Command
 import org.partiql.pig.cmdline.CommandLineParser
 import org.partiql.pig.cmdline.TargetLanguage
 import org.partiql.pig.domain.model.TypeUniverse
+import org.partiql.pig.domain.model.toIonElement
 import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.generator.custom.applyCustomTemplate
@@ -95,6 +98,17 @@ fun generateCode(command: Command.Generate) {
             progress("applying the HTML template")
             PrintWriter(command.target.outputFile).use { printWriter ->
                 applyHtmlTemplate(typeUniverse.computeTypeDomains(), printWriter)
+            }
+        }
+        is TargetLanguage.Ion -> {
+            progress("output file  : ${command.target.outputFile}")
+
+            PrintWriter(command.target.outputFile).use { printWriter ->
+                val universe = ionSexpOf(
+                    ionSymbol("universe"),
+                    *typeUniverse.computeTypeDomains().map { it.toIonElement() }.toTypedArray()
+                )
+                printWriter.println(universe)
             }
         }
     }
