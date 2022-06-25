@@ -16,17 +16,16 @@
 package org.partiql.pig
 
 import com.amazon.ion.system.IonReaderBuilder
-import com.amazon.ionelement.api.ionSexpOf
-import com.amazon.ionelement.api.ionSymbol
 import org.partiql.pig.cmdline.Command
 import org.partiql.pig.cmdline.CommandLineParser
 import org.partiql.pig.cmdline.TargetLanguage
 import org.partiql.pig.domain.model.TypeUniverse
-import org.partiql.pig.domain.model.toIonElement
+import org.partiql.pig.domain.filterDomains
 import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.generator.custom.applyCustomTemplate
 import org.partiql.pig.generator.html.applyHtmlTemplate
+import org.partiql.pig.generator.ion.generateIon
 import org.partiql.pig.generator.kotlin.convertToKTypeUniverse
 import org.partiql.pig.generator.kotlin.generateKotlinCode
 import java.io.File
@@ -78,7 +77,7 @@ fun generateCode(command: Command.Generate) {
     when (command.target) {
         is TargetLanguage.Kotlin -> {
             progress("applying Kotlin pre-processing")
-            val kotlinTypeUniverse = typeUniverse.convertToKTypeUniverse()
+            val kotlinTypeUniverse = typeUniverse.convertToKTypeUniverse(command.target.domains)
             prepareOutputDirectory(command.target.outputDirectory)
             progress("applying the Kotlin template once for each domain...")
 
@@ -88,26 +87,30 @@ fun generateCode(command: Command.Generate) {
             progress("output file  : ${command.target.outputFile}")
             progress("applying ${command.target.templateFile}")
 
+            val domains = typeUniverse.computeTypeDomains().filterDomains(command.target.domains)
+
             PrintWriter(command.target.outputFile).use { printWriter ->
-                applyCustomTemplate(command.target.templateFile, typeUniverse.computeTypeDomains(), printWriter)
+                applyCustomTemplate(command.target.templateFile, domains, printWriter)
             }
         }
         is TargetLanguage.Html -> {
             progress("output file  : ${command.target.outputFile}")
             progress("applying the HTML template")
+
+            val domains = typeUniverse.computeTypeDomains().filterDomains(command.target.domains)
+
             PrintWriter(command.target.outputFile).use { printWriter ->
-                applyHtmlTemplate(typeUniverse.computeTypeDomains(), printWriter)
+                applyHtmlTemplate(domains, printWriter)
             }
         }
         is TargetLanguage.Ion -> {
             progress("output file  : ${command.target.outputFile}")
+            progress("applying the Ion template")
+
+            val domains = typeUniverse.computeTypeDomains().filterDomains(command.target.domains)
 
             PrintWriter(command.target.outputFile).use { printWriter ->
-                val universe = ionSexpOf(
-                    ionSymbol("universe"),
-                    *typeUniverse.computeTypeDomains().map { it.toIonElement() }.toTypedArray()
-                )
-                printWriter.println(universe)
+                generateIon(domains, printWriter)
             }
         }
     }

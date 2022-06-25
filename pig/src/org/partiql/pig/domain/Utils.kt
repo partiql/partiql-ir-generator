@@ -1,12 +1,22 @@
-package org.partiql.pig.domain.model
+package org.partiql.pig.domain
 
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.ionSexpOf
 import com.amazon.ionelement.api.ionSymbol
 import com.amazon.ionelement.api.withAnnotations
+import org.partiql.pig.domain.model.DataType
+import org.partiql.pig.domain.model.NamedElement
+import org.partiql.pig.domain.model.TupleType
+import org.partiql.pig.domain.model.TypeDomain
+
+/**
+ *  Filter a [List]<[TypeDomain]> to only contain [TypeDomain]s that are present in [domains]
+ */
+fun List<TypeDomain>.filterDomains(domains: Set<String>?) =
+    domains?.let { this.filter { domain -> domain.tag in it } } ?: this
 
 /*
- * The [toIonElement] functions below generate an s-expression representation of a [TypeUniverse].
+ * The [toIonElement] functions below generate an s-expression representation of a [TypeDomain].
  */
 
 fun TypeDomain.toIonElement(): IonElement =
