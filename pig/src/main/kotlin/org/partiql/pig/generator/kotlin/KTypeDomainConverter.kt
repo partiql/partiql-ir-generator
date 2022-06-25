@@ -21,6 +21,7 @@
  */
 package org.partiql.pig.generator.kotlin
 
+import org.partiql.pig.domain.filterDomains
 import org.partiql.pig.domain.model.Arity
 import org.partiql.pig.domain.model.DataType
 import org.partiql.pig.domain.model.NamedElement
@@ -32,29 +33,34 @@ import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.util.snakeToCamelCase
 import org.partiql.pig.util.snakeToPascalCase
 
-internal fun TypeUniverse.convertToKTypeUniverse(): KTypeUniverse {
+internal fun TypeUniverse.convertToKTypeUniverse(domains: Set<String>?): KTypeUniverse {
     val allTypeDomains: List<TypeDomain> = this.computeTypeDomains()
 
-    val kotlinTypeDomains: List<KTypeDomain> = allTypeDomains.map { typeDomain ->
-        KTypeDomainConverter(typeDomain).convert()
-    }
+    val kotlinTypeDomains: List<KTypeDomain> = allTypeDomains.filterDomains(domains)
+        .map { typeDomain -> KTypeDomainConverter(typeDomain).convert() }
 
-    val allKTransforms = this.statements.filterIsInstance<Transform>().map { dt ->
-        // TODO: handle properly if one of the calls to .single fails below...
-        val sourceDomain = allTypeDomains.single { it.tag == dt.sourceDomainTag }
-        val destDomain = allTypeDomains.single { it.tag == dt.destinationDomainTag }
-        val difference = sourceDomain.computeTransform(destDomain)
+    val allKTransforms = this.statements.filterIsInstance<Transform>()
 
-        val converter = KTypeDomainConverter(difference)
-        val sourceDomainDifference = converter.convert()
+    val sourceDomains = allKTransforms.map { dt -> allTypeDomains.singleOrNull { it.tag == dt.sourceDomainTag } }
+    val destDomains = allKTransforms.map { dt -> allTypeDomains.singleOrNull { it.tag == dt.destinationDomainTag } }
 
-        KTransform(
-            sourceDomainDifference = sourceDomainDifference,
-            destDomainKotlinName = destDomain.tag.snakeToPascalCase()
-        )
-    }
+    val validKTransforms = sourceDomains.zip(destDomains)
+        .filter { (sourceDomain, destDomain) -> sourceDomain != null && destDomain != null }
+        // sourceDomain and destDomain should both be non-null here, we just checked
+        .filter { (_, destDomain) -> domains?.let { destDomain!!.tag in it } ?: true }
+        .map { (sourceDomain, destDomain) ->
+            val difference = sourceDomain!!.computeTransform(destDomain!!)
 
-    return KTypeUniverse(kotlinTypeDomains, allKTransforms)
+            val converter = KTypeDomainConverter(difference)
+            val sourceDomainDifference = converter.convert()
+
+            KTransform(
+                sourceDomainDifference = sourceDomainDifference,
+                destDomainKotlinName = destDomain.tag.snakeToPascalCase()
+            )
+        }
+
+    return KTypeUniverse(kotlinTypeDomains, validKTransforms)
 }
 
 private class KTypeDomainConverter(

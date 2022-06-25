@@ -55,6 +55,19 @@ class CommandLineParser {
         }
     }
 
+    private object DomainFilterValueConverter : ValueConverter<Set<String>> {
+        override fun convert(value: String?): Set<String> {
+            if (value.isNullOrBlank()) throw ValueConversionException("Value was empty")
+            return value.split(',').map(String::trim).toSet()
+        }
+
+        override fun valueType(): Class<out Set<String>>? = null
+
+        override fun valuePattern(): String {
+            return "<domain 1>,<domain 2>,..."
+        }
+    }
+
     private val formatter = object : BuiltinHelpFormatter(120, 2) {
         override fun format(options: MutableMap<String, out OptionDescriptor>?): String {
             return """PartiQL I.R. Generator
@@ -87,7 +100,6 @@ class CommandLineParser {
                 |      --universe=universe.ion \ 
                 |      --output-file=example.ion
                 |     
-        ""${'"'}.trimMargin()
         """.trimMargin()
         }
     }
@@ -126,6 +138,10 @@ class CommandLineParser {
         .ofType(File::class.java)
 
     private val properties = Properties()
+
+    private val domainsOpt = optParser.acceptsAll(listOf("domains", "f"), "List of domains to generate (comma separated)")
+        .withOptionalArg()
+        .withValuesConvertedBy(DomainFilterValueConverter)
 
     init {
         properties.load(this.javaClass.getResourceAsStream("/pig.properties"))
@@ -212,18 +228,26 @@ class CommandLineParser {
                         )
                     }
 
+                    val domains = optSet.valueOf(domainsOpt)
+
                     val target = when (targetType) {
-                        LanguageTargetType.HTML -> TargetLanguage.Html(optSet.valueOf(outputFileOpt) as File)
+                        LanguageTargetType.HTML -> TargetLanguage.Html(
+                            outputFile = optSet.valueOf(outputFileOpt) as File,
+                            domains = domains
+                        )
                         LanguageTargetType.KOTLIN -> TargetLanguage.Kotlin(
                             namespace = optSet.valueOf(namespaceOpt) as String,
-                            outputDirectory = optSet.valueOf(outputDirectoryOpt) as File
+                            outputDirectory = optSet.valueOf(outputDirectoryOpt) as File,
+                            domains = domains
                         )
                         LanguageTargetType.CUSTOM -> TargetLanguage.Custom(
                             templateFile = optSet.valueOf(templateOpt),
-                            outputFile = optSet.valueOf(outputFileOpt) as File
+                            outputFile = optSet.valueOf(outputFileOpt) as File,
+                            domains = domains
                         )
                         LanguageTargetType.ION -> TargetLanguage.Ion(
-                            outputFile = optSet.valueOf(outputFileOpt) as File
+                            outputFile = optSet.valueOf(outputFileOpt) as File,
+                            domains = domains
                         )
                     }
 
