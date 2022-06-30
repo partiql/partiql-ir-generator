@@ -69,12 +69,11 @@ open class Visitor : DomainVisitorBase() {
         }
     }
 
-[#list s.variants as t]
+    [#list s.variants as t]
     open fun walk${s.kotlinName}${t.kotlinName}(node: ${domain.kotlinName}.${s.kotlinName}.${t.kotlinName}) {
         [@tuple_visitor_walker_body t "${s.kotlinName}${t.kotlinName}"/]
     }
-
-[/#list]
-[/#list]
+    [/#list]
+    [/#list]
 }
 [/#macro]
