@@ -8,6 +8,8 @@ PIG is mature, but its API and the API of the generated Kotlin code is under act
 
 [![PIG Generator](https://maven-badges.herokuapp.com/maven-central/org.partiql/partiql-ir-generator/badge.svg?)](https://search.maven.org/artifact/org.partiql/partiql-ir-generator)
 [![PIG Runtime](https://maven-badges.herokuapp.com/maven-central/org.partiql/partiql-ir-generator-runtime/badge.svg?)](https://search.maven.org/artifact/org.partiql/partiql-ir-generator-runtime)
+[![License](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/partiql/partiql-ir-generator/blob/main/LICENSE)
+[![CI Build](https://github.com/partiql/partiql-ir-generator/actions/workflows/build.yml/badge.svg)](https://github.com/partiql/partiql-ir-generator/actions?query=workflow%3A%22Build+and+run+tests%22)
 
 ## About
 
