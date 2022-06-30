@@ -19,8 +19,8 @@ import com.amazon.ion.system.IonReaderBuilder
 import org.partiql.pig.cmdline.Command
 import org.partiql.pig.cmdline.CommandLineParser
 import org.partiql.pig.cmdline.TargetLanguage
-import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.domain.filterDomains
+import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.generator.custom.applyCustomTemplate
@@ -44,6 +44,7 @@ fun main(args: Array<String>) {
 
     when (val command = cmdParser.parse(args)) {
         is Command.ShowHelp -> cmdParser.printHelp(System.out)
+        is Command.ShowVersion -> cmdParser.printVersion(System.out)
         is Command.InvalidCommandLineArguments -> {
             System.err.println(command.message)
             exitProcess(-1)

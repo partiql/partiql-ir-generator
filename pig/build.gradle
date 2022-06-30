@@ -12,8 +12,7 @@
  * express or implied. See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-
-// Documentation for using Gradle with Kotlin is here: https://kotlinlang.org/docs/reference/using-gradle.html
+import java.util.Properties
 
 plugins {
     id 'application'
@@ -27,6 +26,10 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+ext {
+    propertiesDir = "${buildDir}/properties"
 }
 
 dependencies {
@@ -49,7 +52,6 @@ application {
     mainClassName = 'org.partiql.pig.MainKt'
 }
 
-
 test {
     useJUnitPlatform()
 }
@@ -59,15 +61,12 @@ tasks.dokkaHtml.configure {
     //todo: includes = ["path/to/module.md"]
 }
 
-//create a single Jar with all dependencies
 jar {
     manifest {
         attributes 'Main-Class': 'org.partiql.pig.MainKt'
     }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    //with jar
 }
-
 
 task sourcesJar(type: Jar) {
     from "src"
@@ -77,6 +76,24 @@ task sourcesJar(type: Jar) {
 task javadocJar(type: Jar) {
     from dokkaHtml
     archiveClassifier.set("javadoc")
+}
+
+// https://stackoverflow.com/questions/50117966
+task generateProperties {
+    doLast {
+        def propertiesFile = file "$propertiesDir/pig.properties"
+        propertiesFile.parentFile.mkdirs()
+        def properties = new Properties()
+        properties.setProperty("version", version.toString())
+        propertiesFile.withWriter { properties.store(it, null) }
+    }
+}
+processResources.dependsOn generateProperties
+
+sourceSets {
+    main {
+        output.dir(propertiesDir, builtBy: 'generateProperties')
+    }
 }
 
 build {
