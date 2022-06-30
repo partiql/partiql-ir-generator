@@ -23,6 +23,7 @@ import joptsimple.ValueConversionException
 import joptsimple.ValueConverter
 import java.io.File
 import java.io.PrintStream
+import java.util.Properties
 
 class CommandLineParser {
     private enum class LanguageTargetType(
@@ -85,7 +86,10 @@ class CommandLineParser {
     }
     private val optParser = OptionParser().also { it.formatHelpWith(formatter) }
 
-    private val helpOpt = optParser.acceptsAll(listOf("help", "h", "?"), "prints this help")
+    private val helpOpt = optParser.acceptsAll(listOf("help", "h", "?"), "Prints this help")
+        .forHelp()
+
+    private val versionOpt = optParser.acceptsAll(listOf("version", "v"), "Prints current version")
         .forHelp()
 
     private val universeOpt = optParser.acceptsAll(listOf("universe", "u"), "Type universe input file")
@@ -114,11 +118,24 @@ class CommandLineParser {
         .withOptionalArg()
         .ofType(File::class.java)
 
+    private val properties = Properties()
+
+    init {
+        properties.load(this.javaClass.getResourceAsStream("/pig.properties"))
+    }
+
     /**
      * Prints help to the specified [PrintStream].
      */
-    fun printHelp(pw: PrintStream) {
-        optParser.printHelpOn(pw)
+    fun printHelp(out: PrintStream) {
+        optParser.printHelpOn(out)
+    }
+
+    /**
+     * Prints version specified in the package root build.gradle
+     */
+    fun printVersion(out: PrintStream) {
+        out.println("PartiQL I.R. Generator Version ${properties.getProperty("version")}")
     }
 
     /**
@@ -132,6 +149,7 @@ class CommandLineParser {
 
             when {
                 optSet.has(helpOpt) -> Command.ShowHelp
+                optSet.has(versionOpt) -> Command.ShowVersion
                 else -> {
                     // !! is fine in this case since we define these options as .required() above.
                     val typeUniverseFile: File = optSet.valueOf(universeOpt)!!

@@ -42,6 +42,7 @@ fun main(args: Array<String>) {
 
     when (val command = cmdParser.parse(args)) {
         is Command.ShowHelp -> cmdParser.printHelp(System.out)
+        is Command.ShowVersion -> cmdParser.printVersion(System.out)
         is Command.InvalidCommandLineArguments -> {
             System.err.println(command.message)
             exitProcess(-1)
