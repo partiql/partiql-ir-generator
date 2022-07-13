@@ -40,6 +40,9 @@ tasks {
             }
         )
     }
+    clean {
+        dependsOn(pigClean)
+    }
 
     val pigAll = register("pig-all") {
         group = "pig"
