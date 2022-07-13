@@ -1300,14 +1300,12 @@ class DomainB private constructor() {
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
-    
         open fun walkUnpermutedSumUnpermutedRecordVariant(node: DomainB.UnpermutedSum.UnpermutedRecordVariant) {
             visitUnpermutedSumUnpermutedRecordVariant(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: SumB
         //////////////////////////////////////
@@ -1323,13 +1321,11 @@ class DomainB private constructor() {
             visitSumBWillBeUnchanged(node)
             walkMetas(node.metas)
         }
-    
         open fun walkSumBWillBeReplaced(node: DomainB.SumB.WillBeReplaced) {
             visitSumBWillBeReplaced(node)
             walkSymbolPrimitive(node.something)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: NewSum
         //////////////////////////////////////
@@ -1345,12 +1341,10 @@ class DomainB private constructor() {
             visitNewSumEek(node)
             walkMetas(node.metas)
         }
-    
         open fun walkNewSumWhatever(node: DomainB.NewSum.Whatever) {
             visitNewSumWhatever(node)
             walkMetas(node.metas)
         }
-    
     }
     open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
         ////////////////////////////////////////////////////////////////////////////

@@ -13,7 +13,13 @@
  *  permissions and limitations under the License.
  */
 
+plugins {
+    id("pig.conventions")
+    id("pig.publish")
+}
 
-rootProject.name = 'PIG'
+project.description = "The P.I.G. is a code generator for domain models such ASTs and execution plans."
 
-include('pig', 'pig-runtime', 'pig-tests')
+dependencies {
+    api("com.amazon.ion:ion-element:0.2.0")
+}

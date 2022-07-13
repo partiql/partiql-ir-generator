@@ -1594,13 +1594,11 @@ class MultiWordDomain private constructor() {
             walkLongPrimitive(node.uField)
             walkMetas(node.metas)
         }
-    
         open fun walkSssTttMmm(node: MultiWordDomain.SssTtt.Mmm) {
             visitSssTttMmm(node)
             walkSymbolPrimitive(node.vField)
             walkMetas(node.metas)
         }
-    
     }
     open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
         ////////////////////////////////////////////////////////////////////////////

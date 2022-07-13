@@ -4505,12 +4505,10 @@ class TestDomain private constructor() {
             visitAnswerNo(node)
             walkMetas(node.metas)
         }
-    
         open fun walkAnswerYes(node: TestDomain.Answer.Yes) {
             visitAnswerYes(node)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: SumWithRecord
         //////////////////////////////////////
@@ -4527,7 +4525,6 @@ class TestDomain private constructor() {
             walkDomainLevelRecord(node.dlr)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: TestSum
         //////////////////////////////////////
@@ -4545,14 +4542,12 @@ class TestDomain private constructor() {
             walkLongPrimitive(node.a)
             walkMetas(node.metas)
         }
-    
         open fun walkTestSumTwo(node: TestDomain.TestSum.Two) {
             visitTestSumTwo(node)
             walkLongPrimitive(node.a)
             walkLongPrimitive(node.b)
             walkMetas(node.metas)
         }
-    
         open fun walkTestSumThree(node: TestDomain.TestSum.Three) {
             visitTestSumThree(node)
             walkLongPrimitive(node.a)
@@ -4560,7 +4555,6 @@ class TestDomain private constructor() {
             walkLongPrimitive(node.c)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: Entity
         //////////////////////////////////////
@@ -4577,13 +4571,11 @@ class TestDomain private constructor() {
             visitEntitySlug(node)
             walkMetas(node.metas)
         }
-    
         open fun walkEntityAndroid(node: TestDomain.Entity.Android) {
             visitEntityAndroid(node)
             walkLongPrimitive(node.id)
             walkMetas(node.metas)
         }
-    
         open fun walkEntityHuman(node: TestDomain.Entity.Human) {
             visitEntityHuman(node)
             walkSymbolPrimitive(node.firstName)
@@ -4593,7 +4585,6 @@ class TestDomain private constructor() {
             node.parent?.let { walkEntity(it) }
             walkMetas(node.metas)
         }
-    
     }
     open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
         ////////////////////////////////////////////////////////////////////////////

@@ -576,27 +576,22 @@ class CalculatorAst private constructor() {
             visitOperatorPlus(node)
             walkMetas(node.metas)
         }
-    
         open fun walkOperatorMinus(node: CalculatorAst.Operator.Minus) {
             visitOperatorMinus(node)
             walkMetas(node.metas)
         }
-    
         open fun walkOperatorTimes(node: CalculatorAst.Operator.Times) {
             visitOperatorTimes(node)
             walkMetas(node.metas)
         }
-    
         open fun walkOperatorDivide(node: CalculatorAst.Operator.Divide) {
             visitOperatorDivide(node)
             walkMetas(node.metas)
         }
-    
         open fun walkOperatorModulo(node: CalculatorAst.Operator.Modulo) {
             visitOperatorModulo(node)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
@@ -613,7 +608,6 @@ class CalculatorAst private constructor() {
             walkLongPrimitive(node.value)
             walkMetas(node.metas)
         }
-    
         open fun walkExprBinary(node: CalculatorAst.Expr.Binary) {
             visitExprBinary(node)
             walkOperator(node.op)
@@ -621,7 +615,6 @@ class CalculatorAst private constructor() {
             walkExpr(node.right)
             walkMetas(node.metas)
         }
-    
     }
     open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
         ////////////////////////////////////////////////////////////////////////////

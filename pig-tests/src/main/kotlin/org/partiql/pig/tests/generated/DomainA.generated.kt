@@ -1601,12 +1601,10 @@ class DomainA private constructor() {
             visitSumToRemoveDoesnt(node)
             walkMetas(node.metas)
         }
-    
         open fun walkSumToRemoveMatter(node: DomainA.SumToRemove.Matter) {
             visitSumToRemoveMatter(node)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: SumToReplaceWithProduct
         //////////////////////////////////////
@@ -1622,7 +1620,6 @@ class DomainA private constructor() {
             walkProductToRemove(node.t)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: SumA
         //////////////////////////////////////
@@ -1639,19 +1636,16 @@ class DomainA private constructor() {
             visitSumAWho(node)
             walkMetas(node.metas)
         }
-    
         open fun walkSumACares(node: DomainA.SumA.Cares) {
             visitSumACares(node)
             walkProductToRemove(node.a)
             walkMetas(node.metas)
         }
-    
         open fun walkSumANoti(node: DomainA.SumA.Noti) {
             visitSumANoti(node)
             walkProductToRemove(node.a)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: SumB
         //////////////////////////////////////
@@ -1668,18 +1662,15 @@ class DomainA private constructor() {
             visitSumBWillBeUnchanged(node)
             walkMetas(node.metas)
         }
-    
         open fun walkSumBWillBeRemoved(node: DomainA.SumB.WillBeRemoved) {
             visitSumBWillBeRemoved(node)
             walkMetas(node.metas)
         }
-    
         open fun walkSumBWillBeReplaced(node: DomainA.SumB.WillBeReplaced) {
             visitSumBWillBeReplaced(node)
             walkLongPrimitive(node.something)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: UnpermutedSum
         //////////////////////////////////////
@@ -1697,14 +1688,12 @@ class DomainA private constructor() {
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
-    
         open fun walkUnpermutedSumUnpermutedRecordVariant(node: DomainA.UnpermutedSum.UnpermutedRecordVariant) {
             visitUnpermutedSumUnpermutedRecordVariant(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
-    
     }
     open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
         ////////////////////////////////////////////////////////////////////////////
