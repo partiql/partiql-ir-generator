@@ -33,11 +33,7 @@ java {
 publishing {
     publications {
         create<MavenPublication>(name) {
-
-            // TODO REMOVE THIS ONCE WE CHANGE ARTIFACTS TO JUST `pig-*`
-            // artifact names were hardcoded, so we have to do this to match current artifact names
             artifactId = name.replace("pig", "partiql-ir-generator")
-
             from(components["java"])
             pom {
                 url.set("https://partiql.org/")

@@ -16,9 +16,9 @@ import java.io.FileOutputStream
 import java.util.Properties
 
 plugins {
+    id("application")
     id("pig.conventions")
     id("pig.publish")
-    id("application")
 }
 
 project.description = "The P.I.G. is a code generator for domain models such ASTs and execution plans."

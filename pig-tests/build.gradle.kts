@@ -28,7 +28,7 @@ tasks {
 
     val pigOutputDir = "src/main/kotlin/org/partiql/pig/tests/generated/"
     val pigOutputPackage = "org.partiql.pig.tests.generated"
-    val pigInputDir = "src/test/resources/org/partiql/pig/tests/type-domains/"
+    val pigInputDir = "src/test/pig/"
     val universes = listOf("toy-lang", "sample-universe", "partiql-basic")
 
     val pigClean = register("pig-clean", Delete::class) {
@@ -39,9 +39,6 @@ tasks {
                 include("*.generated.kt")
             }
         )
-    }
-    clean {
-        dependsOn(pigClean)
     }
 
     val pigAll = register("pig-all") {
