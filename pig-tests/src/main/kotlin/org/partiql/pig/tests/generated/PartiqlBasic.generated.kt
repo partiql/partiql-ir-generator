@@ -3928,13 +3928,11 @@ class PartiqlBasic private constructor() {
             node.items.map { walkProjectItem(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkProjectionProjectValue(node: PartiqlBasic.Projection.ProjectValue) {
             visitProjectionProjectValue(node)
             walkExpr(node.value)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: ProjectItem
         //////////////////////////////////////
@@ -3950,14 +3948,12 @@ class PartiqlBasic private constructor() {
             visitProjectItemProjectAll(node)
             walkMetas(node.metas)
         }
-    
         open fun walkProjectItemProjectExpr(node: PartiqlBasic.ProjectItem.ProjectExpr) {
             visitProjectItemProjectExpr(node)
             walkExpr(node.value)
             node.asAlias?.let { walkSymbolPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: JoinType
         //////////////////////////////////////
@@ -3975,22 +3971,18 @@ class PartiqlBasic private constructor() {
             visitJoinTypeInner(node)
             walkMetas(node.metas)
         }
-    
         open fun walkJoinTypeLeft(node: PartiqlBasic.JoinType.Left) {
             visitJoinTypeLeft(node)
             walkMetas(node.metas)
         }
-    
         open fun walkJoinTypeRight(node: PartiqlBasic.JoinType.Right) {
             visitJoinTypeRight(node)
             walkMetas(node.metas)
         }
-    
         open fun walkJoinTypeOuter(node: PartiqlBasic.JoinType.Outer) {
             visitJoinTypeOuter(node)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: FromSource
         //////////////////////////////////////
@@ -4010,7 +4002,6 @@ class PartiqlBasic private constructor() {
             node.byAlias?.let { walkSymbolPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkFromSourceJoin(node: PartiqlBasic.FromSource.Join) {
             visitFromSourceJoin(node)
             walkJoinType(node.type)
@@ -4019,7 +4010,6 @@ class PartiqlBasic private constructor() {
             node.predicate?.let { walkExpr(it) }
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: CaseSensitivity
         //////////////////////////////////////
@@ -4035,12 +4025,10 @@ class PartiqlBasic private constructor() {
             visitCaseSensitivityCaseSensitive(node)
             walkMetas(node.metas)
         }
-    
         open fun walkCaseSensitivityCaseInsensitive(node: PartiqlBasic.CaseSensitivity.CaseInsensitive) {
             visitCaseSensitivityCaseInsensitive(node)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: ScopeQualifier
         //////////////////////////////////////
@@ -4056,12 +4044,10 @@ class PartiqlBasic private constructor() {
             visitScopeQualifierUnqualified(node)
             walkMetas(node.metas)
         }
-    
         open fun walkScopeQualifierQualified(node: PartiqlBasic.ScopeQualifier.Qualified) {
             visitScopeQualifierQualified(node)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: SetQuantifier
         //////////////////////////////////////
@@ -4077,12 +4063,10 @@ class PartiqlBasic private constructor() {
             visitSetQuantifierAll(node)
             walkMetas(node.metas)
         }
-    
         open fun walkSetQuantifierDistinct(node: PartiqlBasic.SetQuantifier.Distinct) {
             visitSetQuantifierDistinct(node)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: PathElement
         //////////////////////////////////////
@@ -4100,17 +4084,14 @@ class PartiqlBasic private constructor() {
             walkExpr(node.expr)
             walkMetas(node.metas)
         }
-    
         open fun walkPathElementPathWildcard(node: PartiqlBasic.PathElement.PathWildcard) {
             visitPathElementPathWildcard(node)
             walkMetas(node.metas)
         }
-    
         open fun walkPathElementPathUnpivot(node: PartiqlBasic.PathElement.PathUnpivot) {
             visitPathElementPathUnpivot(node)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: Expr
         //////////////////////////////////////
@@ -4146,7 +4127,6 @@ class PartiqlBasic private constructor() {
             walkAnyElement(node.value)
             walkMetas(node.metas)
         }
-    
         open fun walkExprId(node: PartiqlBasic.Expr.Id) {
             visitExprId(node)
             walkSymbolPrimitive(node.name)
@@ -4154,55 +4134,46 @@ class PartiqlBasic private constructor() {
             walkScopeQualifier(node.scopeQualifier)
             walkMetas(node.metas)
         }
-    
         open fun walkExprParameter(node: PartiqlBasic.Expr.Parameter) {
             visitExprParameter(node)
             walkLongPrimitive(node.index)
             walkMetas(node.metas)
         }
-    
         open fun walkExprNot(node: PartiqlBasic.Expr.Not) {
             visitExprNot(node)
             walkExpr(node.expr)
             walkMetas(node.metas)
         }
-    
         open fun walkExprPlus(node: PartiqlBasic.Expr.Plus) {
             visitExprPlus(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprMinus(node: PartiqlBasic.Expr.Minus) {
             visitExprMinus(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprTimes(node: PartiqlBasic.Expr.Times) {
             visitExprTimes(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprDivide(node: PartiqlBasic.Expr.Divide) {
             visitExprDivide(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprModulo(node: PartiqlBasic.Expr.Modulo) {
             visitExprModulo(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprConcat(node: PartiqlBasic.Expr.Concat) {
             visitExprConcat(node)
             node.operands.map { walkExpr(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprLike(node: PartiqlBasic.Expr.Like) {
             visitExprLike(node)
             walkExpr(node.left)
@@ -4210,7 +4181,6 @@ class PartiqlBasic private constructor() {
             walkExpr(node.escape)
             walkMetas(node.metas)
         }
-    
         open fun walkExprBetween(node: PartiqlBasic.Expr.Between) {
             visitExprBetween(node)
             walkExpr(node.value)
@@ -4218,21 +4188,18 @@ class PartiqlBasic private constructor() {
             walkExpr(node.to)
             walkMetas(node.metas)
         }
-    
         open fun walkExprPath(node: PartiqlBasic.Expr.Path) {
             visitExprPath(node)
             walkExpr(node.root)
             node.elements.map { walkPathElement(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprCall(node: PartiqlBasic.Expr.Call) {
             visitExprCall(node)
             walkSymbolPrimitive(node.name)
             node.args.map { walkExpr(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprCallAgg(node: PartiqlBasic.Expr.CallAgg) {
             visitExprCallAgg(node)
             walkSymbolPrimitive(node.name)
@@ -4240,38 +4207,32 @@ class PartiqlBasic private constructor() {
             walkExpr(node.arg)
             walkMetas(node.metas)
         }
-    
         open fun walkExprSimpleCase(node: PartiqlBasic.Expr.SimpleCase) {
             visitExprSimpleCase(node)
             walkExpr(node.value)
             node.branches.map { walkExprPair(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprSearchedCase(node: PartiqlBasic.Expr.SearchedCase) {
             visitExprSearchedCase(node)
             node.branches.map { walkExprPair(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprStruct(node: PartiqlBasic.Expr.Struct) {
             visitExprStruct(node)
             node.fields.map { walkExprPair(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprBag(node: PartiqlBasic.Expr.Bag) {
             visitExprBag(node)
             node.values.map { walkExpr(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprList(node: PartiqlBasic.Expr.List) {
             visitExprList(node)
             node.values.map { walkExpr(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkExprSelect(node: PartiqlBasic.Expr.Select) {
             visitExprSelect(node)
             node.setq?.let { walkSetQuantifier(it) }
@@ -4283,7 +4244,6 @@ class PartiqlBasic private constructor() {
             node.limit?.let { walkExpr(it) }
             walkMetas(node.metas)
         }
-    
     }
     open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
         ////////////////////////////////////////////////////////////////////////////

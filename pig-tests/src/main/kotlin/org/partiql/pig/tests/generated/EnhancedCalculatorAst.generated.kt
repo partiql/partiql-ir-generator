@@ -782,7 +782,6 @@ class EnhancedCalculatorAst private constructor() {
             walkLongPrimitive(node.value)
             walkMetas(node.metas)
         }
-    
         open fun walkExprBinary(node: EnhancedCalculatorAst.Expr.Binary) {
             visitExprBinary(node)
             walkOperator(node.op)
@@ -790,7 +789,6 @@ class EnhancedCalculatorAst private constructor() {
             walkExpr(node.right)
             walkMetas(node.metas)
         }
-    
         open fun walkExprLet(node: EnhancedCalculatorAst.Expr.Let) {
             visitExprLet(node)
             walkSymbolPrimitive(node.name)
@@ -798,13 +796,11 @@ class EnhancedCalculatorAst private constructor() {
             walkExpr(node.body)
             walkMetas(node.metas)
         }
-    
         open fun walkExprVariable(node: EnhancedCalculatorAst.Expr.Variable) {
             visitExprVariable(node)
             walkSymbolPrimitive(node.name)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: Operator
         //////////////////////////////////////
@@ -823,27 +819,22 @@ class EnhancedCalculatorAst private constructor() {
             visitOperatorPlus(node)
             walkMetas(node.metas)
         }
-    
         open fun walkOperatorMinus(node: EnhancedCalculatorAst.Operator.Minus) {
             visitOperatorMinus(node)
             walkMetas(node.metas)
         }
-    
         open fun walkOperatorTimes(node: EnhancedCalculatorAst.Operator.Times) {
             visitOperatorTimes(node)
             walkMetas(node.metas)
         }
-    
         open fun walkOperatorDivide(node: EnhancedCalculatorAst.Operator.Divide) {
             visitOperatorDivide(node)
             walkMetas(node.metas)
         }
-    
         open fun walkOperatorModulo(node: EnhancedCalculatorAst.Operator.Modulo) {
             visitOperatorModulo(node)
             walkMetas(node.metas)
         }
-    
     }
     open class VisitorFold<T> : DomainVisitorFoldBase<T>() {
         ////////////////////////////////////////////////////////////////////////////

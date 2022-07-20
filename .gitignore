@@ -1,12 +1,13 @@
 build
 /gradle-build
+/buildSrc/gradle-build
 *.iml
 *.swp
 *.~
 ~$*
 .gradle
 out/
-
+.DS_Store
 
 # Created by https://www.gitignore.io/api/vim,git,java,emacs,kotlin,eclipse,intellij+all
 # Edit at https://www.gitignore.io/?templates=vim,git,java,emacs,kotlin,eclipse,intellij+all
