@@ -28,7 +28,7 @@ val propertiesDir = "$buildDir/properties"
 dependencies {
     implementation("org.freemarker:freemarker:2.3.30")
     implementation("net.sf.jopt-simple:jopt-simple:5.0.4")
-    implementation("com.amazon.ion:ion-element:0.2.0")
+    implementation("com.amazon.ion:ion-element:1.0.0")
 }
 
 application {

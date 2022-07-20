@@ -21,5 +21,5 @@ plugins {
 project.description = "The P.I.G. is a code generator for domain models such ASTs and execution plans."
 
 dependencies {
-    api("com.amazon.ion:ion-element:0.2.0")
+    api("com.amazon.ion:ion-element:1.0.0")
 }
