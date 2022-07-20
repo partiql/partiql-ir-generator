@@ -18,8 +18,10 @@ package org.partiql.pig.cmdline
 import java.io.File
 
 sealed class TargetLanguage {
-    data class Kotlin(val namespace: String, val outputDirectory: File, val domains: Set<String>? = null) : TargetLanguage()
-    data class Custom(val templateFile: File, val outputFile: File, val domains: Set<String>? = null) : TargetLanguage()
-    data class Html(val outputFile: File, val domains: Set<String>? = null) : TargetLanguage()
-    data class Ion(val outputFile: File, val domains: Set<String>? = null) : TargetLanguage()
+    abstract val domains: Set<String>?
+
+    data class Kotlin(val namespace: String, val outputDirectory: File, override val domains: Set<String>? = null) : TargetLanguage()
+    data class Custom(val templateFile: File, val outputFile: File, override val domains: Set<String>? = null) : TargetLanguage()
+    data class Html(val outputFile: File, override val domains: Set<String>? = null) : TargetLanguage()
+    data class Ion(val outputFile: File, override val domains: Set<String>? = null) : TargetLanguage()
 }

@@ -21,7 +21,6 @@
  */
 package org.partiql.pig.generator.kotlin
 
-import org.partiql.pig.domain.filterDomains
 import org.partiql.pig.domain.model.Arity
 import org.partiql.pig.domain.model.DataType
 import org.partiql.pig.domain.model.NamedElement
@@ -33,23 +32,28 @@ import org.partiql.pig.domain.model.TypeUniverse
 import org.partiql.pig.util.snakeToCamelCase
 import org.partiql.pig.util.snakeToPascalCase
 
-internal fun TypeUniverse.convertToKTypeUniverse(domains: Set<String>?): KTypeUniverse {
-    val allTypeDomains: List<TypeDomain> = this.computeTypeDomains()
+/**
+ * Turns a [TypeUniverse] into a [KTypeUniverse].  If only a subset of domains is requested via the [domainFilters], only those will be present in the output [KTypeUniverse]
+ * along with any domain transforms where those domains are destination domains.
+ *
+ * @param computedTypeDomains List of all computed [TypeDomain]s
+ * @param filteredTypeDomains List of only the [TypeDomain]s the user cares about
+ * @param domainFilters Set of requested [TypeDomain] names from the user
+ */
+internal fun TypeUniverse.convertToKTypeUniverse(computedTypeDomains: List<TypeDomain>, filteredTypeDomains: List<TypeDomain>, domainFilters: Set<String>?): KTypeUniverse {
+    val kotlinTypeDomains: List<KTypeDomain> = filteredTypeDomains.map { typeDomain -> KTypeDomainConverter(typeDomain).convert() }
 
-    val kotlinTypeDomains: List<KTypeDomain> = allTypeDomains.filterDomains(domains)
-        .map { typeDomain -> KTypeDomainConverter(typeDomain).convert() }
+    val allTransforms = this.statements.filterIsInstance<Transform>()
 
-    val allKTransforms = this.statements.filterIsInstance<Transform>()
+    val validTransforms = allTransforms
+        // If the user passed along a set of (destination) domain filters, then we only want Transforms with a matching destination domain tag; else we include all Transforms
+        .let { xforms -> domainFilters?.let { filters -> xforms.filter { it.destinationDomainTag in filters } } ?: xforms }
+        .map { xform ->
+            // we should be able to assume these calls to .single will never fail if this function is called (missing domains cause a semantic check failure)
+            val sourceDomain = computedTypeDomains.single { it.tag == xform.sourceDomainTag }
+            val destDomain = computedTypeDomains.single { it.tag == xform.destinationDomainTag }
 
-    val sourceDomains = allKTransforms.map { dt -> allTypeDomains.singleOrNull { it.tag == dt.sourceDomainTag } }
-    val destDomains = allKTransforms.map { dt -> allTypeDomains.singleOrNull { it.tag == dt.destinationDomainTag } }
-
-    val validKTransforms = sourceDomains.zip(destDomains)
-        .filter { (sourceDomain, destDomain) -> sourceDomain != null && destDomain != null }
-        // sourceDomain and destDomain should both be non-null here, we just checked
-        .filter { (_, destDomain) -> domains?.let { destDomain!!.tag in it } ?: true }
-        .map { (sourceDomain, destDomain) ->
-            val difference = sourceDomain!!.computeTransform(destDomain!!)
+            val difference = sourceDomain.computeTransform(destDomain)
 
             val converter = KTypeDomainConverter(difference)
             val sourceDomainDifference = converter.convert()
@@ -60,7 +64,7 @@ internal fun TypeUniverse.convertToKTypeUniverse(domains: Set<String>?): KTypeUn
             )
         }
 
-    return KTypeUniverse(kotlinTypeDomains, validKTransforms)
+    return KTypeUniverse(kotlinTypeDomains, validTransforms)
 }
 
 private class KTypeDomainConverter(
