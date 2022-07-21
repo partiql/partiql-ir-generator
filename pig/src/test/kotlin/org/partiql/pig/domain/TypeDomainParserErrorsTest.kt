@@ -16,7 +16,8 @@
 package org.partiql.pig.domain
 
 import com.amazon.ionelement.api.ElementType
-import com.amazon.ionelement.api.IonElementLoaderException
+import com.amazon.ionelement.api.IonElementException
+import com.amazon.ionelement.api.ionSexpOf
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.assertThrows
@@ -53,7 +54,8 @@ class TypeDomainParserErrorsTest {
         fun parametersForErrorsTest() = listOf(
             TestCase(
                 "(", // note:  ParserErrorContext.IonElementError.equals doesn't check the exception
-                makeErr(ParserErrorContext.IonElementError(IonElementLoaderException(null, "")))
+                // IonElementException constructors are not visible, so we force an exception in order to get an instance.
+                makeErr(ParserErrorContext.IonElementError((runCatching { ionSexpOf().asAnyElement().asBoolean() }.exceptionOrNull() as IonElementException)))
             ),
 
             TestCase(
