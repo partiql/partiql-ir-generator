@@ -75,7 +75,11 @@ class IonElementTransformerBaseTests {
 
     class DummyIonElementTransformerThrowing : IonElementTransformerBase<DummyDomainNode>() {
         override fun innerTransform(sexp: SexpElement): DummyDomainNode {
-            throw IonElementConstraintException(null, "oh_my_an_error")
+            // IonElementException constructors have internal visibility, so we force an IonElementConstraintException
+            // by attempting an impossible conversion from Sexp to Bool. Message will be:
+            // Expected an element of type BOOL but found an element of type SEXP
+            sexp.asAnyElement().asBoolean()
+            TODO("Unreachable!")
         }
     }
 
@@ -93,11 +97,11 @@ class IonElementTransformerBaseTests {
     }
 
     @Test
-    fun handlesIonElectrolyteException() {
+    fun handlesIonElementException() {
         val xformer = DummyIonElementTransformerThrowing()
         val ex = assertThrows<MalformedDomainDataException> { xformer.transform(ionSexpOf()) }
 
         assertTrue(ex.cause is IonElementConstraintException)
-        assertTrue(ex.message!!.contains("oh_my_an_error"))
+        assertTrue(ex.message!!.contains("Expected an element of type BOOL but found an element of type SEXP"))
     }
 }

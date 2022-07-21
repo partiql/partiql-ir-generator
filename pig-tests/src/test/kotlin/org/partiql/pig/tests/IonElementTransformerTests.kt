@@ -17,7 +17,6 @@ package org.partiql.pig.tests
 
 import com.amazon.ionelement.api.loadSingleElement
 import com.amazon.ionelement.api.metaContainerOf
-import com.amazon.ionelement.api.withMetas
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow

@@ -25,9 +25,6 @@ import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.SexpElement
 import com.amazon.ionelement.api.SymbolElement
 import com.amazon.ionelement.api.createIonElementLoader
-import com.amazon.ionelement.api.head
-import com.amazon.ionelement.api.tag
-import com.amazon.ionelement.api.tail
 import org.partiql.pig.domain.model.Arity
 import org.partiql.pig.domain.model.DataType
 import org.partiql.pig.domain.model.NamedElement
@@ -39,6 +36,9 @@ import org.partiql.pig.domain.model.TupleType
 import org.partiql.pig.domain.model.TypeDomain
 import org.partiql.pig.domain.model.TypeRef
 import org.partiql.pig.domain.model.TypeUniverse
+import org.partiql.pig.util.head
+import org.partiql.pig.util.tag
+import org.partiql.pig.util.tail
 
 /** Parses a type universe contained in [universeText]. */
 fun parseTypeUniverse(universeText: String) =
