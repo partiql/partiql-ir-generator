@@ -3,7 +3,6 @@ package org.partiql.pig.domain
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.ionSexpOf
 import com.amazon.ionelement.api.ionSymbol
-import com.amazon.ionelement.api.withAnnotations
 import org.partiql.pig.domain.model.DataType
 import org.partiql.pig.domain.model.NamedElement
 import org.partiql.pig.domain.model.PermutedDomain
