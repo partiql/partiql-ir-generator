@@ -86,6 +86,18 @@ class CommandLineParserTests {
                 "-u=input.ion", "-t=kotlin", "-d=out_dir", "-n=some.package"
             ),
 
+            // accepts --domains to filter for specific domains
+            TestCase(
+                Command.Generate(File("input.ion"), TargetLanguage.Kotlin("some.package", File("out_dir"), domains = setOf("foo", "bar"))),
+                "--universe=input.ion", "--target=kotlin", "--output-directory=out_dir", "--namespace=some.package", "--domains=foo,bar"
+            ),
+
+            // accepts -f to filter for specific domains
+            TestCase(
+                Command.Generate(File("input.ion"), TargetLanguage.Kotlin("some.package", File("out_dir"), domains = setOf("foo", "bar"))),
+                "-u=input.ion", "-t=kotlin", "-d=out_dir", "-n=some.package", "-f=foo,bar"
+            ),
+
             // missing the --namespace argument
             TestCase(
                 Command.InvalidCommandLineArguments("The selected language target requires the --namespace argument"),
@@ -107,6 +119,45 @@ class CommandLineParserTests {
                 "-u=input.ion", "-target=html", "--output-file=output.html"
             ),
 
+            // accepts --domains to filter for specific domains
+            TestCase(
+                Command.Generate(File("input.ion"), TargetLanguage.Html(File("output.html"), domains = setOf("foo", "bar"))),
+                "--universe=input.ion", "--target=html", "--output-file=output.html", "--domains=foo,bar"
+            ),
+
+            // accepts -f to filter for specific domains
+            TestCase(
+                Command.Generate(File("input.ion"), TargetLanguage.Html(File("output.html"), domains = setOf("foo", "bar"))),
+                "-u=input.ion", "-target=html", "--output-file=output.html", "-f=foo,bar"
+            ),
+
+            // //////////////////////////////////////////////////////
+            // Ion target
+            // //////////////////////////////////////////////////////
+            // long parameter names
+            TestCase(
+                Command.Generate(File("input.ion"), TargetLanguage.Ion(File("output.ion"))),
+                "--universe=input.ion", "--target=ion", "--output-file=output.ion"
+            ),
+
+            // short parameter names
+            TestCase(
+                Command.Generate(File("input.ion"), TargetLanguage.Ion(File("output.ion"))),
+                "-u=input.ion", "-target=ion", "--output-file=output.ion"
+            ),
+
+            // accepts --domains to filter for specific domains
+            TestCase(
+                Command.Generate(File("input.ion"), TargetLanguage.Ion(File("output.ion"), domains = setOf("foo", "bar"))),
+                "--universe=input.ion", "--target=ion", "--output-file=output.ion", "--domains=foo,bar"
+            ),
+
+            // accepts -f to filter for specific domains
+            TestCase(
+                Command.Generate(File("input.ion"), TargetLanguage.Ion(File("output.ion"), domains = setOf("foo", "bar"))),
+                "-u=input.ion", "-target=ion", "--output-file=output.ion", "-f=foo,bar"
+            ),
+
             // //////////////////////////////////////////////////////
             // Custom target
             // //////////////////////////////////////////////////////
@@ -120,6 +171,18 @@ class CommandLineParserTests {
             TestCase(
                 Command.Generate(File("input.ion"), TargetLanguage.Custom(File("template.ftl"), File("output.txt"))),
                 "-u=input.ion", "-t=custom", "-o=output.txt", "-e=template.ftl"
+            ),
+
+            // accepts --domains to filter for specific domains
+            TestCase(
+                Command.Generate(File("input.ion"), TargetLanguage.Custom(File("template.ftl"), File("output.txt"), domains = setOf("foo", "bar"))),
+                "--universe=input.ion", "--target=custom", "--output-file=output.txt", "--template=template.ftl", "--domains=foo,bar"
+            ),
+
+            // accepts -f to filter for specific domains
+            TestCase(
+                Command.Generate(File("input.ion"), TargetLanguage.Custom(File("template.ftl"), File("output.txt"), domains = setOf("foo", "bar"))),
+                "-u=input.ion", "-target=custom", "--output-file=output.txt", "-e=template.ftl", "-f=foo,bar"
             ),
 
             // missing the --template argument

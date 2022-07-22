@@ -24,6 +24,7 @@ import org.partiql.pig.domain.parser.parseTypeUniverse
 import org.partiql.pig.errors.PigException
 import org.partiql.pig.generator.custom.applyCustomTemplate
 import org.partiql.pig.generator.html.applyHtmlTemplate
+import org.partiql.pig.generator.ion.generateIon
 import org.partiql.pig.generator.kotlin.convertToKTypeUniverse
 import org.partiql.pig.generator.kotlin.generateKotlinCode
 import java.io.File
@@ -73,10 +74,13 @@ fun generateCode(command: Command.Generate) {
 
     progress("permuting domains...")
 
+    val computedDomains = typeUniverse.computeTypeDomains()
+    val filteredDomains = command.target.domains?.let { computedDomains.filter { domain -> domain.tag in it } } ?: computedDomains
+
     when (command.target) {
         is TargetLanguage.Kotlin -> {
             progress("applying Kotlin pre-processing")
-            val kotlinTypeUniverse = typeUniverse.convertToKTypeUniverse()
+            val kotlinTypeUniverse = typeUniverse.convertToKTypeUniverse(computedDomains, filteredDomains, command.target.domains)
             prepareOutputDirectory(command.target.outputDirectory)
             progress("applying the Kotlin template once for each domain...")
 
@@ -87,14 +91,23 @@ fun generateCode(command: Command.Generate) {
             progress("applying ${command.target.templateFile}")
 
             PrintWriter(command.target.outputFile).use { printWriter ->
-                applyCustomTemplate(command.target.templateFile, typeUniverse.computeTypeDomains(), printWriter)
+                applyCustomTemplate(command.target.templateFile, filteredDomains, printWriter)
             }
         }
         is TargetLanguage.Html -> {
             progress("output file  : ${command.target.outputFile}")
             progress("applying the HTML template")
+
             PrintWriter(command.target.outputFile).use { printWriter ->
-                applyHtmlTemplate(typeUniverse.computeTypeDomains(), printWriter)
+                applyHtmlTemplate(filteredDomains, printWriter)
+            }
+        }
+        is TargetLanguage.Ion -> {
+            progress("output file  : ${command.target.outputFile}")
+            progress("applying the Ion template")
+
+            PrintWriter(command.target.outputFile).use { printWriter ->
+                generateIon(filteredDomains, printWriter)
             }
         }
     }
