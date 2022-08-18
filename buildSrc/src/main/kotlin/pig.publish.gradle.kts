@@ -30,14 +30,24 @@ java {
     withSourcesJar()
 }
 
+fun String.mavenName(): String = when (this) {
+    "pig-runtime" -> "PartiQL I.R. Generator (a.k.a P.I.G.) Runtime Library"
+    else -> "PartiQL I.R. Generator (a.k.a P.I.G.)"
+}
+
+fun String.artifactId(): String = name.replace("pig", "partiql-ir-generator")
+
 publishing {
     publications {
         create<MavenPublication>(name) {
-            artifactId = name.replace("pig", "partiql-ir-generator")
+            val module = name
+            artifactId = module.artifactId()
             from(components["java"])
             pom {
                 url.set("https://partiql.org/")
                 packaging = "jar"
+                name.set(module.mavenName())
+                description.set("The P.I.G. is a code generator for domain models such ASTs and execution plans.")
                 scm {
                     connection.set("scm:git@github.com:partiql/partiql-ir-generator.git")
                     developerConnection.set("scm:git@github.com:partiql/partiql-ir-generator.git")
