@@ -13,10 +13,9 @@
  *  permissions and limitations under the License.
  */
 
-import java.nio.file.Paths
-
 plugins {
     id("pig.conventions")
+    id("pig-gradle-plugin")
     id("java-library")
 }
 
@@ -24,63 +23,25 @@ dependencies {
     implementation(project(":pig-runtime"))
 }
 
-tasks {
+// remove after pig-example is created
+val pigOutputDir = file("./src/main/kotlin/org/partiql/pig/tests/generated/").absolutePath
 
-    val pigOutputDir = "src/main/kotlin/org/partiql/pig/tests/generated/"
-    val pigOutputPackage = "org.partiql.pig.tests.generated"
-    val pigInputDir = "src/test/pig/"
-    val universes = listOf("toy-lang", "sample-universe", "partiql-basic")
+pig {
+    target.set("kotlin")
+    namespace.set("org.partiql.pig.tests.generated")
+    // remove after pig-example is created
+    outputDir.set(pigOutputDir)
+}
 
-    val pigClean = register("pig-clean", Delete::class) {
-        group = "pig"
-        description = "deletes all pig generated files"
-        delete(
-            fileTree(pigOutputDir).matching {
-                include("*.generated.kt")
-            }
-        )
-    }
-
-    val pigAll = register("pig-all") {
-        group = "pig"
-        description = "run all pig generation tasks"
-        shouldRunAfter(pigClean)
-    }
-
-    named("compileKotlin") {
-        dependsOn(pigAll)
-    }
-
-    // :pig:installDist creates the pig jar launch script required for `exec`
-    val installDist = project(":pig").tasks.named("installDist")
-
-    universes.forEach { u ->
-        val t = register("pig-generate-$u") {
-            group = "pig"
-            description = "pig generation for type universe $u"
-            dependsOn(installDist)
-
-            // pig script from :pig:installDist
-            val pathToPig = File(projectDir, "../pig/build/install/pig/bin/pig").canonicalPath
-            val pathToUniverse = Paths.get(projectDir.toString(), pigInputDir, "$u.ion")
-
-            doLast {
-                exec {
-                    workingDir = projectDir
-                    commandLine(
-                        pathToPig,
-                        "-u", pathToUniverse,
-                        "-t", "kotlin",
-                        "-n", pigOutputPackage,
-                        "-d", pigOutputDir,
-                    )
-                }
-            }
+// remove after pig-example is created
+tasks.register("pigClean", Delete::class) {
+    group = "pig"
+    description = "deletes all pig generated files"
+    delete(
+        fileTree(pigOutputDir).matching {
+            include("*.generated.kt")
         }
-        pigAll {
-            dependsOn(t)
-        }
-    }
+    )
 }
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
