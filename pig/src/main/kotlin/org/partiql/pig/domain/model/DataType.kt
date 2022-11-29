@@ -108,6 +108,8 @@ sealed class DataType {
 
         abstract fun copyAsDifferent(): UserType
 
+        abstract val annotations: List<TypeAnnotation>
+
         /**
          * A product type consisting of a [tag] and one or more [namedElements].
          *
@@ -119,7 +121,8 @@ sealed class DataType {
             val tupleType: TupleType,
             val namedElements: List<NamedElement>,
             override val metas: MetaContainer,
-            override val isDifferent: Boolean = false
+            override val isDifferent: Boolean = false,
+            override val annotations: List<TypeAnnotation> = emptyList()
         ) : UserType() {
 
             fun computeArity(): IntRange {
@@ -171,7 +174,8 @@ sealed class DataType {
             override val tag: String,
             val variants: List<Tuple>,
             override val metas: MetaContainer,
-            override val isDifferent: Boolean = false
+            override val isDifferent: Boolean = false,
+            override val annotations: List<TypeAnnotation> = emptyList()
         ) : UserType() {
 
             override fun copyAsDifferent(): UserType = this.copy(
