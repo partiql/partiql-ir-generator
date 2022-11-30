@@ -26,6 +26,9 @@ https://freemarker.apache.org/docs/dgui_misc_whitespace.html
 
 [#-- Template to generate a tuple type class. --]
 [#macro tuple t index]
+[#list t.annotations as annotation]
+${annotation}
+[/#list]
 class ${t.kotlinName}(
     [#list t.properties as p]
     val ${p.kotlinName}: ${p.kotlinTypeName},
@@ -146,6 +149,9 @@ metas: MetaContainer = emptyMetaContainer()
  * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
 [/#if]
  */
+[#list t.annotations as annotation]
+${annotation}
+[/#list]
 fun ${bf.kotlinName}(
 [@indent count=4]
 [@builder_fun_parameter_list bf.parameters/]
@@ -234,6 +240,9 @@ abstract class ${domain.kotlinName}Node : DomainNode {
 /////////////////////////////////////////////////////////////////////////////
 [#list domain.sums as s]
 
+[#list s.annotations as annotation]
+${annotation}
+[/#list]
 sealed class ${s.kotlinName}(override val metas: MetaContainer = emptyMetaContainer()) : ${s.superClass}() {
     override fun copy(metas: MetaContainer): ${s.kotlinName} =
         when (this) {

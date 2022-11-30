@@ -83,7 +83,7 @@ To obtain the `pig` executable:
 - Execute `./gradlew assemble`
 
 After the build completes, the `pig` executable and dependencies will be located
-in `pig/build/distributions/pig/pig-x.y.z.[tar.gz|zip]`.
+in `./pig/build/install/pig/bin/pig`.
 
 **Finally, make sure that the version of the `partiql-ir-generator-runtime` library that you are using corresponds to
 the version of the executable.**

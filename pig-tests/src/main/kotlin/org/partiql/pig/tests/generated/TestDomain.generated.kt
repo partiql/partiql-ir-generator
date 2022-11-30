@@ -1074,6 +1074,76 @@ class TestDomain private constructor() {
         
         
         /**
+         * Creates an instance of [TestDomain.ExperimentalProduct].
+         */
+        @Experimental
+        fun experimentalProduct(
+            first: Boolean,
+            second: Boolean,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.ExperimentalProduct =
+            TestDomain.ExperimentalProduct(
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.ExperimentalProduct].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        @Experimental
+        fun experimentalProduct_(
+            first: org.partiql.pig.runtime.BoolPrimitive,
+            second: org.partiql.pig.runtime.BoolPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.ExperimentalProduct =
+            TestDomain.ExperimentalProduct(
+                first = first,
+                second = second,
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.DeprecatedProduct].
+         */
+        @Deprecated("This node is marked as deprecated")
+        fun deprecatedProduct(
+            first: Long,
+            second: Long,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.DeprecatedProduct =
+            TestDomain.DeprecatedProduct(
+                first = first.asPrimitive(),
+                second = second.asPrimitive(),
+                metas = newMetaContainer() + metas
+            )
+        
+        /**
+         * Creates an instance of [TestDomain.DeprecatedProduct].
+         *
+         * Use this variant when metas must be passed to primitive child elements.
+         *
+         * (The "_" suffix is needed to work-around conflicts due to type erasure and ambiguities with null arguments.)
+         */
+        @Deprecated("This node is marked as deprecated")
+        fun deprecatedProduct_(
+            first: org.partiql.pig.runtime.LongPrimitive,
+            second: org.partiql.pig.runtime.LongPrimitive,
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.DeprecatedProduct =
+            TestDomain.DeprecatedProduct(
+                first = first,
+                second = second,
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
          * Creates an instance of [TestDomain.DomainLevelRecord].
          */
         fun domainLevelRecord(
@@ -1328,6 +1398,110 @@ class TestDomain private constructor() {
                 a = a,
                 b = b,
                 c = c,
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        // Variants for Sum: ExperimentalSum 
+        /**
+         * Creates an instance of [TestDomain.ExperimentalSum.ExA].
+         */
+        fun exA(
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.ExperimentalSum.ExA =
+            TestDomain.ExperimentalSum.ExA(
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.ExperimentalSum.ExB].
+         */
+        fun exB(
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.ExperimentalSum.ExB =
+            TestDomain.ExperimentalSum.ExB(
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.ExperimentalSum.ExC].
+         */
+        fun exC(
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.ExperimentalSum.ExC =
+            TestDomain.ExperimentalSum.ExC(
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        // Variants for Sum: DeprecatedSum 
+        /**
+         * Creates an instance of [TestDomain.DeprecatedSum.DepA].
+         */
+        fun depA(
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.DeprecatedSum.DepA =
+            TestDomain.DeprecatedSum.DepA(
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.DeprecatedSum.DepB].
+         */
+        fun depB(
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.DeprecatedSum.DepB =
+            TestDomain.DeprecatedSum.DepB(
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.DeprecatedSum.DepC].
+         */
+        fun depC(
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.DeprecatedSum.DepC =
+            TestDomain.DeprecatedSum.DepC(
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        // Variants for Sum: EvolvingSum 
+        /**
+         * Creates an instance of [TestDomain.EvolvingSum.Old].
+         */
+        @Deprecated("This node is marked as deprecated")
+        fun old(
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.EvolvingSum.Old =
+            TestDomain.EvolvingSum.Old(
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.EvolvingSum.Current].
+         */
+        fun current(
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.EvolvingSum.Current =
+            TestDomain.EvolvingSum.Current(
+                metas = newMetaContainer() + metas
+            )
+        
+        
+        /**
+         * Creates an instance of [TestDomain.EvolvingSum.Next].
+         */
+        @Experimental
+        fun next(
+            metas: MetaContainer = emptyMetaContainer()
+        ): TestDomain.EvolvingSum.Next =
+            TestDomain.EvolvingSum.Next(
                 metas = newMetaContainer() + metas
             )
         
@@ -3021,6 +3195,122 @@ class TestDomain private constructor() {
         override fun hashCode(): Int = myHashCode
     }
     
+    @Experimental
+    class ExperimentalProduct(
+        val first: org.partiql.pig.runtime.BoolPrimitive,
+        val second: org.partiql.pig.runtime.BoolPrimitive,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): TestDomainNode() {
+    
+        override fun copy(metas: MetaContainer): ExperimentalProduct =
+            ExperimentalProduct(
+                first = first,
+                second = second,
+                metas = metas)
+    
+        override fun withMeta(metaKey: String, metaValue: Any): ExperimentalProduct =
+            ExperimentalProduct(
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
+    
+        override fun toIonElement(): SexpElement {
+            val elements = ionSexpOf(
+                ionSymbol("experimental_product"),
+                first.toIonElement(),
+                second.toIonElement(),
+                metas = metas)
+            return elements
+        }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.BoolPrimitive = this.first,
+            second: org.partiql.pig.runtime.BoolPrimitive = this.second,
+            metas: MetaContainer = this.metas
+        ) =
+            ExperimentalProduct(
+                first,
+                second,
+                metas)
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != ExperimentalProduct::class.java) return false
+    
+            other as ExperimentalProduct
+            if (first != other.first) return false
+            if (second != other.second) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
+    @Deprecated("This node is marked as deprecated")
+    class DeprecatedProduct(
+        val first: org.partiql.pig.runtime.LongPrimitive,
+        val second: org.partiql.pig.runtime.LongPrimitive,
+        override val metas: MetaContainer = emptyMetaContainer()
+    ): TestDomainNode() {
+    
+        override fun copy(metas: MetaContainer): DeprecatedProduct =
+            DeprecatedProduct(
+                first = first,
+                second = second,
+                metas = metas)
+    
+        override fun withMeta(metaKey: String, metaValue: Any): DeprecatedProduct =
+            DeprecatedProduct(
+                first = first,
+                second = second,
+                metas = metas + metaContainerOf(metaKey to metaValue))
+    
+        override fun toIonElement(): SexpElement {
+            val elements = ionSexpOf(
+                ionSymbol("deprecated_product"),
+                first.toIonElement(),
+                second.toIonElement(),
+                metas = metas)
+            return elements
+        }
+    
+        fun copy(
+            first: org.partiql.pig.runtime.LongPrimitive = this.first,
+            second: org.partiql.pig.runtime.LongPrimitive = this.second,
+            metas: MetaContainer = this.metas
+        ) =
+            DeprecatedProduct(
+                first,
+                second,
+                metas)
+    
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (this === other) return true
+            if (other.javaClass != DeprecatedProduct::class.java) return false
+    
+            other as DeprecatedProduct
+            if (first != other.first) return false
+            if (second != other.second) return false
+            return true
+        }
+    
+        private val myHashCode by lazy(LazyThreadSafetyMode.PUBLICATION) {
+            var hc = first.hashCode()
+            hc = 31 * hc + second.hashCode()
+            hc
+        }
+    
+        override fun hashCode(): Int = myHashCode
+    }
+    
     class DomainLevelRecord(
         val someField: org.partiql.pig.runtime.LongPrimitive,
         val anotherField: org.partiql.pig.runtime.SymbolPrimitive,
@@ -3618,6 +3908,355 @@ class TestDomain private constructor() {
         }
     }
     
+    @Experimental
+    sealed class ExperimentalSum(override val metas: MetaContainer = emptyMetaContainer()) : TestDomainNode() {
+        override fun copy(metas: MetaContainer): ExperimentalSum =
+            when (this) {
+                is ExA -> copy(metas = metas)
+                is ExB -> copy(metas = metas)
+                is ExC -> copy(metas = metas)
+            }
+    
+        class ExA(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): ExperimentalSum() {
+        
+            override fun copy(metas: MetaContainer): ExA =
+                ExA(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): ExA =
+                ExA(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("ex_a"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != ExA::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 4000
+        }
+    
+        class ExB(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): ExperimentalSum() {
+        
+            override fun copy(metas: MetaContainer): ExB =
+                ExB(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): ExB =
+                ExB(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("ex_b"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != ExB::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 4001
+        }
+    
+        class ExC(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): ExperimentalSum() {
+        
+            override fun copy(metas: MetaContainer): ExC =
+                ExC(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): ExC =
+                ExC(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("ex_c"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != ExC::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 4002
+        }
+    
+        /** Converts instances of [TestDomain.ExperimentalSum] to any [T]. */
+        interface Converter<T> {
+            fun convert(node: TestDomain.ExperimentalSum): T = when(node) {
+                is TestDomain.ExperimentalSum.ExA -> convertExA(node)
+                is TestDomain.ExperimentalSum.ExB -> convertExB(node)
+                is TestDomain.ExperimentalSum.ExC -> convertExC(node)
+            }
+    
+            fun convertExA(node: TestDomain.ExperimentalSum.ExA): T
+            fun convertExB(node: TestDomain.ExperimentalSum.ExB): T
+            fun convertExC(node: TestDomain.ExperimentalSum.ExC): T
+        }
+    }
+    
+    @Deprecated("This node is marked as deprecated")
+    sealed class DeprecatedSum(override val metas: MetaContainer = emptyMetaContainer()) : TestDomainNode() {
+        override fun copy(metas: MetaContainer): DeprecatedSum =
+            when (this) {
+                is DepA -> copy(metas = metas)
+                is DepB -> copy(metas = metas)
+                is DepC -> copy(metas = metas)
+            }
+    
+        class DepA(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): DeprecatedSum() {
+        
+            override fun copy(metas: MetaContainer): DepA =
+                DepA(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): DepA =
+                DepA(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("dep_a"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != DepA::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 5000
+        }
+    
+        class DepB(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): DeprecatedSum() {
+        
+            override fun copy(metas: MetaContainer): DepB =
+                DepB(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): DepB =
+                DepB(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("dep_b"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != DepB::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 5001
+        }
+    
+        class DepC(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): DeprecatedSum() {
+        
+            override fun copy(metas: MetaContainer): DepC =
+                DepC(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): DepC =
+                DepC(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("dep_c"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != DepC::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 5002
+        }
+    
+        /** Converts instances of [TestDomain.DeprecatedSum] to any [T]. */
+        interface Converter<T> {
+            fun convert(node: TestDomain.DeprecatedSum): T = when(node) {
+                is TestDomain.DeprecatedSum.DepA -> convertDepA(node)
+                is TestDomain.DeprecatedSum.DepB -> convertDepB(node)
+                is TestDomain.DeprecatedSum.DepC -> convertDepC(node)
+            }
+    
+            fun convertDepA(node: TestDomain.DeprecatedSum.DepA): T
+            fun convertDepB(node: TestDomain.DeprecatedSum.DepB): T
+            fun convertDepC(node: TestDomain.DeprecatedSum.DepC): T
+        }
+    }
+    
+    sealed class EvolvingSum(override val metas: MetaContainer = emptyMetaContainer()) : TestDomainNode() {
+        override fun copy(metas: MetaContainer): EvolvingSum =
+            when (this) {
+                is Old -> copy(metas = metas)
+                is Current -> copy(metas = metas)
+                is Next -> copy(metas = metas)
+            }
+    
+        @Deprecated("This node is marked as deprecated")
+        class Old(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): EvolvingSum() {
+        
+            override fun copy(metas: MetaContainer): Old =
+                Old(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Old =
+                Old(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("old"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Old::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 6000
+        }
+    
+        class Current(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): EvolvingSum() {
+        
+            override fun copy(metas: MetaContainer): Current =
+                Current(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Current =
+                Current(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("current"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Current::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 6001
+        }
+    
+        @Experimental
+        class Next(
+            override val metas: MetaContainer = emptyMetaContainer()
+        ): EvolvingSum() {
+        
+            override fun copy(metas: MetaContainer): Next =
+                Next(
+                    metas = metas)
+        
+            override fun withMeta(metaKey: String, metaValue: Any): Next =
+                Next(
+                    metas = metas + metaContainerOf(metaKey to metaValue))
+        
+            override fun toIonElement(): SexpElement {
+                val elements = ionSexpOf(
+                    ionSymbol("next"),
+                    metas = metas)
+                return elements
+            }
+        
+        
+            override fun equals(other: Any?): Boolean {
+                if (other == null) return false
+                if (this === other) return true
+                if (other.javaClass != Next::class.java) return false
+        
+                return true
+            }
+        
+            override fun hashCode(): Int = 6002
+        }
+    
+        /** Converts instances of [TestDomain.EvolvingSum] to any [T]. */
+        interface Converter<T> {
+            fun convert(node: TestDomain.EvolvingSum): T = when(node) {
+                is TestDomain.EvolvingSum.Old -> convertOld(node)
+                is TestDomain.EvolvingSum.Current -> convertCurrent(node)
+                is TestDomain.EvolvingSum.Next -> convertNext(node)
+            }
+    
+            fun convertOld(node: TestDomain.EvolvingSum.Old): T
+            fun convertCurrent(node: TestDomain.EvolvingSum.Current): T
+            fun convertNext(node: TestDomain.EvolvingSum.Next): T
+        }
+    }
+    
     sealed class Entity(override val metas: MetaContainer = emptyMetaContainer()) : TestDomainNode() {
         override fun copy(metas: MetaContainer): Entity =
             when (this) {
@@ -3654,7 +4293,7 @@ class TestDomain private constructor() {
                 return true
             }
         
-            override fun hashCode(): Int = 4000
+            override fun hashCode(): Int = 7000
         }
     
         class Android(
@@ -4064,6 +4703,24 @@ class TestDomain private constructor() {
                         third,
                         metas = sexp.metas)
                 }
+                "experimental_product" -> {
+                    sexp.requireArityOrMalformed(IntRange(2, 2))
+                    val first = sexp.getRequired(0).toBoolPrimitive()
+                    val second = sexp.getRequired(1).toBoolPrimitive()
+                    TestDomain.ExperimentalProduct(
+                        first,
+                        second,
+                        metas = sexp.metas)
+                }
+                "deprecated_product" -> {
+                    sexp.requireArityOrMalformed(IntRange(2, 2))
+                    val first = sexp.getRequired(0).toLongPrimitive()
+                    val second = sexp.getRequired(1).toLongPrimitive()
+                    TestDomain.DeprecatedProduct(
+                        first,
+                        second,
+                        metas = sexp.metas)
+                }
                 "domain_level_record" -> {
                     val ir = sexp.transformToIntermediateRecord()
             
@@ -4160,6 +4817,60 @@ class TestDomain private constructor() {
                         metas = sexp.metas)
                 }
                 //////////////////////////////////////
+                // Variants for Sum Type 'ExperimentalSum'
+                //////////////////////////////////////
+                "ex_a" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    TestDomain.ExperimentalSum.ExA(
+                        metas = sexp.metas)
+                }
+                "ex_b" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    TestDomain.ExperimentalSum.ExB(
+                        metas = sexp.metas)
+                }
+                "ex_c" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    TestDomain.ExperimentalSum.ExC(
+                        metas = sexp.metas)
+                }
+                //////////////////////////////////////
+                // Variants for Sum Type 'DeprecatedSum'
+                //////////////////////////////////////
+                "dep_a" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    TestDomain.DeprecatedSum.DepA(
+                        metas = sexp.metas)
+                }
+                "dep_b" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    TestDomain.DeprecatedSum.DepB(
+                        metas = sexp.metas)
+                }
+                "dep_c" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    TestDomain.DeprecatedSum.DepC(
+                        metas = sexp.metas)
+                }
+                //////////////////////////////////////
+                // Variants for Sum Type 'EvolvingSum'
+                //////////////////////////////////////
+                "old" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    TestDomain.EvolvingSum.Old(
+                        metas = sexp.metas)
+                }
+                "current" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    TestDomain.EvolvingSum.Current(
+                        metas = sexp.metas)
+                }
+                "next" -> {
+                    sexp.requireArityOrMalformed(IntRange(0, 0))
+                    TestDomain.EvolvingSum.Next(
+                        metas = sexp.metas)
+                }
+                //////////////////////////////////////
                 // Variants for Sum Type 'Entity'
                 //////////////////////////////////////
                 "slug" -> {
@@ -4228,6 +4939,8 @@ class TestDomain private constructor() {
         open fun visitOptionalVariadic(node: TestDomain.OptionalVariadic) { }
         open fun visitRequiredOptionalVariadic(node: TestDomain.RequiredOptionalVariadic) { }
         open fun visitOptionalRequiredVariadic(node: TestDomain.OptionalRequiredVariadic) { }
+        open fun visitExperimentalProduct(node: TestDomain.ExperimentalProduct) { }
+        open fun visitDeprecatedProduct(node: TestDomain.DeprecatedProduct) { }
         open fun visitDomainLevelRecord(node: TestDomain.DomainLevelRecord) { }
         open fun visitProductWithRecord(node: TestDomain.ProductWithRecord) { }
         open fun visitTestSumTriplet(node: TestDomain.TestSumTriplet) { }
@@ -4251,6 +4964,27 @@ class TestDomain private constructor() {
         protected open fun visitTestSumTwo(node: TestDomain.TestSum.Two) { }
         protected open fun visitTestSumThree(node: TestDomain.TestSum.Three) { }
         //////////////////////////////////////
+        // Sum Type: ExperimentalSum
+        //////////////////////////////////////
+        protected open fun visitExperimentalSum(node: TestDomain.ExperimentalSum) { }
+        protected open fun visitExperimentalSumExA(node: TestDomain.ExperimentalSum.ExA) { }
+        protected open fun visitExperimentalSumExB(node: TestDomain.ExperimentalSum.ExB) { }
+        protected open fun visitExperimentalSumExC(node: TestDomain.ExperimentalSum.ExC) { }
+        //////////////////////////////////////
+        // Sum Type: DeprecatedSum
+        //////////////////////////////////////
+        protected open fun visitDeprecatedSum(node: TestDomain.DeprecatedSum) { }
+        protected open fun visitDeprecatedSumDepA(node: TestDomain.DeprecatedSum.DepA) { }
+        protected open fun visitDeprecatedSumDepB(node: TestDomain.DeprecatedSum.DepB) { }
+        protected open fun visitDeprecatedSumDepC(node: TestDomain.DeprecatedSum.DepC) { }
+        //////////////////////////////////////
+        // Sum Type: EvolvingSum
+        //////////////////////////////////////
+        protected open fun visitEvolvingSum(node: TestDomain.EvolvingSum) { }
+        protected open fun visitEvolvingSumOld(node: TestDomain.EvolvingSum.Old) { }
+        protected open fun visitEvolvingSumCurrent(node: TestDomain.EvolvingSum.Current) { }
+        protected open fun visitEvolvingSumNext(node: TestDomain.EvolvingSum.Next) { }
+        //////////////////////////////////////
         // Sum Type: Entity
         //////////////////////////////////////
         protected open fun visitEntity(node: TestDomain.Entity) { }
@@ -4271,179 +5005,153 @@ class TestDomain private constructor() {
             walkBoolPrimitive(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkIntPair(node: TestDomain.IntPair) {
             visitIntPair(node)
             walkLongPrimitive(node.first)
             walkLongPrimitive(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkSymbolPair(node: TestDomain.SymbolPair) {
             visitSymbolPair(node)
             walkSymbolPrimitive(node.first)
             walkSymbolPrimitive(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkIonPair(node: TestDomain.IonPair) {
             visitIonPair(node)
             walkAnyElement(node.first)
             walkAnyElement(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkIntSymbolPair(node: TestDomain.IntSymbolPair) {
             visitIntSymbolPair(node)
             walkLongPrimitive(node.first)
             walkSymbolPrimitive(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkSymbolIntPair(node: TestDomain.SymbolIntPair) {
             visitSymbolIntPair(node)
             walkSymbolPrimitive(node.first)
             walkLongPrimitive(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkIonIntPair(node: TestDomain.IonIntPair) {
             visitIonIntPair(node)
             walkAnyElement(node.first)
             walkLongPrimitive(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkIonSymbolPair(node: TestDomain.IonSymbolPair) {
             visitIonSymbolPair(node)
             walkAnyElement(node.first)
             walkAnyElement(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkIntPairPair(node: TestDomain.IntPairPair) {
             visitIntPairPair(node)
             walkIntPair(node.first)
             walkIntPair(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkSymbolPairPair(node: TestDomain.SymbolPairPair) {
             visitSymbolPairPair(node)
             walkSymbolPair(node.first)
             walkSymbolPair(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkIonPairPair(node: TestDomain.IonPairPair) {
             visitIonPairPair(node)
             walkIonPair(node.first)
             walkIonPair(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkRecursivePair(node: TestDomain.RecursivePair) {
             visitRecursivePair(node)
             walkLongPrimitive(node.first)
             node.second?.let { walkRecursivePair(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkAnswerPair(node: TestDomain.AnswerPair) {
             visitAnswerPair(node)
             walkAnswer(node.first)
             walkAnswer(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkAnswerIntPair(node: TestDomain.AnswerIntPair) {
             visitAnswerIntPair(node)
             walkAnswer(node.first)
             walkLongPrimitive(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkIntAnswerPair(node: TestDomain.IntAnswerPair) {
             visitIntAnswerPair(node)
             walkLongPrimitive(node.first)
             walkAnswer(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkSymbolAnswerPair(node: TestDomain.SymbolAnswerPair) {
             visitSymbolAnswerPair(node)
             walkSymbolPrimitive(node.first)
             walkAnswer(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkAnswerSymbolPair(node: TestDomain.AnswerSymbolPair) {
             visitAnswerSymbolPair(node)
             walkAnswer(node.first)
             walkSymbolPrimitive(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkOptional1(node: TestDomain.Optional1) {
             visitOptional1(node)
             node.value?.let { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkOptional2(node: TestDomain.Optional2) {
             visitOptional2(node)
             node.first?.let { walkLongPrimitive(it) }
             node.second?.let { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkRequiredOptional(node: TestDomain.RequiredOptional) {
             visitRequiredOptional(node)
             walkLongPrimitive(node.first)
             node.second?.let { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkOptionalRequired(node: TestDomain.OptionalRequired) {
             visitOptionalRequired(node)
             node.first?.let { walkLongPrimitive(it) }
             walkLongPrimitive(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkVariadicMin0(node: TestDomain.VariadicMin0) {
             visitVariadicMin0(node)
             node.ints.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkVariadicMin1(node: TestDomain.VariadicMin1) {
             visitVariadicMin1(node)
             node.ints.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkElementVariadic(node: TestDomain.ElementVariadic) {
             visitElementVariadic(node)
             walkSymbolPrimitive(node.name)
             node.ints.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkRequiredVariadic(node: TestDomain.RequiredVariadic) {
             visitRequiredVariadic(node)
             walkLongPrimitive(node.first)
             node.second.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkOptionalVariadic(node: TestDomain.OptionalVariadic) {
             visitOptionalVariadic(node)
             node.first?.let { walkLongPrimitive(it) }
             node.second.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkRequiredOptionalVariadic(node: TestDomain.RequiredOptionalVariadic) {
             visitRequiredOptionalVariadic(node)
             walkLongPrimitive(node.first)
@@ -4451,7 +5159,6 @@ class TestDomain private constructor() {
             node.third.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkOptionalRequiredVariadic(node: TestDomain.OptionalRequiredVariadic) {
             visitOptionalRequiredVariadic(node)
             node.first?.let { walkLongPrimitive(it) }
@@ -4459,7 +5166,18 @@ class TestDomain private constructor() {
             node.third.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
+        open fun walkExperimentalProduct(node: TestDomain.ExperimentalProduct) {
+            visitExperimentalProduct(node)
+            walkBoolPrimitive(node.first)
+            walkBoolPrimitive(node.second)
+            walkMetas(node.metas)
+        }
+        open fun walkDeprecatedProduct(node: TestDomain.DeprecatedProduct) {
+            visitDeprecatedProduct(node)
+            walkLongPrimitive(node.first)
+            walkLongPrimitive(node.second)
+            walkMetas(node.metas)
+        }
         open fun walkDomainLevelRecord(node: TestDomain.DomainLevelRecord) {
             visitDomainLevelRecord(node)
             walkLongPrimitive(node.someField)
@@ -4467,14 +5185,12 @@ class TestDomain private constructor() {
             node.optionalField?.let { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkProductWithRecord(node: TestDomain.ProductWithRecord) {
             visitProductWithRecord(node)
             walkLongPrimitive(node.value)
             walkDomainLevelRecord(node.dlr)
             walkMetas(node.metas)
         }
-    
         open fun walkTestSumTriplet(node: TestDomain.TestSumTriplet) {
             visitTestSumTriplet(node)
             walkTestSum(node.a)
@@ -4482,14 +5198,12 @@ class TestDomain private constructor() {
             walkTestSum(node.c)
             walkMetas(node.metas)
         }
-    
         open fun walkEntityPair(node: TestDomain.EntityPair) {
             visitEntityPair(node)
             walkEntity(node.first)
             walkEntity(node.second)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: Answer
         //////////////////////////////////////
@@ -4553,6 +5267,78 @@ class TestDomain private constructor() {
             walkLongPrimitive(node.a)
             walkLongPrimitive(node.b)
             walkLongPrimitive(node.c)
+            walkMetas(node.metas)
+        }
+        //////////////////////////////////////
+        // Sum Type: ExperimentalSum
+        //////////////////////////////////////
+        open fun walkExperimentalSum(node: TestDomain.ExperimentalSum) {
+            visitExperimentalSum(node)
+            when(node) {
+                is TestDomain.ExperimentalSum.ExA -> walkExperimentalSumExA(node)
+                is TestDomain.ExperimentalSum.ExB -> walkExperimentalSumExB(node)
+                is TestDomain.ExperimentalSum.ExC -> walkExperimentalSumExC(node)
+            }
+        }
+    
+        open fun walkExperimentalSumExA(node: TestDomain.ExperimentalSum.ExA) {
+            visitExperimentalSumExA(node)
+            walkMetas(node.metas)
+        }
+        open fun walkExperimentalSumExB(node: TestDomain.ExperimentalSum.ExB) {
+            visitExperimentalSumExB(node)
+            walkMetas(node.metas)
+        }
+        open fun walkExperimentalSumExC(node: TestDomain.ExperimentalSum.ExC) {
+            visitExperimentalSumExC(node)
+            walkMetas(node.metas)
+        }
+        //////////////////////////////////////
+        // Sum Type: DeprecatedSum
+        //////////////////////////////////////
+        open fun walkDeprecatedSum(node: TestDomain.DeprecatedSum) {
+            visitDeprecatedSum(node)
+            when(node) {
+                is TestDomain.DeprecatedSum.DepA -> walkDeprecatedSumDepA(node)
+                is TestDomain.DeprecatedSum.DepB -> walkDeprecatedSumDepB(node)
+                is TestDomain.DeprecatedSum.DepC -> walkDeprecatedSumDepC(node)
+            }
+        }
+    
+        open fun walkDeprecatedSumDepA(node: TestDomain.DeprecatedSum.DepA) {
+            visitDeprecatedSumDepA(node)
+            walkMetas(node.metas)
+        }
+        open fun walkDeprecatedSumDepB(node: TestDomain.DeprecatedSum.DepB) {
+            visitDeprecatedSumDepB(node)
+            walkMetas(node.metas)
+        }
+        open fun walkDeprecatedSumDepC(node: TestDomain.DeprecatedSum.DepC) {
+            visitDeprecatedSumDepC(node)
+            walkMetas(node.metas)
+        }
+        //////////////////////////////////////
+        // Sum Type: EvolvingSum
+        //////////////////////////////////////
+        open fun walkEvolvingSum(node: TestDomain.EvolvingSum) {
+            visitEvolvingSum(node)
+            when(node) {
+                is TestDomain.EvolvingSum.Old -> walkEvolvingSumOld(node)
+                is TestDomain.EvolvingSum.Current -> walkEvolvingSumCurrent(node)
+                is TestDomain.EvolvingSum.Next -> walkEvolvingSumNext(node)
+            }
+        }
+    
+        open fun walkEvolvingSumOld(node: TestDomain.EvolvingSum.Old) {
+            visitEvolvingSumOld(node)
+            walkMetas(node.metas)
+        }
+        open fun walkEvolvingSumCurrent(node: TestDomain.EvolvingSum.Current) {
+            visitEvolvingSumCurrent(node)
+            walkMetas(node.metas)
+        }
+        open fun walkEvolvingSumNext(node: TestDomain.EvolvingSum.Next) {
+            visitEvolvingSumNext(node)
             walkMetas(node.metas)
         }
         //////////////////////////////////////
@@ -4622,6 +5408,8 @@ class TestDomain private constructor() {
         open protected fun visitOptionalVariadic(node: TestDomain.OptionalVariadic, accumulator: T): T = accumulator
         open protected fun visitRequiredOptionalVariadic(node: TestDomain.RequiredOptionalVariadic, accumulator: T): T = accumulator
         open protected fun visitOptionalRequiredVariadic(node: TestDomain.OptionalRequiredVariadic, accumulator: T): T = accumulator
+        open protected fun visitExperimentalProduct(node: TestDomain.ExperimentalProduct, accumulator: T): T = accumulator
+        open protected fun visitDeprecatedProduct(node: TestDomain.DeprecatedProduct, accumulator: T): T = accumulator
         open protected fun visitDomainLevelRecord(node: TestDomain.DomainLevelRecord, accumulator: T): T = accumulator
         open protected fun visitProductWithRecord(node: TestDomain.ProductWithRecord, accumulator: T): T = accumulator
         open protected fun visitTestSumTriplet(node: TestDomain.TestSumTriplet, accumulator: T): T = accumulator
@@ -4644,6 +5432,27 @@ class TestDomain private constructor() {
         open protected fun visitTestSumOne(node: TestDomain.TestSum.One, accumulator: T): T = accumulator
         open protected fun visitTestSumTwo(node: TestDomain.TestSum.Two, accumulator: T): T = accumulator
         open protected fun visitTestSumThree(node: TestDomain.TestSum.Three, accumulator: T): T = accumulator
+        //////////////////////////////////////
+        // Sum Type: ExperimentalSum
+        //////////////////////////////////////
+        open protected fun visitExperimentalSum(node: TestDomain.ExperimentalSum, accumulator: T): T = accumulator
+        open protected fun visitExperimentalSumExA(node: TestDomain.ExperimentalSum.ExA, accumulator: T): T = accumulator
+        open protected fun visitExperimentalSumExB(node: TestDomain.ExperimentalSum.ExB, accumulator: T): T = accumulator
+        open protected fun visitExperimentalSumExC(node: TestDomain.ExperimentalSum.ExC, accumulator: T): T = accumulator
+        //////////////////////////////////////
+        // Sum Type: DeprecatedSum
+        //////////////////////////////////////
+        open protected fun visitDeprecatedSum(node: TestDomain.DeprecatedSum, accumulator: T): T = accumulator
+        open protected fun visitDeprecatedSumDepA(node: TestDomain.DeprecatedSum.DepA, accumulator: T): T = accumulator
+        open protected fun visitDeprecatedSumDepB(node: TestDomain.DeprecatedSum.DepB, accumulator: T): T = accumulator
+        open protected fun visitDeprecatedSumDepC(node: TestDomain.DeprecatedSum.DepC, accumulator: T): T = accumulator
+        //////////////////////////////////////
+        // Sum Type: EvolvingSum
+        //////////////////////////////////////
+        open protected fun visitEvolvingSum(node: TestDomain.EvolvingSum, accumulator: T): T = accumulator
+        open protected fun visitEvolvingSumOld(node: TestDomain.EvolvingSum.Old, accumulator: T): T = accumulator
+        open protected fun visitEvolvingSumCurrent(node: TestDomain.EvolvingSum.Current, accumulator: T): T = accumulator
+        open protected fun visitEvolvingSumNext(node: TestDomain.EvolvingSum.Next, accumulator: T): T = accumulator
         //////////////////////////////////////
         // Sum Type: Entity
         //////////////////////////////////////
@@ -4910,6 +5719,24 @@ class TestDomain private constructor() {
             return current
         }
     
+        open fun walkExperimentalProduct(node: TestDomain.ExperimentalProduct, accumulator: T): T {
+            var current = accumulator
+            current = visitExperimentalProduct(node, current)
+            current = walkBoolPrimitive(node.first, current)
+            current = walkBoolPrimitive(node.second, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkDeprecatedProduct(node: TestDomain.DeprecatedProduct, accumulator: T): T {
+            var current = accumulator
+            current = visitDeprecatedProduct(node, current)
+            current = walkLongPrimitive(node.first, current)
+            current = walkLongPrimitive(node.second, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
         open fun walkDomainLevelRecord(node: TestDomain.DomainLevelRecord, accumulator: T): T {
             var current = accumulator
             current = visitDomainLevelRecord(node, current)
@@ -5027,6 +5854,105 @@ class TestDomain private constructor() {
             current = walkLongPrimitive(node.a, current)
             current = walkLongPrimitive(node.b, current)
             current = walkLongPrimitive(node.c, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: ExperimentalSum
+        //////////////////////////////////////
+        open fun walkExperimentalSum(node: TestDomain.ExperimentalSum, accumulator: T): T {
+            val current = visitExperimentalSum(node, accumulator)
+            return when(node) {
+                is TestDomain.ExperimentalSum.ExA -> walkExperimentalSumExA(node, current)
+                is TestDomain.ExperimentalSum.ExB -> walkExperimentalSumExB(node, current)
+                is TestDomain.ExperimentalSum.ExC -> walkExperimentalSumExC(node, current)
+            }
+        }
+    
+        open fun walkExperimentalSumExA(node: TestDomain.ExperimentalSum.ExA, accumulator: T): T {
+            var current = accumulator
+            current = visitExperimentalSumExA(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkExperimentalSumExB(node: TestDomain.ExperimentalSum.ExB, accumulator: T): T {
+            var current = accumulator
+            current = visitExperimentalSumExB(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkExperimentalSumExC(node: TestDomain.ExperimentalSum.ExC, accumulator: T): T {
+            var current = accumulator
+            current = visitExperimentalSumExC(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: DeprecatedSum
+        //////////////////////////////////////
+        open fun walkDeprecatedSum(node: TestDomain.DeprecatedSum, accumulator: T): T {
+            val current = visitDeprecatedSum(node, accumulator)
+            return when(node) {
+                is TestDomain.DeprecatedSum.DepA -> walkDeprecatedSumDepA(node, current)
+                is TestDomain.DeprecatedSum.DepB -> walkDeprecatedSumDepB(node, current)
+                is TestDomain.DeprecatedSum.DepC -> walkDeprecatedSumDepC(node, current)
+            }
+        }
+    
+        open fun walkDeprecatedSumDepA(node: TestDomain.DeprecatedSum.DepA, accumulator: T): T {
+            var current = accumulator
+            current = visitDeprecatedSumDepA(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkDeprecatedSumDepB(node: TestDomain.DeprecatedSum.DepB, accumulator: T): T {
+            var current = accumulator
+            current = visitDeprecatedSumDepB(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkDeprecatedSumDepC(node: TestDomain.DeprecatedSum.DepC, accumulator: T): T {
+            var current = accumulator
+            current = visitDeprecatedSumDepC(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        //////////////////////////////////////
+        // Sum Type: EvolvingSum
+        //////////////////////////////////////
+        open fun walkEvolvingSum(node: TestDomain.EvolvingSum, accumulator: T): T {
+            val current = visitEvolvingSum(node, accumulator)
+            return when(node) {
+                is TestDomain.EvolvingSum.Old -> walkEvolvingSumOld(node, current)
+                is TestDomain.EvolvingSum.Current -> walkEvolvingSumCurrent(node, current)
+                is TestDomain.EvolvingSum.Next -> walkEvolvingSumNext(node, current)
+            }
+        }
+    
+        open fun walkEvolvingSumOld(node: TestDomain.EvolvingSum.Old, accumulator: T): T {
+            var current = accumulator
+            current = visitEvolvingSumOld(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkEvolvingSumCurrent(node: TestDomain.EvolvingSum.Current, accumulator: T): T {
+            var current = accumulator
+            current = visitEvolvingSumCurrent(node, current)
+            current = walkMetas(node.metas, current)
+            return current
+        }
+    
+        open fun walkEvolvingSumNext(node: TestDomain.EvolvingSum.Next, accumulator: T): T {
+            var current = accumulator
+            current = visitEvolvingSumNext(node, current)
             current = walkMetas(node.metas, current)
             return current
         }
@@ -5798,6 +6724,58 @@ class TestDomain private constructor() {
         open fun transformOptionalRequiredVariadic_metas(node: TestDomain.OptionalRequiredVariadic) =
             transformMetas(node.metas)
     
+        // Tuple ExperimentalProduct
+        open fun transformExperimentalProduct(node: TestDomain.ExperimentalProduct): TestDomain.ExperimentalProduct {
+            val new_first = transformExperimentalProduct_first(node)
+            val new_second = transformExperimentalProduct_second(node)
+            val new_metas = transformExperimentalProduct_metas(node)
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.ExperimentalProduct(
+                    first = new_first,
+                    second = new_second,
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformExperimentalProduct_first(node: TestDomain.ExperimentalProduct) =
+            transformBoolPrimitive(node.first)
+        open fun transformExperimentalProduct_second(node: TestDomain.ExperimentalProduct) =
+            transformBoolPrimitive(node.second)
+        open fun transformExperimentalProduct_metas(node: TestDomain.ExperimentalProduct) =
+            transformMetas(node.metas)
+    
+        // Tuple DeprecatedProduct
+        open fun transformDeprecatedProduct(node: TestDomain.DeprecatedProduct): TestDomain.DeprecatedProduct {
+            val new_first = transformDeprecatedProduct_first(node)
+            val new_second = transformDeprecatedProduct_second(node)
+            val new_metas = transformDeprecatedProduct_metas(node)
+            return if (
+                node.first !== new_first ||
+                node.second !== new_second ||
+                node.metas !== new_metas
+            ) {
+                TestDomain.DeprecatedProduct(
+                    first = new_first,
+                    second = new_second,
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformDeprecatedProduct_first(node: TestDomain.DeprecatedProduct) =
+            transformLongPrimitive(node.first)
+        open fun transformDeprecatedProduct_second(node: TestDomain.DeprecatedProduct) =
+            transformLongPrimitive(node.second)
+        open fun transformDeprecatedProduct_metas(node: TestDomain.DeprecatedProduct) =
+            transformMetas(node.metas)
+    
         // Tuple DomainLevelRecord
         open fun transformDomainLevelRecord(node: TestDomain.DomainLevelRecord): TestDomain.DomainLevelRecord {
             val new_someField = transformDomainLevelRecord_someField(node)
@@ -6070,6 +7048,177 @@ class TestDomain private constructor() {
         open fun transformTestSumThree_c(node: TestDomain.TestSum.Three) =
             transformLongPrimitive(node.c)
         open fun transformTestSumThree_metas(node: TestDomain.TestSum.Three) =
+            transformMetas(node.metas)
+    
+        //////////////////////////////////////
+        // Sum Type: ExperimentalSum
+        //////////////////////////////////////
+        open fun transformExperimentalSum(node: TestDomain.ExperimentalSum): TestDomain.ExperimentalSum =
+            when(node) {
+                is TestDomain.ExperimentalSum.ExA -> transformExperimentalSumExA(node)
+                is TestDomain.ExperimentalSum.ExB -> transformExperimentalSumExB(node)
+                is TestDomain.ExperimentalSum.ExC -> transformExperimentalSumExC(node)
+            }
+        // Variant ExperimentalSumExA
+        open fun transformExperimentalSumExA(node: TestDomain.ExperimentalSum.ExA): TestDomain.ExperimentalSum {
+            val new_metas = transformExperimentalSumExA_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                TestDomain.ExperimentalSum.ExA(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformExperimentalSumExA_metas(node: TestDomain.ExperimentalSum.ExA) =
+            transformMetas(node.metas)
+    
+        // Variant ExperimentalSumExB
+        open fun transformExperimentalSumExB(node: TestDomain.ExperimentalSum.ExB): TestDomain.ExperimentalSum {
+            val new_metas = transformExperimentalSumExB_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                TestDomain.ExperimentalSum.ExB(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformExperimentalSumExB_metas(node: TestDomain.ExperimentalSum.ExB) =
+            transformMetas(node.metas)
+    
+        // Variant ExperimentalSumExC
+        open fun transformExperimentalSumExC(node: TestDomain.ExperimentalSum.ExC): TestDomain.ExperimentalSum {
+            val new_metas = transformExperimentalSumExC_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                TestDomain.ExperimentalSum.ExC(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformExperimentalSumExC_metas(node: TestDomain.ExperimentalSum.ExC) =
+            transformMetas(node.metas)
+    
+        //////////////////////////////////////
+        // Sum Type: DeprecatedSum
+        //////////////////////////////////////
+        open fun transformDeprecatedSum(node: TestDomain.DeprecatedSum): TestDomain.DeprecatedSum =
+            when(node) {
+                is TestDomain.DeprecatedSum.DepA -> transformDeprecatedSumDepA(node)
+                is TestDomain.DeprecatedSum.DepB -> transformDeprecatedSumDepB(node)
+                is TestDomain.DeprecatedSum.DepC -> transformDeprecatedSumDepC(node)
+            }
+        // Variant DeprecatedSumDepA
+        open fun transformDeprecatedSumDepA(node: TestDomain.DeprecatedSum.DepA): TestDomain.DeprecatedSum {
+            val new_metas = transformDeprecatedSumDepA_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                TestDomain.DeprecatedSum.DepA(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformDeprecatedSumDepA_metas(node: TestDomain.DeprecatedSum.DepA) =
+            transformMetas(node.metas)
+    
+        // Variant DeprecatedSumDepB
+        open fun transformDeprecatedSumDepB(node: TestDomain.DeprecatedSum.DepB): TestDomain.DeprecatedSum {
+            val new_metas = transformDeprecatedSumDepB_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                TestDomain.DeprecatedSum.DepB(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformDeprecatedSumDepB_metas(node: TestDomain.DeprecatedSum.DepB) =
+            transformMetas(node.metas)
+    
+        // Variant DeprecatedSumDepC
+        open fun transformDeprecatedSumDepC(node: TestDomain.DeprecatedSum.DepC): TestDomain.DeprecatedSum {
+            val new_metas = transformDeprecatedSumDepC_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                TestDomain.DeprecatedSum.DepC(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformDeprecatedSumDepC_metas(node: TestDomain.DeprecatedSum.DepC) =
+            transformMetas(node.metas)
+    
+        //////////////////////////////////////
+        // Sum Type: EvolvingSum
+        //////////////////////////////////////
+        open fun transformEvolvingSum(node: TestDomain.EvolvingSum): TestDomain.EvolvingSum =
+            when(node) {
+                is TestDomain.EvolvingSum.Old -> transformEvolvingSumOld(node)
+                is TestDomain.EvolvingSum.Current -> transformEvolvingSumCurrent(node)
+                is TestDomain.EvolvingSum.Next -> transformEvolvingSumNext(node)
+            }
+        // Variant EvolvingSumOld
+        open fun transformEvolvingSumOld(node: TestDomain.EvolvingSum.Old): TestDomain.EvolvingSum {
+            val new_metas = transformEvolvingSumOld_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                TestDomain.EvolvingSum.Old(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformEvolvingSumOld_metas(node: TestDomain.EvolvingSum.Old) =
+            transformMetas(node.metas)
+    
+        // Variant EvolvingSumCurrent
+        open fun transformEvolvingSumCurrent(node: TestDomain.EvolvingSum.Current): TestDomain.EvolvingSum {
+            val new_metas = transformEvolvingSumCurrent_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                TestDomain.EvolvingSum.Current(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformEvolvingSumCurrent_metas(node: TestDomain.EvolvingSum.Current) =
+            transformMetas(node.metas)
+    
+        // Variant EvolvingSumNext
+        open fun transformEvolvingSumNext(node: TestDomain.EvolvingSum.Next): TestDomain.EvolvingSum {
+            val new_metas = transformEvolvingSumNext_metas(node)
+            return if (
+                node.metas !== new_metas
+            ) {
+                TestDomain.EvolvingSum.Next(
+                    metas = new_metas
+                )
+            } else {
+                node
+            }
+        }
+        open fun transformEvolvingSumNext_metas(node: TestDomain.EvolvingSum.Next) =
             transformMetas(node.metas)
     
         //////////////////////////////////////

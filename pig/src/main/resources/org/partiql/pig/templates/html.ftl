@@ -85,9 +85,12 @@
         <tbody>
             [#list tuples as tuple]
                 <tr>
-
                     <td>
                         ${tuple.tag}
+                        <br>
+                        [#list tuple.annotations as annotation]
+                            <b>${annotation}</b>
+                        [/#list]
                     </td>
                     <td>
                         ${tuple.tupleType}

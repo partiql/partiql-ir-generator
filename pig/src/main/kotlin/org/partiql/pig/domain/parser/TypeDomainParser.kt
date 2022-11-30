@@ -33,6 +33,7 @@ import org.partiql.pig.domain.model.PermutedSum
 import org.partiql.pig.domain.model.Statement
 import org.partiql.pig.domain.model.Transform
 import org.partiql.pig.domain.model.TupleType
+import org.partiql.pig.domain.model.TypeAnnotation
 import org.partiql.pig.domain.model.TypeDomain
 import org.partiql.pig.domain.model.TypeRef
 import org.partiql.pig.domain.model.TypeUniverse
@@ -111,22 +112,24 @@ private fun parseTypeDomain(domainName: String, sexp: SexpElement): TypeDomain {
     )
 }
 
-private fun parseDomainLevelStatement(tlvs: SexpElement): DataType.UserType {
-    return when (tlvs.tag) {
-        "product" -> parseProductBody(tlvs.tail, tlvs.metas)
-        "record" -> parseRecordBody(tlvs.tail, tlvs.metas)
-        "sum" -> parseSum(tlvs)
-        else -> parseError(tlvs.head, ParserErrorContext.InvalidDomainLevelTag(tlvs.tag))
+private fun parseDomainLevelStatement(sexp: SexpElement): DataType.UserType {
+    if (sexp.annotations.size > 1) {
+        parseError(sexp, ParserErrorContext.MultipleTypeAnnotations)
+    }
+    val annotations = sexp.annotations.mapNotNull { TypeAnnotation.of(it) }
+    return when (sexp.tag) {
+        "product" -> parseProductBody(sexp.tail, sexp.metas, annotations)
+        "record" -> parseRecordBody(sexp.tail, sexp.metas, annotations)
+        "sum" -> parseSum(sexp, annotations)
+        else -> parseError(sexp.head, ParserErrorContext.InvalidDomainLevelTag(sexp.tag))
     }
 }
-
-private fun parseTypeRefs(values: List<IonElement>): List<TypeRef> =
-    values.map { parseSingleTypeRef(it) }
 
 // Parses a sum-variant product or record (depending on the syntax used)
 private fun parseVariant(
     bodyArguments: List<AnyElement>,
-    metas: MetaContainer
+    metas: MetaContainer,
+    annotations: List<TypeAnnotation>,
 ): DataType.UserType.Tuple {
     val elements = bodyArguments.tail
 
@@ -149,20 +152,21 @@ private fun parseVariant(
 
     return when {
         isRecord -> {
-            parseRecordBody(bodyArguments, metas)
+            parseRecordBody(bodyArguments, metas, annotations)
         } else -> {
-            parseProductBody(bodyArguments, metas)
+            parseProductBody(bodyArguments, metas, annotations)
         }
     }
 }
 
-private fun parseProductBody(bodyArguments: List<AnyElement>, metas: MetaContainer): DataType.UserType.Tuple {
-    val typeName = bodyArguments.head.symbolValue
-
-    val namedElements = parseProductElements(bodyArguments.tail)
-
-    return DataType.UserType.Tuple(typeName, TupleType.PRODUCT, namedElements, metas)
-}
+private fun parseProductBody(args: List<AnyElement>, metas: MetaContainer, annotations: List<TypeAnnotation>) =
+    DataType.UserType.Tuple(
+        tag = args.head.symbolValue,
+        tupleType = TupleType.PRODUCT,
+        namedElements = parseProductElements(args.tail),
+        metas = metas,
+        annotations = annotations
+    )
 
 private fun parseProductElements(values: List<IonElement>): List<NamedElement> =
     values.map {
@@ -181,11 +185,15 @@ private fun parseProductElements(values: List<IonElement>): List<NamedElement> =
         )
     }
 
-private fun parseRecordBody(bodyArguments: List<AnyElement>, metas: MetaContainer): DataType.UserType.Tuple {
-    val typeName = bodyArguments.head.symbolValue
-    val namedElements = parseRecordElements(bodyArguments.tail)
-    return DataType.UserType.Tuple(typeName, TupleType.RECORD, namedElements, metas)
-}
+private fun parseRecordBody(bodyArguments: List<AnyElement>, metas: MetaContainer, annotations: List<TypeAnnotation>) =
+    DataType.UserType.Tuple(
+        tag = bodyArguments.head.symbolValue,
+        tupleType = TupleType.RECORD,
+        namedElements = parseRecordElements(bodyArguments.tail),
+        metas = metas,
+        isDifferent = false,
+        annotations = annotations
+    )
 
 fun parseRecordElements(elementSexps: List<AnyElement>): List<NamedElement> =
     elementSexps.asSequence()
@@ -210,19 +218,21 @@ fun parseRecordElements(elementSexps: List<AnyElement>): List<NamedElement> =
         }
         .toList()
 
-private fun parseSum(sexp: SexpElement): DataType.UserType.Sum {
-    val args = sexp.tail // Skip tag
-    val typeName = args.head.symbolValue
-
-    val variants = args.tail.map {
-        parseSumVariant(it.asSexp())
-    }
-
-    return DataType.UserType.Sum(typeName, variants.toList(), sexp.metas)
-}
+private fun parseSum(sexp: SexpElement, annotations: List<TypeAnnotation>) =
+    DataType.UserType.Sum(
+        tag = sexp.tail.head.symbolValue,
+        variants = sexp.tail.tail.map { parseSumVariant(it.asSexp()) },
+        metas = sexp.metas,
+        isDifferent = false,
+        annotations = annotations
+    )
 
 private fun parseSumVariant(sexp: SexpElement): DataType.UserType.Tuple {
-    return parseVariant(sexp.values, sexp.metas)
+    if (sexp.annotations.size > 1) {
+        parseError(sexp, ParserErrorContext.MultipleTypeAnnotations)
+    }
+    val annotations = sexp.annotations.mapNotNull { TypeAnnotation.of(it) }
+    return parseVariant(sexp.values, sexp.metas, annotations)
 }
 
 private fun parseSingleTypeRef(typeRefExp: IonElement): TypeRef {

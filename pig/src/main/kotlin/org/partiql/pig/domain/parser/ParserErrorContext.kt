@@ -20,6 +20,7 @@ import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.IonElementException
 import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.location
+import org.partiql.pig.domain.model.TypeAnnotation
 import org.partiql.pig.errors.ErrorContext
 import org.partiql.pig.errors.PigError
 import org.partiql.pig.errors.PigException
@@ -77,6 +78,9 @@ sealed class ParserErrorContext(val msgFormatter: () -> String) : ErrorContext {
 
     object MultipleElementIdentifierAnnotations :
         ParserErrorContext({ "Element has multiple name annotations" })
+
+    object MultipleTypeAnnotations :
+        ParserErrorContext({ "Only one TypeAnnotation (${TypeAnnotation.values().joinToString()}) is supported" })
 }
 
 fun parseError(blame: IonLocation?, context: ErrorContext): Nothing =

@@ -26,6 +26,7 @@ import org.partiql.pig.domain.model.DataType
 import org.partiql.pig.domain.model.NamedElement
 import org.partiql.pig.domain.model.Transform
 import org.partiql.pig.domain.model.TupleType
+import org.partiql.pig.domain.model.TypeAnnotation
 import org.partiql.pig.domain.model.TypeDomain
 import org.partiql.pig.domain.model.TypeRef
 import org.partiql.pig.domain.model.TypeUniverse
@@ -97,7 +98,8 @@ private class KTypeDomainConverter(
                                     constructorName = "${it.tag.snakeToPascalCase()}.${v.tag.snakeToPascalCase()}"
                                 )
                             },
-                            isTransformAbstract = it.isDifferent
+                            isTransformAbstract = it.isDifferent,
+                            annotations = it.annotations.map { a -> a.kotlinString() }
                         )
                     )
             }
@@ -125,7 +127,8 @@ private class KTypeDomainConverter(
                 TupleType.RECORD -> true
             },
             hasVariadicElement = hasVariadicElement(),
-            isTransformAbstract = this.isDifferent
+            isTransformAbstract = this.isDifferent,
+            annotations = annotations.map { a -> a.kotlinString() }
         )
     }
 
@@ -426,4 +429,9 @@ private class KTypeDomainConverter(
                 else -> this.typeName.snakeToPascalCase()
             }
         }
+
+    private fun TypeAnnotation.kotlinString(): String = when (this) {
+        TypeAnnotation.DEPRECATED -> "@Deprecated(\"This node is marked as deprecated\")"
+        TypeAnnotation.EXPERIMENTAL -> "@Experimental"
+    }
 }
