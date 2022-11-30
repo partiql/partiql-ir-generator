@@ -116,7 +116,7 @@ private fun parseDomainLevelStatement(sexp: SexpElement): DataType.UserType {
     if (sexp.annotations.size > 1) {
         parseError(sexp, ParserErrorContext.MultipleTypeAnnotations)
     }
-    val annotations = sexp.annotations.map { TypeAnnotation.valueOf(it.toUpperCase()) }
+    val annotations = sexp.annotations.mapNotNull { TypeAnnotation.of(it) }
     return when (sexp.tag) {
         "product" -> parseProductBody(sexp.tail, sexp.metas, annotations)
         "record" -> parseRecordBody(sexp.tail, sexp.metas, annotations)
@@ -231,7 +231,7 @@ private fun parseSumVariant(sexp: SexpElement): DataType.UserType.Tuple {
     if (sexp.annotations.size > 1) {
         parseError(sexp, ParserErrorContext.MultipleTypeAnnotations)
     }
-    val annotations = sexp.annotations.map { TypeAnnotation.valueOf(it.toUpperCase()) }
+    val annotations = sexp.annotations.mapNotNull { TypeAnnotation.of(it) }
     return parseVariant(sexp.values, sexp.metas, annotations)
 }
 

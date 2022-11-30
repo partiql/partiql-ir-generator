@@ -14,5 +14,21 @@ package org.partiql.pig.domain.model
  */
 enum class TypeAnnotation {
     DEPRECATED,
-    EXPERIMENTAL
+    EXPERIMENTAL;
+
+    companion object {
+
+        /**
+         * TODO "safe" valueOf until it's decided what to do with
+         *  -  Field identifier used in place of type name (in same sum)
+         *  -  Variant identifier used in place of type name (in a different sum)
+         *
+         *  These two TypeDomainSemanticCheckerTests appear to be asserting on missing(?) functionality
+         */
+        fun of(v: String): TypeAnnotation? = try {
+            valueOf(v.toUpperCase())
+        } catch (ex: IllegalArgumentException) {
+            null
+        }
+    }
 }

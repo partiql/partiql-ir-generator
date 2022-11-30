@@ -53,7 +53,6 @@ open class Visitor : DomainVisitorBase() {
     open fun walk${t.kotlinName}(node: ${domain.kotlinName}.${t.kotlinName}) {
         [@tuple_visitor_walker_body t t.kotlinName/][#t]
     }
-
     [/#items]
     [/#list]
     [#list domain.sums as s]

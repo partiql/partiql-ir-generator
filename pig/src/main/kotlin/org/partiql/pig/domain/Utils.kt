@@ -89,7 +89,7 @@ internal fun DataType.toIonElement(includeTypeTag: Boolean): IonElement = when (
                 ionSymbol(tag),
                 *namedElements.map { it.toIonElement(this.tupleType) }.toTypedArray()
             )
-        )
+        ).withAnnotations(annotations.map { it.toString().toLowerCase() })
     is DataType.UserType.Sum ->
         ionSexpOf(
             ionSymbol("sum"),
@@ -97,7 +97,7 @@ internal fun DataType.toIonElement(includeTypeTag: Boolean): IonElement = when (
             *variants
                 .filterNot { it.isDifferent }
                 .map { it.toIonElement(includeTypeTag = false) }.toTypedArray()
-        )
+        ).withAnnotations(annotations.map { it.toString().toLowerCase() })
 }
 
 internal fun NamedElement.toIonElement(tupleType: TupleType) =

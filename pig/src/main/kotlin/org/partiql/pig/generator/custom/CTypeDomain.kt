@@ -44,7 +44,8 @@ data class CTuple(
     val memberOfType: String?,
     val elements: List<CElement>,
     val arity: IntRange,
-    val tupleType: TupleType
+    val tupleType: TupleType,
+    val annotations: List<String> = emptyList()
 ) {
     /** All of the elements excluding the variadic element. */
     @Suppress("unused")
@@ -88,7 +89,8 @@ private fun DataType.UserType.Tuple.toCTuple(memberOfType: String?) =
         memberOfType = memberOfType,
         elements = this.namedElements.map { it.toCElement() },
         arity = this.computeArity(),
-        tupleType = this.tupleType
+        tupleType = this.tupleType,
+        annotations = this.annotations.map { it.toString() }
     )
 
 private fun NamedElement.toCElement(): CElement {

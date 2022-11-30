@@ -10,6 +10,7 @@
         - other user defined types
             - sum
             - variant
+        - experimental or deprecated annotations
 
     - Products...
         - Product with no fields (definitely possible for sum variants--possible with top-level products too?)- with only required fields
@@ -22,6 +23,7 @@
     - Sum variants...
         - product variant (repeat as above)
         - Records with more than one required, optional and variadic field.
+        - variant with experimental or deprecated annotations
  */
 
  (define test_domain
@@ -63,6 +65,10 @@
         (product required_optional_variadic first::int second::(? int) third::(* int 0 ))
         (product optional_required_variadic first::(? int) second::int third::(* int 0 ))
 
+        experimental::(product experimental_product first::bool second::bool)
+
+        deprecated::(product deprecated_product first::int second::int)
+
         (record domain_level_record
             (some_field int)
             (another_field symbol)
@@ -75,7 +81,14 @@
         (sum test_sum
             (one a::int)
             (two a::int b::int)
-            (three a::int b::int c::int))
+            (three a::int b::int c::int)
+        )
+
+        experimental::(sum experimental_sum (ex_a) (ex_b) (ex_c))
+
+        deprecated::(sum deprecated_sum (dep_a) (dep_b) (dep_c))
+
+        (sum evolving_sum deprecated::(old) (current) experimental::(next))
 
         (product test_sum_triplet a::test_sum b::test_sum c::test_sum)
 

@@ -1,6 +1,7 @@
 package org.partiql.pig.domain
 
 import com.amazon.ion.system.IonReaderBuilder
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.partiql.pig.domain.model.DataType
@@ -22,6 +23,34 @@ class TypeAnnotationParserTests {
         assert(types.size == 1)
         val type = types.first()
         tc.assertion(type)
+    }
+
+    @Test
+    internal fun annotationsCarryOverTest() {
+        val universe = """
+            (define domain_a
+                (domain
+                    deprecated::(sum sum_keep (a) (b) (c))
+                    deprecated::(sum sum_exclude (x) (y) (z))
+                    deprecated::(product product_keep v::int)
+                    deprecated::(product product_exclude u::int)
+                )
+            )
+            (define domain_b
+                (permute_domain domain_a
+                    (exclude sum_exclude product_exclude)
+                )
+            )
+        """.trimIndent()
+        val reader = IonReaderBuilder.standard().build(universe)
+        val parsed = parseTypeUniverse(reader)
+        val domains = parsed.computeTypeDomains()
+        domains.forEach {
+            // every type should have an annotation
+            it.userTypes.forEach { t ->
+                assert(t.annotations.isNotEmpty())
+            }
+        }
     }
 
     companion object {
