@@ -15,7 +15,7 @@
 
 plugins {
     id("pig.conventions")
-    id("pig-gradle-plugin")
+    id("org.partiql.pig.pig-gradle-plugin")
     id("java-library")
 }
 
@@ -24,13 +24,12 @@ dependencies {
 }
 
 // remove after pig-example is created
-val pigOutputDir = file("./src/main/kotlin/org/partiql/pig/tests/generated/").absolutePath
+val pigOutputDir = file("./src/main/kotlin/org/partiql/pig/tests/generated/")
 
 pig {
-    target.set("kotlin")
-    namespace.set("org.partiql.pig.tests.generated")
+    namespace = "org.partiql.pig.tests.generated"
     // remove after pig-example is created
-    outputDir.set(pigOutputDir)
+    outputDir = pigOutputDir
 }
 
 // remove after pig-example is created
