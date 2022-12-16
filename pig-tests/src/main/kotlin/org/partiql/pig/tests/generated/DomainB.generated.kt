@@ -1245,44 +1245,37 @@ class DomainB private constructor() {
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
-    
         open fun walkUnpermutedRecord(node: DomainB.UnpermutedRecord) {
             visitUnpermutedRecord(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
-    
         open fun walkProductA(node: DomainB.ProductA) {
             visitProductA(node)
             walkSymbolPrimitive(node.one)
             walkMetas(node.metas)
         }
-    
         open fun walkRecordA(node: DomainB.RecordA) {
             visitRecordA(node)
             walkSymbolPrimitive(node.one)
             walkMetas(node.metas)
         }
-    
         open fun walkSumToReplaceWithProduct(node: DomainB.SumToReplaceWithProduct) {
             visitSumToReplaceWithProduct(node)
             walkSymbolPrimitive(node.foo)
             walkMetas(node.metas)
         }
-    
         open fun walkNewProduct(node: DomainB.NewProduct) {
             visitNewProduct(node)
             walkLongPrimitive(node.foo)
             walkMetas(node.metas)
         }
-    
         open fun walkNewRecord(node: DomainB.NewRecord) {
             visitNewRecord(node)
             walkLongPrimitive(node.foo)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: UnpermutedSum
         //////////////////////////////////////

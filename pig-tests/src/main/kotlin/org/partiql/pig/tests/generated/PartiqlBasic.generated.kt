@@ -3891,27 +3891,23 @@ class PartiqlBasic private constructor() {
             walkExpr(node.second)
             walkMetas(node.metas)
         }
-    
         open fun walkGroupByItem(node: PartiqlBasic.GroupByItem) {
             visitGroupByItem(node)
             walkExpr(node.value)
             node.asAlias?.let { walkSymbolPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkGroupByList(node: PartiqlBasic.GroupByList) {
             visitGroupByList(node)
             node.items.map { walkGroupByItem(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkGroupBy(node: PartiqlBasic.GroupBy) {
             visitGroupBy(node)
             walkGroupByList(node.items)
             node.groupAsAlias?.let { walkSymbolPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: Projection
         //////////////////////////////////////

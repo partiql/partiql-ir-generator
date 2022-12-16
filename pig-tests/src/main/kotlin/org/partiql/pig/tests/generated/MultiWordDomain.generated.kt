@@ -1505,39 +1505,33 @@ class MultiWordDomain private constructor() {
             visitAaaAaa(node)
             walkMetas(node.metas)
         }
-    
         open fun walkAaaAab(node: MultiWordDomain.AaaAab) {
             visitAaaAab(node)
             node.dField?.let { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkAaaAac(node: MultiWordDomain.AaaAac) {
             visitAaaAac(node)
             node.dField?.let { walkLongPrimitive(it) }
             node.eField?.let { walkSymbolPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkAaaAad(node: MultiWordDomain.AaaAad) {
             visitAaaAad(node)
             node.dField.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkAaaAae(node: MultiWordDomain.AaaAae) {
             visitAaaAae(node)
             node.dField.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkAabAaa(node: MultiWordDomain.AabAaa) {
             visitAabAaa(node)
             walkLongPrimitive(node.bField)
             walkSymbolPrimitive(node.cField)
             walkMetas(node.metas)
         }
-    
         open fun walkAabAab(node: MultiWordDomain.AabAab) {
             visitAabAab(node)
             walkLongPrimitive(node.bField)
@@ -1545,7 +1539,6 @@ class MultiWordDomain private constructor() {
             node.dField?.let { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkAabAac(node: MultiWordDomain.AabAac) {
             visitAabAac(node)
             walkLongPrimitive(node.bField)
@@ -1554,7 +1547,6 @@ class MultiWordDomain private constructor() {
             node.eField?.let { walkSymbolPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkAabAad(node: MultiWordDomain.AabAad) {
             visitAabAad(node)
             walkLongPrimitive(node.bField)
@@ -1562,7 +1554,6 @@ class MultiWordDomain private constructor() {
             node.dField.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkAabAae(node: MultiWordDomain.AabAae) {
             visitAabAae(node)
             walkLongPrimitive(node.bField)
@@ -1570,14 +1561,12 @@ class MultiWordDomain private constructor() {
             node.dField.map { walkLongPrimitive(it) }
             walkMetas(node.metas)
         }
-    
         open fun walkRrr(node: MultiWordDomain.Rrr) {
             visitRrr(node)
             walkLongPrimitive(node.aField)
             walkLongPrimitive(node.bbbField)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: SssTtt
         //////////////////////////////////////
