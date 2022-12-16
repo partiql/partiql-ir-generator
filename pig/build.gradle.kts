@@ -18,10 +18,13 @@ import java.util.Properties
 plugins {
     id("application")
     id("pig.conventions")
-    id("pig.publish")
+    id("org.partiql.pig.gradle.publish")
 }
 
-project.description = "The P.I.G. is a code generator for domain models such ASTs and execution plans."
+publish {
+    artifactId = "pig"
+    name = "PartiQL I.R. Generator (a.k.a P.I.G.)"
+}
 
 val propertiesDir = "$buildDir/properties"
 

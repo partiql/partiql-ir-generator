@@ -1551,41 +1551,35 @@ class DomainA private constructor() {
             walkSymbolPrimitive(node.whatever)
             walkMetas(node.metas)
         }
-    
         open fun walkRecordToRemove(node: DomainA.RecordToRemove) {
             visitRecordToRemove(node)
             walkLongPrimitive(node.irrelevant)
             walkMetas(node.metas)
         }
-    
         open fun walkProductA(node: DomainA.ProductA) {
             visitProductA(node)
             walkLongPrimitive(node.one)
             walkProductToRemove(node.two)
             walkMetas(node.metas)
         }
-    
         open fun walkRecordA(node: DomainA.RecordA) {
             visitRecordA(node)
             walkLongPrimitive(node.one)
             walkProductToRemove(node.two)
             walkMetas(node.metas)
         }
-    
         open fun walkUnpermutedProduct(node: DomainA.UnpermutedProduct) {
             visitUnpermutedProduct(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
-    
         open fun walkUnpermutedRecord(node: DomainA.UnpermutedRecord) {
             visitUnpermutedRecord(node)
             walkSymbolPrimitive(node.foo)
             walkLongPrimitive(node.bar)
             walkMetas(node.metas)
         }
-    
         //////////////////////////////////////
         // Sum Type: SumToRemove
         //////////////////////////////////////
