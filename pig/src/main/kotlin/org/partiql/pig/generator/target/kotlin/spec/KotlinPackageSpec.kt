@@ -5,16 +5,25 @@
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * or in the "license" file accompanying this file. This file is distributed
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
- *  permissions and limitations under the License.
+ * permissions and limitations under the License.
  */
 
-package org.partiql.pig.legacy.errors
+package org.partiql.pig.generator.target.kotlin.spec
 
-class PigException(val error: PigError, cause: Throwable? = null) : Exception(error.toString(), cause)
+import com.squareup.kotlinpoet.FileSpec
 
-class TypeDomainParseException(message: String) : Exception(message)
+/**
+ * A place to define a new package within a domain or universe
+ *
+ * @property name
+ * @property files
+ */
+class KotlinPackageSpec(
+    val name: String,
+    val files: MutableList<FileSpec> = mutableListOf(),
+)

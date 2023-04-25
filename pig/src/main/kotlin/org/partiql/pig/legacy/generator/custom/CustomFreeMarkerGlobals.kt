@@ -13,22 +13,13 @@
  *  permissions and limitations under the License.
  */
 
-plugins {
-    `kotlin-dsl`
-    id("java-gradle-plugin")
-}
+package org.partiql.pig.legacy.generator.custom
 
-repositories {
-    gradlePluginPortal()
-}
+import java.time.OffsetDateTime
 
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.8.10")
-    implementation("org.jlleitschuh.gradle:ktlint-gradle:11.3.2")
-}
-
-allprojects {
-    group = rootProject.properties["group"] as String
-    version = rootProject.properties["version"] as String
-}
+/** The properties of [CustomFreeMarkerGlobals] become global variables for our freemarker templates. */
+@Suppress("unused")
+data class CustomFreeMarkerGlobals(
+    val domains: List<CTypeDomain>,
+    val generatedDate: OffsetDateTime
+)

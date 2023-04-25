@@ -13,22 +13,17 @@
  *  permissions and limitations under the License.
  */
 
-plugins {
-    `kotlin-dsl`
-    id("java-gradle-plugin")
-}
+package org.partiql.pig.legacy.generator.kotlin
 
-repositories {
-    gradlePluginPortal()
-}
+import java.time.OffsetDateTime
 
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.8.10")
-    implementation("org.jlleitschuh.gradle:ktlint-gradle:11.3.2")
-}
-
-allprojects {
-    group = rootProject.properties["group"] as String
-    version = rootProject.properties["version"] as String
-}
+/**
+ * The properties of [KotlinDomainFreeMarkerGlobals] become global variables for our freemarker templates that
+ * generate everything but the cross-domain `VisitorTransform`.
+ */
+@Suppress("unused")
+class KotlinDomainFreeMarkerGlobals(
+    val namespace: String,
+    val domain: KTypeDomain,
+    val generatedDate: OffsetDateTime
+)

@@ -12,68 +12,37 @@
  * express or implied. See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-import java.io.FileOutputStream
-import java.util.Properties
 
 plugins {
-    id("application")
-    id("pig.conventions")
-    id("org.partiql.pig.gradle.publish")
+    id(Pig_conventions_gradle.Plugins.conventions)
+    // id(Plugins.application)
+    // id(Plugins.publish)
 }
 
-publish {
-    artifactId = "pig"
-    name = "PartiQL I.R. Generator (a.k.a P.I.G.)"
-}
-
-val propertiesDir = "$buildDir/properties"
-
-dependencies {
-    implementation("org.freemarker:freemarker:2.3.30")
-    implementation("net.sf.jopt-simple:jopt-simple:5.0.4")
-    implementation("com.amazon.ion:ion-element:1.0.0")
-}
-
-application {
-    mainClass.set("org.partiql.pig.MainKt")
-}
-
-tasks.jar {
-    manifest {
-        attributes["Main-Class"] = "org.partiql.pig.MainKt"
-    }
-    from(
-        configurations.compile.get().map {
-            if (it.isDirectory) {
-                it
-            } else {
-                zipTree(it)
-            }
-        }
-    )
-}
-
-tasks.register("generateProperties") {
-    doLast {
-        val propertiesFile = file("$propertiesDir/pig.properties")
-        propertiesFile.parentFile.mkdirs()
-        val properties = Properties()
-        properties.setProperty("version", version.toString())
-        val out = FileOutputStream(propertiesFile)
-        properties.store(out, null)
-    }
-}
-
-tasks.named("processResources") {
-    dependsOn("generateProperties")
-}
-
-sourceSets {
-    main {
-        output.dir(propertiesDir)
-    }
-}
-
-tasks.build {
-    finalizedBy(tasks.installDist)
-}
+// dependencies {
+//     implementation(Deps.dotlin)
+//     implementation(Deps.ionElement)
+//     implementation(Deps.kasechange)
+//     implementation(Deps.kotlinPoet)
+//     implementation(Deps.picoCli)
+// }
+//
+// application {
+//     applicationName = "pig"
+//     mainClass.set("org.partiql.pig.PigKt")
+// }
+//
+// distributions {
+//     main {
+//         distributionBaseName.set("pig")
+//     }
+// }
+//
+// tasks.register<GradleBuild>("install") {
+//     tasks = listOf("assembleDist", "distZip", "installDist")
+// }
+//
+// publish {
+//     artifactId = "pig"
+//     name = "PartiQL I.R. Generator (a.k.a P.I.G.)"
+// }

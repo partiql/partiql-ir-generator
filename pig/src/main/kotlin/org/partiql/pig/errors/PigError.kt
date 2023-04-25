@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.errors
+package org.partiql.pig.legacy.errors
 
 import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.locationToString
