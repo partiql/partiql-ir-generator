@@ -1,6 +1,24 @@
 = PartiQL IR Generator
 :toc:
 
+[frame=none,grid=none,cols="^,^,^,^"]
+|===
+| PIG Generator | PIG Runtime | LICENSE | CI
+
+a| [link=https://search.maven.org/artifact/org.partiql/partiql-ir-generator]
+image::https://maven-badges.herokuapp.com/maven-central/org.partiql/partiql-ir-generator/badge.svg?[PIG Generator]
+
+a| [fit=line,link=https://search.maven.org/artifact/org.partiql/partiql-ir-generator-runtime]
+image::https://maven-badges.herokuapp.com/maven-central/org.partiql/partiql-ir-generator-runtime/badge.svg?[PIG Runtime]
+
+a| [link=https://github.com/partiql/partiql-ir-generator/blob/main/LICENSE]
+image::https://img.shields.io/hexpm/l/plug.svg[License]
+
+a| [link=https://github.com/partiql/partiql-ir-generator/actions?query=workflow%3A%22Build+and+run+tests%22]
+image::https://github.com/partiql/partiql-ir-generator/actions/workflows/build.yml/badge.svg[CI Build]
+
+|===
+
 == About
 
 PIG is a compiler framework, domain modeling tool and code generator for tree data structures such as ASTs (Abstract Syntax Tree), database logical plans, database physical plans, and other intermediate representations.
@@ -298,7 +316,7 @@ y::{
 At the top of each definition file, you can specify imports for your generation target.
 Value types within a target's import are target specific.
 
-For example, with the `kotlin` target we use the [canonical Java binary name](https://docs.oracle.com/javase/specs/jls/se8/html/jls-13.html=jls-13.1) to reference an external type.
+For example, with the `kotlin` target we use the https://docs.oracle.com/javase/specs/jls/se8/html/jls-13.html=jls-13.1[canonical Java binary name] to reference an external type.
 
 [source,ion]
 ----
