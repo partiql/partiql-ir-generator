@@ -1,0 +1,33 @@
+= PIG Gradle Plugin
+
+The PIG gradle plugin is for PIG 0.6.2.
+
+== Usage
+[source,groovy]
+----
+plugins {
+    id 'pig-gradle-plugin'
+}
+
+sourceSets {
+    main {
+        pig {
+            // in addition to the default 'src/main/pig'
+            srcDir 'path/to/type/universes'
+        }
+    }
+    test {
+        pig {
+            // in addition to the default 'src/test/pig'
+            srcDir 'path/to/test/type/universes'
+        }
+    }
+}
+
+pig {
+  target = 'kotlin' // required
+  namespace = ... // optional
+  template = ... // optional
+  outDir = 'build/generated-sources/pig/' // default
+}
+----

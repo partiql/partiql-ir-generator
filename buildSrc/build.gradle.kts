@@ -15,6 +15,7 @@
 
 plugins {
     `kotlin-dsl`
+    id("java-gradle-plugin")
 }
 
 repositories {
@@ -22,9 +23,9 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0")
-    implementation("org.jlleitschuh.gradle:ktlint-gradle:10.3.0")
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.4.0")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.8.10")
+    implementation("org.jlleitschuh.gradle:ktlint-gradle:11.3.2")
 }
 
 allprojects {

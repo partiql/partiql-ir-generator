@@ -1,3 +1,7 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
+
 /*
  * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -23,36 +27,62 @@ repositories {
     mavenCentral()
 }
 
-object Versions {
-    val kotlin = "1.4.0"
-    val ion = "1.9.4"
-    val jupiter = "5.6.2"
-    val jvmTarget = JavaVersion.VERSION_1_8
-}
-
 val buildDir = File(rootProject.projectDir, "gradle-build/" + project.name)
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}")
-
-    testImplementation("org.jetbrains.kotlin:kotlin-test:${Versions.kotlin}")
-    testImplementation("org.junit.jupiter:junit-jupiter:${Versions.jupiter}")
+    implementation(Deps.kotlin)
+    testImplementation(Deps.kotlinTest)
+    testImplementation(Deps.kotlinTestJunit)
+    testImplementation(Deps.jupiter)
 }
 
+val generatedSrc = "$buildDir/generated-src"
+
 java {
-    sourceCompatibility = Versions.jvmTarget
-    targetCompatibility = Versions.jvmTarget
+    sourceCompatibility = JavaVersion.toVersion(Versions.javaTarget)
+    targetCompatibility = JavaVersion.toVersion(Versions.javaTarget)
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useJUnitPlatform() // Enable JUnit5
+    jvmArgs.addAll(listOf("-Duser.language=en", "-Duser.country=US"))
+    maxHeapSize = "4g"
+    testLogging {
+        events.add(TestLogEvent.FAILED)
+        exceptionFormat = TestExceptionFormat.FULL
+    }
+    dependsOn(tasks.ktlintCheck)
 }
 
 tasks.compileKotlin {
-    kotlinOptions.jvmTarget = Versions.jvmTarget.toString()
+    kotlinOptions.jvmTarget = Versions.javaTarget
+    kotlinOptions.apiVersion = Versions.kotlinTarget
+    kotlinOptions.languageVersion = Versions.kotlinTarget
 }
 
 tasks.compileTestKotlin {
-    kotlinOptions.jvmTarget = Versions.jvmTarget.toString()
+    kotlinOptions.jvmTarget = Versions.javaTarget
+    kotlinOptions.apiVersion = Versions.kotlinTarget
+    kotlinOptions.languageVersion = Versions.kotlinTarget
+}
+
+configure<KtlintExtension> {
+    filter {
+        exclude { it.file.path.contains(generatedSrc) }
+    }
+}
+
+sourceSets {
+    main {
+        java.srcDir(generatedSrc)
+    }
+}
+
+kotlin.sourceSets {
+    all {
+        // languageSettings.optIn("kotlin.RequiresOptIn")
+    }
+    main {
+        kotlin.srcDir(generatedSrc)
+    }
 }

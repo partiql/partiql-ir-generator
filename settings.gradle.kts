@@ -15,13 +15,6 @@
 
 rootProject.name = "PIG"
 
-pluginManagement {
-    includeBuild("pig-gradle-plugin")
-    repositories {
-        gradlePluginPortal()
-    }
-}
-
 include(
     "pig",
     "pig-runtime",

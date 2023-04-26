@@ -14,12 +14,15 @@
  */
 
 plugins {
-    id("pig.conventions")
-    id("pig.publish")
+    id(Plugins.conventions)
+    id(Plugins.publish)
 }
 
-project.description = "The P.I.G. is a code generator for domain models such ASTs and execution plans."
-
 dependencies {
-    api("com.amazon.ion:ion-element:1.0.0")
+    api(Deps.ionElement)
+}
+
+publish {
+    artifactId = "pig-runtime"
+    name = "PartiQL I.R. Generator (a.k.a P.I.G.) Runtime Library"
 }

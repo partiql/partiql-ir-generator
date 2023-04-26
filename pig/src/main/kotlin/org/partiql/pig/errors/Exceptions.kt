@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.errors
+package org.partiql.pig.legacy.errors
 
 class PigException(val error: PigError, cause: Throwable? = null) : Exception(error.toString(), cause)
 

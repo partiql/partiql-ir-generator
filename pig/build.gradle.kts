@@ -12,65 +12,73 @@
  * express or implied. See the License for the specific language governing
  *  permissions and limitations under the License.
  */
+import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import java.util.Properties
 
 plugins {
-    id("application")
-    id("pig.conventions")
-    id("pig.publish")
+    id(Plugins.conventions)
+    id(Plugins.application)
+    id(Plugins.publish)
 }
 
-project.description = "The P.I.G. is a code generator for domain models such ASTs and execution plans."
-
-val propertiesDir = "$buildDir/properties"
-
 dependencies {
-    implementation("org.freemarker:freemarker:2.3.30")
-    implementation("net.sf.jopt-simple:jopt-simple:5.0.4")
-    implementation("com.amazon.ion:ion-element:1.0.0")
+    implementation(Deps.dotlin)
+    implementation(Deps.freemarker)
+    implementation(Deps.ionElement)
+    implementation(Deps.kasechange)
+    implementation(Deps.kotlinPoet)
+    implementation(Deps.picoCli)
 }
 
 application {
-    mainClass.set("org.partiql.pig.MainKt")
+    applicationName = "pig"
+    mainClass.set("org.partiql.pig.PigKt")
 }
 
-tasks.jar {
-    manifest {
-        attributes["Main-Class"] = "org.partiql.pig.MainKt"
-    }
-    from(
-        configurations.compile.get().map {
-            if (it.isDirectory) {
-                it
-            } else {
-                zipTree(it)
-            }
-        }
-    )
-}
-
-tasks.register("generateProperties") {
-    doLast {
-        val propertiesFile = file("$propertiesDir/pig.properties")
-        propertiesFile.parentFile.mkdirs()
-        val properties = Properties()
-        properties.setProperty("version", version.toString())
-        val out = FileOutputStream(propertiesFile)
-        properties.store(out, null)
+distributions {
+    main {
+        distributionBaseName.set("pig")
     }
 }
 
-tasks.named("processResources") {
-    dependsOn("generateProperties")
+tasks.register<GradleBuild>("install") {
+    tasks = listOf("assembleDist", "distZip", "installDist")
 }
+
+publish {
+    artifactId = "pig"
+    name = "PartiQL I.R. Generator (a.k.a P.I.G.)"
+}
+
+val generatedVersion = "$buildDir/generated-version"
 
 sourceSets {
     main {
-        output.dir(propertiesDir)
+        output.dir(generatedVersion)
     }
 }
 
-tasks.build {
-    finalizedBy(tasks.installDist)
+tasks.processResources {
+    dependsOn(tasks.findByName("generateVersionAndHash"))
+}
+
+tasks.create("generateVersionAndHash") {
+    val propertiesFile = file("$generatedVersion/pig.properties")
+    propertiesFile.parentFile.mkdirs()
+    val properties = Properties()
+    // Version
+    val version = version.toString()
+    properties.setProperty("version", version)
+    // Commit Hash
+    val commit = ByteArrayOutputStream().apply {
+        exec {
+            commandLine = listOf("git", "rev-parse", "--short", "HEAD")
+            standardOutput = this@apply
+        }
+    }.toString().trim()
+    properties.setProperty("commit", commit)
+    // Write file
+    val out = FileOutputStream(propertiesFile)
+    properties.store(out, null)
 }
