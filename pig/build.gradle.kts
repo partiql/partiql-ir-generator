@@ -12,6 +12,9 @@
  * express or implied. See the License for the specific language governing
  *  permissions and limitations under the License.
  */
+import java.io.ByteArrayOutputStream
+import java.io.FileOutputStream
+import java.util.Properties
 
 plugins {
     id(Plugins.conventions)
@@ -46,4 +49,36 @@ tasks.register<GradleBuild>("install") {
 publish {
     artifactId = "pig"
     name = "PartiQL I.R. Generator (a.k.a P.I.G.)"
+}
+
+val generatedVersion = "$buildDir/generated-version"
+
+sourceSets {
+    main {
+        output.dir(generatedVersion)
+    }
+}
+
+tasks.processResources {
+    dependsOn(tasks.findByName("generateVersionAndHash"))
+}
+
+tasks.create("generateVersionAndHash") {
+    val propertiesFile = file("$generatedVersion/pig.properties")
+    propertiesFile.parentFile.mkdirs()
+    val properties = Properties()
+    // Version
+    val version = version.toString()
+    properties.setProperty("version", version)
+    // Commit Hash
+    val commit = ByteArrayOutputStream().apply {
+        exec {
+            commandLine = listOf("git", "rev-parse", "--short", "HEAD")
+            standardOutput = this@apply
+        }
+    }.toString().trim()
+    properties.setProperty("commit", commit)
+    // Write file
+    val out = FileOutputStream(propertiesFile)
+    properties.store(out, null)
 }

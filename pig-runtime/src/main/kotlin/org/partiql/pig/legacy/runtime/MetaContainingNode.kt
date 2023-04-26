@@ -13,10 +13,14 @@
  *  permissions and limitations under the License.
  */
 
-rootProject.name = "PIG"
+package org.partiql.pig.legacy.runtime
 
-include(
-    "pig",
-    "pig-runtime",
-    "pig-tests"
-)
+import com.amazon.ionelement.api.MetaContainer
+
+interface MetaContainingNode {
+    /** This node's collection of metadata. */
+    val metas: MetaContainer
+
+    /** Creates a copy of the current node with the specified [key] and [value] as metadata.*/
+    fun withMeta(metaKey: String, metaValue: Any): MetaContainingNode
+}

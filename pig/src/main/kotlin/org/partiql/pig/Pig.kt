@@ -18,6 +18,8 @@ package org.partiql.pig
 import org.partiql.pig.generator.target.kotlin.KotlinCommand
 import org.partiql.pig.legacy.LegacyCommand
 import picocli.CommandLine
+import java.io.IOException
+import java.util.Properties
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
@@ -27,21 +29,39 @@ fun main(args: Array<String>) {
 
 @CommandLine.Command(
     name = "pig",
-    mixinStandardHelpOptions = true,
     subcommands = [Generate::class, LegacyCommand::class]
 )
 class Pig : Runnable {
 
-    override fun run() {}
+    @CommandLine.Option(names = ["-h", "--help"], usageHelp = true, description = ["display this help message"])
+    var help = false
+
+    @CommandLine.Option(names = ["-v", "--version"], description = ["Prints current version"])
+    var version = false
+
+    override fun run() {
+        if (version) {
+            val properties = Properties()
+            val version = try {
+                properties.load(this.javaClass.getResourceAsStream("/pig.properties"))
+                properties.getProperty("version")
+            } catch (ex: IOException) {
+                "?"
+            }
+            println(version)
+        }
+    }
 }
 
 @CommandLine.Command(
     name = "generate",
-    mixinStandardHelpOptions = true,
     subcommands = [KotlinCommand::class],
     description = ["PartiQL IR Generator 1.x"]
 )
 class Generate : Runnable {
+
+    @CommandLine.Option(names = ["-h", "--help"], usageHelp = true, description = ["display this help message"])
+    var help = false
 
     override fun run() {}
 }

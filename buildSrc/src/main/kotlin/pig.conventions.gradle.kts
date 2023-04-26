@@ -1,9 +1,6 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
-import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
-import java.util.Properties
 
 /*
  * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -40,11 +37,10 @@ dependencies {
 }
 
 val generatedSrc = "$buildDir/generated-src"
-val generatedVersion = "$buildDir/generated-version"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.toVersion(Versions.javaTarget)
+    targetCompatibility = JavaVersion.toVersion(Versions.javaTarget)
 }
 
 tasks.test {
@@ -79,7 +75,6 @@ configure<KtlintExtension> {
 sourceSets {
     main {
         java.srcDir(generatedSrc)
-        output.dir(generatedVersion)
     }
 }
 
@@ -90,28 +85,4 @@ kotlin.sourceSets {
     main {
         kotlin.srcDir(generatedSrc)
     }
-}
-
-tasks.processResources {
-    dependsOn(tasks.findByName("generateVersionAndHash"))
-}
-
-tasks.create("generateVersionAndHash") {
-    val propertiesFile = file("$generatedVersion/pig.properties")
-    propertiesFile.parentFile.mkdirs()
-    val properties = Properties()
-    // Version
-    val version = version.toString()
-    properties.setProperty("version", version)
-    // Commit Hash
-    val commit = ByteArrayOutputStream().apply {
-        exec {
-            commandLine = listOf("git", "rev-parse", "--short", "HEAD")
-            standardOutput = this@apply
-        }
-    }.toString().trim()
-    properties.setProperty("commit", commit)
-    // Write file
-    val out = FileOutputStream(propertiesFile)
-    properties.store(out, null)
 }

@@ -1,0 +1,483 @@
+= PartiQL IR Generator
+:toc:
+
+== About
+
+PIG is a compiler framework, domain modeling tool and code generator for tree data structures such as ASTs (Abstract Syntax Tree), database logical plans, database physical plans, and other intermediate representations.
+Using PIG, the developer concisely defines the structure of a tree by specifying named constraints for every node and its attributes.
+Check out the https://github.com/partiql/partiql-ir-generator/wiki[wiki]!
+
+== CLI
+
+PIG can be used as a command line tool.
+
+=== Installation
+
+* Clone this repository.
+* Check out the tag of the [release](https://github.com/partiql/partiql-ir-generator/releases) you wish to utilize, e.g. `git checkout v1.0.0`
+* Execute `./gradlew install`
+
+After the build completes, the `pig` executable and dependencies will be located in `./pig/build/install/pig/bin/pig`.
+You can move the install to a permanent location and add the executable script to your path.
+For this doc, we'll add an alias for the local path `alias pig=./pig/build/install/pig/bin/pig`.
+
+You can check the version with `pig --version`.
+
+=== PIG 1.x
+
+PIG 1.x introduces a new modeling language and generator which enable features such as:
+
+.Modeling Additions
+* List, Map, and Set Types
+* Int, Float, Double, Bytes, String types
+* Enum Types
+* Imported Types
+* Sum type definition as the variant of a sum type
+* Inline type definitions
+* Scoped type definitions
+* Scoped type names
+
+.Kotlin Specific Features
+* No runtime library
+* Primitives nodes are optional, #79
+* Explicit library mode, #64
+* Visitors use conventional style, #123 #66
+* Nodes have a children construct, enabling recursion without a visitor.
+* Dynamic code generation via poems rather than templating.
+* Generated DSL now uses builders rather than just factory methods
+* Generated DSL allows for a custom factory
+* Jackson databind integration for serializing a tree to arbitrary Jackson formats, #119
+
+==== Breaking Changes
+
+PIG 1.x currently does not support the 0.x modeling language or permuted domains.
+The 0.x language and permuted domains are still accessible via the `legacy` subcommand.
+If an issue is raised, permuted domains may get added to the 1.x language.
+
+==== Usage
+
+[source,shell]
+----
+pig --help
+
+    Usage: pig [-hv] [COMMAND]
+    -h, --help      display this help message
+    -v, --version   Prints current version
+    Commands:
+    generate  PartiQL IR Generator 1.x
+    legacy    PartiQL IR Generator 0.x
+
+pig generate --help
+
+    Usage: pig generate [-h] [COMMAND]
+    PartiQL IR Generator 1.x
+      -h, --help   display this help message
+    Commands:
+      kotlin  Generates Kotlin sources from type universe definitions
+
+
+pig generate kotlin --help
+
+    Usage: pig generate kotlin [-h] [-m=<modifier>] [-o=<out>] [-p=<packageRoot>]
+                           [-u=<id>] [--poems=<poems>[,<poems>...]]... <file>
+    Generates Kotlin sources from type universe definitions
+          <file>            Type definition file
+      -h, --help            display this help message
+      -m, --modifier=<modifier>
+                            Generated node class modifier. Options FINAL, DATA, OPEN
+      -o, --out=<out>       Generated source output directory
+      -p, --package=<packageRoot>
+                            Package root
+          --poems=<poems>[,<poems>...]
+                            Poem templates to apply
+      -u, --universe=<id>   Universe identifier
+----
+
+=== PIG 0.x
+
+PIG 0.x uses a Nanopass style domain modeling language and notably has the ability to define permuted domains.
+If you wish to use these features, the latest version of PIG maintains them under the `legacy` sub-command.
+The https://github.com/partiql/partiql-ir-generator/wiki[wiki] has documentation on the 0.x modeling language and Kotlin target.
+
+The options and command behavior remains the same, only the `legacy` keyword needs to be added as the first argument.
+
+==== Usage
+
+[source,shell]
+----
+pig legacy --help
+
+Usage: legacy [-hv] [-d=<outputDirectory>] [-e=<template>]
+              [-n=<namespace>] [-o=<outputFile>] [-t=<target>] [-u=<universe>]
+              [-f=<domains>[,<domains>...]]...
+
+PartiQL IR Generator 0.x
+  -d, --output-directory=<outputDirectory>
+                          Generated source output directory
+  -e, --template=<template>
+                          Path to an Apache FreeMarker template
+  -f, --domains=<domains>[,<domains>...]
+                          List of domains to generate (comma separated)
+  -h, -?, --help          Prints current version
+  -n, --namespace=<namespace>
+                          Namespace for generated code
+  -o, --output-file=<outputFile>
+                          Generated source output file
+  -t, --target=<target>   Type universe input file
+  -u, --universe=<universe>
+                          Type universe input file
+  -v, --version           Prints current version
+
+Each target requires certain arguments:
+
+   --target=kotlin requires --namespace=<ns> and --output-directory=<out-dir>
+   --target=custom requires --template=<path-to-template> and --output-file=<generated-file>
+   --target=html   requires --output-file=<output-html-file>
+   --target=ion    requires --output-file=<output-ion-file>
+
+Notes:
+
+   If -d or --output-directory is specified and the directory does not exist, it will be created.
+
+Examples:
+
+  pig --target=kotlin \
+      --universe=universe.ion \
+      --output-directory=generated-src \
+      --namespace=org.example.domain
+
+  pig --target=custom \
+      --universe=universe.ion \
+      --output-file=example.txt \
+      --template=template.ftl
+
+  pig --target=ion \
+      --universe=universe.ion \
+      --output-file=example.ion
+----
+
+== Domain Modeling
+
+PIG enables modeling https://en.wikipedia.org/wiki/Algebraic_data_type[algebraic types] using an Ion DSL.
+
+=== Builtin Types
+
+The following Ion values are used to reference a type in a definition.
+
+[source,ion]
+----
+// Scalar Types
+
+bool
+int         // Int32
+long        // Int64
+float       // IEEE 754 (32 bit)
+double      // IEEE 754 (64 bit)
+bytes       // Array of unsigned bytes
+string      // Unicode char sequence
+
+// Collection Types
+
+list::[t]   // List<T>
+set::[t]    // Set<T>
+map::[k,v]  // Map<K,V>
+
+// Optional Annotation
+
+optional::t
+----
+
+=== Defining Types
+
+The basic grammar rules are:
+
+* Annotated Ion lists represent sum types, each element being a variant.
+* Annotated Ion structs represent product types, each key-value pair being a field.
+
+==== Sum Types
+
+A https://en.wikipedia.org/wiki/Tagged_union[sum] type takes one of several defined forms.
+The wiki page has some nice examples in a variety of languages.
+
+[source,ion]
+----
+// sum named `x` with variants `a` and `b`
+x::[
+  a::{ ... },
+  b::{ ... }
+]
+----
+
+==== Product Types
+
+A https://en.wikipedia.org/wiki/Product_type[product] type is some structure with a fixed set of fields.
+
+[source,ion]
+----
+// product named `x` with fields `a` and `b` of type int, string respectively
+x::{
+  a: int,
+  b: string,
+}
+----
+
+===== Optionals
+
+Fields of a product type can be marked as `optional`.
+For example,
+
+[source,ion]
+----
+x::{
+  a: optional::int,
+  b: map::[int,optional::string],
+  c: optional::foo,
+}
+
+foo::[ ... ]
+----
+
+===== Inlines
+
+A product type can contain inline definitions.
+If the definition does not have an identifier symbol, the field name is used.
+
+[source,ion]
+----
+foo::{
+  a: [...],               // inline sum foo.a
+  b: v::[...],            // inline sum foo.v
+  c: optional::[...],     // inline sum foo.c, optional field of foo
+  d: optional::x::[...],  // inline sum foo.v, optional field of foo
+  e: {...},               // inline product foo.e
+  f: y::{...},            // inline product foo.y
+  g: optional::{...},     // inline product foo.g, optional field of foo
+  h: optional::z::{...},  // inline product foo.z, optional field of foo
+}
+----
+
+==== Enum Types
+
+This is a https://en.wikipedia.org/wiki/Enumerated_type[special case of the sum type].
+Each variant is a named value.
+A sum type definition is considered an enum if all variants are symbols matching the regex `[A-Z][A-Z0-9_]*`.
+
+[source,ion]
+----
+// enum named `x` with values A, B, and C
+x::[ A, B, C ]
+----
+
+==== Nested Type Definitions
+
+You can define types within the scope of another using `\_::[]` or `_:[]` syntax.
+For example,
+
+[source,ion]
+----
+// sum x
+x::[
+  a::{ ... }, // variant a
+  b::[ ... ], // variant b
+  _::[
+    foo::{}   // type `x.foo`, but not a variant — just a nested type
+  ]
+]
+
+// product y
+y::{
+  a: int, // field (a,int)
+  _: [
+    bar::{}  // type
+  ]
+}
+----
+
+=== Imported Types
+
+At the top of each definition file, you can specify imports for your generation target.
+Value types within a target's import are target specific.
+
+For example, with the `kotlin` target we use the [canonical Java binary name](https://docs.oracle.com/javase/specs/jls/se8/html/jls-13.html=jls-13.1) to reference an external type.
+
+[source,ion]
+----
+imports::{
+  kotlin: [
+    timestamp::'com.amazon.ionelement.api.TimestampElement'
+  ]
+}
+
+// -- `timestamp` can now be referenced
+// -- `bounds` is an inline enum definition with implicit id `my_interval.bounds`
+my_interval::{
+  start: timestamp,
+  end: timestamp,
+  bounds: [
+    INCLUSIVE,
+    EXCLUSIVE,
+    L_EXCLUSIVE,
+    R_EXCLUSIVE
+  ]
+}
+----
+
+=== Local and Root References
+
+Type names need not be globally unique.
+You can refer to a type by its symbol (local reference) or an absolute path (root).
+A type reference path begins with a `.` and is delimited with `.` as well.
+If an Ion symbol is used, the type definition graph will be searched from that reference's position for the _nearest_ definition with that symbol using BFS.
+Scalars are matched first, then definitions, and finally imports.
+
+Here's an example where absolute references are required to achieve the desired behavior.
+
+[source,ion]
+----
+imports::{
+  kotlin: [
+    ion::'com.amazon.ionelement.api.IonElement'
+  ]
+}
+
+range::{
+  start: int,
+  end: int,
+  bounds: bounds    // relative reference, forward declaration not required
+}
+
+bounds::[
+  OPEN,
+  CLOSED
+]
+
+value::[
+  ion::{
+    value: '.ion'   // use '.' for root reference so this isn't self-referential
+  },
+  range::{
+    value: '.range' // ..
+  }
+]
+----
+
+== Code Generation
+
+As of now, 1.x only has a Kotlin target. There are no immediate plans to add additional targets. The 0.x targets remain.
+
+=== Kotlin Target
+
+The Kotlin target has several generation options (known as poems).
+
+* Node class modifier DATA, OPEN, FINAL
+* Visitor
+* Listener
+* Factory / Builders / DSL
+* Jackson Databind
+* Add Ion meta containers to nodes
+
+These can be found in `org.partiql.pig.generator.target.kotlin.poems`.
+
+[source,shell]
+----
+Usage: pig generate kotlin [-h] [-m=<modifier>] [-o=<out>] [-p=<packageRoot>]
+                           [-u=<id>] [--poems=<poems>[,<poems>...]]... <file>
+Generates Kotlin sources from type universe definitions
+      <file>            Type definition file
+  -h, --help            display this help message
+  -m, --modifier=<modifier>
+                        Generated node class modifier. Options FINAL, DATA, OPEN
+  -o, --out=<out>       Generated source output directory
+  -p, --package=<packageRoot>
+                        Package root
+      --poems=<poems>[,<poems>...]
+                        Poem templates to apply
+  -u, --universe=<id>   Universe identifier
+----
+
+==== Basic Example
+
+Here is a short example which shows some features such as
+
+* Sum types
+* Product types
+* Enum types
+* Inline type definitions
+* Local and absolute type references
+* Builtin scalar types
+
+===== Type Definitions
+
+[source,ion]
+----
+expr::[
+  unary::{
+    expr: expr,
+    op: [ ADD, SUB ]
+  },
+  binary::{
+    lhs: expr,
+    rhs: expr,
+    op: [ ADD, SUB, MULT, DIV ]
+  },
+  call::{
+    id: '.expr.id.path',
+    args: list::[expr]
+  },
+  id::[
+    relative::{
+      id: string
+    },
+    path::{
+      id: list::[string]
+    }
+  ]
+]
+----
+
+===== Generated Code
+
+This is the basic template with no additional poems e.g. visitors, listeners, factories, serde, etc.
+A more complex example can be found in the wiki.
+
+[source,kotlin]
+----
+public abstract class ExampleNode
+
+public sealed class Expr : ExampleNode() {
+
+  public data class Unary(
+    public val expr: Expr,
+    public val op: Op
+  ) : Expr() {
+
+    public enum class Op { ADD, SUB, }
+  }
+
+  public data class Binary(
+    public val lhs: Expr,
+    public val rhs: Expr,
+    public val op: Op
+  ) : Expr() {
+
+    public enum class Op {
+      ADD,
+      SUB,
+      MULT,
+      DIV,
+    }
+  }
+
+  public data class Call(
+    public val id: Id.Path,
+    public val args: List<Expr>
+  ) : Expr()
+
+  public sealed class Id : Expr() {
+
+    public data class Relative(public val id: String) : Id()
+
+    public data class Path(public val id: List<String>) : Id()
+  }
+}
+----

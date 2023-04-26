@@ -18,7 +18,6 @@ import java.io.FileInputStream
 import java.io.PrintStream
 import java.io.PrintWriter
 import java.util.Optional
-import java.util.Properties
 import java.util.concurrent.Callable
 
 /**
@@ -28,15 +27,10 @@ import java.util.concurrent.Callable
  */
 @CommandLine.Command(
     name = "legacy",
-    description = ["PartiQL IR Generator 0.x"]
+    description = ["PartiQL IR Generator 0.x"],
+    mixinStandardHelpOptions = true
 )
 class LegacyCommand : Callable<Int> {
-
-    private val properties = Properties()
-
-    init {
-        properties.load(this.javaClass.getResourceAsStream("/pig.properties"))
-    }
 
     companion object {
 
@@ -123,7 +117,7 @@ class LegacyCommand : Callable<Int> {
         // execute, legacy main.kt
         when (command) {
             is Command.ShowHelp -> printHelp(System.out)
-            is Command.ShowVersion -> printVersion(System.out)
+            is Command.ShowVersion -> println("PartiQL IR Generator 0.X")
             is Command.InvalidCommandLineArguments -> {
                 System.err.println(command.message)
                 return -1
@@ -144,8 +138,7 @@ class LegacyCommand : Callable<Int> {
      * Prints help to the specified [PrintStream].
      */
     private fun printHelp(out: PrintStream) {
-        val help = CommandLine.Help(this)
-        out.println(help)
+        CommandLine.usage(this, out)
         out.println(
             """|Each target requires certain arguments:
         |
@@ -176,13 +169,6 @@ class LegacyCommand : Callable<Int> {
         |
             """.trimMargin()
         )
-    }
-
-    /**
-     * Prints version specified in the package root build.gradle
-     */
-    private fun printVersion(out: PrintStream) {
-        out.println("PartiQL I.R. Generator Version ${properties.getProperty("version")}")
     }
 
     private fun parse(): Command {

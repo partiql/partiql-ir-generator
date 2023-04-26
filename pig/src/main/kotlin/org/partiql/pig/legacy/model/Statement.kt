@@ -206,6 +206,7 @@ data class PermutedDomain(
 
                     newTypes.add(newSumType)
                 }
+                else -> {}
             }
         }
 

@@ -11,10 +11,12 @@ import java.util.concurrent.Callable
 
 @CommandLine.Command(
     name = "kotlin",
-    mixinStandardHelpOptions = true,
     description = ["Generates Kotlin sources from type universe definitions"]
 )
 class KotlinCommand : Callable<Int> {
+
+    @CommandLine.Option(names = ["-h", "--help"], usageHelp = true, description = ["display this help message"])
+    var help = false
 
     @CommandLine.Parameters(
         index = "0",

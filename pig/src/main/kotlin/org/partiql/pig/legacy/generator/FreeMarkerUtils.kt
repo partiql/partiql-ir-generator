@@ -33,7 +33,7 @@ internal fun Configuration.setClassLoaderForTemplates() {
     // the classloader of [TopLevelFreeMarkerGlobals] and set the root package.
     this.setClassLoaderForTemplateLoading(
         KotlinDomainFreeMarkerGlobals::class.java.classLoader,
-        "/org.partiql.pig.legacy.templates"
+        "/org/partiql/pig/legacy/templates"
     )
 }
 

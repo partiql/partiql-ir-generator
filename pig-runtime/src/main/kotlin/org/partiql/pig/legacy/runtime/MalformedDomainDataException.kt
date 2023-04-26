@@ -13,10 +13,10 @@
  *  permissions and limitations under the License.
  */
 
-rootProject.name = "PIG"
+package org.partiql.pig.legacy.runtime
 
-include(
-    "pig",
-    "pig-runtime",
-    "pig-tests"
-)
+import com.amazon.ionelement.api.IonLocation
+import com.amazon.ionelement.api.locationToString
+
+class MalformedDomainDataException(val location: IonLocation?, message: String, cause: Throwable? = null) :
+    Exception("${locationToString(location)}: $message", cause)
