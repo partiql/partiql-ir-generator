@@ -16,20 +16,21 @@
 package org.partiql.pig
 
 import org.partiql.pig.generator.target.kotlin.KotlinCommand
+import org.partiql.pig.legacy.LegacyCommand
 import picocli.CommandLine
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
-    val command = CommandLine(Sprout())
+    val command = CommandLine(Pig()).setCaseInsensitiveEnumValuesAllowed(true)
     exitProcess(command.execute(*args))
 }
 
 @CommandLine.Command(
-    name = "sprout",
+    name = "pig",
     mixinStandardHelpOptions = true,
-    subcommands = [Generate::class],
+    subcommands = [Generate::class, LegacyCommand::class]
 )
-class Sprout : Runnable {
+class Pig : Runnable {
 
     override fun run() {}
 }
@@ -37,9 +38,8 @@ class Sprout : Runnable {
 @CommandLine.Command(
     name = "generate",
     mixinStandardHelpOptions = true,
-    subcommands = [
-        KotlinCommand::class,
-    ],
+    subcommands = [KotlinCommand::class],
+    description = ["PartiQL IR Generator 1.x"]
 )
 class Generate : Runnable {
 

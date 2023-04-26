@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain
+package org.partiql.pig.legacy.domain
 
 import com.amazon.ionelement.api.ElementType
 import com.amazon.ionelement.api.IonElementException
@@ -23,10 +23,11 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import org.partiql.pig.domain.parser.ParserErrorContext
-import org.partiql.pig.domain.parser.parseTypeUniverse
-import org.partiql.pig.errors.PigError
-import org.partiql.pig.errors.PigException
+import org.partiql.pig.legacy.errors.PigError
+import org.partiql.pig.legacy.errors.PigException
+import org.partiql.pig.legacy.parser.ParserErrorContext
+import org.partiql.pig.legacy.parser.parseTypeUniverse
+import org.partiql.pig.legacy.toIonElement
 
 class TypeDomainParserErrorsTest {
 

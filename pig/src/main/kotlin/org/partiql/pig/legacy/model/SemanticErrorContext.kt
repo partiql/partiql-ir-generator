@@ -13,14 +13,14 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.model
+package org.partiql.pig.legacy.model
 
 import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.location
-import org.partiql.pig.errors.ErrorContext
-import org.partiql.pig.errors.PigError
-import org.partiql.pig.errors.PigException
+import org.partiql.pig.legacy.errors.ErrorContext
+import org.partiql.pig.legacy.errors.PigError
+import org.partiql.pig.legacy.errors.PigException
 
 /**
  * Encapsulates all error context information in an easily testable way.
@@ -110,6 +110,7 @@ sealed class SemanticErrorContext(val msgFormatter: () -> String) : ErrorContext
  */
 fun semanticError(blame: MetaContainer, context: ErrorContext): Nothing =
     semanticError(blame.location, context)
+
 /**
  * Shortcut for throwing [PigException] with the specified metas and [PigError].
  */

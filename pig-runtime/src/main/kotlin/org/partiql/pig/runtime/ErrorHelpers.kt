@@ -90,6 +90,7 @@ fun SexpElement.getOptional(i: Int): AnyElement? {
 }
 
 private fun SexpElement.argIndexInBoundOrMalformed(i: Int) {
-    if (i + 1 >= this.size)
+    if (i + 1 >= this.size) {
         errMalformed(this.metas.location, "Argument index $i is out of bounds (max=${size - 2})")
+    }
 }

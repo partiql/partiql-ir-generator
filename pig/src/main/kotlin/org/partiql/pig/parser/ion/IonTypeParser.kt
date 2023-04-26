@@ -27,12 +27,12 @@ import org.partiql.pig.model.TypeDef
 import org.partiql.pig.model.TypeProp
 import org.partiql.pig.model.TypeRef
 import org.partiql.pig.model.Universe
-import org.partiql.pig.parser.SproutParser
+import org.partiql.pig.parser.PigParser
 
 /**
  * Parser for the prototype .ion grammar
  */
-internal object IonTypeParser : SproutParser {
+internal object IonTypeParser : PigParser {
 
     private val ion = IonSystemBuilder.standard().build()
 
@@ -78,7 +78,7 @@ internal object IonTypeParser : SproutParser {
                 val ctx = Context(symbols.root, imports)
                 Visitor.visit(it, ctx)
             },
-            imports = imports.map,
+            imports = imports.map
         )
     }
 
@@ -182,7 +182,7 @@ internal object IonTypeParser : SproutParser {
      */
     private class Context(
         private val root: IonSymbols.Node,
-        private val imports: IonImports,
+        private val imports: IonImports
     ) {
 
         private var tip: IonSymbols.Node = root
@@ -233,7 +233,7 @@ internal object IonTypeParser : SproutParser {
                     node != null -> {
                         TypeRef.Path(
                             nullable = nullable,
-                            ids = (node.path.toTypedArray()),
+                            ids = (node.path.toTypedArray())
                         )
                     }
                     path.size == 1 && imports.symbols.contains(path.first()) -> {
@@ -249,7 +249,7 @@ internal object IonTypeParser : SproutParser {
             try {
                 return TypeRef.Scalar(
                     type = ScalarType.valueOf(symbol.toUpperCase()),
-                    nullable = nullable,
+                    nullable = nullable
                 )
             } catch (_: IllegalArgumentException) {
             }
@@ -258,7 +258,7 @@ internal object IonTypeParser : SproutParser {
             if (node != null) {
                 return TypeRef.Path(
                     nullable = nullable,
-                    ids = (node.path.toTypedArray()),
+                    ids = (node.path.toTypedArray())
                 )
             }
             // 4. Attempt to find the symbol in the imports

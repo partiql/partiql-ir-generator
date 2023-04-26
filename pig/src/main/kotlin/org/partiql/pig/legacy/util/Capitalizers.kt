@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.util
+package org.partiql.pig.legacy.util
 
 fun String.snakeToPascalCase(): String =
     this.split('_')

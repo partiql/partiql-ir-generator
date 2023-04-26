@@ -24,7 +24,6 @@ import org.partiql.pig.model.Universe
 class KotlinGenerator(private val options: KotlinOptions) : Generator<KotlinResult> {
 
     override fun generate(universe: Universe): KotlinResult {
-
         // --- Initialize an empty symbol table(?)
         val symbols = KotlinSymbols.init(universe, options)
 
@@ -92,7 +91,7 @@ class KotlinGenerator(private val options: KotlinOptions) : Generator<KotlinResu
         props = props.map { KotlinNodeSpec.Prop(it.name.toCamelCase(), symbols.typeNameOf(it.ref)) },
         nodes = children.mapNotNull { it.generate(symbols) },
         clazz = symbols.clazz(ref),
-        ext = (props.enumProps(symbols) + types.enums(symbols)).toMutableList(),
+        ext = (props.enumProps(symbols) + types.enums(symbols)).toMutableList()
     ).apply {
         props.forEach {
             val para = ParameterSpec.builder(it.name, it.type).build()
@@ -116,7 +115,7 @@ class KotlinGenerator(private val options: KotlinOptions) : Generator<KotlinResu
         variants = variants.mapNotNull { it.generate(symbols) },
         nodes = types.mapNotNull { it.generate(symbols) },
         clazz = symbols.clazz(ref),
-        ext = types.enums(symbols).toMutableList(),
+        ext = types.enums(symbols).toMutableList()
     ).apply {
         variants.forEach { it.builder.superclass(clazz) }
         nodes.forEach { it.builder.superclass(symbols.base) }

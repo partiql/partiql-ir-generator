@@ -14,12 +14,12 @@
  */
 
 plugins {
-    id("pig.conventions")
-    id("org.partiql.pig.gradle.publish")
+    id(Plugins.conventions)
+    id(Plugins.publish)
 }
 
 dependencies {
-    api("com.amazon.ion:ion-element:1.0.0")
+    api(Deps.ionElement)
 }
 
 publish {

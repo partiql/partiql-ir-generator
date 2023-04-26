@@ -8,19 +8,19 @@ package org.partiql.pig.generator.target.kotlin
 class KotlinOptions(
     val packageRoot: String,
     val poems: List<String>,
-    val node: KotlinNodeOptions = KotlinNodeOptions(),
+    val node: KotlinNodeOptions = KotlinNodeOptions()
 )
 
 /**
  * Consider other options as this is Kotlin specific
  */
 class KotlinNodeOptions(
-    val modifier: Modifier = Modifier.FINAL,
+    val modifier: Modifier = Modifier.FINAL
 ) {
 
     enum class Modifier {
         FINAL,
         DATA,
-        OPEN,
+        OPEN
     }
 }

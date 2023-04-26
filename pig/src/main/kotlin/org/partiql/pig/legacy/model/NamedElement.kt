@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.model
+package org.partiql.pig.legacy.model
 
 import com.amazon.ionelement.api.MetaContainer
 
@@ -33,10 +33,8 @@ data class NamedElement(
 
         if (identifier != other.identifier) return false
         if (tag != other.tag) return false
-        if (typeReference != other.typeReference) return false
+        return typeReference == other.typeReference
         // Metas intentionally omitted here
-
-        return true
     }
 
     override fun hashCode(): Int {

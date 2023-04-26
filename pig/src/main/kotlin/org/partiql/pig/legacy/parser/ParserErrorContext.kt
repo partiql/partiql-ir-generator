@@ -13,17 +13,17 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.parser
+package org.partiql.pig.legacy.parser
 
 import com.amazon.ionelement.api.ElementType
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.IonElementException
 import com.amazon.ionelement.api.IonLocation
 import com.amazon.ionelement.api.location
-import org.partiql.pig.domain.model.TypeAnnotation
-import org.partiql.pig.errors.ErrorContext
-import org.partiql.pig.errors.PigError
-import org.partiql.pig.errors.PigException
+import org.partiql.pig.legacy.errors.ErrorContext
+import org.partiql.pig.legacy.errors.PigError
+import org.partiql.pig.legacy.errors.PigException
+import org.partiql.pig.legacy.model.TypeAnnotation
 
 /**
  * Variants of [ParserErrorContext] contain details about various parse errors that can be encountered

@@ -13,10 +13,10 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.model
+package org.partiql.pig.legacy.model
 
 /** Indicates the type of tuple. */
 enum class TupleType {
     PRODUCT,
-    RECORD,
+    RECORD
 }

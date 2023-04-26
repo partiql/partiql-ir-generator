@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.model
+package org.partiql.pig.legacy.model
 
 /**
  * Performs semantic checking for [TypeDomain].
@@ -221,7 +221,8 @@ private class TypeDomainSemanticChecker(private val typeDomain: TypeDomain) {
     private fun checkProductIonFieldArity(p: DataType.UserType.Tuple) =
         p.namedElements.forEach { element ->
             val dataType = typeDomain.resolveTypeRef(element.typeReference)
-            if (dataType == DataType.Ion && element.typeReference.arity == Arity.Optional)
+            if (dataType == DataType.Ion && element.typeReference.arity == Arity.Optional) {
                 semanticError(element.metas, SemanticErrorContext.OptionalIonTypeElement)
+            }
         }
 }

@@ -126,7 +126,7 @@ internal fun IonValue.ref(): Pair<String, Boolean> = when (this) {
             }
             else -> err(
                 expected = "optional::$suffix or $suffix",
-                found = "$prefix::$suffix",
+                found = "$prefix::$suffix"
             )
         }
     }
@@ -147,7 +147,7 @@ internal fun IonValue.ref(): Pair<String, Boolean> = when (this) {
             }
             else -> err(
                 expected = "optional::$suffix or $suffix",
-                found = "$prefix::$suffix",
+                found = "$prefix::$suffix"
             )
         }
     }

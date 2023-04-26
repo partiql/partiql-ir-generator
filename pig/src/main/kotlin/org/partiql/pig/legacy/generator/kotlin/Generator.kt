@@ -16,8 +16,8 @@
 package org.partiql.pig.legacy.generator.kotlin
 
 import freemarker.template.Configuration
-import org.partiql.pig.generator.createDefaultFreeMarkerConfiguration
-import org.partiql.pig.generator.setClassLoaderForTemplates
+import org.partiql.pig.legacy.generator.createDefaultFreeMarkerConfiguration
+import org.partiql.pig.legacy.generator.setClassLoaderForTemplates
 import java.io.File
 import java.io.PrintWriter
 import java.time.OffsetDateTime

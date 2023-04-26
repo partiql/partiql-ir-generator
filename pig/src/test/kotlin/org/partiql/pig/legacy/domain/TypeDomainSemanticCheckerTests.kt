@@ -13,16 +13,16 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain
+package org.partiql.pig.legacy.domain
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import org.partiql.pig.domain.model.SemanticErrorContext
-import org.partiql.pig.domain.parser.parseTypeUniverse
-import org.partiql.pig.errors.PigError
-import org.partiql.pig.errors.PigException
+import org.partiql.pig.legacy.errors.PigError
+import org.partiql.pig.legacy.errors.PigException
+import org.partiql.pig.legacy.model.SemanticErrorContext
+import org.partiql.pig.legacy.parser.parseTypeUniverse
 
 class TypeDomainSemanticCheckerTests {
 
@@ -205,6 +205,7 @@ class TypeDomainSemanticCheckerTests {
                 makeErr(1, 53, SemanticErrorContext.NameAlreadyUsed("dup_tag", "some_domain"))
             )
         )
+
         @JvmStatic
         @Suppress("unused")
         fun parametersForNameErrorsTest2() = listOf(

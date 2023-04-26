@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.model
+package org.partiql.pig.legacy.model
 
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.emptyMetaContainer
@@ -61,7 +61,6 @@ class TypeDomain(
      * data types.
      */
     fun computeTransform(destination: TypeDomain): TypeDomain {
-
         val destUserTypes = destination.userTypes
 
         val transformedTypes = userTypes
@@ -106,10 +105,8 @@ class TypeDomain(
 
         if (tag != other.tag) return false
         if (userTypes != other.userTypes) return false
-        if (types != other.types) return false
+        return types == other.types
         // Metas intentionally omitted here
-
-        return true
     }
 
     override fun hashCode(): Int {
@@ -202,9 +199,10 @@ data class PermutedDomain(
                         metas = metas
                     )
 
-                    if (!newTypes.remove(typeToAlter))
-                    // If this happens it's a bug
+                    if (!newTypes.remove(typeToAlter)) {
+                        // If this happens it's a bug
                         error("Failed to remove altered type '${typeToAlter.tag}' for some reason")
+                    }
 
                     newTypes.add(newSumType)
                 }
@@ -225,10 +223,8 @@ data class PermutedDomain(
         if (permutesDomain != other.permutesDomain) return false
         if (excludedTypes != other.excludedTypes) return false
         if (includedTypes != other.includedTypes) return false
-        if (permutedSums != other.permutedSums) return false
+        return permutedSums == other.permutedSums
         // Metas intentionally omitted here
-
-        return true
     }
 
     override fun hashCode(): Int {
@@ -256,10 +252,8 @@ data class PermutedSum(
 
         if (tag != other.tag) return false
         if (removedVariants != other.removedVariants) return false
-        if (addedVariants != other.addedVariants) return false
+        return addedVariants == other.addedVariants
         // Metas intentionally omitted here
-
-        return true
     }
 
     override fun hashCode(): Int {
@@ -286,9 +280,7 @@ data class Transform(
         if (other !is Transform) return false
 
         if (sourceDomainTag != other.sourceDomainTag) return false
-        if (destinationDomainTag != other.destinationDomainTag) return false
-
-        return true
+        return destinationDomainTag == other.destinationDomainTag
     }
 
     override fun hashCode(): Int {

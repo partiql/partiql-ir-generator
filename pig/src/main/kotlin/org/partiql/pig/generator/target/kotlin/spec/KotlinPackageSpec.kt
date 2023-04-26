@@ -25,5 +25,5 @@ import com.squareup.kotlinpoet.FileSpec
  */
 class KotlinPackageSpec(
     val name: String,
-    val files: MutableList<FileSpec> = mutableListOf(),
+    val files: MutableList<FileSpec> = mutableListOf()
 )

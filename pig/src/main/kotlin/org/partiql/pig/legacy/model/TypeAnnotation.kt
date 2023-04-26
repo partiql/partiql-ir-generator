@@ -1,4 +1,4 @@
-package org.partiql.pig.domain.model
+package org.partiql.pig.legacy.model
 
 /**
  * Annotations that are allowed on a UserType definition

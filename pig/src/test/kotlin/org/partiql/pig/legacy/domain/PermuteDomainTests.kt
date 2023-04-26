@@ -13,16 +13,16 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain
+package org.partiql.pig.legacy.domain
 
 import com.amazon.ion.system.IonReaderBuilder
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.partiql.pig.domain.model.Arity
-import org.partiql.pig.domain.model.DataType
-import org.partiql.pig.domain.model.TypeUniverse
-import org.partiql.pig.domain.parser.parseTypeUniverse
+import org.partiql.pig.legacy.model.Arity
+import org.partiql.pig.legacy.model.DataType
+import org.partiql.pig.legacy.model.TypeUniverse
+import org.partiql.pig.legacy.parser.parseTypeUniverse
 
 class PermuteDomainTests {
     /**

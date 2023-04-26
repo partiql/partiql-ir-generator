@@ -13,11 +13,11 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain
+package org.partiql.pig.legacy.domain
 
 import com.amazon.ionelement.api.IonTextLocation
-import org.partiql.pig.errors.ErrorContext
-import org.partiql.pig.errors.PigError
+import org.partiql.pig.legacy.errors.ErrorContext
+import org.partiql.pig.legacy.errors.PigError
 
 fun makeErr(line: Int, col: Int, errorContext: ErrorContext) =
     PigError(IonTextLocation(line.toLong(), col.toLong()), errorContext)

@@ -96,7 +96,7 @@ data class KTuple(
      */
     val isTransformAbstract: Boolean,
     val hasVariadicElement: Boolean,
-    val annotations: List<String>,
+    val annotations: List<String>
 )
 
 data class KSum(
@@ -109,5 +109,5 @@ data class KSum(
      * generated visitor transform `transform*` method will be `abstract`.
      */
     val isTransformAbstract: Boolean,
-    val annotations: List<String>,
+    val annotations: List<String>
 )

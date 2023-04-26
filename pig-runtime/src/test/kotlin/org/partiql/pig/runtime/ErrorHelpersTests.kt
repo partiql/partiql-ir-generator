@@ -33,7 +33,6 @@ class ErrorHelpersTests {
 
     @Test
     fun requireArityOrMalformed() {
-
         assertThrows<MalformedDomainDataException> {
             someSexp.requireArityOrMalformed(1)
         }.also {

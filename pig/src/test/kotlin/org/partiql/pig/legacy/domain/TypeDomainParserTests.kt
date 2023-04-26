@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain
+package org.partiql.pig.legacy.domain
 
 import com.amazon.ion.system.IonReaderBuilder
 import com.amazon.ionelement.api.IonElementLoaderOptions
@@ -23,7 +23,8 @@ import com.amazon.ionelement.api.ionSymbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.partiql.pig.domain.parser.parseTypeUniverse
+import org.partiql.pig.legacy.parser.parseTypeUniverse
+import org.partiql.pig.legacy.toIonElement
 
 class TypeDomainParserTests {
     private val loader = createIonElementLoader(IonElementLoaderOptions(includeLocationMeta = true))
@@ -37,6 +38,7 @@ class TypeDomainParserTests {
                         (product bar a::bat b::(? baz) c::(* blargh 10))))
             """
     )
+
     @Test
     fun testTransform() = runTestCase("(transform domain_a domain_b)")
 

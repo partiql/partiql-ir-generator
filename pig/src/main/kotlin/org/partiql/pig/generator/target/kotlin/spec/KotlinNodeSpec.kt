@@ -38,7 +38,7 @@ sealed class KotlinNodeSpec(
     val builder: TypeSpec.Builder,
     val constructor: FunSpec.Builder,
     val companion: TypeSpec.Builder,
-    val ext: MutableList<TypeSpec> = mutableListOf(),
+    val ext: MutableList<TypeSpec> = mutableListOf()
 ) {
 
     /**
@@ -72,14 +72,14 @@ sealed class KotlinNodeSpec(
         val props: List<Prop>,
         override val nodes: List<KotlinNodeSpec>,
         clazz: ClassName,
-        ext: MutableList<TypeSpec> = mutableListOf(),
+        ext: MutableList<TypeSpec> = mutableListOf()
     ) : KotlinNodeSpec(
         def = product,
         clazz = clazz,
         builder = TypeSpec.classBuilder(clazz),
         constructor = FunSpec.constructorBuilder(),
         companion = TypeSpec.companionObjectBuilder(),
-        ext = ext,
+        ext = ext
     ) {
         override val children: List<KotlinNodeSpec> = nodes
     }
@@ -92,14 +92,14 @@ sealed class KotlinNodeSpec(
         val variants: List<KotlinNodeSpec>,
         override val nodes: List<KotlinNodeSpec>,
         clazz: ClassName,
-        ext: MutableList<TypeSpec> = mutableListOf(),
+        ext: MutableList<TypeSpec> = mutableListOf()
     ) : KotlinNodeSpec(
         def = sum,
         clazz = clazz,
         builder = TypeSpec.classBuilder(clazz).addModifiers(KModifier.SEALED),
         constructor = FunSpec.constructorBuilder(),
         companion = TypeSpec.companionObjectBuilder(),
-        ext = ext,
+        ext = ext
     ) {
         override val children: List<KotlinNodeSpec> = variants + nodes
     }

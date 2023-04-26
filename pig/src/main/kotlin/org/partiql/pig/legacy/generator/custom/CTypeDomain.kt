@@ -15,11 +15,11 @@
 
 package org.partiql.pig.legacy.generator.custom
 
-import org.partiql.pig.domain.model.Arity
-import org.partiql.pig.domain.model.DataType
-import org.partiql.pig.domain.model.NamedElement
-import org.partiql.pig.domain.model.TupleType
-import org.partiql.pig.domain.model.TypeDomain
+import org.partiql.pig.legacy.model.Arity
+import org.partiql.pig.legacy.model.DataType
+import org.partiql.pig.legacy.model.NamedElement
+import org.partiql.pig.legacy.model.TupleType
+import org.partiql.pig.legacy.model.TypeDomain
 
 //
 // Types in this file are exposed to FreeMarker templates at run-time.

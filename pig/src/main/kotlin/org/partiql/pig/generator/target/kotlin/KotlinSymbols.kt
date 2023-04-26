@@ -33,7 +33,7 @@ import org.partiql.pig.model.Universe
  */
 class KotlinSymbols private constructor(
     private val universe: Universe,
-    private val options: KotlinOptions,
+    private val options: KotlinOptions
 ) {
 
     /**

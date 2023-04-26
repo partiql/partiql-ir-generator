@@ -16,10 +16,10 @@
 package org.partiql.pig.legacy.generator.html
 
 import freemarker.template.Template
-import org.partiql.pig.domain.model.TypeDomain
-import org.partiql.pig.generator.createDefaultFreeMarkerConfiguration
-import org.partiql.pig.generator.custom.createCustomFreeMarkerGlobals
-import org.partiql.pig.generator.setClassLoaderForTemplates
+import org.partiql.pig.legacy.generator.createDefaultFreeMarkerConfiguration
+import org.partiql.pig.legacy.generator.custom.createCustomFreeMarkerGlobals
+import org.partiql.pig.legacy.generator.setClassLoaderForTemplates
+import org.partiql.pig.legacy.model.TypeDomain
 import java.io.PrintWriter
 
 fun applyHtmlTemplate(

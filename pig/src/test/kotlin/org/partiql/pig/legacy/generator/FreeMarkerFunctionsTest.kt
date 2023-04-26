@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.generator
+package org.partiql.pig.legacy.generator
 
 import freemarker.cache.StringTemplateLoader
 import org.junit.jupiter.api.Test

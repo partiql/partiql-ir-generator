@@ -13,18 +13,18 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.generator.custom
+package org.partiql.pig.legacy.generator.custom
 
 import com.amazon.ionelement.api.emptyMetaContainer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.partiql.pig.domain.model.Arity
-import org.partiql.pig.domain.model.DataType
-import org.partiql.pig.domain.model.NamedElement
-import org.partiql.pig.domain.model.TupleType
-import org.partiql.pig.domain.model.TypeDomain
-import org.partiql.pig.domain.model.TypeRef
-import org.partiql.pig.domain.model.TypeUniverse
+import org.partiql.pig.legacy.model.Arity
+import org.partiql.pig.legacy.model.DataType
+import org.partiql.pig.legacy.model.NamedElement
+import org.partiql.pig.legacy.model.TupleType
+import org.partiql.pig.legacy.model.TypeDomain
+import org.partiql.pig.legacy.model.TypeRef
+import org.partiql.pig.legacy.model.TypeUniverse
 import java.time.OffsetDateTime
 
 class CreateCustomFreeMarkerGlobalsTest {

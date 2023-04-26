@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.model
+package org.partiql.pig.legacy.model
 
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.MetaContainer
@@ -40,10 +40,8 @@ data class TypeRef(val typeName: String, val arity: Arity, val metas: MetaContai
         if (other !is TypeRef) return false
 
         if (typeName != other.typeName) return false
-        if (arity != other.arity) return false
+        return arity == other.arity
         // Metas intentionally omitted here
-
-        return true
     }
 
     override fun hashCode(): Int {

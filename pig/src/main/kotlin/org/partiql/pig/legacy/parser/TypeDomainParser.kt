@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.parser
+package org.partiql.pig.legacy.parser
 
 import com.amazon.ion.IonReader
 import com.amazon.ion.system.IonReaderBuilder
@@ -25,21 +25,21 @@ import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.SexpElement
 import com.amazon.ionelement.api.SymbolElement
 import com.amazon.ionelement.api.createIonElementLoader
-import org.partiql.pig.domain.model.Arity
-import org.partiql.pig.domain.model.DataType
-import org.partiql.pig.domain.model.NamedElement
-import org.partiql.pig.domain.model.PermutedDomain
-import org.partiql.pig.domain.model.PermutedSum
-import org.partiql.pig.domain.model.Statement
-import org.partiql.pig.domain.model.Transform
-import org.partiql.pig.domain.model.TupleType
-import org.partiql.pig.domain.model.TypeAnnotation
-import org.partiql.pig.domain.model.TypeDomain
-import org.partiql.pig.domain.model.TypeRef
-import org.partiql.pig.domain.model.TypeUniverse
-import org.partiql.pig.util.head
-import org.partiql.pig.util.tag
-import org.partiql.pig.util.tail
+import org.partiql.pig.legacy.model.Arity
+import org.partiql.pig.legacy.model.DataType
+import org.partiql.pig.legacy.model.NamedElement
+import org.partiql.pig.legacy.model.PermutedDomain
+import org.partiql.pig.legacy.model.PermutedSum
+import org.partiql.pig.legacy.model.Statement
+import org.partiql.pig.legacy.model.Transform
+import org.partiql.pig.legacy.model.TupleType
+import org.partiql.pig.legacy.model.TypeAnnotation
+import org.partiql.pig.legacy.model.TypeDomain
+import org.partiql.pig.legacy.model.TypeRef
+import org.partiql.pig.legacy.model.TypeUniverse
+import org.partiql.pig.legacy.util.head
+import org.partiql.pig.legacy.util.tag
+import org.partiql.pig.legacy.util.tail
 
 /** Parses a type universe contained in [universeText]. */
 fun parseTypeUniverse(universeText: String) =
@@ -129,7 +129,7 @@ private fun parseDomainLevelStatement(sexp: SexpElement): DataType.UserType {
 private fun parseVariant(
     bodyArguments: List<AnyElement>,
     metas: MetaContainer,
-    annotations: List<TypeAnnotation>,
+    annotations: List<TypeAnnotation>
 ): DataType.UserType.Tuple {
     val elements = bodyArguments.tail
 

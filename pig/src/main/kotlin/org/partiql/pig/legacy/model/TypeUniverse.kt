@@ -13,9 +13,9 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.model
+package org.partiql.pig.legacy.model
 
-import org.partiql.pig.errors.PigException
+import org.partiql.pig.legacy.errors.PigException
 
 data class TypeUniverse(val statements: List<Statement>) {
 

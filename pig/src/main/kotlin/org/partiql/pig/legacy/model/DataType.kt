@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.domain.model
+package org.partiql.pig.legacy.model
 
 import com.amazon.ionelement.api.MetaContainer
 import com.amazon.ionelement.api.emptyMetaContainer
@@ -154,9 +154,8 @@ sealed class DataType {
                 if (tag != other.tag) return false
                 if (tupleType != other.tupleType) return false
                 if (namedElements != other.namedElements) return false
-                if (isDifferent != other.isDifferent) return false
+                return isDifferent == other.isDifferent
                 // Metas intentionally omitted here
-                return true
             }
 
             override fun hashCode(): kotlin.Int {
@@ -191,10 +190,8 @@ sealed class DataType {
 
                 if (tag != other.tag) return false
                 if (variants != other.variants) return false
-                if (isDifferent != other.isDifferent) return false
+                return isDifferent == other.isDifferent
                 // Metas intentionally omitted here
-
-                return true
             }
 
             override fun hashCode(): kotlin.Int {

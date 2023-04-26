@@ -1,4 +1,4 @@
-package org.partiql.pig.util
+package org.partiql.pig.legacy.util
 
 import com.amazon.ionelement.api.AnyElement
 import com.amazon.ionelement.api.IonElementException

@@ -21,17 +21,17 @@
  */
 package org.partiql.pig.legacy.generator.kotlin
 
-import org.partiql.pig.domain.model.Arity
-import org.partiql.pig.domain.model.DataType
-import org.partiql.pig.domain.model.NamedElement
-import org.partiql.pig.domain.model.Transform
-import org.partiql.pig.domain.model.TupleType
-import org.partiql.pig.domain.model.TypeAnnotation
-import org.partiql.pig.domain.model.TypeDomain
-import org.partiql.pig.domain.model.TypeRef
-import org.partiql.pig.domain.model.TypeUniverse
-import org.partiql.pig.util.snakeToCamelCase
-import org.partiql.pig.util.snakeToPascalCase
+import org.partiql.pig.legacy.model.Arity
+import org.partiql.pig.legacy.model.DataType
+import org.partiql.pig.legacy.model.NamedElement
+import org.partiql.pig.legacy.model.Transform
+import org.partiql.pig.legacy.model.TupleType
+import org.partiql.pig.legacy.model.TypeAnnotation
+import org.partiql.pig.legacy.model.TypeDomain
+import org.partiql.pig.legacy.model.TypeRef
+import org.partiql.pig.legacy.model.TypeUniverse
+import org.partiql.pig.legacy.util.snakeToCamelCase
+import org.partiql.pig.legacy.util.snakeToPascalCase
 
 /**
  * Turns a [TypeUniverse] into a [KTypeUniverse].  If only a subset of domains is requested via the [domainFilters], only those will be present in the output [KTypeUniverse]
@@ -177,7 +177,6 @@ private class KTypeDomainConverter(
         tuple: DataType.UserType.Tuple,
         useKotlinPrimitives: Boolean
     ): KBuilderFunction {
-
         return KBuilderFunction(
             kotlinName = tuple.tag.snakeToCamelCase() + if (!useKotlinPrimitives) "_" else "",
             parameters = tuple.namedElements
@@ -412,9 +411,9 @@ private class KTypeDomainConverter(
     private fun TypeRef.getBaseKotlinTypeName(kotlinPrimitives: Boolean, useAnyElement: Boolean = true): String {
         return when (typeName) {
             "ion" -> "com.amazon.ionelement.api." + if (useAnyElement) "AnyElement" else "IonElement"
-            "int" -> if (kotlinPrimitives) "Long" else "org.partiql.pig.runtime.LongPrimitive"
-            "bool" -> if (kotlinPrimitives) "Boolean" else "org.partiql.pig.runtime.BoolPrimitive"
-            "symbol" -> if (kotlinPrimitives) "String" else "org.partiql.pig.runtime.SymbolPrimitive"
+            "int" -> if (kotlinPrimitives) "Long" else "org.partiql.pig.legacy.runtime.LongPrimitive"
+            "bool" -> if (kotlinPrimitives) "Boolean" else "org.partiql.pig.legacy.runtime.BoolPrimitive"
+            "symbol" -> if (kotlinPrimitives) "String" else "org.partiql.pig.legacy.runtime.SymbolPrimitive"
             else -> this.typeName.snakeToPascalCase()
         }
     }

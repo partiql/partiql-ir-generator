@@ -1,17 +1,17 @@
-package org.partiql.pig.domain
+package org.partiql.pig.legacy
 
 import com.amazon.ionelement.api.IonElement
 import com.amazon.ionelement.api.ionSexpOf
 import com.amazon.ionelement.api.ionSymbol
-import org.partiql.pig.domain.model.DataType
-import org.partiql.pig.domain.model.NamedElement
-import org.partiql.pig.domain.model.PermutedDomain
-import org.partiql.pig.domain.model.PermutedSum
-import org.partiql.pig.domain.model.Statement
-import org.partiql.pig.domain.model.Transform
-import org.partiql.pig.domain.model.TupleType
-import org.partiql.pig.domain.model.TypeDomain
-import org.partiql.pig.domain.model.TypeUniverse
+import org.partiql.pig.legacy.model.DataType
+import org.partiql.pig.legacy.model.NamedElement
+import org.partiql.pig.legacy.model.PermutedDomain
+import org.partiql.pig.legacy.model.PermutedSum
+import org.partiql.pig.legacy.model.Statement
+import org.partiql.pig.legacy.model.Transform
+import org.partiql.pig.legacy.model.TupleType
+import org.partiql.pig.legacy.model.TypeDomain
+import org.partiql.pig.legacy.model.TypeUniverse
 
 /*
  * The [toIonElement] functions below generate an s-expression representation of a [TypeUniverse].

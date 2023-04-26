@@ -88,7 +88,6 @@ class KotlinJacksonPoem(symbols: KotlinSymbols) : KotlinPoem(symbols) {
     }
 
     override fun apply(node: KotlinNodeSpec.Product) {
-
         // --- Serialization
 
         // Ignore all properties not in the type definition, with the caveat that the Jackson poem must be last

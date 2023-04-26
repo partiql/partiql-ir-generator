@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.util
+package org.partiql.pig.legacy.util
 
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -33,6 +33,7 @@ class CapitalizerTests {
         assertEquals("OneTwoThree", "one_two_three".snakeToPascalCase())
         assertEquals("OneTwo", "one__two".snakeToPascalCase())
     }
+
     @Test
     fun snakeToCamelCase() {
         assertEquals("one", "one".snakeToCamelCase())

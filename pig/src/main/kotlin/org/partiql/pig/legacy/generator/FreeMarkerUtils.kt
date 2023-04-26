@@ -19,9 +19,9 @@ import freemarker.template.Configuration
 import freemarker.template.TemplateExceptionHandler
 import freemarker.template.TemplateMethodModelEx
 import freemarker.template.TemplateModelException
-import org.partiql.pig.generator.kotlin.KotlinDomainFreeMarkerGlobals
-import org.partiql.pig.util.snakeToCamelCase
-import org.partiql.pig.util.snakeToPascalCase
+import org.partiql.pig.legacy.generator.kotlin.KotlinDomainFreeMarkerGlobals
+import org.partiql.pig.legacy.util.snakeToCamelCase
+import org.partiql.pig.legacy.util.snakeToPascalCase
 
 /**
  * When applying a template for a pre-packaged language target such as Kotlin, we
@@ -33,7 +33,7 @@ internal fun Configuration.setClassLoaderForTemplates() {
     // the classloader of [TopLevelFreeMarkerGlobals] and set the root package.
     this.setClassLoaderForTemplateLoading(
         KotlinDomainFreeMarkerGlobals::class.java.classLoader,
-        "/org/partiql/pig/templates"
+        "/org.partiql.pig.legacy.templates"
     )
 }
 

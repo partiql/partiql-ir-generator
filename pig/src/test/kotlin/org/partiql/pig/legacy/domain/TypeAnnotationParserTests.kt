@@ -1,12 +1,12 @@
-package org.partiql.pig.domain
+package org.partiql.pig.legacy.domain
 
 import com.amazon.ion.system.IonReaderBuilder
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import org.partiql.pig.domain.model.DataType
-import org.partiql.pig.domain.model.TypeAnnotation
-import org.partiql.pig.domain.parser.parseTypeUniverse
+import org.partiql.pig.legacy.model.DataType
+import org.partiql.pig.legacy.model.TypeAnnotation
+import org.partiql.pig.legacy.parser.parseTypeUniverse
 
 class TypeAnnotationParserTests {
 
@@ -57,7 +57,7 @@ class TypeAnnotationParserTests {
 
         data class TestCase(
             val definition: String,
-            val assertion: (type: DataType.UserType) -> Unit,
+            val assertion: (type: DataType.UserType) -> Unit
         )
 
         @JvmStatic
@@ -82,7 +82,7 @@ class TypeAnnotationParserTests {
                         "other" -> assert(v.annotations.isEmpty())
                     }
                 }
-            },
+            }
         )
     }
 }

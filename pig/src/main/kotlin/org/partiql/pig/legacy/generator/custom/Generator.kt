@@ -15,8 +15,8 @@
 
 package org.partiql.pig.legacy.generator.custom
 
-import org.partiql.pig.domain.model.TypeDomain
-import org.partiql.pig.generator.createDefaultFreeMarkerConfiguration
+import org.partiql.pig.legacy.generator.createDefaultFreeMarkerConfiguration
+import org.partiql.pig.legacy.model.TypeDomain
 import java.io.File
 import java.io.PrintWriter
 import java.time.OffsetDateTime

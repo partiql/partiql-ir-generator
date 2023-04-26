@@ -1,7 +1,7 @@
 package org.partiql.pig.legacy.generator.ion
 
-import org.partiql.pig.domain.model.TypeDomain
-import org.partiql.pig.legacy.domain.toIonElement
+import org.partiql.pig.legacy.model.TypeDomain
+import org.partiql.pig.legacy.toIonElement
 import java.io.PrintWriter
 
 /**

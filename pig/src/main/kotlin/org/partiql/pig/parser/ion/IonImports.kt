@@ -15,7 +15,7 @@ import org.partiql.pig.model.Imports
  */
 internal class IonImports private constructor(
     val symbols: Set<String>,
-    val map: Map<String, Imports>,
+    val map: Map<String, Imports>
 ) {
 
     companion object {

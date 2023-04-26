@@ -13,7 +13,7 @@
  *  permissions and limitations under the License.
  */
 
-package org.partiql.pig.cmdline
+package org.partiql.pig.legacy.cmdline
 
 import java.io.File
 

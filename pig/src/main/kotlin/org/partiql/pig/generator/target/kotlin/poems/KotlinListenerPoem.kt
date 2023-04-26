@@ -32,7 +32,7 @@ class KotlinListenerPoem(symbols: KotlinSymbols) : KotlinPoem(symbols) {
         universe.packages.add(
             KotlinPackageSpec(
                 name = listenerPackageName,
-                files = mutableListOf(universe.listener(), walker()),
+                files = mutableListOf(universe.listener(), walker())
             )
         )
         super.apply(universe)

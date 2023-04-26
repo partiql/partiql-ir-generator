@@ -69,7 +69,7 @@ class KotlinVisitorPoem(symbols: KotlinSymbols) : KotlinPoem(symbols) {
         universe.packages.add(
             KotlinPackageSpec(
                 name = visitorPackageName,
-                files = universe.visitors().toMutableList(),
+                files = universe.visitors().toMutableList()
             )
         )
         super.apply(universe)

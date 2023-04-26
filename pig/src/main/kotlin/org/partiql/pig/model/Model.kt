@@ -5,12 +5,12 @@ import net.pearx.kasechange.toPascalCase
 typealias Imports = Map<String, String>
 
 /**
- * Top-level model of a Sprout grammar
+ * Top-level model of a Pig grammar
  */
 class Universe(
     val id: String,
     val types: List<TypeDef>,
-    val imports: Map<String, Imports>,
+    val imports: Map<String, Imports>
 ) {
 
     fun forEachType(action: (TypeDef) -> Unit) {
@@ -91,7 +91,7 @@ sealed class TypeDef(val ref: TypeRef.Path) {
  */
 sealed class TypeRef(
     val id: String,
-    val nullable: Boolean,
+    val nullable: Boolean
 ) {
 
     override fun equals(other: Any?) =
@@ -103,43 +103,43 @@ sealed class TypeRef(
 
     class Scalar(
         val type: ScalarType,
-        nullable: Boolean = false,
+        nullable: Boolean = false
     ) : TypeRef(
         id = type.toString().toLowerCase(),
-        nullable = nullable,
+        nullable = nullable
     )
 
     class List(
         val type: TypeRef,
-        nullable: Boolean = false,
+        nullable: Boolean = false
     ) : TypeRef(
         id = "list<$type>",
-        nullable = nullable,
+        nullable = nullable
     )
 
     class Set(
         val type: TypeRef,
-        nullable: Boolean = false,
+        nullable: Boolean = false
     ) : TypeRef(
         id = "set<$type>",
-        nullable = nullable,
+        nullable = nullable
     )
 
     class Map(
         val keyType: Scalar,
         val valType: TypeRef,
-        nullable: Boolean = false,
+        nullable: Boolean = false
     ) : TypeRef(
         id = "map<$keyType, $valType>",
-        nullable = nullable,
+        nullable = nullable
     )
 
     class Path(
         nullable: Boolean = false,
-        vararg ids: String,
+        vararg ids: String
     ) : TypeRef(
         id = ids.joinToString("."),
-        nullable = nullable,
+        nullable = nullable
     ) {
         val path = ids.asList()
         val name = ids.last().toPascalCase()
@@ -147,7 +147,7 @@ sealed class TypeRef(
 
     class Import(
         val symbol: String,
-        nullable: Boolean = false,
+        nullable: Boolean = false
     ) : TypeRef(
         id = "import<$symbol>",
         nullable = nullable
@@ -159,7 +159,7 @@ sealed class TypeRef(
  */
 sealed class TypeProp(
     val name: String,
-    val ref: TypeRef,
+    val ref: TypeRef
 ) {
 
     override fun toString() = "$name: $ref"
@@ -183,5 +183,5 @@ enum class ScalarType {
     FLOAT, // IEEE 754 (32 bit)
     DOUBLE, // IEEE 754 (64 bit)
     BYTES, // Array of unsigned bytes
-    STRING, // Unicode char sequence
+    STRING // Unicode char sequence
 }

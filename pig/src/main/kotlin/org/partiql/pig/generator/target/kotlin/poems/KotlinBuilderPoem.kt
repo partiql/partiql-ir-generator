@@ -65,7 +65,7 @@ class KotlinBuilderPoem(symbols: KotlinSymbols) : KotlinPoem(symbols) {
                 "block",
                 LambdaTypeName.get(
                     receiver = dslClass,
-                    returnType = boundedT,
+                    returnType = boundedT
                 )
             ).build()
         )
@@ -81,7 +81,7 @@ class KotlinBuilderPoem(symbols: KotlinSymbols) : KotlinPoem(symbols) {
                 "block",
                 LambdaTypeName.get(
                     receiver = factoryClass,
-                    returnType = boundedT,
+                    returnType = boundedT
                 )
             ).build()
         )
@@ -104,7 +104,7 @@ class KotlinBuilderPoem(symbols: KotlinSymbols) : KotlinPoem(symbols) {
                     FileSpec.builder(builderPackageName, dslName)
                         .addFunction(dslFunc)
                         .addType(dslSpec.build())
-                        .build(),
+                        .build()
                 )
             )
         )

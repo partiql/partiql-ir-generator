@@ -14,35 +14,36 @@
  */
 
 plugins {
-    id(Pig_conventions_gradle.Plugins.conventions)
-    // id(Plugins.application)
-    // id(Plugins.publish)
+    id(Plugins.conventions)
+    id(Plugins.application)
+    id(Plugins.publish)
 }
 
-// dependencies {
-//     implementation(Deps.dotlin)
-//     implementation(Deps.ionElement)
-//     implementation(Deps.kasechange)
-//     implementation(Deps.kotlinPoet)
-//     implementation(Deps.picoCli)
-// }
-//
-// application {
-//     applicationName = "pig"
-//     mainClass.set("org.partiql.pig.PigKt")
-// }
-//
-// distributions {
-//     main {
-//         distributionBaseName.set("pig")
-//     }
-// }
-//
-// tasks.register<GradleBuild>("install") {
-//     tasks = listOf("assembleDist", "distZip", "installDist")
-// }
-//
-// publish {
-//     artifactId = "pig"
-//     name = "PartiQL I.R. Generator (a.k.a P.I.G.)"
-// }
+dependencies {
+    implementation(Deps.dotlin)
+    implementation(Deps.freemarker)
+    implementation(Deps.ionElement)
+    implementation(Deps.kasechange)
+    implementation(Deps.kotlinPoet)
+    implementation(Deps.picoCli)
+}
+
+application {
+    applicationName = "pig"
+    mainClass.set("org.partiql.pig.PigKt")
+}
+
+distributions {
+    main {
+        distributionBaseName.set("pig")
+    }
+}
+
+tasks.register<GradleBuild>("install") {
+    tasks = listOf("assembleDist", "distZip", "installDist")
+}
+
+publish {
+    artifactId = "pig"
+    name = "PartiQL I.R. Generator (a.k.a P.I.G.)"
+}

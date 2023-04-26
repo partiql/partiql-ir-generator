@@ -34,7 +34,6 @@ class IntermediateRecordTests {
 
     @Test
     fun happyPath() {
-
         val someRecord = """
             (some_record
                 (foo 1)

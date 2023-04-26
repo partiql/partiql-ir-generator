@@ -72,7 +72,7 @@ internal class IonSymbols private constructor(val root: Node) {
             assertNonReserved(id, if (parent != null) "child of $parent" else "top-level type")
             val node = Node(
                 id = id,
-                parent = parent,
+                parent = parent
             )
             v.forEach { field ->
                 when {

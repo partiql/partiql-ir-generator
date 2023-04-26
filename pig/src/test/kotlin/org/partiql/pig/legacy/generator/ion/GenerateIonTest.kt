@@ -1,8 +1,8 @@
-package org.partiql.pig.generator.ion
+package org.partiql.pig.legacy.generator.ion
 
 import com.amazon.ion.system.IonReaderBuilder
 import org.junit.jupiter.api.Test
-import org.partiql.pig.domain.parser.parseTypeUniverse
+import org.partiql.pig.legacy.parser.parseTypeUniverse
 import java.io.PrintWriter
 import java.io.StringWriter
 import kotlin.test.assertEquals

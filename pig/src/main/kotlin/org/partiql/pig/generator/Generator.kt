@@ -18,7 +18,7 @@ package org.partiql.pig.generator
 import org.partiql.pig.model.Universe
 
 /**
- * Interface for a Sprout generator
+ * Interface for a Pig generator
  */
 interface Generator<T> {
 

@@ -1,8 +1,7 @@
 package org.partiql.pig.generator.target.kotlin
 
-import org.partiql.pig.parser.SproutParser
+import org.partiql.pig.parser.PigParser
 import picocli.CommandLine
-import picocli.CommandLine.Command
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream
@@ -43,7 +42,8 @@ class KotlinCommand : Callable<Int> {
 
     @CommandLine.Option(
         names = ["--poems"],
-        description = ["Poem templates to apply"],
+        split = ",",
+        description = ["Poem templates to apply"]
     )
     var poems: List<String> = emptyList()
 
@@ -56,14 +56,14 @@ class KotlinCommand : Callable<Int> {
 
     override fun call(): Int {
         val input = BufferedReader(FileInputStream(file).reader()).readText()
-        val parser = SproutParser.default()
+        val parser = PigParser.default()
         val universe = parser.parse(id, input)
         val options = KotlinOptions(
             packageRoot = packageRoot,
             poems = poems,
             node = KotlinNodeOptions(
-                modifier = modifier,
-            ),
+                modifier = modifier
+            )
         )
         val generator = KotlinGenerator(options)
         val result = generator.generate(universe)

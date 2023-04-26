@@ -21,7 +21,7 @@ import org.partiql.pig.parser.ion.IonTypeParser
 /**
  * Returns a model of the input type universe definition.
  */
-interface SproutParser {
+interface PigParser {
 
     /**
      * @param id    Type Universe identifier
@@ -32,6 +32,6 @@ interface SproutParser {
 
     companion object {
 
-        fun default(): SproutParser = IonTypeParser
+        fun default(): PigParser = IonTypeParser
     }
 }
