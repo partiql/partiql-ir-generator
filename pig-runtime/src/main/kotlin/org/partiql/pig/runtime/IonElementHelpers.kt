@@ -82,3 +82,8 @@ val List<AnyElement>.head: AnyElement
 
 /** Returns a copy of the list with the first element removed. */
 val List<AnyElement>.tail: List<AnyElement> get() = this.subList(1, this.size)
+
+/**
+ * Returns a copy of the list with each element as AnyElement
+ */
+fun List<IonElement>.asAnyElement(): List<AnyElement> = this.map { it.asAnyElement() }
