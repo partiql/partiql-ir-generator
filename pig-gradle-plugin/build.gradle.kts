@@ -9,7 +9,7 @@ repositories {
 }
 
 object Versions {
-    const val pig = "0.6.1"
+    const val pig = "0.6.2"
     const val kotlinTarget = "1.4"
     const val javaTarget = "1.8"
 }
