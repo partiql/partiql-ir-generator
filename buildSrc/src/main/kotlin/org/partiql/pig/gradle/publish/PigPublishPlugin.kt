@@ -8,6 +8,7 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
+import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.getByName
@@ -20,7 +21,7 @@ import java.io.File
 
 /**
  * Gradle plugin to consolidates the following publishing logic
- * - Maven Publising
+ * - Maven Publishing
  * - Signing
  * - SourcesJar
  * - Dokka + JavadocJar
@@ -39,15 +40,26 @@ abstract class PigPublishPlugin : Plugin<Project> {
     private fun Project.publish(ext: PublishExtension) {
         val releaseVersion = !version.toString().endsWith("-SNAPSHOT")
 
-        // Generate "javadoc"
-        tasks.getByName<DokkaTask>("dokkaHtml") {
-            outputDirectory.set(File("${buildDir}/javadoc"))
-        }
+        // Run dokka unless the environment explicitly specifies false
+        val runDokka = (System.getenv()["DOKKA"] != "false") || releaseVersion
 
         // Include "sources" and "javadoc" in the JAR
         extensions.getByType(JavaPluginExtension::class.java).run {
             withSourcesJar()
             withJavadocJar()
+        }
+
+        tasks.getByName<DokkaTask>("dokkaHtml") {
+            onlyIf { runDokka }
+            outputDirectory.set(File("${buildDir}/javadoc"))
+        }
+
+        // Add dokkaHtml output to the javadocJar
+        tasks.getByName<Jar>("javadocJar") {
+            onlyIf { runDokka }
+            dependsOn(JavaPlugin.CLASSES_TASK_NAME)
+            archiveClassifier.set("javadoc")
+            from(tasks.named("dokkaHtml"))
         }
 
         // Setup Maven Central Publishing

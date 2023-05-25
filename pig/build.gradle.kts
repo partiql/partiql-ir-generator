@@ -38,21 +38,6 @@ application {
     mainClass.set("org.partiql.pig.MainKt")
 }
 
-tasks.jar {
-    manifest {
-        attributes["Main-Class"] = "org.partiql.pig.MainKt"
-    }
-    from(
-        configurations.compile.get().map {
-            if (it.isDirectory) {
-                it
-            } else {
-                zipTree(it)
-            }
-        }
-    )
-}
-
 tasks.register("generateProperties") {
     doLast {
         val propertiesFile = file("$propertiesDir/pig.properties")

@@ -22,10 +22,25 @@ repositories {
     gradlePluginPortal()
 }
 
+object Versions {
+    const val detekt = "1.20.0-RC1"
+    const val dokka = "1.6.10"
+    const val kotlin = "1.5.+"
+    const val ktlint = "10.2.1"
+}
+
+object Plugins {
+    const val detekt = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${Versions.detekt}"
+    const val dokka = "org.jetbrains.dokka:dokka-gradle-plugin:${Versions.dokka}"
+    const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+    const val ktlint = "org.jlleitschuh.gradle:ktlint-gradle:${Versions.ktlint}"
+}
+
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0")
-    implementation("org.jlleitschuh.gradle:ktlint-gradle:10.3.0")
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.4.0")
+    implementation(Plugins.detekt)
+    implementation(Plugins.dokka)
+    implementation(Plugins.kotlinGradle)
+    implementation(Plugins.ktlint)
 }
 
 allprojects {
