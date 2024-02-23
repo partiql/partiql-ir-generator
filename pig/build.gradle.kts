@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
 /*
  * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -10,55 +12,58 @@
  * or in the "license" file accompanying this file. This file is distributed
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
- *  permissions and limitations under the License.
+ * permissions and limitations under the License.
  */
-import java.io.FileOutputStream
-import java.util.Properties
 
 plugins {
-    id("application")
-    id("pig.conventions")
-    id("org.partiql.pig.gradle.publish")
+    id(Plugins.antlr)
+    id(Plugins.conventions)
+    id(Plugins.application)
 }
-
-publish {
-    artifactId = "pig"
-    name = "PartiQL I.R. Generator (a.k.a P.I.G.)"
-}
-
-val propertiesDir = "$buildDir/properties"
 
 dependencies {
-    implementation("org.freemarker:freemarker:2.3.30")
-    implementation("net.sf.jopt-simple:jopt-simple:5.0.4")
-    implementation("com.amazon.ion:ion-element:1.0.0")
+    antlr(Deps.antlr)
+    implementation(Deps.antlrRuntime)
+    implementation(Deps.ionElement)
+    implementation(Deps.kasechange)
+    implementation(Deps.picoCli)
+}
+
+tasks.generateGrammarSource {
+    val antlrPackage = "org.partiql.pig.antlr"
+    val antlrSources = "$buildDir/generated-src/${antlrPackage.replace('.', '/')}"
+    maxHeapSize = "64m"
+    arguments = listOf("-visitor", "-long-messages", "-package", antlrPackage)
+    outputDirectory = File(antlrSources)
+}
+
+tasks.javadoc {
+    exclude("**/antlr/**")
+}
+
+tasks.compileKotlin {
+    dependsOn(tasks.generateGrammarSource)
+}
+
+tasks.findByName("sourcesJar")?.apply {
+    dependsOn(tasks.generateGrammarSource)
+}
+
+kotlin {
+    explicitApi = ExplicitApiMode.Strict
+}
+
+distributions {
+    main {
+        distributionBaseName.set("pig")
+    }
+}
+
+tasks.register<GradleBuild>("install") {
+    tasks = listOf("assembleDist", "distZip", "installDist")
 }
 
 application {
+    applicationName = "pig"
     mainClass.set("org.partiql.pig.MainKt")
-}
-
-tasks.register("generateProperties") {
-    doLast {
-        val propertiesFile = file("$propertiesDir/pig.properties")
-        propertiesFile.parentFile.mkdirs()
-        val properties = Properties()
-        properties.setProperty("version", version.toString())
-        val out = FileOutputStream(propertiesFile)
-        properties.store(out, null)
-    }
-}
-
-tasks.named("processResources") {
-    dependsOn("generateProperties")
-}
-
-sourceSets {
-    main {
-        output.dir(propertiesDir)
-    }
-}
-
-tasks.build {
-    finalizedBy(tasks.installDist)
 }

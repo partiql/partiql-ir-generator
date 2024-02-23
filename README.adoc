@@ -1,0 +1,244 @@
+= RIDL
+:toc:
+:toc-title: Page Contents
+:sectlinks:
+
+Here we define a reasonable interface definition language from which can produce efficient Ion encodings. The interface definition language is itself a valid Ion document which takes inspiration (and lessons) from the following technologies:
+
+* xref:https://github.com/partiql/partiql-ir-generator/wiki/Domain-Modeling-Language[PIG Domain Modeling Language]
+* xref:https://protobuf.com/docs/language-spec[Protobuf IDL]
+* xref:https://avro.apache.org/docs/1.11.1/specification/[Avro IDL]
+* xref:https://github.com/partiql/partiql-lang-kotlin/blob/main/lib/sprout/README.md[Sprout IR Modeling]
+
+The ethos of this project is to evolve the Ion serde capabilities of PIG outside the context of graphical-IR modeling.
+
+== License
+
+This project is licensed under the Apache-2.0 License.
+
+== Notation
+
+This document uses the xref:https://github.com/antlr/antlr4/blob/master/doc/grammars.md[ANTLR grammar notation] to define the IDL. A complete grammar can be found at the end.
+
+== Interface Definition Language
+
+=== Document
+
+[source,antlr]
+----
+document : include* definition*;
+
+include: '(' include string ')';
+
+definition
+    : product
+    | sum
+    | enum
+    | fixed
+    | unit
+    ;
+----
+
+=== References and Identifiers
+
+[source,antlr]
+----
+type
+    : primitive
+    | container
+    | path
+    ;
+
+path
+    : name
+    | '\' '.'? name ('.' name)+ '
+    ;
+
+name: [a-z_]+;
+----
+
+=== Primitive Types
+
+[source,antlr]
+----
+primitive
+    : 'bool'
+    | 'int32'
+    | 'int64'
+    | 'float32'
+    | 'float64'
+    | 'decimal'
+    | 'string'
+    | 'bytes'
+    ;
+----
+
+=== Container Types
+
+[source,antlr]
+----
+container
+    : list
+    | map
+    | set
+    ;
+----
+
+==== List
+
+[source,antlr]
+----
+list : '(' 'list' type ')';
+----
+
+==== Map
+
+[source,antlr]
+----
+map : '(' 'map' k=type v=type ')';
+----
+
+==== Set
+
+[source,antlr]
+----
+set : '(' 'set' type ')';
+----
+
+=== User-Defined Types
+
+==== Product
+
+[source,antlr]
+----
+product : '(' 'product' name operand+ definition* ')';
+
+operand: name '::' type;
+----
+
+.Example
+[source,ion]
+----
+(product coordinates
+    lat::decimal
+    lon::decimal
+
+    (product nested
+        x::string
+        y::string
+    )
+)
+----
+
+==== Sum
+
+[source,antlr]
+----
+sum : '(' 'sum' name definition+ ')';
+----
+
+.Example
+[source,ion]
+----
+(sum my_sum
+    (product variant_a
+        x::int32
+        y::int32
+    )
+    (product variant_b
+        u::int32
+        v::int32
+    )
+)
+----
+
+==== Enum
+
+[source,ion]
+----
+enum : '(' 'enum' name enumerators ')'
+
+enumerators : '(' enumerator+ ')'
+
+enumerator : [A-Z]+
+----
+
+.Example
+[source,ion]
+----
+(enum my_enum (A, B, C))
+----
+
+==== Fixed
+
+[source,antlr]
+----
+fixed : '(' 'fixed' name integer ')';
+----
+
+.Example
+[source,ion]
+----
+(fixed uuid 16)
+----
+
+==== Unit
+
+[source,antlr]
+----
+unit : '(' unit name ')'
+----
+
+== Amazon Ion
+
+=== Ion Encoding
+
+==== Primitives
+
+PLACEHOLDER
+
+==== Collections
+
+PLACEHOLDER
+
+==== Algebraic
+
+PLACEHOLDER
+
+==== Summary
+
+PLACEHOLDER
+
+=== Ion Schema Mapping
+
+PLACEHOLDER
+
+== ANTLR Grammar
+
+PLACEHOLDER
+
+=== Reserved Words
+
+[source]
+----
+bool
+int32
+int64
+float32
+float64
+decimal
+date
+time
+timestamp
+bytes
+
+list
+map
+set
+
+product
+sum
+enum
+fixed
+unit
+----
