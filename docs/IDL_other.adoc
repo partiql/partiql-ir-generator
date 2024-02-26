@@ -1,0 +1,186 @@
+= PIG — Interface Definition Language
+:toc:
+:toc-title: Page Contents
+:sectlinks:
+
+IMPORTANT: This specifically does not use an Ion DSL.
+
+This document defines an interface definition language for an Ion serialization.
+
+== Notation
+
+This document uses the xref:https://github.com/antlr/antlr4/blob/master/doc/grammars.md[ANTLR grammar notation] to define the IDL.
+
+== Interface Definition Language
+
+=== Document
+
+[source,antlr]
+----
+document : include* definition*;
+
+include: 'include' string;
+
+definition
+    : product
+    | sum
+    | enum
+    | fixed
+    | unit
+    ;
+----
+
+=== References and Identifiers
+
+[source,antlr]
+----
+type
+    : primitive
+    | container
+    | path
+    ;
+
+path
+    : name ('.' name)*
+    ;
+
+name: [a-z_]+;
+----
+
+=== Primitive Types
+
+[source,antlr]
+----
+primitive
+    : 'bool'
+    | 'int32'   // 32-bit signed integer
+    | 'int64'   // 64-bit signed integer
+    | 'float32' // IEEE 754 (32 bit)
+    | 'float64' // IEEE 754 (64 bit)
+    | 'decimal' // Decimal-encoded real numbers
+    | 'string'  // Unicode character sequence
+    | 'bytes'   // Array of unsigned bytes
+    | 'ion'     // Raw Ion value
+    ;
+----
+
+=== Container Types
+
+[source,antlr]
+----
+container
+    : list
+    | map
+    | set
+    ;
+----
+
+==== List
+
+[source,antlr]
+----
+list : 'list' '<' type '>';
+----
+
+==== Map
+
+[source,antlr]
+----
+map : 'map' '<' key=type ',' value=type '>';
+----
+
+==== Set
+
+[source,antlr]
+----
+set : 'set' '<' type '>';
+----
+
+=== User-Defined Types
+
+==== Product
+
+[source,antlr]
+----
+product : 'product' '{' operand+ definition* '}';
+
+operand: name ':' type;
+----
+
+.Example
+[source]
+----
+product node {
+    a_map: map<string, string>;    // builtin map type
+    b_map: list<entry>;            // alternative
+
+    product entry {
+      key: string;
+      value: string;
+    }
+}
+----
+
+==== Sum
+
+[source,antlr]
+----
+sum : 'sum' name '{' variant+ '}';
+
+variant : sum | product;
+----
+
+.Example
+[source]
+----
+sum node {
+
+  product inner {
+    left: node;
+    right: node;
+  }
+  
+  product leaf {
+    value: string;
+  }
+}
+----
+
+==== Enum
+
+[source]
+----
+enum : 'enum' name '{' enumerator+ '}'
+
+enumerator : [A-Z]+
+----
+
+.Example
+[source]
+----
+enum my_enum { A, B, C }
+----
+
+==== Fixed
+
+Define a type with a fixed size in bytes.
+
+[source,antlr]
+----
+fixed : 'fixed' name '(' integer ')';
+----
+
+.Example
+[source]
+----
+fixed uuid(16)
+----
+
+==== Unit
+
+Define a type which is represented by only its name.
+
+[source,antlr]
+----
+unit : 'unit' name
+----
