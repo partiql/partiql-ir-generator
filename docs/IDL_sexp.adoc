@@ -1,0 +1,348 @@
+= PIG — Interface Definition Language
+:toc:
+:toc-title: Page Contents
+:sectlinks:
+
+This document defines an interface definition language for an Ion serialization.
+
+== Notation
+
+This document uses the xref:https://github.com/antlr/antlr4/blob/master/doc/grammars.md[ANTLR grammar notation] to define the IDL.
+
+== Interface Definition Language
+
+=== Document
+
+[source,antlr]
+----
+document : include* definition*;
+
+include: '(' include string ')';
+
+definition
+    : product
+    | sum
+    | enum
+    | fixed
+    | unit
+    ;
+----
+
+=== References and Identifiers
+
+[source,antlr]
+----
+type
+    : primitive
+    | container
+    | path
+    ;
+
+path
+    : name
+    | '\' '.'? name ('.' name)+ '
+    ;
+
+name: [a-z_]+;
+----
+
+=== Primitive Types
+
+[source,antlr]
+----
+primitive
+    : 'bool'
+    | 'int32'   // 32-bit signed integer
+    | 'int64'   // 64-bit signed integer
+    | 'float32' // IEEE 754 (32 bit)
+    | 'float64' // IEEE 754 (64 bit)
+    | 'decimal' // Decimal-encoded real numbers
+    | 'string'  // Unicode character sequence
+    | 'bytes'   // Array of unsigned bytes
+    | 'ion'     // Raw Ion value
+    ;
+----
+
+=== Container Types
+
+[source,antlr]
+----
+container
+    : list
+    | map
+    | set
+    ;
+----
+
+==== List
+
+[source,antlr]
+----
+list : '(' 'list' type ')';
+----
+
+==== Map
+
+[source,antlr]
+----
+map : '(' 'map' k=type v=type ')';
+----
+
+==== Set
+
+[source,antlr]
+----
+set : '(' 'set' type ')';
+----
+
+=== User-Defined Types
+
+==== Product
+
+[source,antlr]
+----
+product : '(' 'product' name operand+ definition* ')';
+
+operand: name '::' type;
+----
+
+.Example
+[source,ion]
+----
+(product coordinates
+    lat::decimal
+    lon::decimal
+
+    (product nested
+        x::string
+        y::string
+    )
+)
+----
+
+==== Sum
+
+[source,antlr]
+----
+sum : '(' 'sum' name definition+ ')';
+----
+
+.Example
+[source,ion]
+----
+(sum my_sum
+    (product variant_a
+        x::int32
+        y::int32
+    )
+    (product variant_b
+        u::int32
+        v::int32
+    )
+)
+----
+
+==== Enum
+
+[source,ion]
+----
+enum : '(' 'enum' name enumerators ')'
+
+enumerators : '(' enumerator+ ')'
+
+enumerator : [A-Z]+
+----
+
+.Example
+[source,ion]
+----
+(enum my_enum (A, B, C))
+----
+
+==== Fixed
+
+Define a type with a fixed size in bytes.
+
+[source,antlr]
+----
+fixed : '(' 'fixed' name integer ')';
+----
+
+.Example
+[source,ion]
+----
+(fixed uuid 16)
+----
+
+==== Unit
+
+Define a type which is represented by only its name.
+
+[source,antlr]
+----
+unit : '(' unit name ')'
+----
+
+== Amazon Ion
+
+
+This section defines how type definitions are mapped to Ion values as well as Ion schema. For details on Ion, see xref:https://amazon-ion.github.io/ion-docs/docs/spec.html[Ion Specification].
+
+=== Ion Encoding
+
+==== Primitives
+
+Primitive PIG types are encoded via the Ion types shown in the table.
+
+|===
+| PIG Type | Ion Type
+
+| bool | bool
+| int32 | int
+| int64 | int
+| float32 | float
+| float64 | float
+| decimal | decimal
+| string | string
+| bytes | blob
+| ion | any
+
+|===
+
+==== Collections
+
+**List**
+
+A list is encoded an Ion list.
+
+**Set**
+
+A set is encoded as an Ion list.
+
+**Map**
+
+A map is encoded as an Ion list whose values are key-value pair s-expressions. For example,
+
+[source,ion]
+----
+(map int32 string)
+
+// The map value { 0: 'a', 1: 'b' } is encoded as
+
+[(0 "a"),(1 "b")]
+----
+
+==== User-Defined Types
+
+All type names are serialized as quoted Ion symbols and are fully-qualified using "." as a delimiter.
+
+.Example
+[source,ion]
+----
+// Definition
+(record outer
+  x::bool
+  y::bool
+
+  (record inner
+    a::int32
+    b::int32
+  )
+)
+
+// Names
+'outer'
+'outer.inner'
+----
+
+**Product**
+
+A product type is serialized as an Ion s-expression where the name symbol is the head and the operands are the tail.
+
+[source,ion]
+----
+// Definition
+(product coordinates
+    lat::decimal
+    lon::decimal
+)
+
+// Example
+(coordinates 47.6205 122.3493)
+----
+
+**Sum**
+
+A sum type takes on one of several variants. There is no serialization for a sum type, only one of its variants.
+As of now, only product types are allowed as variants of a sum type.
+
+**Enum**
+
+Enum types are serialized as Ion symbols, using the value as a name.
+
+.Example
+----
+// Definition
+(enum example (A, B))
+
+// Example
+'example.A'
+'example.B'
+----
+
+**Fixed**
+
+A fixed type is serialized as an Ion blob whose length is determined by the fixed type size.
+
+**Unit**
+
+A unit is serialized to Ion with its name as a symbol.
+
+.Example
+[source,ion]
+----
+(unit my_type)
+
+// ion encoding
+'my_type'
+----
+
+=== Ion Schema Mapping
+
+PLACEHOLDER
+
+== Code Generation
+
+PLACEHOLDER
+
+== Complete Grammar
+
+PLACEHOLDER
+
+=== Reserved Words
+
+[source]
+----
+bool
+int32
+int64
+float32
+float64
+string
+bytes
+ion
+
+list
+map
+set
+
+product
+sum
+enum
+fixed
+unit
+----
+
+== License
+
+This project is licensed under the Apache-2.0 License.
