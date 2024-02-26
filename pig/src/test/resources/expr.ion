@@ -1,0 +1,18 @@
+//@formatter:off
+(sum expr
+
+  (product variable name::string)
+
+  (product unary
+    arg::expr
+    op::op
+    (enum op (NOT POS NEG))
+  )
+
+  (product binary
+    lhs::expr
+    rhs::expr
+    op::op
+    (enum op (ADD SUB MULT DIV))
+  )
+)

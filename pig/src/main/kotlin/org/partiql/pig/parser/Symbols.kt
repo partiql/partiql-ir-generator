@@ -19,26 +19,26 @@ import org.antlr.v4.runtime.tree.TerminalNode
 import org.partiql.pig.antlr.RIDLBaseVisitor
 import org.partiql.pig.antlr.RIDLParser
 
-/**
- * Produce a graph of type identifiers from a list of type definitions.
- */
-internal class Symbols private constructor(val root: Node) {
+internal class Symbols private constructor(val root: Symbol) {
 
     companion object {
 
+        /**
+         * Produce a tree of all symbols in the document.
+         */
         @JvmStatic
         fun build(tree: RIDLParser.DocumentContext): Symbols {
-            val root = Node("root")
+            val root = Symbol(".")
             Visitor(root).visit(tree)
             return Symbols(root)
         }
     }
 
-    private class Visitor(private val parent: Node) : RIDLBaseVisitor<Unit>() {
+    private class Visitor(private val parent: Symbol) : RIDLBaseVisitor<Unit>() {
 
         override fun visitProduct(ctx: RIDLParser.ProductContext) {
             // link self to parent
-            val child = Node(ctx.NAME().text, parent, mutableListOf())
+            val child = Symbol(ctx.NAME().text, parent, mutableSetOf())
             // link parent to child
             parent.children.add(child)
             // descend
@@ -47,7 +47,7 @@ internal class Symbols private constructor(val root: Node) {
         }
 
         override fun visitSum(ctx: RIDLParser.SumContext) {
-            val child = Node(ctx.NAME().text, parent, mutableListOf())
+            val child = Symbol(ctx.NAME().text, parent, mutableSetOf())
             parent.children.add(child)
             val visitor = Visitor(child)
             ctx.variant().forEach { it.accept(visitor) }
@@ -60,36 +60,11 @@ internal class Symbols private constructor(val root: Node) {
         override fun visitUnit(ctx: RIDLParser.UnitContext): Unit = add(ctx.NAME())
 
         private fun add(name: TerminalNode) {
-            val child = Node(name.text, parent, mutableListOf())
-            parent.children.add(child)
-        }
-    }
-
-    internal class Node(
-        val name: String,
-        val parent: Node? = null,
-        val children: MutableList<Node> = mutableListOf()
-    ) {
-
-        val path: List<String>
-            get() {
-                val path = mutableListOf<String>()
-                var node: Node? = this
-                while (node != null) {
-                    path.add(node.name)
-                    node = node.parent
-                }
-                // Use [1, path.size) so that `_root` is excluded in the path
-                return path.reversed().subList(1, path.size)
+            val child = Symbol(name.text, parent, mutableSetOf())
+            if (parent.children.contains(child)) {
+                error("Definition `$parent` already contains a child definition `$child`")
             }
-
-        override fun toString() = path.joinToString(".")
-
-        override fun hashCode() = path.hashCode()
-
-        override fun equals(other: Any?) = when (other) {
-            is Node -> this.path == other.path
-            else -> false
+            parent.children.add(child)
         }
     }
 }

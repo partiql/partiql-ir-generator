@@ -19,7 +19,6 @@ public sealed interface Definition {
     public class Sum(
         public override val path: Type.Path,
         public val variants: List<Definition>,
-        public val children: List<Definition>,
     ) : Definition {
 
         override fun toString(): String = "(union ${path.name} todo)"

@@ -44,9 +44,9 @@ set
   ;
 
 path
-  : NAME                            #PathSimple
+  : NAME                            #PathSymbol
   | '\'' NAME ('.' NAME)* '\''      #PathRelative
-  | '\'' '.' NAME ('.' NAME)* '\''   #PathAbsolute
+  | '\'' '.' NAME ('.' NAME)* '\''  #PathAbsolute
   ;
 
 definition
@@ -86,11 +86,15 @@ enumerator
   ;
 
 fixed
-  : '(' FIXED NAME DIGIT+ ')'
+  : '(' FIXED NAME int ')'
   ;
 
 unit
   : '(' UNIT NAME ')'
+  ;
+
+int
+  : DIGIT+
   ;
 
 INCLUDE: 'include';

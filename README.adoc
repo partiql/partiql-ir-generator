@@ -1,4 +1,4 @@
-= RIDL
+= PartiQL IR Generator
 :toc:
 :toc-title: Page Contents
 :sectlinks:
