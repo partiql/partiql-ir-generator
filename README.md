@@ -79,7 +79,7 @@ To obtain the `pig` executable:
 
 - Clone this repository.
 - Check out the tag of the [release](https://github.com/partiql/partiql-ir-generator/releases) you wish to utilize,
-  e.g. `git checkout v0.6.1`
+  e.g. `git checkout v0.6.3`
 - Execute `./gradlew assemble`
 
 After the build completes, the `pig` executable and dependencies will be located

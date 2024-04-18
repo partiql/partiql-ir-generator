@@ -23,6 +23,6 @@ dependencies {
 }
 
 publish {
-    artifactId = "pig-runtime"
+    artifactId = "partiql-ir-generator-runtime"
     name = "PartiQL I.R. Generator (a.k.a P.I.G.) Runtime Library"
 }
