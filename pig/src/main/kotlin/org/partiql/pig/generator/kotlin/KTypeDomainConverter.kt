@@ -241,7 +241,16 @@ private class KTypeDomainConverter(
                 val elementIsKotlinPrimitive = isKotlinPrimitive(element)
                 val elementKotlinName = element.identifier.snakeToCamelCase()
                 when (element.typeReference.arity) {
-                    is Arity.Required, Arity.Optional -> {
+                    is Arity.Required -> {
+                        KConstructorArgument(
+                            kotlinName = elementKotlinName,
+                            value = elementKotlinName + when {
+                                elementIsKotlinPrimitive && useKotlinPrimitives -> ".asPrimitive()"
+                                else -> ""
+                            }
+                        )
+                    }
+                    is Arity.Optional -> {
                         KConstructorArgument(
                             kotlinName = elementKotlinName,
                             value = elementKotlinName + when {
