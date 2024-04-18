@@ -22,7 +22,7 @@ plugins {
 }
 
 publish {
-    artifactId = "pig"
+    artifactId = "partiql-ir-generator"
     name = "PartiQL I.R. Generator (a.k.a P.I.G.)"
 }
 
