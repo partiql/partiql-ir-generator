@@ -58,7 +58,11 @@ class ${t.kotlinName}(
             [#if p.variadic]
             if(${p.kotlinName}.any()) { ionSexpOf(ionSymbol("${p.tag}"), *${p.kotlinName}.map { it.toIonElement() }.toTypedArray()) } else { null }[#sep],[/#sep]
             [#else]
+            [#if p.nullable]
             ${p.kotlinName}?.let { ionSexpOf(ionSymbol("${p.tag}"), it.toIonElement()) }[#sep],[/#sep]
+            [#else]
+            ionSexpOf(ionSymbol("${p.tag}"), ${p.kotlinName}.toIonElement())[#sep],[/#sep]
+            [/#if]
             [/#if]
         [/#list]
         )
