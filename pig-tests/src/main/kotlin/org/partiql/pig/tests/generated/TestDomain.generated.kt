@@ -773,7 +773,7 @@ class TestDomain private constructor() {
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.ElementVariadic =
             TestDomain.ElementVariadic(
-                name = name?.asPrimitive(),
+                name = name.asPrimitive(),
                 ints = ints.map { it.asPrimitive() },
                 metas = newMetaContainer() + metas
             )
@@ -838,7 +838,7 @@ class TestDomain private constructor() {
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.RequiredVariadic =
             TestDomain.RequiredVariadic(
-                first = first?.asPrimitive(),
+                first = first.asPrimitive(),
                 second = second.map { it.asPrimitive() },
                 metas = newMetaContainer() + metas
             )
@@ -973,7 +973,7 @@ class TestDomain private constructor() {
             metas: MetaContainer = emptyMetaContainer()
         ): TestDomain.RequiredOptionalVariadic =
             TestDomain.RequiredOptionalVariadic(
-                first = first?.asPrimitive(),
+                first = first.asPrimitive(),
                 second = second?.asPrimitive(),
                 third = third.map { it.asPrimitive() },
                 metas = newMetaContainer() + metas
@@ -1047,7 +1047,7 @@ class TestDomain private constructor() {
         ): TestDomain.OptionalRequiredVariadic =
             TestDomain.OptionalRequiredVariadic(
                 first = first?.asPrimitive(),
-                second = second?.asPrimitive(),
+                second = second.asPrimitive(),
                 third = third.map { it.asPrimitive() },
                 metas = newMetaContainer() + metas
             )
@@ -3335,8 +3335,8 @@ class TestDomain private constructor() {
         override fun toIonElement(): SexpElement {
             val elements = listOfNotNull(
                 ionSymbol("domain_level_record"),
-                someField?.let { ionSexpOf(ionSymbol("some_field"), it.toIonElement()) },
-                anotherField?.let { ionSexpOf(ionSymbol("another_field"), it.toIonElement()) },
+                ionSexpOf(ionSymbol("some_field"), someField.toIonElement()),
+                ionSexpOf(ionSymbol("another_field"), anotherField.toIonElement()),
                 optionalField?.let { ionSexpOf(ionSymbol("optional_field"), it.toIonElement()) }
             )
     
@@ -4375,9 +4375,9 @@ class TestDomain private constructor() {
             override fun toIonElement(): SexpElement {
                 val elements = listOfNotNull(
                     ionSymbol("human"),
-                    firstName?.let { ionSexpOf(ionSymbol("first_name"), it.toIonElement()) },
+                    ionSexpOf(ionSymbol("first_name"), firstName.toIonElement()),
                     if(middleNames.any()) { ionSexpOf(ionSymbol("middle_names"), *middleNames.map { it.toIonElement() }.toTypedArray()) } else { null },
-                    lastName?.let { ionSexpOf(ionSymbol("last_name"), it.toIonElement()) },
+                    ionSexpOf(ionSymbol("last_name"), lastName.toIonElement()),
                     title?.let { ionSexpOf(ionSymbol("title"), it.toIonElement()) },
                     parent?.let { ionSexpOf(ionSymbol("parent"), it.toIonElement()) }
                 )
