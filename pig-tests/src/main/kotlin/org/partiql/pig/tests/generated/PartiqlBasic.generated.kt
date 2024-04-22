@@ -799,7 +799,7 @@ class PartiqlBasic private constructor() {
             metas: MetaContainer = emptyMetaContainer()
         ): PartiqlBasic.Expr.Call =
             PartiqlBasic.Expr.Call(
-                name = name?.asPrimitive(),
+                name = name.asPrimitive(),
                 args = listOf(args0) + args.toList(),
                 metas = newMetaContainer() + metas
             )
@@ -3302,8 +3302,8 @@ class PartiqlBasic private constructor() {
                 val elements = listOfNotNull(
                     ionSymbol("select"),
                     setq?.let { ionSexpOf(ionSymbol("setq"), it.toIonElement()) },
-                    project?.let { ionSexpOf(ionSymbol("project"), it.toIonElement()) },
-                    from?.let { ionSexpOf(ionSymbol("from"), it.toIonElement()) },
+                    ionSexpOf(ionSymbol("project"), project.toIonElement()),
+                    ionSexpOf(ionSymbol("from"), from.toIonElement()),
                     where?.let { ionSexpOf(ionSymbol("where"), it.toIonElement()) },
                     group?.let { ionSexpOf(ionSymbol("group"), it.toIonElement()) },
                     having?.let { ionSexpOf(ionSymbol("having"), it.toIonElement()) },

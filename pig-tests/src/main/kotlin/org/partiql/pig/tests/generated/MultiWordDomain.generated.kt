@@ -383,8 +383,8 @@ class MultiWordDomain private constructor() {
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAad =
             MultiWordDomain.AabAad(
-                bField = bField?.asPrimitive(),
-                cField = cField?.asPrimitive(),
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
                 dField = dField.map { it.asPrimitive() },
                 metas = newMetaContainer() + metas
             )
@@ -458,8 +458,8 @@ class MultiWordDomain private constructor() {
             metas: MetaContainer = emptyMetaContainer()
         ): MultiWordDomain.AabAae =
             MultiWordDomain.AabAae(
-                bField = bField?.asPrimitive(),
-                cField = cField?.asPrimitive(),
+                bField = bField.asPrimitive(),
+                cField = cField.asPrimitive(),
                 dField = listOfPrimitives(dField0, dField1) + dField.map { it.asPrimitive() },
                 metas = newMetaContainer() + metas
             )
@@ -1175,8 +1175,8 @@ class MultiWordDomain private constructor() {
         override fun toIonElement(): SexpElement {
             val elements = listOfNotNull(
                 ionSymbol("rrr"),
-                aField?.let { ionSexpOf(ionSymbol("a_field"), it.toIonElement()) },
-                bbbField?.let { ionSexpOf(ionSymbol("b_field"), it.toIonElement()) }
+                ionSexpOf(ionSymbol("a_field"), aField.toIonElement()),
+                ionSexpOf(ionSymbol("b_field"), bbbField.toIonElement())
             )
     
             return ionSexpOf(elements, metas = metas)

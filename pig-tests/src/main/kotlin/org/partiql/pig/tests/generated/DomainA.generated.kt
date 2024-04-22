@@ -501,7 +501,7 @@ class DomainA private constructor() {
         override fun toIonElement(): SexpElement {
             val elements = listOfNotNull(
                 ionSymbol("record_to_remove"),
-                irrelevant?.let { ionSexpOf(ionSymbol("irrelevant"), it.toIonElement()) }
+                ionSexpOf(ionSymbol("irrelevant"), irrelevant.toIonElement())
             )
     
             return ionSexpOf(elements, metas = metas)
@@ -611,8 +611,8 @@ class DomainA private constructor() {
         override fun toIonElement(): SexpElement {
             val elements = listOfNotNull(
                 ionSymbol("record_a"),
-                one?.let { ionSexpOf(ionSymbol("one"), it.toIonElement()) },
-                two?.let { ionSexpOf(ionSymbol("two"), it.toIonElement()) }
+                ionSexpOf(ionSymbol("one"), one.toIonElement()),
+                ionSexpOf(ionSymbol("two"), two.toIonElement())
             )
     
             return ionSexpOf(elements, metas = metas)
@@ -726,8 +726,8 @@ class DomainA private constructor() {
         override fun toIonElement(): SexpElement {
             val elements = listOfNotNull(
                 ionSymbol("unpermuted_record"),
-                foo?.let { ionSexpOf(ionSymbol("foo"), it.toIonElement()) },
-                bar?.let { ionSexpOf(ionSymbol("bar"), it.toIonElement()) }
+                ionSexpOf(ionSymbol("foo"), foo.toIonElement()),
+                ionSexpOf(ionSymbol("bar"), bar.toIonElement())
             )
     
             return ionSexpOf(elements, metas = metas)
@@ -1020,7 +1020,7 @@ class DomainA private constructor() {
             override fun toIonElement(): SexpElement {
                 val elements = listOfNotNull(
                     ionSymbol("noti"),
-                    a?.let { ionSexpOf(ionSymbol("a"), it.toIonElement()) }
+                    ionSexpOf(ionSymbol("a"), a.toIonElement())
                 )
         
                 return ionSexpOf(elements, metas = metas)
@@ -1284,8 +1284,8 @@ class DomainA private constructor() {
             override fun toIonElement(): SexpElement {
                 val elements = listOfNotNull(
                     ionSymbol("unpermuted_record_variant"),
-                    foo?.let { ionSexpOf(ionSymbol("foo"), it.toIonElement()) },
-                    bar?.let { ionSexpOf(ionSymbol("bar"), it.toIonElement()) }
+                    ionSexpOf(ionSymbol("foo"), foo.toIonElement()),
+                    ionSexpOf(ionSymbol("bar"), bar.toIonElement())
                 )
         
                 return ionSexpOf(elements, metas = metas)

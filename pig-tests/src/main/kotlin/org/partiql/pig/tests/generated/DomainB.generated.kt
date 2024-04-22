@@ -470,8 +470,8 @@ class DomainB private constructor() {
         override fun toIonElement(): SexpElement {
             val elements = listOfNotNull(
                 ionSymbol("unpermuted_record"),
-                foo?.let { ionSexpOf(ionSymbol("foo"), it.toIonElement()) },
-                bar?.let { ionSexpOf(ionSymbol("bar"), it.toIonElement()) }
+                ionSexpOf(ionSymbol("foo"), foo.toIonElement()),
+                ionSexpOf(ionSymbol("bar"), bar.toIonElement())
             )
     
             return ionSexpOf(elements, metas = metas)
@@ -574,7 +574,7 @@ class DomainB private constructor() {
         override fun toIonElement(): SexpElement {
             val elements = listOfNotNull(
                 ionSymbol("record_a"),
-                one?.let { ionSexpOf(ionSymbol("one"), it.toIonElement()) }
+                ionSexpOf(ionSymbol("one"), one.toIonElement())
             )
     
             return ionSexpOf(elements, metas = metas)
@@ -722,7 +722,7 @@ class DomainB private constructor() {
         override fun toIonElement(): SexpElement {
             val elements = listOfNotNull(
                 ionSymbol("new_record"),
-                foo?.let { ionSexpOf(ionSymbol("foo"), it.toIonElement()) }
+                ionSexpOf(ionSymbol("foo"), foo.toIonElement())
             )
     
             return ionSexpOf(elements, metas = metas)
@@ -844,8 +844,8 @@ class DomainB private constructor() {
             override fun toIonElement(): SexpElement {
                 val elements = listOfNotNull(
                     ionSymbol("unpermuted_record_variant"),
-                    foo?.let { ionSexpOf(ionSymbol("foo"), it.toIonElement()) },
-                    bar?.let { ionSexpOf(ionSymbol("bar"), it.toIonElement()) }
+                    ionSexpOf(ionSymbol("foo"), foo.toIonElement()),
+                    ionSexpOf(ionSymbol("bar"), bar.toIonElement())
                 )
         
                 return ionSexpOf(elements, metas = metas)
