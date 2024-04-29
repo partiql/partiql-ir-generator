@@ -24,7 +24,7 @@ repositories {
 
 object Versions {
     const val detekt = "1.20.0-RC1"
-    const val dokka = "1.9.20"
+    const val dokka = "1.6.10"
     const val kotlin = "1.5.+"
     const val ktlint = "10.2.1"
 }
